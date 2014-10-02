@@ -3,3 +3,24 @@
 {% block breadcrumb %}
   <li class="active">Accueil</li>
 {% endblock %}
+
+{% block container %}
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+        <tr>
+    </thead>
+    <tbody>
+{% for sale_order in sale_orders %}
+        <tr>
+            <td>{{ sale_order.id }}</td>
+            <td>{{ sale_order.name }}</td>
+        </tr>
+{% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

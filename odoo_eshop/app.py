@@ -35,6 +35,7 @@ def logout_view():
 @app.route("/")
 @requires_auth
 def hello():
+    sale_orders = g.openerp.SaleOrder.browse([])
     return render_template(
-        'home.html'
+        'home.html', sale_orders=sale_orders
     )
