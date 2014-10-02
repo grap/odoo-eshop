@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block breadcrumb %}
+  <li class="active">Invoices</li>
+{% endblock %}
+
+{% block container %}
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Number</th>
+            <th>Invoice Date</th>
+            <th>Untaxed Amount</th>
+            <th>Taxes</th>
+            <th>Total</th>
+        <tr>
+    </thead>
+    <tbody>
+{% for account_invoice in account_invoices %}
+        <tr>
+            <td>{{ account_invoice.number }}</td>
+            <td>{{ account_invoice.date_invoice }}</td>
+            <td>{{ account_invoice.amount_untaxed }}</td>
+            <td>{{ account_invoice.amount_tax }}</td>
+            <td>{{ account_invoice.amount_total }}</td>
+        </tr>
+{% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

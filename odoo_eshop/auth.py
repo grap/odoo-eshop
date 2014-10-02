@@ -16,15 +16,17 @@ from config import conf
 
 
 def login(username, password):
-    session['openerp_user'] = username
-    session['openerp_password'] = password
+    session['partner_login'] = username
+    session['partner_password'] = password
 
 
 def logout():
-    if 'openerp_user' in session:
-        del session['openerp_user']
-    if 'openerp_password' in session:
-        del session['openerp_password']
+    if 'partner_name' in session:
+        del session['partner_name']
+    if 'partner_login' in session:
+        del session['partner_login']
+    if 'partner_password' in session:
+        del session['partner_password']
 
 
 def authenticate():
@@ -34,19 +36,25 @@ def authenticate():
 def requires_auth(f):
     @wraps(f)
     def decorated(*args, **kwargs):
-        if 'openerp_user' in session and 'openerp_password' in session:
+        if 'partner_login' in session and 'partner_password' in session:
             openerp = erppeek.Client(
                 conf.get('openerp', 'url'),
             )
-            loggedin = openerp.login(
-                session['openerp_user'],
-                password=session['openerp_password'],
-                database=conf.get('openerp', 'db'),
+            # User Authentification
+            uid = openerp.login(
+                conf.get('auth', 'user_login'),
+                password=conf.get('auth', 'user_password'),
+                database=conf.get('openerp', 'database'),
             )
-            if not loggedin:
+            # Partner Authentification
+            partner = openerp.ResPartner.browse(
+                [int(session['partner_login'])])
+            if not (uid and partner):
                 logout()
                 flash(u'Login/password incorrects', 'danger')
                 return authenticate()
+            session['partner_id'] = partner[0].id
+            session['partner_name'] = partner[0].name
             g.openerp = openerp
             return f(*args, **kwargs)
         return authenticate()
