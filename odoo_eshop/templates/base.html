@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>OpenERP eshop{% block extra_title %}{% endblock %}</title>
+
+    <!-- Bootstrap -->
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet" />
+    {% block extra_css %}{% endblock %}
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="container">
+
+    <nav class="navbar navbar-default" role="navigation">
+      <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <a class="navbar-brand" href="{{  url_for('hello') }}">Fablab</a>
+        </div>
+
+        {% if 'openerp_user' in session %}
+        <ul class="nav navbar-nav navbar-right">
+          <li><p class="navbar-text">Utilisateur : {{ session['openerp_user'] }}</p></li>
+          <li><a href="{{ url_for('logout_view') }}">Se déconnecter</a></li>
+        </ul>
+        {% endif %}
+    
+      </div><!-- /.container-fluid -->
+    </nav>
+
+    {% block breadcrumb_all %}
+    <ol class="breadcrumb">
+        {% block breadcrumb %}
+        {% endblock %}
+    </ol>
+    {% endblock %}
+
+
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          <div class="flashes">
+          {% for category, message in messages %}
+            <p class="text-center bg-{{ category }}">{{ message }}</p>
+          {% endfor %}
+          </div>
+        {% endif %}
+      {% endwith %}
+
+      {% block container %}{% endblock %}
+    </div>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+    {% block extra_js %}{% endblock %}
+  </body>
+</html>
