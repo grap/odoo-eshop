@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+
+{% block breadcrumb %}
+    <li class="active">
+        <a href="{{ url_for('catalog')}}">Catalog</a>
+    </li>
+    {% for parent_category in parent_categories %}
+    <li class="active">
+        <a href="{{ url_for('catalog', category_id=parent_category['id'])}}">{{ parent_category['name'] }}</a>
+    </li>
+    {% endfor %}
+{% endblock %}
+
+{% block container %}
+
+<!-- Products -->
+<div class="row">
+    <div class="col-md-12">
+        <h1>{{ product.name }}</h1>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        <center>
+            <div>
+                <img src="data:image/png;base64,{{ product.image }}" 
+                    style="max-width:250px;"
+                    class="img-thumbnail"/>
+            </div>
+            <br />
+            <div>
+    {% if product.ethiquette_label_ids|length %}
+                <center>
+        {% for label in product.ethiquette_label_ids %}
+                    <img src="data:image/png;base64,{{ label.logo }}" 
+                        class="img-thumbnail"
+                        alt="{{ label.name }}" style="max-width:80px;"/>
+        {% endfor %}
+            </center>
+    {% endif %}
+            </div>
+        </center>
+    </div>
+    <div class="col-md-4">
+        <dl class="dl-horizontal">
+
+            <dt>Price</dt>
+            <dd>{{ product.list_price }}</dd>
+            <dt>Unit</dt>
+            <dd>{{ product.uom_id }}</dd>
+            <dt>Minimum Quantity</dt>
+            <dd>product.eshop_minimum_qty</dd>
+            <dt>Rounding Quantity</dt>
+            <dd>product.eshop_rounding_qty</dd>
+            <br />
+    {% if product.description != False %}
+            <dt>Description</dt>
+            <dd>{{ product.description }}</dd>
+    {% endif %}
+        </dl>
+    </div>
+    <div class="col-md-4">
+        <form class="form-horizontal" role="form" method="POST" action="{{ url_for('product', product_id=product.id) }}">
+            <div class="form-group">
+                <label class="col-sm-3 control-label">Quantity</label>
+                <div class="col-sm-5">
+                    <input type="text" class="form-control" name="quantity" />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-5 col-sm-offset-3">
+                    <button type="submit" class="btn btn-default">Add to Shopping Cart</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+
+    </div>
+    <div class="col-md-4">
+
+    </div>
+    <div class="col-md-4">
+    </div>
+</div>
+<!-- description -->
+
+    {% if product.ethiquette_label_ids|length %}
+<div>
+
+    {% endif %}
+
+{% endblock %}

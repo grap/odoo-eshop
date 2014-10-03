@@ -28,24 +28,93 @@ def login_view():
 @app.route("/logout.html")
 def logout_view():
     logout()
-    return redirect(url_for('hello'))
+    return redirect(url_for('home'))
 
 
 @app.route("/")
 @requires_auth
-def hello():
-    sale_orders = g.openerp.SaleOrder.browse(
-        [partner_domain()])
+def home():
     return render_template(
-        'home.html', sale_orders=sale_orders
+        'home.html'
     )
 
 
-@app.route("/invoices.html")
+@app.route("/invoices")
 @requires_auth
 def invoices():
     account_invoices = g.openerp.AccountInvoice.browse(
         [partner_domain()])
     return render_template(
         'invoices.html', account_invoices=account_invoices
+    )
+
+
+@app.route("/shopping_cart")
+@requires_auth
+def shopping_cart():
+    pass
+#    account_invoices = g.openerp.AccountInvoice.browse(
+#        [partner_domain()])
+    return render_template(
+        'home.html'
+    )
+
+
+@app.route("/product/<int:product_id>", methods=['GET', 'POST'])
+@requires_auth
+def product(product_id):
+    if request.method == 'POST':
+        import pdb; pdb.set_trace()
+        print "POST"
+    else:
+        print "GET"
+
+    # Get Products
+    product = g.openerp.ProductProduct.browse(product_id)
+
+    # Get Parent Categories
+    parent_categories = []
+    parent = product.eshop_category_id
+    while parent:
+        parent_categories.insert(0, {'id': parent.id, 'name': parent.name})
+        parent = parent.parent_id
+
+    return render_template(
+        'product.html', product=product,
+        parent_categories=parent_categories,
+    )
+
+
+@app.route('/catalog/', defaults={'category_id': False})
+@app.route("/catalog/<int:category_id>")
+@requires_auth
+def catalog(category_id):
+    parent_categories = []
+    current_category = False
+
+    # Get Child Categories
+    categories = g.openerp.eshopCategory.browse(
+        [('parent_id', '=', category_id)])
+
+    parent_categories = []
+    # Get Parent Categories
+    if category_id:
+        current_category = g.openerp.eshopCategory.browse(category_id)
+        # Get Parent Categories
+        parent = current_category
+        while parent:
+            parent_categories.insert(
+                0, {'id': parent.id, 'name': parent.name})
+            parent = parent.parent_id
+
+    # Get Products
+    products = g.openerp.ProductProduct.browse(
+        [('eshop_ok', '=', True), ('eshop_category_id', '=', category_id)],
+        order='name')
+    return render_template(
+        'catalog.html',
+        categories=categories,
+        parent_categories=parent_categories,
+        current_category=current_category,
+        products=products,
     )
