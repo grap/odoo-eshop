@@ -13,14 +13,15 @@
 
 {% block container %}
 
+<!-- Header -->
     {% if not current_category == False %}
 <h1>{{ current_category.name }}</h1>
     {% else %}
 <h1>Catalog</h1>
     {% endif%}
 
+<!-- Categories -->
 {% if categories|length %}
-<!-- Categories-->
 <div class="row">
     {% for category in categories %}
         {% if category.available_product_qty != 0 or category.child_qty != 0  %}
@@ -37,7 +38,6 @@
 {% endif %}
 
 <!-- Products -->
-
 {% if products|length %}
 <div class="row">
     {% for product in products %}

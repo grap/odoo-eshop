@@ -2,9 +2,10 @@
 # -*- encoding: utf-8 -*-
 
 from flask import Flask, g, request, redirect, session, url_for, \
-    render_template
+    render_template, flash
 from config import conf
 from auth import login, logout, requires_auth
+from sale_order import add_product
 
 app = Flask(__name__)
 app.secret_key = conf.get('flask', 'secret_key')
@@ -52,25 +53,29 @@ def invoices():
 @app.route("/shopping_cart")
 @requires_auth
 def shopping_cart():
-    pass
-#    account_invoices = g.openerp.AccountInvoice.browse(
-#        [partner_domain()])
+    sale_order = g.openerp.SaleOrder.browse(session['sale_order_id'])
     return render_template(
-        'home.html'
+        'shopping_cart.html',
+        sale_order=sale_order,
     )
 
 
 @app.route("/product/<int:product_id>", methods=['GET', 'POST'])
 @requires_auth
 def product(product_id):
-    if request.method == 'POST':
-        import pdb; pdb.set_trace()
-        print "POST"
-    else:
-        print "GET"
-
     # Get Products
     product = g.openerp.ProductProduct.browse(product_id)
+
+    # Add product to shopping cart if wanted
+    if request.method == 'POST':
+        try:
+            quantity = float(
+                request.form['quantity'].replace(',', '.').strip())
+        except ValueError:
+            quantity = False
+            flash(u'Invalid Quantity', 'error')
+        if quantity:
+            add_product(product, quantity)
 
     # Get Parent Categories
     parent_categories = []
