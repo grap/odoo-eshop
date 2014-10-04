@@ -27,7 +27,6 @@ TODO
         * select the sale_moment_recovery;
 
     * at login:
-        * manage sale_order loading from database;
         * display sale_moment_group information;
 
     * Add password on res.partner and manage it;

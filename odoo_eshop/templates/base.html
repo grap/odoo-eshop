@@ -6,8 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>eShop{% block extra_title %}{% endblock %}</title>
 
+    <script data-require="jquery@*" data-semver="2.0.3" src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
+    <script data-require="bootstrap@*" data-semver="3.1.1" src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    <link data-require="bootstrap-css@3.1.1" data-semver="3.1.1" rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" />
+
+
     <!-- Bootstrap -->
-    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet" />
+
+<!--    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet" />-->
     {% block extra_css %}{% endblock %}
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -25,8 +31,10 @@
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
           <a class="navbar-brand" href="{{  url_for('home') }}">Home</a>
+        {% if 'partner_name' in session %}
           <a class="navbar-brand" href="{{  url_for('catalog') }}">Products</a>
           <a class="navbar-brand" href="{{  url_for('invoices') }}">Invoices</a>
+        {% endif %}
         {% if 'sale_order_id' in session %}
           <a class="navbar-brand" href="{{  url_for('shopping_cart') }}">Shopping Cart ({{ session['sale_order_total'] }} €)</a>
         {% endif %}

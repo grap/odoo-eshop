@@ -13,6 +13,7 @@ from flask import (
 )
 
 from config import conf
+from sale_order import load_sale_order
 
 
 def login(username, password):
@@ -21,12 +22,8 @@ def login(username, password):
 
 
 def logout():
-    if 'partner_name' in session:
-        del session['partner_name']
-    if 'partner_login' in session:
-        del session['partner_login']
-    if 'partner_password' in session:
-        del session['partner_password']
+    for k, v in session.items():
+        del session[k]
 
 
 def authenticate():
@@ -53,9 +50,13 @@ def requires_auth(f):
                 logout()
                 flash(u'Login/password incorrects', 'danger')
                 return authenticate()
+            session['user_id'] = uid
             session['partner_id'] = partner[0].id
             session['partner_name'] = partner[0].name
             g.openerp = openerp
+
+            # Load Data
+            load_sale_order()
             return f(*args, **kwargs)
         return authenticate()
     return decorated

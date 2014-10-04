@@ -6,6 +6,29 @@
 
 {% block container %}
 
+<div class="row">
+    <div class="col-md-12">
+        <h1>Your Shopping Cart ({{ sale_order.name }})</h1>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6">
+        <a data-href="{{ url_for('delete_shopping_cart') }}"
+            data-toggle="modal"
+            data-target="#confirm-delete"
+            class="col-sm-offset-3 btn btn-default" href="#" role="button">Delete Shopping Cart</a>
+    </div>
+    <div class="col-md-6">
+        <form class="form-horizontal" role="form" method="POST">
+            <div class="form-group">
+                <div class="col-sm-offset-3">
+                    <button type="submit" class="btn btn-default">Confirm Shopping Cart</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
 <table class="table table-hover">
     <thead>
         <tr>
@@ -14,22 +37,32 @@
             <th>Unit</th>
             <th>Quantity</th>
             <th>Subtotal</th>
+            <th />
         <tr>
     </thead>
     <tbody>
 {% for sale_order_line in sale_order.order_line %}
         <tr>
-            <td>{{ sale_order_line.name }}</td>
+            <td>
+                <a href="{{url_for('product', product_id=sale_order_line.product_id.id)}}">{{ sale_order_line.name }}</a>
+            </td>
             <td>{{ sale_order_line.price_unit }}</td>
             <td>{{ sale_order_line.product_uom }}</td>
             <td>{{ sale_order_line.product_uom_qty }}</td>
             <td>{{ sale_order_line.price_subtotal }}</td>
+            <td>
+                <a href="{{ url_for('delete_sale_order_line', sale_order_line_id=sale_order_line.id) }}"
+                    class="btn btn-default" role="button">
+                        <span class="glyphicon glyphicon-remove-circle"/> Remove</a>
+                </a>
+            
+            </td>
         </tr>
 {% endfor %}
     </tbody>
 </table>
 <div class="row">
-    <div class="col-md-8"></div>
+    <div class="col-md-6"></div>
     <div class="col-md-4">
         <dl class="dl-horizontal">
             <dt>Untaxed Amount</dt>
@@ -40,6 +73,34 @@
             <dd>{{ sale_order.amount_total }}</dd>
         </dl>
     </div>
+    <div class="col-md-2"></div>
 </div>
+
+<!-- Delete Shopping Cart PopUp-->
+
+<div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">Confirm Delete</h4>
+            </div>
+            <div class="modal-body">
+                <p>You are about to delete your shopping, this procedure is irreversible.</p>
+                <p>Do you want to proceed?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <a href="#" class="btn btn-danger danger">Delete</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $('#confirm-delete').on('show.bs.modal', function(e) {
+        $(this).find('.danger').attr('href', $(e.relatedTarget).data('href'));
+    });
+</script>
 
 {% endblock %}

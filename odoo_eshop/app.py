@@ -5,7 +5,7 @@ from flask import Flask, g, request, redirect, session, url_for, \
     render_template, flash
 from config import conf
 from auth import login, logout, requires_auth
-from sale_order import add_product
+from sale_order import add_product, update_header
 
 app = Flask(__name__)
 app.secret_key = conf.get('flask', 'secret_key')
@@ -58,6 +58,31 @@ def shopping_cart():
         'shopping_cart.html',
         sale_order=sale_order,
     )
+
+
+@app.route("/delete_shopping_cart")
+@requires_auth
+def delete_shopping_cart():
+    sale_order = g.openerp.SaleOrder.browse(session['sale_order_id'])
+    sale_order.unlink()
+    del session['sale_order_id']
+    update_header()
+    return render_template(
+        'home.html',
+    )
+
+
+@app.route("/delete_sale_order_line/<int:sale_order_line_id>")
+@requires_auth
+def delete_sale_order_line(sale_order_line_id):
+    sale_order = g.openerp.SaleOrder.browse(session['sale_order_id'])
+    if len(sale_order.order_line) > 1:
+        for order_line in sale_order.order_line:
+            if order_line.id == sale_order_line_id:
+                order_line.unlink()
+        return shopping_cart()
+    else:
+        return delete_shopping_cart()
 
 
 @app.route("/product/<int:product_id>", methods=['GET', 'POST'])

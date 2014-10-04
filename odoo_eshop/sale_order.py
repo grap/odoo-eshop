@@ -10,6 +10,18 @@ from flask import (
 from config import conf
 
 
+def load_sale_order():
+    session['partner_id']
+    sale_orders = g.openerp.SaleOrder.browse([
+        ('partner_id', '=', session['partner_id']),
+        ('user_id', '=', session['user_id']),
+        ('state', '=', 'draft'),
+        ])
+    if len(sale_orders) > 0:
+        session['sale_order_id'] = sale_orders[0].id
+        update_header()
+
+
 def create_sale_order():
     partner = g.openerp.ResPartner.browse(session['partner_id'])
     if partner.property_product_pricelist:
@@ -57,5 +69,9 @@ def add_product(product, quantity):
 
 
 def update_header():
-    sale_order = g.openerp.SaleOrder.browse(session['sale_order_id'])
-    session['sale_order_total'] = sale_order.amount_total
+    if 'sale_order_id' in session:
+        sale_order = g.openerp.SaleOrder.browse(session['sale_order_id'])
+        session['sale_order_total'] = sale_order.amount_total and \
+            sale_order.amount_total or 0
+    else:
+        session['sale_order_total'] = False
