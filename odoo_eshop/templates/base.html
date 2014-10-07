@@ -1,19 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>eShop{% block extra_title %}{% endblock %}</title>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>{{ _('eShop')}}{% block extra_title %}{% endblock %}</title>
 
-    <script data-require="jquery@*" data-semver="2.0.3" src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
-    <script data-require="bootstrap@*" data-semver="3.1.1" src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
-    <link data-require="bootstrap-css@3.1.1" data-semver="3.1.1" rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" />
+<!--        <script data-require="jquery@*" data-semver="2.0.3" src="http://code.jquery.com/jquery-2.0.3.min.js"></script>-->
+<!--        <script data-require="bootstrap@*" data-semver="3.1.1" src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>-->
+<!--        <link data-require="bootstrap-css@3.1.1" data-semver="3.1.1" rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" />-->
 
+    <!-- from : http://code.jquery.com/jquery-2.0.3.min.js -->
+        <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
 
-    <!-- Bootstrap -->
+    <!-- from : http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js -->
+        <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
 
-<!--    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet" />-->
+    <!-- from : http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css -->
+        <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet" />
+
     {% block extra_css %}{% endblock %}
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -22,39 +27,38 @@
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-  </head>
-  <body>
-    <div class="container">
+    </head>
+    <body>
+        <div class="container">
 
-    <nav class="navbar navbar-default" role="navigation">
-      <div class="container-fluid">
-        <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="navbar-header">
-          <a class="navbar-brand" href="{{  url_for('home') }}">Home</a>
+            <nav class="navbar navbar-default" role="navigation">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <a class="navbar-brand" href="{{  url_for('home') }}">{{ _('Home') }}</a>
         {% if 'partner_name' in session %}
-          <a class="navbar-brand" href="{{  url_for('catalog') }}">Products</a>
-          <a class="navbar-brand" href="{{  url_for('invoices') }}">Invoices</a>
+                        <a class="navbar-brand" href="{{  url_for('catalog') }}">{{ _('Products') }}</a>
+                        <a class="navbar-brand" href="{{  url_for('invoices') }}">{{ _('Invoices') }}</a>
         {% endif %}
         {% if 'sale_order_id' in session %}
-          <a class="navbar-brand" href="{{  url_for('shopping_cart') }}">Shopping Cart ({{ session['sale_order_total'] }} €)</a>
+                        <a class="navbar-brand" href="{{  url_for('shopping_cart') }}">{{ _('Shopping Cart: ') }}({{ session['sale_order_total'] }} €)</a>
         {% endif %}
-        </div>
+                    </div>
 
         {% if 'partner_name' in session %}
-        <ul class="nav navbar-nav navbar-right">
-          <li><p class="navbar-text">Partner: {{ session['partner_name'] }}</p></li>
-          <li><a href="{{ url_for('logout_view') }}">Log Out</a></li>
-        </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><p class="navbar-text">{{ _('Partner: ') }}{{ session['partner_name'] }}</p></li>
+                        <li><a href="{{ url_for('logout_view') }}">{{ _('Log Out') }}</a></li>
+                    </ul>
         {% endif %}
-    
-      </div><!-- /.container-fluid -->
-    </nav>
+
+                </div
+            </nav>
 
     {% block breadcrumb_all %}
-    <ol class="breadcrumb">
+            <ol class="breadcrumb">
         {% block breadcrumb %}
         {% endblock %}
-    </ol>
+            </ol>
     {% endblock %}
 
 
@@ -69,12 +73,8 @@
       {% endwith %}
 
       {% block container %}{% endblock %}
-    </div>
+        </div>
 
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
     {% block extra_js %}{% endblock %}
-  </body>
+    </body>
 </html>

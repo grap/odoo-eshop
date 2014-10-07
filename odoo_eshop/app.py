@@ -1,15 +1,23 @@
 #! /usr/bin/env python
 # -*- encoding: utf-8 -*-
 
+# Standard Librairies
 from flask import Flask, g, request, redirect, session, url_for, \
     render_template, flash
+from flask.ext.babel import gettext as _
+from flask.ext.babel import Babel
+
+# Custom Modules
 from config import conf
 from auth import login, logout, requires_auth
 from sale_order import add_product, update_header
 
+# Initialization of the Apps
 app = Flask(__name__)
 app.secret_key = conf.get('flask', 'secret_key')
 app.debug = conf.get('flask', 'debug') == 'True'
+app.config['BABEL_DEFAULT_LOCALE'] = conf.get('localization', 'locale')
+babel = Babel(app)
 
 
 def partner_domain():
@@ -60,6 +68,17 @@ def shopping_cart():
     )
 
 
+@app.route("/recovery_moment_place")
+@requires_auth
+def recovery_moment_place():
+    recovery_moment_groups = g.openerp.SaleRecoveryMomentGroup.browse(
+        [('state', 'in', 'pending_sale')])
+    return render_template(
+        'recovery_moment_place.html',
+        recovery_moment_groups=recovery_moment_groups,
+    )
+
+
 @app.route("/delete_shopping_cart")
 @requires_auth
 def delete_shopping_cart():
@@ -70,6 +89,31 @@ def delete_shopping_cart():
     return render_template(
         'home.html',
     )
+
+
+@app.route("/select_recovery_moment/<int:recovery_moment_id>")
+@requires_auth
+def select_recovery_moment(recovery_moment_id):
+    found = False
+    recovery_moment_groups = g.openerp.SaleRecoveryMomentGroup.browse(
+        [('state', 'in', 'pending_sale')])
+    for recovery_moment_group in recovery_moment_groups:
+        for recovery_moment in recovery_moment_group.moment_ids:
+            if recovery_moment.id == recovery_moment_id:
+                found = True
+                break
+    if found:
+        g.openerp.SaleOrder.write(session['sale_order_id'], {
+            'moment_id': recovery_moment_id,
+            })
+        g.openerp.SaleOrder.action_button_confirm([session['sale_order_id']])
+        del session['sale_order_id']
+        update_header()
+        # TODO Add flash
+        return redirect(url_for('home'))
+    else:
+        # TODO do something
+        pass
 
 
 @app.route("/delete_sale_order_line/<int:sale_order_line_id>")
@@ -98,7 +142,7 @@ def product(product_id):
                 request.form['quantity'].replace(',', '.').strip())
         except ValueError:
             quantity = False
-            flash(u'Invalid Quantity', 'error')
+            flash(_('Invalid Quantity'), 'error')
         if quantity:
             add_product(product, quantity)
 

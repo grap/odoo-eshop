@@ -2,7 +2,7 @@
 
 {% block breadcrumb %}
     <li class="active">
-        <a href="{{ url_for('catalog')}}">Catalog</a>
+        <a href="{{ url_for('catalog')}}">{{ _('Catalog') }}</a>
     </li>
     {% for parent_category in parent_categories %}
     <li class="active">
@@ -17,7 +17,7 @@
     {% if not current_category == False %}
 <h1>{{ current_category.name }}</h1>
     {% else %}
-<h1>Catalog</h1>
+<h1>{{ _('Catalog') }}</h1>
     {% endif%}
 
 <!-- Categories -->
