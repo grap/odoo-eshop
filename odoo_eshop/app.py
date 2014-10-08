@@ -2,6 +2,8 @@
 # -*- encoding: utf-8 -*-
 
 # Standard Librairies
+import logging
+
 from flask import Flask, request, redirect, session, url_for, \
     render_template, flash
 from flask.ext.babel import gettext as _
@@ -203,3 +205,14 @@ def catalog(category_id):
 @app.context_processor
 def current_sale_order():
     return {'sale_order': load_sale_order()}
+
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
+
+
+@app.errorhandler(Exception)
+def error(e):
+    logging.exception('an error occured')
+    return render_template('error.html'), 500
