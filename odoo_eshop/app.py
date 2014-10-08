@@ -233,9 +233,3 @@ def page_not_found(e):
 def error(e):
     logging.exception('an error occured')
     return render_template('error.html'), 500
-
-
-@app.route("/test_error")
-@requires_auth
-def test_error():
-    assert False, 'this is an error, sorry'
