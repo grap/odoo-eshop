@@ -2,7 +2,7 @@
 # -*- encoding: utf-8 -*-
 
 # Standard Librairies
-from flask import Flask, g, request, redirect, session, url_for, \
+from flask import Flask, request, redirect, session, url_for, \
     render_template, flash
 from flask.ext.babel import gettext as _
 from flask.ext.babel import Babel
@@ -11,6 +11,7 @@ from flask.ext.babel import Babel
 from config import conf
 from auth import login, logout, requires_auth
 from sale_order import add_product, update_header
+from erp import openerp
 
 # Initialization of the Apps
 app = Flask(__name__)
@@ -51,7 +52,7 @@ def home():
 @app.route("/invoices")
 @requires_auth
 def invoices():
-    account_invoices = g.openerp.AccountInvoice.browse(
+    account_invoices = openerp.AccountInvoice.browse(
         [partner_domain()])
     return render_template(
         'invoices.html', account_invoices=account_invoices
@@ -61,7 +62,7 @@ def invoices():
 @app.route("/shopping_cart")
 @requires_auth
 def shopping_cart():
-    sale_order = g.openerp.SaleOrder.browse(session['sale_order_id'])
+    sale_order = openerp.SaleOrder.browse(session['sale_order_id'])
     return render_template(
         'shopping_cart.html',
         sale_order=sale_order,
@@ -71,7 +72,7 @@ def shopping_cart():
 @app.route("/recovery_moment_place")
 @requires_auth
 def recovery_moment_place():
-    recovery_moment_groups = g.openerp.SaleRecoveryMomentGroup.browse(
+    recovery_moment_groups = openerp.SaleRecoveryMomentGroup.browse(
         [('state', 'in', 'pending_sale')])
     return render_template(
         'recovery_moment_place.html',
@@ -82,7 +83,7 @@ def recovery_moment_place():
 @app.route("/delete_shopping_cart")
 @requires_auth
 def delete_shopping_cart():
-    sale_order = g.openerp.SaleOrder.browse(session['sale_order_id'])
+    sale_order = openerp.SaleOrder.browse(session['sale_order_id'])
     sale_order.unlink()
     del session['sale_order_id']
     update_header()
@@ -95,7 +96,7 @@ def delete_shopping_cart():
 @requires_auth
 def select_recovery_moment(recovery_moment_id):
     found = False
-    recovery_moment_groups = g.openerp.SaleRecoveryMomentGroup.browse(
+    recovery_moment_groups = openerp.SaleRecoveryMomentGroup.browse(
         [('state', 'in', 'pending_sale')])
     for recovery_moment_group in recovery_moment_groups:
         for recovery_moment in recovery_moment_group.moment_ids:
@@ -103,10 +104,10 @@ def select_recovery_moment(recovery_moment_id):
                 found = True
                 break
     if found:
-        g.openerp.SaleOrder.write(session['sale_order_id'], {
+        openerp.SaleOrder.write(session['sale_order_id'], {
             'moment_id': recovery_moment_id,
             })
-        g.openerp.SaleOrder.action_button_confirm([session['sale_order_id']])
+        openerp.SaleOrder.action_button_confirm([session['sale_order_id']])
         del session['sale_order_id']
         update_header()
         # TODO Add flash
@@ -119,7 +120,7 @@ def select_recovery_moment(recovery_moment_id):
 @app.route("/delete_sale_order_line/<int:sale_order_line_id>")
 @requires_auth
 def delete_sale_order_line(sale_order_line_id):
-    sale_order = g.openerp.SaleOrder.browse(session['sale_order_id'])
+    sale_order = openerp.SaleOrder.browse(session['sale_order_id'])
     if len(sale_order.order_line) > 1:
         for order_line in sale_order.order_line:
             if order_line.id == sale_order_line_id:
@@ -133,7 +134,7 @@ def delete_sale_order_line(sale_order_line_id):
 @requires_auth
 def product(product_id):
     # Get Products
-    product = g.openerp.ProductProduct.browse(product_id)
+    product = openerp.ProductProduct.browse(product_id)
 
     # Add product to shopping cart if wanted
     if request.method == 'POST':
@@ -167,13 +168,13 @@ def catalog(category_id):
     current_category = False
 
     # Get Child Categories
-    categories = g.openerp.eshopCategory.browse(
+    categories = openerp.eshopCategory.browse(
         [('parent_id', '=', category_id)])
 
     parent_categories = []
     # Get Parent Categories
     if category_id:
-        current_category = g.openerp.eshopCategory.browse(category_id)
+        current_category = openerp.eshopCategory.browse(category_id)
         # Get Parent Categories
         parent = current_category
         while parent:
@@ -182,7 +183,7 @@ def catalog(category_id):
             parent = parent.parent_id
 
     # Get Products
-    products = g.openerp.ProductProduct.browse(
+    products = openerp.ProductProduct.browse(
         [('eshop_ok', '=', True), ('eshop_category_id', '=', category_id)],
         order='name')
     return render_template(

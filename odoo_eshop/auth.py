@@ -3,9 +3,7 @@
 
 # Standard Librairies
 from functools import wraps
-import erppeek
 from flask import (
-    g,
     session,
     render_template,
     flash,
@@ -13,8 +11,8 @@ from flask import (
 from flask.ext.babel import gettext as _
 
 # Custom Modules
-from config import conf
 from sale_order import load_sale_order
+from erp import openerp
 
 
 def login(username, password):
@@ -36,19 +34,6 @@ def requires_auth(f):
     def decorated(*args, **kwargs):
         if 'partner_login' in session and 'partner_password' in session:
             uid = partner = False
-            openerp = erppeek.Client(
-                conf.get('openerp', 'url'),
-            )
-            # User Authentification
-            try:
-                uid = openerp.login(
-                    conf.get('auth', 'user_login'),
-                    password=conf.get('auth', 'user_password'),
-                    database=conf.get('openerp', 'database'),
-                )
-            except:
-                flash(_('eShop is not available for the time being'), 'danger')
-                return authenticate()
 
             try:
                 # Partner Authentification
@@ -64,7 +49,6 @@ def requires_auth(f):
             session['user_id'] = uid
             session['partner_id'] = partner.id
             session['partner_name'] = partner.name
-            g.openerp = openerp
 
             # Load Data
             load_sale_order()

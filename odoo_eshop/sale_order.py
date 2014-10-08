@@ -2,17 +2,17 @@
 # -*- encoding: utf-8 -*-
 
 from flask import (
-    g,
     session,
     #  render_template,
     #     flash,
 )
 from config import conf
+from erp import openerp
 
 
 def load_sale_order():
     session['partner_id']
-    sale_orders = g.openerp.SaleOrder.browse([
+    sale_orders = openerp.SaleOrder.browse([
         ('partner_id', '=', session['partner_id']),
         ('user_id', '=', session['user_id']),
         ('state', '=', 'draft'),
@@ -23,13 +23,13 @@ def load_sale_order():
 
 
 def create_sale_order():
-    partner = g.openerp.ResPartner.browse(session['partner_id'])
+    partner = openerp.ResPartner.browse(session['partner_id'])
     if partner.property_product_pricelist:
         pricelist_id = partner.property_product_pricelist.id
     else:
-        shop = g.openerp.SaleShop.browse(conf.get('openerp', 'shop_id'))
+        shop = openerp.SaleShop.browse(conf.get('openerp', 'shop_id'))
         pricelist_id = shop.pricelist_id.id
-    sale_order = g.openerp.SaleOrder.create({
+    sale_order = openerp.SaleOrder.create({
         'partner_id': session['partner_id'],
         'partner_invoice_id': session['partner_id'],
         'partner_shipping_id': session['partner_id'],
@@ -45,14 +45,14 @@ def add_product(product, quantity):
     if 'sale_order_id' not in session:
         sale_order = create_sale_order()
     else:
-        sale_order = g.openerp.SaleOrder.browse(session['sale_order_id'])
+        sale_order = openerp.SaleOrder.browse(session['sale_order_id'])
     sale_order_line = False
     for sol in sale_order.order_line:
         if sol.product_id.id == product.id:
             sale_order_line = sol
             break
     if not sale_order_line:
-        g.openerp.SaleOrderLine.create({
+        openerp.SaleOrderLine.create({
             'name': product.name,
             'order_id': sale_order.id,
             'product_id': product.id,
@@ -62,7 +62,7 @@ def add_product(product, quantity):
             'tax_id': [tax.id for tax in product.taxes_id],
             })
     else:
-        g.openerp.SaleOrderLine.write(sale_order_line.id, {
+        openerp.SaleOrderLine.write(sale_order_line.id, {
             'product_uom_qty': quantity + sale_order_line.product_uom_qty,
             })
     update_header()
@@ -70,7 +70,7 @@ def add_product(product, quantity):
 
 def update_header():
     if 'sale_order_id' in session:
-        sale_order = g.openerp.SaleOrder.browse(session['sale_order_id'])
+        sale_order = openerp.SaleOrder.browse(session['sale_order_id'])
         session['sale_order_total'] = sale_order.amount_total and \
             sale_order.amount_total or 0
     else:
