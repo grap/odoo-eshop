@@ -21,6 +21,14 @@ app.config['BABEL_DEFAULT_LOCALE'] = conf.get('localization', 'locale')
 babel = Babel(app)
 
 
+@babel.localeselector
+def locale_selector():
+    if 'partner_id' in session:
+        partner = openerp.ResPartner.browse(session['partner_id'])
+        return partner.lang
+    return request.accept_languages.best_match(['fr', 'en'])
+
+
 def partner_domain():
     if 'partner_id' in session:
         return ('partner_id', '=', session['partner_id'])
