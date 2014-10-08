@@ -1,25 +1,22 @@
 #! /usr/bin/env python
 # -*- encoding: utf-8 -*-
 
-from flask import (
-    session,
-    #  render_template,
-    #     flash,
-)
+from flask import session
 from config import conf
-from erp import openerp
+from erp import openerp, uid
 
 
 def load_sale_order():
-    session['partner_id']
+    if 'partner_id' not in session:
+        return None
     sale_orders = openerp.SaleOrder.browse([
         ('partner_id', '=', session['partner_id']),
-        ('user_id', '=', session['user_id']),
+        ('user_id', '=', uid),
         ('state', '=', 'draft'),
         ])
-    if len(sale_orders) > 0:
-        session['sale_order_id'] = sale_orders[0].id
-        update_header()
+    if not sale_orders:
+        return None
+    return sale_orders[0]
 
 
 def create_sale_order():
@@ -36,16 +33,13 @@ def create_sale_order():
         'shop_id': conf.get('openerp', 'shop_id'),
         'pricelist_id': pricelist_id,
         })
-    session['sale_order_id'] = sale_order.id
-    session['sale_order_total'] = 0
     return sale_order
 
 
 def add_product(product, quantity):
-    if 'sale_order_id' not in session:
+    sale_order = load_sale_order()
+    if not sale_order:
         sale_order = create_sale_order()
-    else:
-        sale_order = openerp.SaleOrder.browse(session['sale_order_id'])
     sale_order_line = False
     for sol in sale_order.order_line:
         if sol.product_id.id == product.id:
@@ -65,13 +59,3 @@ def add_product(product, quantity):
         openerp.SaleOrderLine.write(sale_order_line.id, {
             'product_uom_qty': quantity + sale_order_line.product_uom_qty,
             })
-    update_header()
-
-
-def update_header():
-    if 'sale_order_id' in session:
-        sale_order = openerp.SaleOrder.browse(session['sale_order_id'])
-        session['sale_order_total'] = sale_order.amount_total and \
-            sale_order.amount_total or 0
-    else:
-        session['sale_order_total'] = False

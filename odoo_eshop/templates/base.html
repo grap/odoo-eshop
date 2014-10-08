@@ -39,8 +39,8 @@
                         <a class="navbar-brand" href="{{  url_for('catalog') }}">{{ _('Products') }}</a>
                         <a class="navbar-brand" href="{{  url_for('invoices') }}">{{ _('Invoices') }}</a>
         {% endif %}
-        {% if 'sale_order_id' in session %}
-                        <a class="navbar-brand" href="{{  url_for('shopping_cart') }}">{{ _('Shopping Cart: ') }}({{ session['sale_order_total'] }} €)</a>
+        {% if sale_order %}
+                        <a class="navbar-brand" href="{{  url_for('shopping_cart') }}">{{ _('Shopping Cart: ') }}({{ sale_order.amount_total }} €)</a>
         {% endif %}
                     </div>
 

@@ -10,7 +10,7 @@ from flask.ext.babel import Babel
 # Custom Modules
 from config import conf
 from auth import login, logout, requires_auth
-from sale_order import add_product, update_header
+from sale_order import add_product, load_sale_order
 from erp import openerp
 
 # Initialization of the Apps
@@ -62,7 +62,7 @@ def invoices():
 @app.route("/shopping_cart")
 @requires_auth
 def shopping_cart():
-    sale_order = openerp.SaleOrder.browse(session['sale_order_id'])
+    sale_order = load_sale_order()
     return render_template(
         'shopping_cart.html',
         sale_order=sale_order,
@@ -83,10 +83,8 @@ def recovery_moment_place():
 @app.route("/delete_shopping_cart")
 @requires_auth
 def delete_shopping_cart():
-    sale_order = openerp.SaleOrder.browse(session['sale_order_id'])
+    sale_order = load_sale_order()
     sale_order.unlink()
-    del session['sale_order_id']
-    update_header()
     return render_template(
         'home.html',
     )
@@ -98,18 +96,17 @@ def select_recovery_moment(recovery_moment_id):
     found = False
     recovery_moment_groups = openerp.SaleRecoveryMomentGroup.browse(
         [('state', 'in', 'pending_sale')])
+    sale_order = load_sale_order()
     for recovery_moment_group in recovery_moment_groups:
         for recovery_moment in recovery_moment_group.moment_ids:
             if recovery_moment.id == recovery_moment_id:
                 found = True
                 break
     if found:
-        openerp.SaleOrder.write(session['sale_order_id'], {
+        openerp.SaleOrder.write(sale_order.id, {
             'moment_id': recovery_moment_id,
             })
-        openerp.SaleOrder.action_button_confirm([session['sale_order_id']])
-        del session['sale_order_id']
-        update_header()
+        openerp.SaleOrder.action_button_confirm([sale_order.id])
         # TODO Add flash
         return redirect(url_for('home'))
     else:
@@ -120,7 +117,7 @@ def select_recovery_moment(recovery_moment_id):
 @app.route("/delete_sale_order_line/<int:sale_order_line_id>")
 @requires_auth
 def delete_sale_order_line(sale_order_line_id):
-    sale_order = openerp.SaleOrder.browse(session['sale_order_id'])
+    sale_order = load_sale_order()
     if len(sale_order.order_line) > 1:
         for order_line in sale_order.order_line:
             if order_line.id == sale_order_line_id:
@@ -193,3 +190,8 @@ def catalog(category_id):
         current_category=current_category,
         products=products,
     )
+
+
+@app.context_processor
+def current_sale_order():
+    return {'sale_order': load_sale_order()}
