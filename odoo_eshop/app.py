@@ -3,9 +3,10 @@
 
 # Standard Librairies
 import logging
+import io
 
 from flask import Flask, request, redirect, session, url_for, \
-    render_template, flash
+    render_template, flash, abort, send_file
 from flask.ext.babel import gettext as _
 from flask.ext.babel import Babel
 
@@ -13,7 +14,7 @@ from flask.ext.babel import Babel
 from config import conf
 from auth import login, logout, requires_auth
 from sale_order import add_product, load_sale_order
-from erp import openerp
+from erp import openerp, get_invoice_pdf
 
 # Initialization of the Apps
 app = Flask(__name__)
@@ -66,6 +67,22 @@ def invoices():
         [partner_domain()])
     return render_template(
         'invoices.html', account_invoices=account_invoices
+    )
+
+
+@app.route('/invoices/<int:invoice_id>/download')
+def invoice_download(invoice_id):
+    invoice = openerp.AccountInvoice.browse(invoice_id)
+    if not invoice or invoice.partner_id.id != session['partner_id']:
+        return abort(404)
+
+    content = get_invoice_pdf(invoice_id)
+    filename = "%s_%s.pdf" % (_('invoice'), invoice.number.replace('/', '_'))
+    return send_file(
+        io.BytesIO(content),
+        as_attachment=True,
+        attachment_filename=filename,
+        mimetype='application/pdf'
     )
 
 
@@ -216,3 +233,9 @@ def page_not_found(e):
 def error(e):
     logging.exception('an error occured')
     return render_template('error.html'), 500
+
+
+@app.route("/test_error")
+@requires_auth
+def test_error():
+    assert False, 'this is an error, sorry'

@@ -14,6 +14,7 @@
             <th>{{ _('Untaxed Amount') }}</th>
             <th>{{ _('Taxes') }}</th>
             <th>{{ _('Total') }}</th>
+            <th></th>
         <tr>
     </thead>
     <tbody>
@@ -24,6 +25,7 @@
             <td>{{ account_invoice.amount_untaxed }}</td>
             <td>{{ account_invoice.amount_tax }}</td>
             <td>{{ account_invoice.amount_total }}</td>
+            <td><a href="{{ url_for('invoice_download', invoice_id=account_invoice.id) }}">{{ _('Download') }}</a></td>
         </tr>
 {% endfor %}
     </tbody>
