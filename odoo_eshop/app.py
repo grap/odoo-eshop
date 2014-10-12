@@ -39,6 +39,11 @@ def partner_domain():
         return ('partner_id', '=', -1)
 
 
+@app.template_filter('currency')
+def currency(n):
+    return ('%.02f' % n).replace('.', ',') + u' €'
+
+
 # Auth Route
 @app.route("/login.html", methods=['POST'])
 def login_view():

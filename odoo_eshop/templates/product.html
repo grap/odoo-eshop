@@ -2,7 +2,7 @@
 
 {% block breadcrumb %}
     <li class="active">
-        <a href="{{ url_for('catalog')}}">{{ _('Catalog') }}</a>
+        <a href="{{ url_for('catalog')}}">{{ _('Catalog') }}</a>
     </li>
     {% for parent_category in parent_categories %}
     <li class="active">
@@ -29,10 +29,10 @@
             </div>
             <br />
             <div>
-    {% if product.ethiquette_label_ids|length %}
+    {% if product.label_ids|length %}
                 <center>
-        {% for label in product.ethiquette_label_ids %}
-                    <img src="data:image/png;base64,{{ label.logo }}" 
+        {% for label in product.label_ids %}
+                    <img src="data:image/png;base64,{{ label.image }}" 
                         class="img-thumbnail"
                         alt="{{ label.name }}" style="max-width:80px;"/>
         {% endfor %}
@@ -44,32 +44,30 @@
     <div class="col-md-4">
         <dl class="dl-horizontal">
 
-            <dt>{{ _('Price') }}</dt>
-            <dd>{{ product.list_price }}</dd>
-            <dt>{{ _('Unit') }}</dt>
-            <dd>{{ product.uom_id }}</dd>
-            <dt>{{ _('Minimum Quantity') }}</dt>
-            <dd>product.eshop_minimum_qty</dd>
-            <dt>{{ _('Rounding Quantity') }}</dt>
-            <dd>product.eshop_rounding_qty</dd>
+            <dt>{{ _('Price') }}</dt>
+            <dd>{{ product.list_price|currency }} / {{ product.uom_id }}</dd>
+            <dt>{{ _('Minimum Quantity') }}</dt>
+            <dd>{{ product.eshop_minimum_qty}} {{ product.uom_id }}</dd>
+            <dt>{{ _('Rounding Quantity') }}</dt>
+            <dd>{{ product.eshop_rounded_qty}} {{ product.uom_id }}</dd>
             <br />
     {% if product.description != False %}
-            <dt>{{ _('Description') }}</dt>
-            <dd>{{ product.description }}</dd>
+            <dt>{{ _('Description') }}</dt>
+            <dd>{{ product.description }}</dd>
     {% endif %}
         </dl>
     </div>
     <div class="col-md-4">
         <form class="form-horizontal" role="form" method="POST" action="{{ url_for('product', product_id=product.id) }}">
             <div class="form-group">
-                <label class="col-sm-3 control-label">{{ _('Quantity') }}</label>
+                <label class="col-sm-3 control-label">{{ _('Quantity') }}</label>
                 <div class="col-sm-5">
-                    <input type="text" class="form-control" name="quantity" />
+                    <input type="text" class="form-control" name="quantity"/>
                 </div>
             </div>
             <div class="form-group">
                 <div class="col-sm-5 col-sm-offset-3">
-                    <button type="submit" class="btn btn-default">{{ _('Add to Shopping Cart') }}</button>
+                    <button type="submit" class="btn btn-default">{{ _('Add to Shopping Cart') }}</button>
                 </div>
             </div>
         </form>

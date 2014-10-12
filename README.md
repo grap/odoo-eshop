@@ -7,9 +7,10 @@ Installation
 ------------
 
 * Install Odoo;
-* Install erppeek;
-
-  pip install -U erppeek
+* Install librairies;
+    * sudo pip install flask
+    * sudo pip install flask-babel
+    * sudo pip install erppeek
 
 
 TODO
