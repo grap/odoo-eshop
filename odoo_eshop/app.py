@@ -105,6 +105,14 @@ def shopping_cart():
     )
 
 
+@app.route('/shopping_cart/quantity_update', methods=['POST'])
+def quantity_update():
+    print request.form
+    if request.is_xhr:
+        return '{"line_total": "100"}', 200
+    return redirect(url_for('shopping_cart'))
+
+
 @app.route("/recovery_moment_place")
 @requires_auth
 def recovery_moment_place():
