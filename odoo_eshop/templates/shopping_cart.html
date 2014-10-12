@@ -42,7 +42,18 @@
             <td>
                 <a href="{{url_for('product', product_id=sale_order_line.product_id.id)}}">{{ sale_order_line.name }}</a>
             </td>
-            <td>{{ sale_order_line.product_uom_qty }}</td>
+            <td>
+
+
+<form class="form-inline" role="form" method="POST" action="{{ url_for('quantity_update') }}">
+  <div class="form-group">
+    <input type="hidden" name="line_id" value="{{ sale_order_line.id }}" />
+    <input type="text" class="form-control quantity" id="quantity_{{sale_order_line.id}}" name="new_quantity" value="{{ sale_order_line.product_uom_qty }}">
+  </div>
+  <button type="submit" class="btn btn-default update_btn">Update</button>
+</form>
+
+</td>
             <td>{{ sale_order_line.product_uom }}</td>
             <td>{{ sale_order_line.price_unit }}</td>
             <td>{{ sale_order_line.price_subtotal }}</td>
@@ -96,6 +107,23 @@
 <script>
     $('#confirm-delete').on('show.bs.modal', function(e) {
         $(this).find('.danger').attr('href', $(e.relatedTarget).data('href'));
+    });
+
+    $('.update_btn').hide();
+    
+    $('.quantity').change(function(e){
+        var new_quantity = e.currentTarget.value;
+        var line_id = e.currentTarget.id.split('_')[1];
+        $.ajax({
+            url: "{{ url_for('quantity_update') }}",
+            type: "POST",
+            data: {new_quantity: new_quantity, line_id: line_id},
+            timeout: 1000,
+        }).done(function(msg){
+            alert(msg);
+        }).fail(function(xhr, textstatus){
+            alert(textstatus);
+        });
     });
 </script>
 
