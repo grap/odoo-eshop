@@ -1,25 +1,25 @@
 {% extends 'base.html' %}
 
 {% block breadcrumb %}
-    <li class="active">{{ _('Shopping Cart') }}</li>
-    <li>{{ _('Recovery Moment Place') }}</li>
+    <li class="active">{{ _('Shopping Cart') }}</li>
+    <li>{{ _('Recovery Moment Place') }}</li>
 {% endblock %}
 
 {% block container %}
 
 <div class="row">
     <div class="col-md-12">
-        <h1>{{ _('Your Shopping Cart ') }}({{ sale_order.name }})</h1>
+        <h1>{{ _('Your Shopping Cart ') }}({{ sale_order.name }})</h1>
     </div>
 </div>
 <table class="table table-hover">
     <thead>
         <tr>
-            <th>{{ _('Product') }}</th>
-            <th>{{ _('Quantity') }}</th>
-            <th>{{ _('Unit') }}</th>
-            <th>{{ _('Price Unit VAT Include') }}</th>
-            <th>{{ _('Subtotal VAT Exclude') }}</th>
+            <th>{{ _('Product') }}</th>
+            <th>{{ _('Quantity') }}</th>
+            <th>{{ _('Unit') }}</th>
+            <th>{{ _('Price Unit VAT Include') }}</th>
+            <th>{{ _('Subtotal VAT Exclude') }}</th>
             <th />
         <tr>
     </thead>
@@ -47,7 +47,7 @@
             <td>
                 <a href="{{ url_for('delete_sale_order_line', sale_order_line_id=sale_order_line.id) }}"
                     class="btn btn-default" role="button">
-                        <span class="glyphicon glyphicon-remove-circle"/> {{ _('Remove') }}</a>
+                        <span class="glyphicon glyphicon-remove-circle"/> {{ _('Remove') }}</a>
                 </a>
             
             </td>
@@ -59,11 +59,11 @@
     <div class="col-md-6"></div>
     <div class="col-md-4">
         <dl class="dl-horizontal">
-            <dt>{{ _('Untaxed Amount') }}</dt>
+            <dt>{{ _('Untaxed Amount') }}</dt>
             <dd><input type="text" disabled class="form-control input-sm col-xs-2" id="amount_untaxed" value="{{ sale_order.amount_untaxed|currency }}" /></dd>
-            <dt>{{ _('Taxes') }}</dt>
+            <dt>{{ _('Taxes') }}</dt>
             <dd><input type="text" disabled class="form-control input-sm col-xs-2" id="amount_tax" value="{{ sale_order.amount_tax|currency }}" /></dd>
-            <dt>{{ _('Total') }}</dt>
+            <dt>{{ _('Total') }}</dt>
             <dd><input type="text" disabled class="form-control input-sm col-xs-2" id="amount_total" value="{{ sale_order.amount_total|currency }}"/></dd>
         </dl>
     </div>
@@ -77,11 +77,11 @@
         <a data-href="{{ url_for('delete_shopping_cart') }}"
             data-toggle="modal"
             data-target="#confirm-delete"
-            class="col-sm-offset-3 btn btn-default" href="#" role="button">{{ _('Delete Shopping Cart') }}</a>
+            class="col-sm-offset-3 btn btn-default" href="#" role="button">{{ _('Delete Shopping Cart') }}</a>
     </div>
     <div class="col-md-6">
         <a href="{{ url_for('recovery_moment_place') }}"
-            class="col-sm-offset-3 btn btn-default" href="#" role="button">{{ _('Select Place and Moment Recovery') }}</a>
+            class="col-sm-offset-3 btn btn-default" href="#" role="button">{{ _('Select Place and Moment Recovery') }}</a>
     </div>
 </div>
 
@@ -92,15 +92,15 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="myModalLabel">{{ _('Confirm Delete') }}</h4>
+                <h4 class="modal-title" id="myModalLabel">{{ _('Confirm Delete') }}</h4>
             </div>
             <div class="modal-body">
-                <p>{{ _('You are about to delete your Shopping Cart, this procedure is irreversible.') }}</p>
-                <p>{{ _('Do you want to proceed?') }}</p>
+                <p>{{ _('You are about to delete your Shopping Cart, this procedure is irreversible.') }}</p>
+                <p>{{ _('Do you want to proceed?') }}</p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">{{ _('Cancel') }}</button>
-                <a href="#" class="btn btn-danger danger">{{ _('Delete') }}</a>
+                <button type="button" class="btn btn-default" data-dismiss="modal">{{ _('Cancel') }}</button>
+                <a href="#" class="btn btn-danger danger">{{ _('Delete') }}</a>
             </div>
         </div>
     </div>
