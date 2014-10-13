@@ -15,7 +15,9 @@ from flask.ext.babel import Babel
 # Custom Modules
 from config import conf
 from auth import login, logout, requires_auth
-from sale_order import add_product, load_sale_order, update_product, currency
+from sale_order import add_product, load_sale_order, update_product, \
+    currency, change_product_qty
+
 from erp import openerp, get_invoice_pdf
 
 # Initialization of the Apps
@@ -213,20 +215,15 @@ def product(product_id):
         parent_categories=parent_categories,
     )
 
+
 @app.route("/product_add_qty/<int:product_id>", methods=['POST'])
 @requires_auth
 def product_add_qty(product_id):
-    # Add product to shopping cart if wanted
-    try:
-        quantity = float(
-            request.form['quantity'].replace(',', '.').strip())
-    except ValueError:
-        quantity = False
-        flash(_('Invalid Quantity'), 'danger')
-    if quantity:
-        pp = openerp.ProductProduct.browse(product_id)
-        add_product(pp, quantity)
-    return product(product_id)
+    res = change_product_qty(
+        request.form['quantity'], 'add', product_id=product_id)
+    flash(res['message'], res['state'])
+    return redirect(url_for('product', product_id=product_id))
+
 
 # ############################################################################
 # Catalog (Tree View) Routes

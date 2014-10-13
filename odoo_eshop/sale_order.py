@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 # -*- encoding: utf-8 -*-
 
+import math
 from flask import session
 from config import conf
 from erp import openerp, uid
@@ -69,6 +70,102 @@ def sanitize_qty(quantity):
         'state': 'success',
         'quantity': quantity,
     }
+
+
+def compute_quantity(product, quantity):
+    quantity = float(quantity)
+    if quantity <= product.eshop_minimum_qty:
+        return product.eshop_minimum_qty
+    else:
+        division = float(quantity) / product.eshop_rounded_qty
+        if division % 1 == 0:
+            return quantity
+        else:
+            return math.ceil(division) * product.eshop_rounded_qty
+
+
+def change_product_qty(quantity, mode, product_id=None, line_id=None):
+    """ Mode: can be 'add' or 'set'"""
+    res = sanitize_qty(quantity)
+    if not res['state'] == 'success':
+        return res
+
+    line = False
+
+    if product_id:
+        product = openerp.ProductProduct.browse(product_id)
+        sale_order = load_sale_order()
+        if not sale_order:
+            sale_order = create_sale_order()
+        for sol in sale_order.order_line:
+            if sol.product_id.id == product_id:
+                line = sol
+                break
+    else:
+        line = openerp.SaleOrderLine.browse(line_id)
+        sale_order = line.order_id
+        product = line.product_id
+
+    if not line:
+        # Create New Order Line
+        new_quantity = compute_quantity(product, res['quantity'])
+        qty_changed = (new_quantity != res['quantity'])
+        line = openerp.SaleOrderLine.create({
+            'name': product.name,
+            'order_id': sale_order.id,
+            'product_id': product_id,
+            'product_uom_qty': new_quantity,
+            'product_uom': product.uom_id.id,
+            'price_unit': product.list_price,
+            'tax_id': [tax.id for tax in product.taxes_id],
+        })
+    else:
+        if res['quantity'] != 0:
+            # Update Sale Order Line
+            if mode == 'set':
+                desired_qty = res['quantity']
+            else:
+                desired_qty = res['quantity'] + line.product_uom_qty
+                print 'actual %s' % line.product_uom_qty
+            new_quantity = compute_quantity(product, desired_qty)
+
+            qty_changed = (float(new_quantity) != float(desired_qty))
+            openerp.SaleOrderLine.write(line.id, {
+                'product_uom_qty': new_quantity,
+                })
+        else:
+            if mode == 'set':
+                # Unlink Sale Order Line
+                qty_changed = False
+                openerp.SaleOrderLine.unlink(line.id)
+            else:
+                pass
+                # Weird Case TODO
+
+    if qty_changed:
+        res = {
+            'state': 'warning',
+            'quantity': new_quantity,
+            'message': _(
+                """The new quantity for the product '%s' is %s, due"""
+                """ to due minimum / rounded quantity rules.""" % (
+                    product.name, new_quantity)),
+        }
+    else:
+        res = {
+            'state': 'success',
+            'quantity': new_quantity,
+            'message': _("Quantity of '%s' updated Successfully to %s" % (
+                product.name, new_quantity)),
+
+        }
+    res.update({
+        'price_subtotal': currency(line.price_subtotal if line else 0),
+        'amount_untaxed': currency(sale_order.amount_untaxed),
+        'amount_tax': currency(sale_order.amount_tax),
+        'amount_total': currency(sale_order.amount_total),
+    })
+    return res
 
 
 def update_product(line_id, quantity):
