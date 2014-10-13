@@ -12,19 +12,6 @@
         <h1>{{ _('Your Shopping Cart ') }}({{ sale_order.name }})</h1>
     </div>
 </div>
-<div class="row">
-    <div class="col-md-6">
-        <a data-href="{{ url_for('delete_shopping_cart') }}"
-            data-toggle="modal"
-            data-target="#confirm-delete"
-            class="col-sm-offset-3 btn btn-default" href="#" role="button">{{ _('Delete Shopping Cart') }}</a>
-    </div>
-    <div class="col-md-6">
-        <a href="{{ url_for('recovery_moment_place') }}"
-            class="col-sm-offset-3 btn btn-default" href="#" role="button">{{ _('Select Place and Moment Recovery') }}</a>
-    </div>
-</div>
-
 <table class="table table-hover">
     <thead>
         <tr>
@@ -55,8 +42,8 @@
 
 </td>
             <td>{{ sale_order_line.product_uom }}</td>
-            <td>{{ sale_order_line.price_unit }}</td>
-            <td>{{ sale_order_line.price_subtotal }}</td>
+            <td>{{ sale_order_line.price_unit|currency }}</td>
+            <td><input type="text" disabled class="form-control" id="price_subtotal_{{sale_order_line.id}}" value="{{ sale_order_line.price_subtotal|currency }}" /></td>
             <td>
                 <a href="{{ url_for('delete_sale_order_line', sale_order_line_id=sale_order_line.id) }}"
                     class="btn btn-default" role="button">
@@ -73,14 +60,29 @@
     <div class="col-md-4">
         <dl class="dl-horizontal">
             <dt>{{ _('Untaxed Amount') }}</dt>
-            <dd>{{ sale_order.amount_untaxed }}</dd>
+            <dd><input type="text" disabled class="form-control input-sm col-xs-2" id="amount_untaxed" value="{{ sale_order.amount_untaxed|currency }}" /></dd>
             <dt>{{ _('Taxes') }}</dt>
-            <dd>{{ sale_order.amount_tax }}</dd>
+            <dd><input type="text" disabled class="form-control input-sm col-xs-2" id="amount_tax" value="{{ sale_order.amount_tax|currency }}" /></dd>
             <dt>{{ _('Total') }}</dt>
-            <dd>{{ sale_order.amount_total }}</dd>
+            <dd><input type="text" disabled class="form-control input-sm col-xs-2" id="amount_total" value="{{ sale_order.amount_total|currency }}"/></dd>
         </dl>
     </div>
     <div class="col-md-2"></div>
+</div>
+
+<br />
+<br />
+<div class="row">
+    <div class="col-md-6">
+        <a data-href="{{ url_for('delete_shopping_cart') }}"
+            data-toggle="modal"
+            data-target="#confirm-delete"
+            class="col-sm-offset-3 btn btn-default" href="#" role="button">{{ _('Delete Shopping Cart') }}</a>
+    </div>
+    <div class="col-md-6">
+        <a href="{{ url_for('recovery_moment_place') }}"
+            class="col-sm-offset-3 btn btn-default" href="#" role="button">{{ _('Select Place and Moment Recovery') }}</a>
+    </div>
 </div>
 
 <!-- Delete Shopping Cart PopUp-->
@@ -112,6 +114,7 @@
     $('.update_btn').hide();
     
     $('.quantity').change(function(e){
+        self = this;
         var new_quantity = e.currentTarget.value;
         var line_id = e.currentTarget.id.split('_')[1];
         $.ajax({
@@ -120,7 +123,16 @@
             data: {new_quantity: new_quantity, line_id: line_id},
             timeout: 1000,
         }).done(function(msg){
-            alert(msg);
+            if (msg.result.state == 'success'){
+                $('#price_subtotal_' + line_id).val(msg.result.price_subtotal);
+                $('#quantity_' + line_id).val(msg.result.quantity);
+                $('#amount_untaxed').val(msg.result.amount_untaxed);
+                $('#amount_tax').val(msg.result.amount_tax);
+                $('#amount_total').val(msg.result.amount_total);
+            }
+            else {
+                $('.flashes').replaceWith("<div class='flashes'><p class='text-center bg-" + msg.result.state + "'>" + msg.result.message  + "</p></div>");
+            }
         }).fail(function(xhr, textstatus){
             alert(textstatus);
         });

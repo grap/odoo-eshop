@@ -36,12 +36,12 @@
                     <div class="navbar-header">
                         <a class="navbar-brand" href="{{  url_for('home') }}">{{ _('Home') }}</a>
         {% if 'partner_name' in session %}
-                        <a class="navbar-brand" href="{{  url_for('catalog') }}">{{ _('Catalog') }}</a>
-                        <a class="navbar-brand" href="{{  url_for('catalog') }}">{{ _('Shopping List') }}</a>
+                        <a class="navbar-brand" href="{{  url_for('catalog_tree') }}">{{ _('Catalog') }}</a>
+                        <a class="navbar-brand" href="{{  url_for('catalog_inline') }}">{{ _('Shopping List') }}</a>
                         <a class="navbar-brand" href="{{  url_for('invoices') }}">{{ _('Invoices') }}</a>
         {% endif %}
         {% if sale_order %}
-                        <a class="navbar-brand" href="{{  url_for('shopping_cart') }}">{{ _('Shopping Cart: ') }}({{ sale_order.amount_total }} €)</a>
+                        <a class="navbar-brand" href="{{  url_for('shopping_cart') }}">{{ _('Shopping Cart: ') }}({{ sale_order.amount_total|currency }})</a>
         {% endif %}
                     </div>
 
@@ -62,17 +62,15 @@
             </ol>
     {% endblock %}
 
-
+          <div class="flashes">
       {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
-          <div class="flashes">
           {% for category, message in messages %}
             <p class="text-center bg-{{ category }}">{{ message }}</p>
           {% endfor %}
-          </div>
         {% endif %}
       {% endwith %}
-
+          </div>
       {% block container %}{% endblock %}
         </div>
 

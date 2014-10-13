@@ -2,11 +2,11 @@
 
 {% block breadcrumb %}
     <li class="active">
-        <a href="{{ url_for('catalog')}}">{{ _('Catalog') }}</a>
+        <a href="{{ url_for('catalog_tree')}}">{{ _('Catalog') }}</a>
     </li>
     {% for parent_category in parent_categories %}
     <li class="active">
-        <a href="{{ url_for('catalog', category_id=parent_category['id'])}}">{{ parent_category['name'] }}</a>
+        <a href="{{ url_for('catalog_tree', category_id=parent_category['id'])}}">{{ parent_category['name'] }}</a>
     </li>
     {% endfor %}
 {% endblock %}

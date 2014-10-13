@@ -4,6 +4,11 @@
 from flask import session
 from config import conf
 from erp import openerp, uid
+from flask.ext.babel import gettext as _
+
+
+def currency(n):
+    return ('%.02f' % n).replace('.', ',') + u' €'
 
 
 def load_sale_order():
@@ -17,6 +22,23 @@ def load_sale_order():
     if not sale_orders:
         return None
     return sale_orders[0]
+
+
+def _load_sale_order_line(sale_order_line_id):
+    if 'partner_id' not in session:
+        return None
+    sale_orders = openerp.SaleOrder.browse([
+        ('partner_id', '=', session['partner_id']),
+        ('user_id', '=', uid),
+        ('state', '=', 'draft'),
+        ])
+    # import pdb; pdb.set_trace()
+    if not sale_orders:
+        return None
+    for line_id in sale_orders[0].order_line:
+        if line_id.id == sale_order_line_id:
+            return line_id
+    return None
 
 
 def create_sale_order():
@@ -34,6 +56,39 @@ def create_sale_order():
         'pricelist_id': pricelist_id,
         })
     return sale_order
+
+
+def sanitize_qty(quantity):
+    try:
+        quantity = float(quantity.replace(',', '.').strip())
+    except ValueError:
+        return {
+            'state': 'warning',
+            'message': _("%s Is not a valid quantity." % (quantity))}
+    return {
+        'state': 'success',
+        'quantity': quantity,
+    }
+
+
+def update_product(line_id, quantity):
+    res = sanitize_qty(quantity)
+    if not res['state'] == 'success':
+        return res
+    quantity = res['quantity']
+    openerp.SaleOrderLine.write(line_id, {'product_uom_qty': quantity})
+    line = openerp.SaleOrderLine.browse(line_id)
+
+    return {
+        'state': 'success',
+        'quantity': quantity,
+        'price_subtotal': currency(line.price_subtotal),
+        'amount_untaxed': currency(line.order_id.amount_untaxed),
+        'amount_tax': currency(line.order_id.amount_tax),
+        'amount_total': currency(line.order_id.amount_total),
+        'message': _("Quantity of '%s' updated Successfully to %s" % (
+            line.product_id.name, quantity)),
+    }
 
 
 def add_product(product, quantity):

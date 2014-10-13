@@ -8,14 +8,14 @@ from datetime import timedelta
 
 # Extra Librairies
 from flask import Flask, request, redirect, session, url_for, \
-    render_template, flash, abort, send_file
+    render_template, flash, abort, send_file, jsonify
 from flask.ext.babel import gettext as _
 from flask.ext.babel import Babel
 
 # Custom Modules
 from config import conf
 from auth import login, logout, requires_auth
-from sale_order import add_product, load_sale_order
+from sale_order import add_product, load_sale_order, update_product, currency
 from erp import openerp, get_invoice_pdf
 
 # Initialization of the Apps
@@ -26,6 +26,11 @@ app.config['BABEL_DEFAULT_LOCALE'] = conf.get('localization', 'locale')
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(
     minutes=int(conf.get('auth', 'session_minute')))
 babel = Babel(app)
+
+
+@app.context_processor
+def current_sale_order():
+    return {'sale_order': load_sale_order()}
 
 
 @babel.localeselector
@@ -44,12 +49,24 @@ def partner_domain():
 
 
 @app.template_filter('currency')
-def currency(n):
-    return ('%.02f' % n).replace('.', ',') + u' €'
+def compute_currency(n):
+    return currency(n)
 
 
+# ############################################################################
+# Home Route
+# ############################################################################
+@app.route("/")
+@requires_auth
+def home():
+    return render_template(
+        'home.html'
+    )
+
+# ############################################################################
 # Auth Route
 @app.route("/login.html", methods=['POST'])
+# ############################################################################
 def login_view():
     login(request.form['login'], request.form['password'])
     return redirect(request.args['return_to'])
@@ -61,14 +78,9 @@ def logout_view():
     return redirect(url_for('home'))
 
 
-@app.route("/")
-@requires_auth
-def home():
-    return render_template(
-        'home.html'
-    )
-
-
+# ############################################################################
+# Invoices Route
+# ############################################################################
 @app.route("/invoices")
 @requires_auth
 def invoices():
@@ -95,6 +107,9 @@ def invoice_download(invoice_id):
     )
 
 
+# ############################################################################
+# Shopping Cart Management Routes
+# ############################################################################
 @app.route("/shopping_cart")
 @requires_auth
 def shopping_cart():
@@ -107,21 +122,11 @@ def shopping_cart():
 
 @app.route('/shopping_cart/quantity_update', methods=['POST'])
 def quantity_update():
-    print request.form
+    res = update_product(int(request.form['line_id']), request.form['new_quantity'])
     if request.is_xhr:
-        return '{"line_total": "100"}', 200
+        return jsonify(result=res)
+    flash(res['message'], res['state'])
     return redirect(url_for('shopping_cart'))
-
-
-@app.route("/recovery_moment_place")
-@requires_auth
-def recovery_moment_place():
-    recovery_moment_groups = openerp.SaleRecoveryMomentGroup.browse(
-        [('state', 'in', 'pending_sale')])
-    return render_template(
-        'recovery_moment_place.html',
-        recovery_moment_groups=recovery_moment_groups,
-    )
 
 
 @app.route("/delete_shopping_cart")
@@ -131,6 +136,33 @@ def delete_shopping_cart():
     sale_order.unlink()
     return render_template(
         'home.html',
+    )
+
+
+@app.route("/delete_sale_order_line/<int:sale_order_line_id>")
+@requires_auth
+def delete_sale_order_line(sale_order_line_id):
+    sale_order = load_sale_order()
+    if len(sale_order.order_line) > 1:
+        for order_line in sale_order.order_line:
+            if order_line.id == sale_order_line_id:
+                order_line.unlink()
+        return shopping_cart()
+    else:
+        return delete_shopping_cart()
+
+
+# ############################################################################
+# Recovery Moment Place Route
+# ############################################################################
+@app.route("/recovery_moment_place")
+@requires_auth
+def recovery_moment_place():
+    recovery_moment_groups = openerp.SaleRecoveryMomentGroup.browse(
+        [('state', 'in', 'pending_sale')])
+    return render_template(
+        'recovery_moment_place.html',
+        recovery_moment_groups=recovery_moment_groups,
     )
 
 
@@ -158,19 +190,9 @@ def select_recovery_moment(recovery_moment_id):
         pass
 
 
-@app.route("/delete_sale_order_line/<int:sale_order_line_id>")
-@requires_auth
-def delete_sale_order_line(sale_order_line_id):
-    sale_order = load_sale_order()
-    if len(sale_order.order_line) > 1:
-        for order_line in sale_order.order_line:
-            if order_line.id == sale_order_line_id:
-                order_line.unlink()
-        return shopping_cart()
-    else:
-        return delete_shopping_cart()
-
-
+# ############################################################################
+# Product Routes
+# ############################################################################
 @app.route("/product/<int:product_id>", methods=['GET', 'POST'])
 @requires_auth
 def product(product_id):
@@ -184,7 +206,7 @@ def product(product_id):
                 request.form['quantity'].replace(',', '.').strip())
         except ValueError:
             quantity = False
-            flash(_('Invalid Quantity'), 'error')
+            flash(_('Invalid Quantity'), 'danger')
         if quantity:
             add_product(product, quantity)
 
@@ -201,10 +223,13 @@ def product(product_id):
     )
 
 
-@app.route('/catalog/', defaults={'category_id': False})
-@app.route("/catalog/<int:category_id>")
+# ############################################################################
+# Catalog (Tree View) Routes
+# ############################################################################
+@app.route('/catalog_tree/', defaults={'category_id': False})
+@app.route("/catalog_tree/<int:category_id>")
 @requires_auth
-def catalog(category_id):
+def catalog_tree(category_id):
     parent_categories = []
     current_category = False
 
@@ -236,11 +261,19 @@ def catalog(category_id):
     )
 
 
-@app.context_processor
-def current_sale_order():
-    return {'sale_order': load_sale_order()}
+# ############################################################################
+# Catalog (Inline View) Routes
+# ############################################################################
+@app.route('/catalog_inline/', defaults={'category_id': False})
+@app.route("/catalog_inline/<int:category_id>")
+@requires_auth
+def catalog_inline(category_id):
+    pass
 
 
+# ############################################################################
+# Technical Routes
+# ############################################################################
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('404.html'), 404
