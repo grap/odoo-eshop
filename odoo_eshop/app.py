@@ -63,10 +63,11 @@ def home():
         'home.html'
     )
 
+
 # ############################################################################
 # Auth Route
-@app.route("/login.html", methods=['POST'])
 # ############################################################################
+@app.route("/login.html", methods=['POST'])
 def login_view():
     login(request.form['login'], request.form['password'])
     return redirect(request.args['return_to'])
@@ -120,18 +121,19 @@ def shopping_cart():
     )
 
 
-@app.route('/shopping_cart/quantity_update', methods=['POST'])
-def quantity_update():
-    res = update_product(int(request.form['line_id']), request.form['new_quantity'])
+@app.route('/shopping_cart_quantity_update', methods=['POST'])
+def shopping_cart_quantity_update():
+    res = update_product(
+        int(request.form['line_id']), request.form['new_quantity'])
     if request.is_xhr:
         return jsonify(result=res)
     flash(res['message'], res['state'])
     return redirect(url_for('shopping_cart'))
 
 
-@app.route("/delete_shopping_cart")
+@app.route("/shopping_cart_delete")
 @requires_auth
-def delete_shopping_cart():
+def shopping_cart_delete():
     sale_order = load_sale_order()
     sale_order.unlink()
     return render_template(
@@ -139,9 +141,9 @@ def delete_shopping_cart():
     )
 
 
-@app.route("/delete_sale_order_line/<int:sale_order_line_id>")
+@app.route("/shopping_cart_delete_line/<int:sale_order_line_id>")
 @requires_auth
-def delete_sale_order_line(sale_order_line_id):
+def shopping_cart_delete_line(sale_order_line_id):
     sale_order = load_sale_order()
     if len(sale_order.order_line) > 1:
         for order_line in sale_order.order_line:
@@ -149,7 +151,7 @@ def delete_sale_order_line(sale_order_line_id):
                 order_line.unlink()
         return shopping_cart()
     else:
-        return delete_shopping_cart()
+        return shopping_cart_delete()
 
 
 # ############################################################################
@@ -193,22 +195,11 @@ def select_recovery_moment(recovery_moment_id):
 # ############################################################################
 # Product Routes
 # ############################################################################
-@app.route("/product/<int:product_id>", methods=['GET', 'POST'])
+@app.route("/product/<int:product_id>")
 @requires_auth
 def product(product_id):
     # Get Products
     product = openerp.ProductProduct.browse(product_id)
-
-    # Add product to shopping cart if wanted
-    if request.method == 'POST':
-        try:
-            quantity = float(
-                request.form['quantity'].replace(',', '.').strip())
-        except ValueError:
-            quantity = False
-            flash(_('Invalid Quantity'), 'danger')
-        if quantity:
-            add_product(product, quantity)
 
     # Get Parent Categories
     parent_categories = []
@@ -222,6 +213,20 @@ def product(product_id):
         parent_categories=parent_categories,
     )
 
+@app.route("/product_add_qty/<int:product_id>", methods=['POST'])
+@requires_auth
+def product_add_qty(product_id):
+    # Add product to shopping cart if wanted
+    try:
+        quantity = float(
+            request.form['quantity'].replace(',', '.').strip())
+    except ValueError:
+        quantity = False
+        flash(_('Invalid Quantity'), 'danger')
+    if quantity:
+        pp = openerp.ProductProduct.browse(product_id)
+        add_product(pp, quantity)
+    return product(product_id)
 
 # ############################################################################
 # Catalog (Tree View) Routes
@@ -253,7 +258,7 @@ def catalog_tree(category_id):
         [('eshop_ok', '=', True), ('eshop_category_id', '=', category_id)],
         order='name')
     return render_template(
-        'catalog.html',
+        'catalog_tree.html',
         categories=categories,
         parent_categories=parent_categories,
         current_category=current_category,
@@ -268,8 +273,23 @@ def catalog_tree(category_id):
 @app.route("/catalog_inline/<int:category_id>")
 @requires_auth
 def catalog_inline(category_id):
-    pass
+    # Get Child Categories
+    categories = openerp.eshopCategory.browse(
+        [('type', '=', 'normal')])
+    return render_template(
+        'catalog_inline.html',
+        categories=categories,
+    )
 
+
+@app.route('/catalog_inline_quantity_update', methods=['POST'])
+def catalog_inline_quantity_update():
+    res = update_product(
+        int(request.form['line_id']), request.form['new_quantity'])
+    if request.is_xhr:
+        return jsonify(result=res)
+    flash(res['message'], res['state'])
+    return redirect(url_for('catalog_inline'))
 
 # ############################################################################
 # Technical Routes

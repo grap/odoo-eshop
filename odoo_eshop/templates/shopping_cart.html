@@ -30,22 +30,24 @@
                 <a href="{{url_for('product', product_id=sale_order_line.product_id.id)}}">{{ sale_order_line.name }}</a>
             </td>
             <td>
-
-
-<form class="form-inline" role="form" method="POST" action="{{ url_for('quantity_update') }}">
-  <div class="form-group">
-    <input type="hidden" name="line_id" value="{{ sale_order_line.id }}" />
-    <input type="text" class="form-control quantity" id="quantity_{{sale_order_line.id}}" name="new_quantity" value="{{ sale_order_line.product_uom_qty }}">
-  </div>
-  <button type="submit" class="btn btn-default update_btn">Update</button>
-</form>
-
-</td>
+                <form class="form-inline" role="form" method="POST" action="{{ url_for('shopping_cart_quantity_update') }}">
+                    <div class="form-group">
+                        <input type="hidden" name="line_id" value="{{ sale_order_line.id }}" />
+                        <input type="text" class="form-control quantity" 
+                            id="quantity_{{sale_order_line.id}}"
+                            name="new_quantity" value="{{ sale_order_line.product_uom_qty }}">
+                    </div>
+                    <button type="submit" class="btn btn-default update_btn">Update</button>
+                </form>
+            </td>
             <td>{{ sale_order_line.product_uom }}</td>
             <td>{{ sale_order_line.price_unit|currency }}</td>
-            <td><input type="text" disabled class="form-control" id="price_subtotal_{{sale_order_line.id}}" value="{{ sale_order_line.price_subtotal|currency }}" /></td>
             <td>
-                <a href="{{ url_for('delete_sale_order_line', sale_order_line_id=sale_order_line.id) }}"
+                <input type="text" disabled class="form-control"
+                    id="price_subtotal_{{sale_order_line.id}}"
+                    value="{{ sale_order_line.price_subtotal|currency }}" /></td>
+            <td>
+                <a href="{{ url_for('shopping_cart_delete_line', sale_order_line_id=sale_order_line.id) }}"
                     class="btn btn-default" role="button">
                         <span class="glyphicon glyphicon-remove-circle"/> {{ _('Remove') }}</a>
                 </a>
@@ -74,7 +76,7 @@
 <br />
 <div class="row">
     <div class="col-md-6">
-        <a data-href="{{ url_for('delete_shopping_cart') }}"
+        <a data-href="{{ url_for('shopping_cart_delete') }}"
             data-toggle="modal"
             data-target="#confirm-delete"
             class="col-sm-offset-3 btn btn-default" href="#" role="button">{{ _('Delete Shopping Cart') }}</a>
@@ -118,7 +120,7 @@
         var new_quantity = e.currentTarget.value;
         var line_id = e.currentTarget.id.split('_')[1];
         $.ajax({
-            url: "{{ url_for('quantity_update') }}",
+            url: "{{ url_for('shopping_cart_quantity_update') }}",
             type: "POST",
             data: {new_quantity: new_quantity, line_id: line_id},
             timeout: 1000,
