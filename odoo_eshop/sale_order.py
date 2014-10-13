@@ -9,6 +9,8 @@ from flask.ext.babel import gettext as _
 
 
 def currency(n):
+    if not n:
+        n = 0
     return ('%.02f' % n).replace('.', ',') + u' €'
 
 
@@ -23,23 +25,6 @@ def load_sale_order():
     if not sale_orders:
         return None
     return sale_orders[0]
-
-
-def _load_sale_order_line(sale_order_line_id):
-    if 'partner_id' not in session:
-        return None
-    sale_orders = openerp.SaleOrder.browse([
-        ('partner_id', '=', session['partner_id']),
-        ('user_id', '=', uid),
-        ('state', '=', 'draft'),
-        ])
-    # import pdb; pdb.set_trace()
-    if not sale_orders:
-        return None
-    for line_id in sale_orders[0].order_line:
-        if line_id.id == sale_order_line_id:
-            return line_id
-    return None
 
 
 def create_sale_order():
@@ -59,12 +44,18 @@ def create_sale_order():
     return sale_order
 
 
+def delete_sale_order():
+    sale_order = load_sale_order()
+    if sale_order:
+        openerp.SaleOrder.unlink([sale_order.id])
+
+
 def sanitize_qty(quantity):
     try:
         quantity = float(quantity.replace(',', '.').strip())
     except ValueError:
         return {
-            'state': 'warning',
+            'state': 'danger',
             'message': _("%s Is not a valid quantity." % (quantity))}
     return {
         'state': 'success',
@@ -134,80 +125,91 @@ def change_product_qty(quantity, mode, product_id=None, line_id=None):
                 'product_uom_qty': new_quantity,
                 })
         else:
+            new_quantity = 0
             if mode == 'set':
                 # Unlink Sale Order Line
                 qty_changed = False
-                openerp.SaleOrderLine.unlink(line.id)
+                openerp.SaleOrderLine.unlink([line.id])
+                line = False
             else:
                 pass
                 # Weird Case TODO
 
-    if qty_changed:
+    if len(sale_order.order_line) == 1 and new_quantity == 0:
+        openerp.SaleOrder.unlink([sale_order.id])
+        sale_order = False
+        res = {
+            'state': 'success',
+            'quantity': 0,
+            'message': _("Shopping Cart successfully delete")}
+    elif qty_changed:
         res = {
             'state': 'warning',
             'quantity': new_quantity,
             'message': _(
                 """The new quantity for the product '%s' is %s, due"""
-                """ to due minimum / rounded quantity rules.""" % (
-                    product.name, new_quantity)),
-        }
+                """ to minimum / rounded quantity rules.""" % (
+                    product.name, new_quantity))}
     else:
         res = {
             'state': 'success',
             'quantity': new_quantity,
             'message': _("Quantity of '%s' updated Successfully to %s" % (
-                product.name, new_quantity)),
+                product.name, new_quantity))}
 
-        }
     res.update({
-        'price_subtotal': currency(line.price_subtotal if line else 0),
-        'amount_untaxed': currency(sale_order.amount_untaxed),
-        'amount_tax': currency(sale_order.amount_tax),
-        'amount_total': currency(sale_order.amount_total),
+        'price_subtotal': currency(
+            line.price_subtotal if (sale_order and line) else 0),
+        'amount_untaxed': currency(
+            sale_order.amount_untaxed if sale_order else 0),
+        'amount_tax': currency(
+            sale_order.amount_tax if sale_order else 0),
+        'amount_total': currency(
+            sale_order.amount_total) if sale_order else 0,
     })
     return res
 
 
-def update_product(line_id, quantity):
-    res = sanitize_qty(quantity)
-    if not res['state'] == 'success':
-        return res
-    quantity = res['quantity']
-    openerp.SaleOrderLine.write(line_id, {'product_uom_qty': quantity})
-    line = openerp.SaleOrderLine.browse(line_id)
+#def update_product(line_id, quantity):
+#    res = sanitize_qty(quantity)
+#    if not res['state'] == 'success':
+#        return res
+#    quantity = res['quantity']
+#    openerp.SaleOrderLine.write(line_id, {'product_uom_qty': quantity})
+#    line = openerp.SaleOrderLine.browse(line_id)
 
-    return {
-        'state': 'success',
-        'quantity': quantity,
-        'price_subtotal': currency(line.price_subtotal),
-        'amount_untaxed': currency(line.order_id.amount_untaxed),
-        'amount_tax': currency(line.order_id.amount_tax),
-        'amount_total': currency(line.order_id.amount_total),
-        'message': _("Quantity of '%s' updated Successfully to %s" % (
-            line.product_id.name, quantity)),
-    }
+#    return {
+#        'state': 'success',
+#        'quantity': quantity,
+#        'price_subtotal': currency(line.price_subtotal),
+#        'amount_untaxed': currency(line.order_id.amount_untaxed),
+#        'amount_tax': currency(line.order_id.amount_tax),
+#        'amount_total': currency(line.order_id.amount_total),
+#        'message': _("Quantity of '%s' updated Successfully to %s" % (
+#            line.product_id.name, quantity)),
+#    }
 
 
-def add_product(product, quantity):
-    sale_order = load_sale_order()
-    if not sale_order:
-        sale_order = create_sale_order()
-    sale_order_line = False
-    for sol in sale_order.order_line:
-        if sol.product_id.id == product.id:
-            sale_order_line = sol
-            break
-    if not sale_order_line:
-        openerp.SaleOrderLine.create({
-            'name': product.name,
-            'order_id': sale_order.id,
-            'product_id': product.id,
-            'product_uom_qty': quantity,
-            'product_uom': product.uom_id.id,
-            'price_unit': product.list_price,
-            'tax_id': [tax.id for tax in product.taxes_id],
-            })
-    else:
-        openerp.SaleOrderLine.write(sale_order_line.id, {
-            'product_uom_qty': quantity + sale_order_line.product_uom_qty,
-            })
+#def add_product(product, quantity):
+#    sale_order = load_sale_order()
+#    if not sale_order:
+#        sale_order = create_sale_order()
+#    sale_order_line = False
+#    for sol in sale_order.order_line:
+#        if sol.product_id.id == product.id:
+#            sale_order_line = sol
+#            break
+#    if not sale_order_line:
+#        openerp.SaleOrderLine.create({
+#            'name': product.name,
+#            'order_id': sale_order.id,
+#            'product_id': product.id,
+#            'product_uom_qty': quantity,
+#            'product_uom': product.uom_id.id,
+#            'price_unit': product.list_price,
+#            'tax_id': [tax.id for tax in product.taxes_id],
+#            })
+#    else:
+#        openerp.SaleOrderLine.write(sale_order_line.id, {
+#            'product_uom_qty': quantity + sale_order_line.product_uom_qty,
+#            })

@@ -15,7 +15,7 @@ from flask.ext.babel import Babel
 # Custom Modules
 from config import conf
 from auth import login, logout, requires_auth
-from sale_order import add_product, load_sale_order, update_product, \
+from sale_order import load_sale_order, delete_sale_order, \
     currency, change_product_qty
 
 from erp import openerp, get_invoice_pdf
@@ -32,7 +32,8 @@ babel = Babel(app)
 
 @app.context_processor
 def current_sale_order():
-    return {'sale_order': load_sale_order()}
+    sale_order = load_sale_order()
+    return {'sale_order': sale_order}
 
 
 @babel.localeselector
@@ -51,8 +52,18 @@ def partner_domain():
 
 
 @app.template_filter('currency')
-def compute_currency(n):
-    return currency(n)
+def compute_currency(amount):
+    return currency(amount)
+
+
+@app.template_filter('get_current_quantity')
+def get_current_quantity(product_id):
+    sale_order = load_sale_order()
+    if sale_order:
+        for line in sale_order.order_line:
+            if line.product_id.id == product_id:
+                return line.product_uom_qty
+    return 0
 
 
 # ############################################################################
@@ -108,90 +119,6 @@ def invoice_download(invoice_id):
         attachment_filename=filename,
         mimetype='application/pdf'
     )
-
-
-# ############################################################################
-# Shopping Cart Management Routes
-# ############################################################################
-@app.route("/shopping_cart")
-@requires_auth
-def shopping_cart():
-    sale_order = load_sale_order()
-    return render_template(
-        'shopping_cart.html',
-        sale_order=sale_order,
-    )
-
-
-@app.route('/shopping_cart_quantity_update', methods=['POST'])
-def shopping_cart_quantity_update():
-    res = update_product(
-        int(request.form['line_id']), request.form['new_quantity'])
-    if request.is_xhr:
-        return jsonify(result=res)
-    flash(res['message'], res['state'])
-    return redirect(url_for('shopping_cart'))
-
-
-@app.route("/shopping_cart_delete")
-@requires_auth
-def shopping_cart_delete():
-    sale_order = load_sale_order()
-    sale_order.unlink()
-    return render_template(
-        'home.html',
-    )
-
-
-@app.route("/shopping_cart_delete_line/<int:sale_order_line_id>")
-@requires_auth
-def shopping_cart_delete_line(sale_order_line_id):
-    sale_order = load_sale_order()
-    if len(sale_order.order_line) > 1:
-        for order_line in sale_order.order_line:
-            if order_line.id == sale_order_line_id:
-                order_line.unlink()
-        return shopping_cart()
-    else:
-        return shopping_cart_delete()
-
-
-# ############################################################################
-# Recovery Moment Place Route
-# ############################################################################
-@app.route("/recovery_moment_place")
-@requires_auth
-def recovery_moment_place():
-    recovery_moment_groups = openerp.SaleRecoveryMomentGroup.browse(
-        [('state', 'in', 'pending_sale')])
-    return render_template(
-        'recovery_moment_place.html',
-        recovery_moment_groups=recovery_moment_groups,
-    )
-
-
-@app.route("/select_recovery_moment/<int:recovery_moment_id>")
-@requires_auth
-def select_recovery_moment(recovery_moment_id):
-    found = False
-    recovery_moment_groups = openerp.SaleRecoveryMomentGroup.browse(
-        [('state', 'in', 'pending_sale')])
-    sale_order = load_sale_order()
-    for recovery_moment_group in recovery_moment_groups:
-        for recovery_moment in recovery_moment_group.moment_ids:
-            if recovery_moment.id == recovery_moment_id:
-                found = True
-                break
-    if found:
-        openerp.SaleOrder.write(sale_order.id, {
-            'moment_id': recovery_moment_id,
-            })
-        openerp.SaleOrder.action_button_confirm([sale_order.id])
-        # TODO Add flash
-        return redirect(url_for('home'))
-    else:
-        # TODO do something
-        pass
 
 
 # ############################################################################
@@ -281,12 +208,109 @@ def catalog_inline(category_id):
 
 @app.route('/catalog_inline_quantity_update', methods=['POST'])
 def catalog_inline_quantity_update():
-    res = update_product(
-        int(request.form['line_id']), request.form['new_quantity'])
+    res = change_product_qty(
+        request.form['new_quantity'], 'set',
+        product_id=int(request.form['product_id']))
     if request.is_xhr:
         return jsonify(result=res)
     flash(res['message'], res['state'])
     return redirect(url_for('catalog_inline'))
+
+
+# ############################################################################
+# Shopping Cart Management Routes
+# ############################################################################
+@app.route("/shopping_cart")
+@requires_auth
+def shopping_cart():
+    sale_order = load_sale_order()
+    return render_template(
+        'shopping_cart.html',
+        sale_order=sale_order,
+    )
+
+
+@app.route('/shopping_cart_quantity_update', methods=['POST'])
+def shopping_cart_quantity_update():
+    try:
+        tmp = float(request.form['new_quantity'])
+    except:
+        tmp = 1
+    if tmp == 0:
+        res = {'state': 'danger', 'message': 'Null Quantity'}
+        if request.is_xhr:
+            return jsonify(result=res)
+        else:
+            flash(res['message'], res['state'])
+            return redirect(url_for('shopping_cart'))
+
+    res = change_product_qty(
+        request.form['new_quantity'], 'set',
+        line_id=int(request.form['line_id']))
+    if request.is_xhr:
+        return jsonify(result=res)
+    flash(res['message'], res['state'])
+    return redirect(url_for('shopping_cart'))
+
+
+@app.route("/shopping_cart_delete")
+@requires_auth
+def shopping_cart_delete():
+    delete_sale_order()
+    flash("Sale Order has been successfully delete", 'success')
+    return render_template('home.html')
+
+
+@app.route("/shopping_cart_delete_line/<int:line_id>")
+@requires_auth
+def shopping_cart_delete_line(line_id):
+    sale_order = load_sale_order()
+    if len(sale_order.order_line) > 1:
+        for order_line in sale_order.order_line:
+            if order_line.id == line_id:
+                order_line.unlink()
+        return shopping_cart()
+    else:
+        return shopping_cart_delete()
+
+
+# ############################################################################
+# Recovery Moment Place Route
+# ############################################################################
+@app.route("/recovery_moment_place")
+@requires_auth
+def recovery_moment_place():
+    recovery_moment_groups = openerp.SaleRecoveryMomentGroup.browse(
+        [('state', 'in', 'pending_sale')])
+    return render_template(
+        'recovery_moment_place.html',
+        recovery_moment_groups=recovery_moment_groups,
+    )
+
+
+@app.route("/select_recovery_moment/<int:recovery_moment_id>")
+@requires_auth
+def select_recovery_moment(recovery_moment_id):
+    found = False
+    recovery_moment_groups = openerp.SaleRecoveryMomentGroup.browse(
+        [('state', 'in', 'pending_sale')])
+    sale_order = load_sale_order()
+    for recovery_moment_group in recovery_moment_groups:
+        for recovery_moment in recovery_moment_group.moment_ids:
+            if recovery_moment.id == recovery_moment_id:
+                found = True
+                break
+    if found:
+        openerp.SaleOrder.write(sale_order.id, {
+            'moment_id': recovery_moment_id,
+            })
+        openerp.SaleOrder.action_button_confirm([sale_order.id])
+        # TODO Add flash
+        return redirect(url_for('home'))
+    else:
+        # TODO do something
+        pass
+
 
 # ############################################################################
 # Technical Routes
