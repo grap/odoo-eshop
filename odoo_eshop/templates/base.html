@@ -36,9 +36,8 @@
                 <div class="container-fluid">
                     <div class="navbar-header">
                         <a class="btn btn-sm btn-default" id="nav_home" href="{{  url_for('home') }}">{{ _('Home') }}</a>
-
-                        <a class="btn btn-sm btn-default" id="nav_catalog_tree" href="{{  url_for('catalog_tree') }}">{{ _('Catalog') }}</a>
                         <a class="btn btn-sm btn-default" id="nav_catalog_inline" href="{{  url_for('catalog_inline') }}">{{ _('Products List') }}</a>
+                        <a class="btn btn-sm btn-default" id="nav_catalog_tree" href="{{  url_for('catalog_tree') }}">{{ _('Catalog') }}</a>
             {% if sale_order %}
                         <a class="btn btn-sm btn-default" id="nav_shopping_cart" href="{{  url_for('shopping_cart') }}">
                             <span class="glyphicon glyphicon-shopping-cart"/> - {{ _('Shopping Cart: ') }}
