@@ -108,13 +108,15 @@
     </div>
 </div>
 
+<!-- JQuery -->
 <script>
     $('#confirm-delete').on('show.bs.modal', function(e) {
         $(this).find('.danger').attr('href', $(e.relatedTarget).data('href'));
     });
 
     $('.update_btn').hide();
-    
+    $('.update_btn').attr('disabled', 'disabled');
+
     $('.quantity').change(function(e){
         self = this;
         var new_quantity = e.currentTarget.value;
@@ -140,7 +142,7 @@
                 $('.flashes').replaceWith("<div class='flashes' />");
             }
         }).fail(function(xhr, textstatus){
-            alert(textstatus);
+            $('.flashes').replaceWith("<div class='flashes'><p class='text-center bg-danger'> {{ _('Something wrong occured, please refresh the page.')}}</p></div>");
         });
     });
 </script>
