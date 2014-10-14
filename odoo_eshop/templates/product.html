@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% block breadcrumb %}
+<ol class="breadcrumb">
     <li class="active">
         <a href="{{ url_for('catalog_tree')}}">{{ _('Catalog') }}</a>
     </li>
@@ -9,9 +10,15 @@
         <a href="{{ url_for('catalog_tree', category_id=parent_category['id'])}}">{{ parent_category['name'] }}</a>
     </li>
     {% endfor %}
+</ol>
 {% endblock %}
 
 {% block container %}
+<!-- JQuery -->
+<script>
+    $('#nav_catalog_tree').addClass('active');
+</script>
+
 
 <!-- Products -->
 <div class="row">
@@ -50,6 +57,27 @@
             <dd>{{ product.eshop_minimum_qty}} {{ product.uom_id }}</dd>
             <dt>{{ _('Rounding Quantity') }}</dt>
             <dd>{{ product.eshop_rounded_qty}} {{ product.uom_id }}</dd>
+            <br />
+    {% if product.country_id != False %}
+            <dt>{{ _('Country') }}</dt>
+            <dd>{{ product.country_id.name }}</dd>
+    {% endif %}
+    {% if product.department_id != False %}
+            <dt>{{ _('Department') }}</dt>
+            <dd>{{ product.department_id.name }}</dd>
+    {% endif %}
+    {% if product.origin_description != False %}
+            <dt>{{ _('Origin Description') }}</dt>
+            <dd>{{ product.origin_description }}</dd>
+    {% endif %}
+    {% if product.maker_description != False %}
+            <dt>{{ _('Maker Description') }}</dt>
+            <dd>{{ product.maker_description }}</dd>
+    {% endif %}
+    {% if product.fresh_category != False %}
+            <dt>{{ _('Fresh Category') }}</dt>
+            <dd>{{ product.fresh_category|fresh_category }}</dd>
+    {% endif %}
             <br />
     {% if product.description != False %}
             <dt>{{ _('Description') }}</dt>

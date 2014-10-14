@@ -1,11 +1,9 @@
 {% extends 'base.html' %}
 
-{% block breadcrumb %}
-  <li class="active">{{ _('Home') }}</li>
-{% endblock %}
 
 {% block container %}
-
-{{ _('Home Page') }}
-
+<!-- JQuery -->
+<script>
+    $('#nav_home').addClass('active');
+</script>
 {% endblock %}

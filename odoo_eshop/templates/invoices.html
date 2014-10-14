@@ -1,31 +1,32 @@
-{% extends 'base.html' %}
+{% extends 'base_account.html' %}
 
-{% block breadcrumb %}
-  <li class="active">{{ _('Invoices') }}</li>
-{% endblock %}
+{% block container_account %}
+<script>
+    $('#nav_account_invoices').addClass('active');
+</script>
 
-{% block container %}
 
+<h1>{{ _('Your Invoices') }}</h1>
 <table class="table table-hover">
     <thead>
         <tr>
-            <th>{{ _('Number') }}</th>
-            <th>{{ _('Invoice Date') }}</th>
-            <th>{{ _('Untaxed Amount') }}</th>
-            <th>{{ _('Taxes') }}</th>
-            <th>{{ _('Total') }}</th>
+            <th>{{ _('Number') }}</th>
+            <th>{{ _('Invoice Date') }}</th>
+            <th>{{ _('Untaxed Amount') }}</th>
+            <th>{{ _('Taxes') }}</th>
+            <th>{{ _('Total') }}</th>
             <th></th>
         <tr>
     </thead>
     <tbody>
-{% for account_invoice in account_invoices %}
+{% for invoice in invoices %}
         <tr>
-            <td>{{ account_invoice.number }}</td>
-            <td>{{ account_invoice.date_invoice }}</td>
-            <td>{{ account_invoice.amount_untaxed }}</td>
-            <td>{{ account_invoice.amount_tax }}</td>
-            <td>{{ account_invoice.amount_total }}</td>
-            <td><a href="{{ url_for('invoice_download', invoice_id=account_invoice.id) }}">{{ _('Download') }}</a></td>
+            <td>{{ invoice.number }}</td>
+            <td>{{ invoice.date_invoice }}</td>
+            <td>{{ invoice.amount_untaxed|currency }}</td>
+            <td>{{ invoice.amount_tax|currency }}</td>
+            <td>{{ invoice.amount_total|currency }}</td>
+            <td><a href="{{ url_for('invoice_download', invoice_id=invoice.id) }}">{{ _('Download') }}</a></td>
         </tr>
 {% endfor %}
     </tbody>

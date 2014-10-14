@@ -56,7 +56,7 @@ def sanitize_qty(quantity):
     except ValueError:
         return {
             'state': 'danger',
-            'message': _("%s Is not a valid quantity." % (quantity))}
+            'message': _("'%(qty)s' is not a valid quantity.", qty=quantity)}
     return {
         'state': 'success',
         'quantity': quantity,
@@ -121,7 +121,6 @@ def change_product_qty(quantity, mode, product_id=None, line_id=None):
                 desired_qty = res['quantity']
             else:
                 desired_qty = res['quantity'] + line.product_uom_qty
-                print 'actual %s' % line.product_uom_qty
             new_quantity = compute_quantity(product, desired_qty)
 
             qty_changed = (float(new_quantity) != float(desired_qty))
@@ -145,21 +144,26 @@ def change_product_qty(quantity, mode, product_id=None, line_id=None):
         res = {
             'state': 'success',
             'quantity': 0,
-            'message': _("Shopping Cart successfully delete")}
+            'message': _("Shopping Cart has been successfully deleted.")}
     elif qty_changed:
         res = {
             'state': 'warning',
             'quantity': new_quantity,
             'message': _(
-                """The new quantity for the product '%s' is %s, due"""
-                """ to minimum / rounded quantity rules.""" % (
-                    product.name, new_quantity))}
+                """The new quantity for the product '%(prod)s' is now"""
+                """ %(qty)s %(uom)s, due to minimum / rounded quantity"""
+                """ rules.""",
+                qty=new_quantity, uom=product.uom_id.name,
+                prod=product.name)}
     else:
         res = {
             'state': 'success',
             'quantity': new_quantity,
-            'message': _("Quantity of '%s' updated Successfully to %s" % (
-                product.name, new_quantity))}
+            'message': _(
+                """You have now %(qty)s %(uom)s of product '%(prod)s'"""
+                """ in your shopping cart.""",
+                qty=new_quantity, uom=product.uom_id.name,
+                prod=product.name)}
 
     res.update({
         'price_subtotal': currency(
@@ -172,48 +176,3 @@ def change_product_qty(quantity, mode, product_id=None, line_id=None):
             sale_order.amount_total) if sale_order else 0,
     })
     return res
-
-
-#def update_product(line_id, quantity):
-#    res = sanitize_qty(quantity)
-#    if not res['state'] == 'success':
-#        return res
-#    quantity = res['quantity']
-#    openerp.SaleOrderLine.write(line_id, {'product_uom_qty': quantity})
-#    line = openerp.SaleOrderLine.browse(line_id)
-
-#    return {
-#        'state': 'success',
-#        'quantity': quantity,
-#        'price_subtotal': currency(line.price_subtotal),
-#        'amount_untaxed': currency(line.order_id.amount_untaxed),
-#        'amount_tax': currency(line.order_id.amount_tax),
-#        'amount_total': currency(line.order_id.amount_total),
-#        'message': _("Quantity of '%s' updated Successfully to %s" % (
-#            line.product_id.name, quantity)),
-#    }
-
-
-#def add_product(product, quantity):
-#    sale_order = load_sale_order()
-#    if not sale_order:
-#        sale_order = create_sale_order()
-#    sale_order_line = False
-#    for sol in sale_order.order_line:
-#        if sol.product_id.id == product.id:
-#            sale_order_line = sol
-#            break
-#    if not sale_order_line:
-#        openerp.SaleOrderLine.create({
-#            'name': product.name,
-#            'order_id': sale_order.id,
-#            'product_id': product.id,
-#            'product_uom_qty': quantity,
-#            'product_uom': product.uom_id.id,
-#            'price_unit': product.list_price,
-#            'tax_id': [tax.id for tax in product.taxes_id],
-#            })
-#    else:
-#        openerp.SaleOrderLine.write(sale_order_line.id, {
-#            'product_uom_qty': quantity + sale_order_line.product_uom_qty,
-#            })

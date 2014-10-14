@@ -1,0 +1,33 @@
+{% extends 'base_account.html' %}
+
+{% block container_account %}
+<script>
+    $('#nav_account_account').addClass('active');
+</script>
+
+
+<h1>{{ _('Your Account') }}</h1>
+<div class="row">
+    <div class="col-md-2">
+    </div>
+    <div class="col-md-8">
+        <dl class="dl-horizontal">
+            <dt>{{ _('Complete Name') }}</dt>
+            <dd>{{ partner.name }}</dd>
+            <br />
+            <dt>{{ _('Email') }}</dt>
+            <dd>{{ partner.email }}</dd>
+            <dt>{{ _('Phone') }}</dt>
+            <dd>{{ partner.phone|not_null }}</dd>
+            <dt>{{ _('Cell Phone') }}</dt>
+            <dd>{{ partner.mobile|not_null }}</dd>
+            <br />
+            <dt>{{ _('Contact Address') }}</dt>
+            <dd>{{ partner.contact_address }}</dd>
+        </dl>
+    </div>
+    <div class="col-md-2">
+    </div>
+</div>
+
+{% endblock %}

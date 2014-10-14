@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% block breadcrumb %}
+<ol class="breadcrumb">
     <li class="active">
         <a href="{{ url_for('catalog_tree')}}">{{ _('Catalog') }}</a>
     </li>
@@ -9,9 +10,15 @@
         <a href="{{ url_for('catalog_tree', category_id=parent_category['id'])}}">{{ parent_category['name'] }}</a>
     </li>
     {% endfor %}
+</ol>
 {% endblock %}
 
 {% block container %}
+<!-- JQuery -->
+<script>
+    $('#nav_catalog_tree').addClass('active');
+</script>
+
 
 <!-- Header -->
     {% if not current_category == False %}
@@ -30,7 +37,11 @@
             <img src="data:image/png;base64,{{ category.image_medium }}"/>
         </a>
         <div>{{ category.name }}</div>
+            {% if category.type == 'normal' %}
         <div>({{ category.available_product_qty }} Products)</div>
+        {% else %}
+        <div>({{ category.child_qty }} Categories)</div>
+        {% endif %}
     </div>
         {% endif %}
     {% endfor %}

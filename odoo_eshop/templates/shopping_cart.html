@@ -1,11 +1,18 @@
 {% extends 'base.html' %}
 
 {% block breadcrumb %}
+<ol class="breadcrumb">
     <li class="active">{{ _('Shopping Cart') }}</li>
     <li>{{ _('Recovery Moment Place') }}</li>
+</ol>
 {% endblock %}
 
 {% block container %}
+<!-- JQuery -->
+<script>
+    $('#nav_shopping_cart').addClass('active');
+</script>
+
 
 <div class="row">
     <div class="col-md-12">

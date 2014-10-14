@@ -1,0 +1,44 @@
+{% extends 'base_account.html' %}
+
+{% block container_account %}
+<script>
+    $('#nav_account_orders').addClass('active');
+</script>
+
+
+<h1>{{ _('Your Orders') }}</h1>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>{{ _('Number') }}</th>
+            <th>{{ _('Date') }}</th>
+            <th>{{ _('Recovery') }}</th>
+            <th>{{ _('Untaxed Amount') }}</th>
+            <th>{{ _('Taxes') }}</th>
+            <th>{{ _('Total') }}</th>
+            <th></th>
+        <tr>
+    </thead>
+    <tbody>
+{% for order in orders %}
+        <tr>
+            <td>{{ order.name }}</td>
+            <td>{{ order.date_order }}</td>
+
+    {% if order.moment_id != False %}
+            <td>
+                {{ order.moment_id.place_id.name }}
+            </td>
+    {% else %}
+            <td>{{ _('Undefined') }}</td>
+    {% endif %}
+            <td>{{ order.amount_untaxed|currency }}</td>
+            <td>{{ order.amount_tax|currency }}</td>
+            <td>{{ order.amount_total|currency }}</td>
+            <td><a href="{{ url_for('order_download', order_id=order.id) }}">{{ _('Download') }}</a></td>
+        </tr>
+{% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

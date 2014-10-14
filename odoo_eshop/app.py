@@ -18,7 +18,7 @@ from auth import login, logout, requires_auth
 from sale_order import load_sale_order, delete_sale_order, \
     currency, change_product_qty
 
-from erp import openerp, get_invoice_pdf
+from erp import openerp, get_invoice_pdf, get_order_pdf, get_account_qty
 
 # Initialization of the Apps
 app = Flask(__name__)
@@ -44,11 +44,11 @@ def locale_selector():
     return request.accept_languages.best_match(['fr', 'en'])
 
 
-def partner_domain():
+def partner_domain(partner_field):
     if 'partner_id' in session:
-        return ('partner_id', '=', session['partner_id'])
+        return (partner_field, '=', session['partner_id'])
     else:
-        return ('partner_id', '=', -1)
+        return (partner_field, '=', -1)
 
 
 @app.template_filter('currency')
@@ -64,6 +64,22 @@ def get_current_quantity(product_id):
             if line.product_id.id == product_id:
                 return line.product_uom_qty
     return 0
+
+
+# TODO FIXME: Problem with erpeek. Text of field selection unavaible
+@app.template_filter('fresh_category')
+def fresh_category(value):
+    return {
+        'extra': _('Extra'),
+        '1': _('Category I'),
+        '2': _('Category II'),
+        '3': _('Category III'),
+    }[value]
+
+
+@app.template_filter('not_null')
+def not_null(value):
+    return value if value else _('Undefined')
 
 
 # ############################################################################
@@ -90,35 +106,6 @@ def login_view():
 def logout_view():
     logout()
     return redirect(url_for('home'))
-
-
-# ############################################################################
-# Invoices Route
-# ############################################################################
-@app.route("/invoices")
-@requires_auth
-def invoices():
-    account_invoices = openerp.AccountInvoice.browse(
-        [partner_domain()])
-    return render_template(
-        'invoices.html', account_invoices=account_invoices
-    )
-
-
-@app.route('/invoices/<int:invoice_id>/download')
-def invoice_download(invoice_id):
-    invoice = openerp.AccountInvoice.browse(invoice_id)
-    if not invoice or invoice.partner_id.id != session['partner_id']:
-        return abort(404)
-
-    content = get_invoice_pdf(invoice_id)
-    filename = "%s_%s.pdf" % (_('invoice'), invoice.number.replace('/', '_'))
-    return send_file(
-        io.BytesIO(content),
-        as_attachment=True,
-        attachment_filename=filename,
-        mimetype='application/pdf'
-    )
 
 
 # ############################################################################
@@ -257,7 +244,7 @@ def shopping_cart_quantity_update():
 @requires_auth
 def shopping_cart_delete():
     delete_sale_order()
-    flash("Sale Order has been successfully delete", 'success')
+    flash(_("Your shopping cart has been successfully deleted."), 'success')
     return render_template('home.html')
 
 
@@ -305,11 +292,89 @@ def select_recovery_moment(recovery_moment_id):
             'moment_id': recovery_moment_id,
             })
         openerp.SaleOrder.action_button_confirm([sale_order.id])
-        # TODO Add flash
+        flash(_("Your Sale Order is now confirmed."), 'success')
         return redirect(url_for('home'))
     else:
         # TODO do something
         pass
+
+
+# ############################################################################
+# Account Route
+# ############################################################################
+@app.route("/account")
+@requires_auth
+def account():
+    partner = openerp.ResPartner.browse(session['partner_id'])
+    orders_qty, invoices_qty = get_account_qty(session['partner_id'])
+    return render_template(
+        'account.html', partner=partner,
+        orders_qty=orders_qty, invoices_qty=invoices_qty,
+    )
+
+
+# ############################################################################
+# Orders Route
+# ############################################################################
+@app.route("/orders")
+@requires_auth
+def orders():
+    orders = openerp.SaleOrder.browse([
+        partner_domain('partner_id'),
+        ('state', 'not in', ('draft', 'cancel'))])
+    orders_qty, invoices_qty = get_account_qty(session['partner_id'])
+    return render_template(
+        'orders.html', orders=orders,
+        orders_qty=orders_qty, invoices_qty=invoices_qty,
+    )
+
+
+@app.route('/order/<int:order_id>/download')
+def order_download(order_id):
+    order = openerp.SaleOrder.browse(order_id)
+    if not order or order.partner_id.id != session['partner_id']:
+        return abort(404)
+
+    content = get_order_pdf(order_id)
+    filename = "%s_%s.pdf" % (_('order'), order.name.replace('/', '_'))
+    return send_file(
+        io.BytesIO(content),
+        as_attachment=True,
+        attachment_filename=filename,
+        mimetype='application/pdf'
+    )
+
+
+# ############################################################################
+# Invoices Route
+# ############################################################################
+@app.route("/invoices")
+@requires_auth
+def invoices():
+    invoices = openerp.AccountInvoice.browse([
+        partner_domain('partner_id'),
+        ('state', 'not in', ('draft', 'proforma', 'proforma2', 'cancel'))])
+    orders_qty, invoices_qty = get_account_qty(session['partner_id'])
+    return render_template(
+        'invoices.html', invoices=invoices,
+        orders_qty=orders_qty, invoices_qty=invoices_qty,
+    )
+
+
+@app.route('/invoices/<int:invoice_id>/download')
+def invoice_download(invoice_id):
+    invoice = openerp.AccountInvoice.browse(invoice_id)
+    if not invoice or invoice.partner_id.id != session['partner_id']:
+        return abort(404)
+
+    content = get_invoice_pdf(invoice_id)
+    filename = "%s_%s.pdf" % (_('invoice'), invoice.number.replace('/', '_'))
+    return send_file(
+        io.BytesIO(content),
+        as_attachment=True,
+        attachment_filename=filename,
+        mimetype='application/pdf'
+    )
 
 
 # ############################################################################

@@ -1,12 +1,12 @@
 {% extends 'base.html' %}
 
-{% block breadcrumb %}
-    <li class="active">
-        {{ _('Products List') }}
-    </li>
-{% endblock %}
 
 {% block container %}
+<!-- JQuery -->
+<script>
+    $('#nav_catalog_inline').addClass('active');
+</script>
+
 
 <!-- Header -->
 <h1>{{ _('Products List') }}</h1>
@@ -16,6 +16,7 @@
 
     {% for category in categories %}
         {% if category.available_product_qty != 0 %}
+<hr />
 <div class="row">
     <div class="col-md-2">
         <div>

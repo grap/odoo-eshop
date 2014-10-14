@@ -35,11 +35,10 @@
         {% if 'partner_name' in session %}
                 <div class="container-fluid">
                     <div class="navbar-header">
-                        <a class="btn btn-sm btn-default" href="{{  url_for('home') }}">{{ _('Home') }}</a>
+                        <a class="btn btn-sm btn-default" id="nav_home" href="{{  url_for('home') }}">{{ _('Home') }}</a>
 
-                        <a class="btn btn-sm btn-default" href="{{  url_for('catalog_tree') }}">{{ _('Catalog') }}</a>
-                        <a class="btn btn-sm btn-default" href="{{  url_for('catalog_inline') }}">{{ _('Products List') }}</a>
-                        <a class="btn btn-sm btn-default" href="{{  url_for('invoices') }}">{{ _('Invoices') }}</a>
+                        <a class="btn btn-sm btn-default" id="nav_catalog_tree" href="{{  url_for('catalog_tree') }}">{{ _('Catalog') }}</a>
+                        <a class="btn btn-sm btn-default" id="nav_catalog_inline" href="{{  url_for('catalog_inline') }}">{{ _('Products List') }}</a>
             {% if sale_order %}
                         <a class="btn btn-sm btn-default" id="nav_shopping_cart" href="{{  url_for('shopping_cart') }}">
                             <span class="glyphicon glyphicon-shopping-cart"/> - {{ _('Shopping Cart: ') }}
@@ -51,24 +50,22 @@
                             (<span id="nav_amount_total">{{ 0|currency }}</span>)
                         </a>
             {% endif %}
+                        <a class="btn btn-sm btn-default" id="nav_account" href="{{  url_for('account') }}">{{ _('Your Account') }}</a>
                         <a class="btn btn-sm btn-default" href="{{ url_for('logout_view') }}">
                             <span class="glyphicon glyphicon-log-out"/> - {{ _('Log Out') }}
-                            
                         </a>
                     </div>
-                    <ul class="nav navbar-nav navbar-right">
+                    <span class="nav navbar-right">
                         <li><p class="navbar-text">{{ _('Partner: ') }}{{ session['partner_name'] }}</p></li>
-                    </ul>
+                    </span>
         {% endif %}
 
                 </div>
             </nav>
 
     {% block breadcrumb_all %}
-            <ol class="breadcrumb">
         {% block breadcrumb %}
         {% endblock %}
-            </ol>
     {% endblock %}
 
           <div class="flashes">
