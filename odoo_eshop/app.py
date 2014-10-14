@@ -88,8 +88,9 @@ def not_null(value):
 @app.route("/")
 @requires_auth
 def home():
+    shop = openerp.SaleShop.browse(int(conf.get('openerp', 'shop_id')))
     return render_template(
-        'home.html'
+        'home.html', shop=shop
     )
 
 
@@ -269,9 +270,19 @@ def shopping_cart_delete_line(line_id):
 def recovery_moment_place():
     recovery_moment_groups = openerp.SaleRecoveryMomentGroup.browse(
         [('state', 'in', 'pending_sale')])
+    shop = openerp.SaleShop.browse(int(conf.get('openerp', 'shop_id')))
+    sale_order = load_sale_order()
+    if (shop.eshop_minimum_price != 0
+            and shop.eshop_minimum_price > sale_order.amount_total):
+        flash(
+            _("You have not reached the ceiling of %(min)s.",
+                min=compute_currency(shop.eshop_minimum_price)),
+            'warning')
+        return redirect(url_for('shopping_cart'))
     return render_template(
         'recovery_moment_place.html',
         recovery_moment_groups=recovery_moment_groups,
+        shop=shop,
     )
 
 

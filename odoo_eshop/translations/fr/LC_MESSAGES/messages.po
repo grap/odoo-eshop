@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-10-14 13:43+0200\n"
+"POT-Creation-Date: 2014-10-14 18:00+0200\n"
 "PO-Revision-Date: 2014-10-06 14:07+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: fr <LL@li.org>\n"
@@ -37,19 +37,24 @@ msgstr "Catégorie III"
 msgid "Undefined"
 msgstr "Non Défini"
 
-#: app.py:247
+#: app.py:248
 msgid "Your shopping cart has been successfully deleted."
 msgstr "Votre panier a été supprimé avec succès."
 
-#: app.py:295
+#: app.py:279
+#, python-format
+msgid "You have not reached the ceiling of %(min)s."
+msgstr "Vous n'avez pas atteint le plafond de %(min)s"
+
+#: app.py:306
 msgid "Your Sale Order is now confirmed."
 msgstr "Votre commande est désormais terminée."
 
-#: app.py:339
+#: app.py:350
 msgid "order"
 msgstr "commande"
 
-#: app.py:371
+#: app.py:382
 msgid "invoice"
 msgstr "Factures"
 
@@ -85,7 +90,7 @@ msgstr "Vous avez désormais %(qty)s %(uom)s de '%(prod)s' dans votre panier."
 msgid "Page not found"
 msgstr "Page non trouvée"
 
-#: templates/account.html:9 templates/base.html:53
+#: templates/account.html:9 templates/base.html:52
 msgid "Your Account"
 msgstr "Votre Compte"
 
@@ -113,28 +118,28 @@ msgstr "Adresse de contact"
 msgid "eShop"
 msgstr "Boutique en ligne"
 
-#: templates/base.html:38
+#: templates/base.html:38 templates/home.html:9
 msgid "Home"
 msgstr "Accueil"
+
+#: templates/base.html:39 templates/catalog_inline.html:12
+msgid "Products List"
+msgstr "Liste des Produits"
 
 #: templates/base.html:40 templates/catalog_tree.html:6
 #: templates/catalog_tree.html:27 templates/product.html:6
 msgid "Catalog"
 msgstr "Catalogue"
 
-#: templates/base.html:41 templates/catalog_inline.html:12
-msgid "Products List"
-msgstr "Liste des Produits"
-
-#: templates/base.html:44 templates/base.html:49
+#: templates/base.html:43 templates/base.html:48
 msgid "Shopping Cart: "
 msgstr "Panier : "
 
-#: templates/base.html:55
+#: templates/base.html:54
 msgid "Log Out"
 msgstr "Se déconnecter"
 
-#: templates/base.html:59
+#: templates/base.html:58
 msgid "Partner: "
 msgstr "Client : "
 
@@ -150,7 +155,7 @@ msgstr "Historique des Commandes"
 msgid "Invoices History"
 msgstr "Historique des Factures"
 
-#: templates/catalog_inline.html:98 templates/shopping_cart.html:152
+#: templates/catalog_inline.html:99 templates/shopping_cart.html:152
 msgid "Something wrong occured, please refresh the page."
 msgstr "Quelque chose s'est mal déroulé, merci de rafraichir la page."
 
