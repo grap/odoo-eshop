@@ -32,27 +32,30 @@
         <div class="container">
 
             <nav class="navbar navbar-default" role="navigation">
+        {% if 'partner_name' in session %}
                 <div class="container-fluid">
                     <div class="navbar-header">
                         <a class="btn btn-sm btn-default" href="{{  url_for('home') }}">{{ _('Home') }}</a>
-        {% if 'partner_name' in session %}
+
                         <a class="btn btn-sm btn-default" href="{{  url_for('catalog_tree') }}">{{ _('Catalog') }}</a>
-                        <a class="btn btn-sm btn-default" href="{{  url_for('catalog_inline') }}">{{ _('Shopping List') }}</a>
+                        <a class="btn btn-sm btn-default" href="{{  url_for('catalog_inline') }}">{{ _('Products List') }}</a>
                         <a class="btn btn-sm btn-default" href="{{  url_for('invoices') }}">{{ _('Invoices') }}</a>
-        {% endif %}
-        {% if sale_order %}
-                        <a class="btn btn-sm btn-default" id="nav_shopping_cart" href="{{  url_for('shopping_cart') }}">{{ _('Shopping Cart: ') }}
+            {% if sale_order %}
+                        <a class="btn btn-sm btn-default" id="nav_shopping_cart" href="{{  url_for('shopping_cart') }}">
+                            <span class="glyphicon glyphicon-shopping-cart"/> - {{ _('Shopping Cart: ') }}
                             (<span id="nav_amount_total">{{ sale_order.amount_total|currency }}</span>)
                         </a>
-        {% else %}
-                        <a class="btn btn-sm btn-default" id="nav_shopping_cart" style="visibility:hidden" href="{{  url_for('shopping_cart') }}">{{ _('Shopping Cart: ') }}
+            {% else %}
+                        <a class="btn btn-sm btn-default" id="nav_shopping_cart" style="visibility:hidden" href="{{  url_for('shopping_cart') }}">
+                            <span class="glyphicon glyphicon-shopping-cart"/> - {{ _('Shopping Cart: ') }}
                             (<span id="nav_amount_total">{{ 0|currency }}</span>)
                         </a>
-        {% endif %}
-                        <a class="btn btn-sm btn-default" href="{{ url_for('logout_view') }}">{{ _('Log Out') }}</a>
+            {% endif %}
+                        <a class="btn btn-sm btn-default" href="{{ url_for('logout_view') }}">
+                            <span class="glyphicon glyphicon-log-out"/> - {{ _('Log Out') }}
+                            
+                        </a>
                     </div>
-
-        {% if 'partner_name' in session %}
                     <ul class="nav navbar-nav navbar-right">
                         <li><p class="navbar-text">{{ _('Partner: ') }}{{ session['partner_name'] }}</p></li>
                     </ul>
