@@ -4,7 +4,7 @@
 # Standard Librairies
 import logging
 import io
-from datetime import timedelta
+from datetime import datetime, timedelta
 
 # Extra Librairies
 from flask import Flask, request, redirect, session, url_for, \
@@ -54,6 +54,18 @@ def partner_domain(partner_field):
 @app.template_filter('currency')
 def compute_currency(amount):
     return currency(amount)
+
+
+# TODO FIXME Make me depend of partner setting
+@app.template_filter('date')
+def date(arg):
+    mydate = datetime.strptime(arg, '%Y-%m-%d')
+    return mydate.strftime('%d/%m/%Y')
+
+
+@app.template_filter('time')
+def time(arg):
+    return '%02d' % (int(arg)) + ':' + '%02d' % (int((arg % 1) * 60))
 
 
 @app.template_filter('get_current_quantity')

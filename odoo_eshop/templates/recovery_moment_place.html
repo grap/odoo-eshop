@@ -27,8 +27,9 @@
     <thead>
         <tr>
             <th>{{ _('Place') }}</th>
-            <th>{{ _('Min Date') }}</th>
-            <th>{{ _('Max Date') }}</th>
+            <th>{{ _('Date') }}</th>
+            <th>{{ _('Min Time') }}</th>
+            <th>{{ _('Max Time') }}</th>
             <th>{{ _('Description') }}</th>
             <th />
         </tr>
@@ -37,8 +38,9 @@
         {% for recovery_moment in recovery_moment_group.moment_ids %}
         <tr>
             <td>{{recovery_moment.place_id.name}}</td>
-            <td>{{recovery_moment.min_recovery_date}}</td>
-            <td>{{recovery_moment.max_recovery_date}}</td>
+            <td>{{recovery_moment.recovery_date|date}}</td>
+            <td>{{recovery_moment.min_recovery_time|time}}</td>
+            <td>{{recovery_moment.max_recovery_time|time}}</td>
             <td>
             {% if recovery_moment.description %}
             {{recovery_moment.description}}
