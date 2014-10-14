@@ -68,11 +68,15 @@ def compute_quantity(product, quantity):
     if quantity <= product.eshop_minimum_qty:
         return product.eshop_minimum_qty
     else:
+        digit = len(
+            str(float(product.eshop_rounded_qty)
+                - int(product.eshop_rounded_qty)).split('.')[1])
         division = float(quantity) / product.eshop_rounded_qty
         if division % 1 == 0:
             return quantity
         else:
-            return math.ceil(division) * product.eshop_rounded_qty
+            return round(
+                math.ceil(division) * product.eshop_rounded_qty, digit)
 
 
 def change_product_qty(quantity, mode, product_id=None, line_id=None):
