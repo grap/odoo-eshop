@@ -6,10 +6,12 @@ from config import conf
 
 
 def init_openerp(url, login, password, database):
-    openerp = erppeek.Client(url)
-    uid = openerp.login(login, password=password, database=database)
-    return openerp, uid
-
+    try:
+        openerp = erppeek.Client(url)
+        uid = openerp.login(login, password=password, database=database)
+        return openerp, uid
+    except:
+        return False, False
 
 openerp, uid = init_openerp(
     conf.get('openerp', 'url'),
@@ -17,7 +19,6 @@ openerp, uid = init_openerp(
     conf.get('auth', 'user_password'),
     conf.get('openerp', 'database'),
 )
-
 
 def get_account_qty(partner_id):
     orders_qty = len(openerp.SaleOrder.search([

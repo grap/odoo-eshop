@@ -39,9 +39,16 @@ def requires_auth(f):
                     session['partner_login'], session['partner_password'])
                 if partner_id:
                     partner = openerp.ResPartner.browse(partner_id)
+                else:
+                    logout()
+                    flash(_('Login/password incorrects'), 'danger')
+                    return authenticate()
             except:
                 logout()
-                flash(_('Login/password incorrects'), 'danger')
+                flash(_(
+                    """Service Unavailable."""
+                    """If you had a pending purchase, """
+                    """You have not lost your Shopping Cart."""), 'danger')
                 return authenticate()
 
             session['partner_id'] = partner.id
