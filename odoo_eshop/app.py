@@ -258,7 +258,7 @@ def shopping_cart_quantity_update():
 def shopping_cart_delete():
     delete_sale_order()
     flash(_("Your shopping cart has been successfully deleted."), 'success')
-    return render_template('home.html')
+    return home()
 
 
 @app.route("/shopping_cart_delete_line/<int:line_id>")
