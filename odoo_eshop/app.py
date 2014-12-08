@@ -178,9 +178,9 @@ def catalog_tree(category_id):
             parent = parent.parent_id
 
     # Get Products
-    products = openerp.ProductProduct.browse(
-        [('eshop_ok', '=', True), ('eshop_category_id', '=', category_id)],
-        order='name')
+    products = openerp.ProductProduct.browse([
+        ('eshop_state', '=', 'available'),
+        ('eshop_category_id', '=', category_id)], order='name')
     return render_template(
         'catalog_tree.html',
         categories=categories,
@@ -313,7 +313,7 @@ def select_recovery_moment(recovery_moment_id):
     if found:
         openerp.SaleOrder.write(sale_order.id, {
             'moment_id': recovery_moment_id,
-            })
+        })
         openerp.SaleOrder.action_button_confirm([sale_order.id])
         flash(_("Your Sale Order is now confirmed."), 'success')
         return redirect(url_for('home'))

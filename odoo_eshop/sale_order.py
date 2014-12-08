@@ -21,7 +21,7 @@ def load_sale_order():
         ('partner_id', '=', session['partner_id']),
         ('user_id', '=', uid),
         ('state', '=', 'draft'),
-        ])
+    ])
     if not sale_orders:
         return None
     return sale_orders[0]
@@ -40,7 +40,7 @@ def create_sale_order():
         'partner_shipping_id': session['partner_id'],
         'shop_id': conf.get('openerp', 'shop_id'),
         'pricelist_id': pricelist_id,
-        })
+    })
     return sale_order
 
 
@@ -126,7 +126,7 @@ def change_product_qty(quantity, mode, product_id=None, line_id=None):
             qty_changed = (float(new_quantity) != float(desired_qty))
             openerp.SaleOrderLine.write(line.id, {
                 'product_uom_qty': new_quantity,
-                })
+            })
         else:
             new_quantity = 0
             if mode == 'set':

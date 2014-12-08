@@ -8,56 +8,96 @@
 </script>
 
 
-<!-- Header -->
-<h1>{{ _('Products List') }}</h1>
+<style type="text/css">
+    .catalog-inline .inline-category{
+        border-top:1px solid #CCC;
+        border-bottom:1px solid #CCC;
+    }
+    .col-sm-1,.col-sm-2,.col-sm-3,.col-sm-4,.col-sm-5,.col-sm-6,.col-sm-7,.col-sm-8,.col-sm-9,.col-sm-10,.col-sm-11,.col-sm-12{
+        padding:2px;
+    }
+    .col-lg-1,.col-lg-2,.col-lg-3,.col-lg-4,.col-lg-5,.col-lg-6,.col-lg-7,.col-lg-8,.col-lg-9,.col-lg-10,.col-lg-11,.col-lg-12{
+        padding:3px;
+    }
+    .inline-category{
+        height:60px;
+    }
+    .inline-category .thumbnail{
+        height:50px;width:50px; float: right;
+    }
+    .inline-product{
+        height:40px;
+    }
+    .inline-product .thumbnail{
+        height:30px;width:30px; float: right;
+    }
+    .inline-product .quantity{
+        width:80px;
 
-<!-- Categories -->
+    }
+    .quantity-unit{
+        font-size:small;
+    }
+    .inline-product .form-inline{
+        text-align:right;
+    }
+    .thumbnail{
+        margin-bottom:0px;
+    }
+</style>
+
+
 {% if categories|length %}
-
+<div class="catalog-inline">
+<!-- Categories -->
     {% for category in categories %}
         {% if category.available_product_qty != 0 %}
-<hr />
-<div class="row">
-    <div class="col-md-2">
-        <div>
+
+    <div class="row">
+        <div class="col-sm-2 inline-category">
+            {% if category.image_small %}
+            <img class="thumbnail img-responsive" src="data:image/png;base64,{{ category.image_small }}"/>
+            {% else %}
+            <img class="thumbnail img-responsive" src="{{ url_for('static', filename='images/category_without_image.png') }}"/>
+            {% endif %}
+        </div>
+        <div class="col-sm-8 inline-category">
             <h2>{{ category.name }}</h2>
-            <img class="thumbnail img-responsive" src="data:image/png;base64,{{ category.image_medium }}"/>
         </div>
-    </div>
-    <div class="col-md-10">
-
-            {% for product in category.product_ids %}
-        <div class="row">
-            <div class="col-md-1">
-                <img class="thumbnail img-responsive" src="data:image/png;base64,{{ product.image_small }}"/>
-            </div>
-            <div class="col-md-3">
-                <a href="{{url_for('product', product_id=product.id)}}">{{ product.name }}</a>
-            </div>
-            <div class="col-md-2">
+        <div class="col-sm-2 inline-category">
+        </div>
+                {% for product in category.product_ids %}
+        <div class="col-sm-1 col-lg-1 inline-product">
+                    {% if product.image_small %}
+            <img class="thumbnail img-responsive" src="data:image/png;base64,{{ product.image_small }}"/>
+                    {% else %}
+            <img class="thumbnail img-responsive" src="{{ url_for('static', filename='images/product_without_image.png') }}"/>
+                    {% endif %}
+        </div>
+        <div class="col-sm-5 col-lg-3 inline-product">
+            <a href="{{url_for('product', product_id=product.id)}}">{{ product.name }}</a>
+        </div>
+        <div class="col-sm-3 col-lg-1 inline-product">
+            <form class="form-inline" role="form" method="POST" action="{{ url_for('catalog_inline_quantity_update') }}">
+                <div class="form-group">
+                    <input type="hidden" name="product_id" value="{{ product.id }}"/>
+                        <input type="text" class="form-control quantity"
+                            id="quantity_{{product.id}}"
+                            name="new_quantity" value="{{ product.id|get_current_quantity }}">
+                </div>
+                <button type="submit" class="btn btn-default update_btn">Update</button>
+            </form>
+        </div>
+        <div class="col-sm-3 col-lg-1 inline-product quantity-unit">
                 {{ product.list_price|currency }} / {{ product.uom_id }}
-            </div>
-            <div class="col-md-5">
-                <form class="form-inline" role="form" method="POST" action="{{ url_for('catalog_inline_quantity_update') }}">
-                    <div class="form-group">
-                        <input type="hidden" name="product_id" value="{{ product.id }}"/>
-                        <div class="col-md-1">
-                            <input type="text" class="form-control quantity"
-                                id="quantity_{{product.id}}"
-                                name="new_quantity" value="{{ product.id|get_current_quantity }}">
-                        </div>
-                    </div>
-                    <button type="submit" class="btn btn-default update_btn">Update</button>
-                </form>
-            </div>
         </div>
+
+
             {% endfor %}
-
-    </div>
-</div>
         {% endif %}
+    </div>
     {% endfor %}
-
+</div>
 {% endif %}
 
 <!-- JQuery -->

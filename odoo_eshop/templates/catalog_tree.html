@@ -20,12 +20,8 @@
 </script>
 
 
-<!-- Header -->
-    {% if not current_category == False %}
-<h1>{{ current_category.name }}</h1>
-    {% else %}
-<h1>{{ _('Catalog') }}</h1>
-    {% endif%}
+
+
 
 <!-- Categories -->
 {% if categories|length %}
@@ -34,7 +30,13 @@
         {% if category.available_product_qty != 0 or category.child_qty != 0  %}
     <div class="col-xs-6 col-md-2">
         <a class="thumbnail img-responsive" href="{{ url_for('catalog_tree', category_id=category.id)}}">
-            <img src="data:image/png;base64,{{ category.image_medium }}"/>
+            {% if category.image_medium %}
+            <img src="data:image/png;base64,{{ category.image_medium }}"
+            style="max-width:120px;"/>
+            {% else %}
+            <img src="{{ url_for('static', filename='images/category_without_image.png') }}"
+            style="max-width:120px;"/>
+            {% endif %}
         </a>
         <div>{{ category.name }}</div>
             {% if category.type == 'normal' %}
@@ -54,7 +56,13 @@
     {% for product in products %}
     <div class="col-xs-6 col-md-2">
         <a class="thumbnail img-responsive" href="{{ url_for('product', product_id=product.id)}}">
-            <img src="data:image/png;base64,{{ product.image_medium }}"/>
+            {% if product.image_medium %}
+            <img src="data:image/png;base64,{{ product.image_medium }}"
+                style="max-width:120px;"/>
+            {% else %}
+            <img src="{{ url_for('static', filename='images/product_without_image.png') }}"
+            style="max-width:120px;"/>
+            {% endif %}
         </a>
         <div>{{ product.name }}</div>
         <div style="text-align:center">{{ product.list_price|currency }} / {{ product.uom_id }}</div>

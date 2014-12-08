@@ -26,13 +26,20 @@
         <h1>{{ product.name }}</h1>
     </div>
 </div>
+
 <div class="row">
     <div class="col-md-4">
         <center>
             <div>
+    {% if product.image_small %}
                 <img src="data:image/png;base64,{{ product.image }}" 
                     style="max-width:250px;"
                     class="img-thumbnail"/>
+    {% else %}
+                <img src="{{ url_for('static', filename='images/product_without_image.png') }}"
+                    style="max-width:250px;"
+                    class="img-thumbnail"/> 
+    {% endif %}
             </div>
             <br />
             <div>
