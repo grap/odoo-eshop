@@ -20,6 +20,7 @@ openerp, uid = init_openerp(
     conf.get('openerp', 'database'),
 )
 
+
 def get_account_qty(partner_id):
     orders_qty = len(openerp.SaleOrder.search([
         ('partner_id', '=', partner_id),

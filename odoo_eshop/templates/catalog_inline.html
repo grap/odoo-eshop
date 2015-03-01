@@ -66,7 +66,7 @@
         </div>
         <div class="col-sm-2 inline-category">
         </div>
-                {% for product in category.product_ids %}
+                {% for product in category.available_product_ids %}
         <div class="col-sm-1 col-lg-1 inline-product">
                     {% if product.image_small %}
             <img class="thumbnail img-responsive" src="data:image/png;base64,{{ product.image_small }}"/>
