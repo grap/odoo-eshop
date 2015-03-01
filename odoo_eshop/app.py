@@ -63,6 +63,13 @@ def date(arg):
     return mydate.strftime('%d/%m/%Y')
 
 
+# TODO FIXME Make me depend of partner setting
+@app.template_filter('to_datetime')
+def to_datetime(arg):
+    mydate = datetime.strptime(arg, '%Y-%m-%d %H:%M:%S') + timedelta(hours=1)
+    return mydate.strftime('%d/%m/%Y %Hh%M')
+
+
 @app.template_filter('time')
 def time(arg):
     return '%02d' % (int(arg)) + ':' + '%02d' % (int((arg % 1) * 60))
