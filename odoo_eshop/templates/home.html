@@ -6,5 +6,12 @@
 <script>
     $('#nav_home').addClass('active');
 </script>
+<div class="row">
+    <div class="col-md-8">
 {{shop.eshop_home_text|safe}}
+    </div>
+    <div class="col-md-4">
+        <img src="{{ url_for('static', filename='images/logo.png') }}" style="width:300px;height=300px" />
+    </div>
+
 {% endblock %}

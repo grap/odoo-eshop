@@ -23,8 +23,31 @@ def logout():
     session.clear()
 
 
+def home():
+    return render_template('home.html')
+
+
 def authenticate():
     return render_template('login.html')
+
+
+def unavailable_service():
+    return render_template('unavailable_service.html')
+
+
+def requires_connection(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        if not openerp:
+            flash(_(
+                """Distant Service Unavailable. If you had a pending"""
+                """ purchase, You have not lost your Shopping"""
+                """ Cart. Thank you connect again in a while."""),
+                'danger')
+            return unavailable_service()
+        else:
+            return f(*args, **kwargs)
+    return decorated
 
 
 def requires_auth(f):
@@ -32,7 +55,6 @@ def requires_auth(f):
     def decorated(*args, **kwargs):
         if 'partner_login' in session and 'partner_password' in session:
             partner = False
-
             try:
                 # Partner Authentification
                 partner_id = openerp.ResPartner.login(
@@ -45,15 +67,23 @@ def requires_auth(f):
                     return authenticate()
             except:
                 logout()
-                flash(_(
-                    """Service Unavailable."""
-                    """If you had a pending purchase, """
-                    """You have not lost your Shopping Cart."""), 'danger')
-                return authenticate()
+                if openerp:
+                    flash(_(
+                        """Local Service Unavailable. If you had a pending"""
+                        """ purchase, You have not lost your Shopping"""
+                        """ Cart. Thank you connect again in a while."""),
+                        'danger')
+                else:
+                    flash(_(
+                        """Distant Service Unavailable. If you had a pending"""
+                        """ purchase, You have not lost your Shopping"""
+                        """ Cart. Thank you connect again in a while."""),
+                        'danger')
+                return unavailable_service()
 
             session['partner_id'] = partner.id
             session['partner_name'] = partner.name
 
             return f(*args, **kwargs)
-        return authenticate()
+        return home()
     return decorated

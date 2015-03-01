@@ -14,7 +14,7 @@ from flask.ext.babel import Babel
 
 # Custom Modules
 from config import conf
-from auth import login, logout, requires_auth
+from auth import login, logout, requires_auth, requires_connection
 from sale_order import load_sale_order, delete_sale_order, \
     currency, change_product_qty
 
@@ -98,7 +98,7 @@ def not_null(value):
 # Home Route
 # ############################################################################
 @app.route("/")
-@requires_auth
+@requires_connection
 def home():
     shop = openerp.SaleShop.browse(int(conf.get('openerp', 'shop_id')))
     return render_template(
@@ -106,13 +106,33 @@ def home():
     )
 
 
+@app.route("/home_logged.html")
+@requires_auth
+def home_logged():
+    shop = openerp.SaleShop.browse(int(conf.get('openerp', 'shop_id')))
+    return render_template(
+        'home.html', shop=shop
+    )
+
+
+@app.route("/unavailable_service.html")
+@requires_auth
+def unavailable_service():
+    return render_template(
+        'unavailable_service.html'
+    )
+
+
 # ############################################################################
 # Auth Route
 # ############################################################################
-@app.route("/login.html", methods=['POST'])
+@app.route("/login.html", methods=['GET', 'POST'])
 def login_view():
-    login(request.form['login'], request.form['password'])
-    return redirect(request.args['return_to'])
+    if request.form.get('login', False):
+        login(request.form['login'], request.form['password'])
+        return redirect(url_for('home_logged'))
+    else:
+        return render_template('login.html')
 
 
 @app.route("/logout.html")
