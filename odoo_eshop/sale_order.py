@@ -153,7 +153,7 @@ def change_product_qty(quantity, mode, product_id=None, line_id=None):
                 """The new quantity for the product '%(prod)s' is now"""
                 """ %(qty)s %(uom)s, due to minimum / rounded quantity"""
                 """ rules.""",
-                qty=new_quantity, uom=product.uom_id.name,
+                qty=new_quantity, uom=product.uom_id.eshop_description,
                 prod=product.name)}
     else:
         res = {
@@ -162,7 +162,7 @@ def change_product_qty(quantity, mode, product_id=None, line_id=None):
             'message': _(
                 """You have now %(qty)s %(uom)s of product '%(prod)s'"""
                 """ in your shopping cart.""",
-                qty=new_quantity, uom=product.uom_id.name,
+                qty=new_quantity, uom=product.uom_id.eshop_description,
                 prod=product.name)}
 
     res.update({

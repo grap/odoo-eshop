@@ -26,9 +26,11 @@
 <table class="table table-hover">
     <thead>
         <tr>
-            <th>{{ _('Place') }}</th>
+            <th>{{ _('Day') }}</th>
+            <th>{{ _('Date') }}</th>
             <th>{{ _('Min Time') }}</th>
             <th>{{ _('Max Time') }}</th>
+            <th>{{ _('Place') }}</th>
             <th>{{ _('Description') }}</th>
             <th />
         </tr>
@@ -36,9 +38,11 @@
     <tbody>
         {% for recovery_moment in recovery_moment_group.moment_ids %}
         <tr>
+            <td>{{recovery_moment.min_recovery_date|to_day}}</td>
+            <td>{{recovery_moment.max_recovery_date|to_date}}</td>
+            <td>{{recovery_moment.min_recovery_date|to_time}}</td>
+            <td>{{recovery_moment.max_recovery_date|to_time}}</td>
             <td>{{recovery_moment.place_id.complete_name}}</td>
-            <td>{{recovery_moment.min_recovery_date|to_datetime}}</td>
-            <td>{{recovery_moment.max_recovery_date|to_datetime}}</td>
             <td>
             {% if recovery_moment.description %}
             {{recovery_moment.description}}
@@ -59,8 +63,7 @@
 
     {% endfor %}
 
-<!-- Validate Shopping Cart PopUp-->
-
+<!-- Validate Shopping Cart PopUp -->
 <div class="modal fade" id="confirm-valid" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">

@@ -5,6 +5,7 @@
 import logging
 import io
 from datetime import datetime, timedelta
+import pytz
 
 # Extra Librairies
 from flask import Flask, request, redirect, session, url_for, \
@@ -17,8 +18,9 @@ from config import conf
 from auth import login, logout, requires_auth, requires_connection
 from sale_order import load_sale_order, delete_sale_order, \
     currency, change_product_qty
+from res_partner import change_res_partner
 
-from erp import openerp, get_invoice_pdf, get_order_pdf, get_account_qty
+from erp import openerp, tz, get_invoice_pdf, get_order_pdf, get_account_qty
 
 # Initialization of the Apps
 app = Flask(__name__)
@@ -50,29 +52,45 @@ def partner_domain(partner_field):
     else:
         return (partner_field, '=', -1)
 
+def get_local_date(str_utc_date):
+    """From UTC string Datetime, return local datetime"""
+    mytz = pytz.timezone(tz)
+    utc_date = datetime.strptime(str_utc_date, '%Y-%m-%d %H:%M:%S')
+    return mytz.fromutc(utc_date)
 
-@app.template_filter('currency')
+
+@app.template_filter('to_currency')
 def compute_currency(amount):
     return currency(amount)
 
 
-# TODO FIXME Make me depend of partner setting
-@app.template_filter('date')
-def date(arg):
-    mydate = datetime.strptime(arg, '%Y-%m-%d')
-    return mydate.strftime('%d/%m/%Y')
+@app.template_filter('to_day')
+def to_day(arg):
+    int_day = get_local_date(arg).strftime('%w')
+    return {
+        '0': _('Sunday'),
+        '1': _('Monday'),
+        '2': _('Tuesday'),
+        '3': _('Wednesdsay'),
+        '4': _('Thursday'),
+        '5': _('Friday'),
+        '6': _('Saturday'),
+    }[int_day]
 
 
-# TODO FIXME Make me depend of partner setting
+@app.template_filter('to_date')
+def to_date(arg):
+    return get_local_date(arg).strftime('%d/%m/%Y')
+
+
 @app.template_filter('to_datetime')
 def to_datetime(arg):
-    mydate = datetime.strptime(arg, '%Y-%m-%d %H:%M:%S') + timedelta(hours=1)
-    return mydate.strftime('%d/%m/%Y %Hh%M')
+    return get_local_date(arg).strftime('%d/%m/%Y %Hh%M')
 
 
-@app.template_filter('time')
-def time(arg):
-    return '%02d' % (int(arg)) + ':' + '%02d' % (int((arg % 1) * 60))
+@app.template_filter('to_time')
+def to_time(arg):
+    return get_local_date(arg).strftime('%Hh:%M')
 
 
 @app.template_filter('get_current_quantity')
@@ -96,9 +114,9 @@ def fresh_category(value):
     }[value]
 
 
-@app.template_filter('not_null')
-def not_null(value):
-    return value if value else _('Undefined')
+@app.template_filter('empty_if_null')
+def empty_if_null(value):
+    return value if value else ''
 
 
 # ############################################################################
@@ -362,6 +380,18 @@ def account():
         orders_qty=orders_qty, invoices_qty=invoices_qty,
     )
 
+
+@app.route('/account_update', methods=['POST'])
+def account_update():
+    res = change_res_partner(
+        session['partner_id'],
+        request.form['new_phone'],
+        request.form['new_mobile'],
+    )
+    if request.is_xhr:
+        return jsonify(result=res)
+    flash(res['message'], res['state'])
+    return redirect(url_for('account'))
 
 # ############################################################################
 # Orders Route

@@ -65,7 +65,7 @@
             {% endif %}
         </a>
         <div>{{ product.name }}</div>
-        <div style="text-align:center">{{ product.list_price|currency }} / {{ product.uom_id }}</div>
+        <div style="text-align:center">{{ product.list_price|to_currency }} / {{ product.uom_id.eshop_description }}</div>
     </div>
     {% endfor %}
 </div>

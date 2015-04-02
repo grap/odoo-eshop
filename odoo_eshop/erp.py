@@ -9,11 +9,13 @@ def init_openerp(url, login, password, database):
     try:
         openerp = erppeek.Client(url)
         uid = openerp.login(login, password=password, database=database)
-        return openerp, uid
+        user = openerp.ResUsers.browse(uid)
+        tz = user.tz
+        return openerp, uid, tz
     except:
-        return False, False
+        return False, False, False
 
-openerp, uid = init_openerp(
+openerp, uid, tz = init_openerp(
     conf.get('openerp', 'url'),
     conf.get('auth', 'user_login'),
     conf.get('auth', 'user_password'),

@@ -41,17 +41,17 @@
                     </div>
                     <div class="nav navbar-left">
         {% if 'partner_name' in session %}
-                        <a class="btn btn-sm btn-default" id="nav_catalog_inline" href="{{  url_for('catalog_inline') }}">{{ _('Products List') }}</a>
-                        <a class="btn btn-sm btn-default" id="nav_catalog_tree" href="{{  url_for('catalog_tree') }}">{{ _('Catalog') }}</a>
+                        <a class="btn btn-sm btn-default" id="nav_catalog_inline" href="{{  url_for('catalog_inline') }}">{{ _('Purchase (List View)') }}</a>
+                        <a class="btn btn-sm btn-default" id="nav_catalog_tree" href="{{  url_for('catalog_tree') }}">{{ _('Purchase (Catalog View)') }}</a>
             {% if sale_order %}
                         <a class="btn btn-sm btn-default" id="nav_shopping_cart" href="{{  url_for('shopping_cart') }}">
                             <span class="glyphicon glyphicon-shopping-cart"/> - {{ _('Shopping Cart: ') }}
-                            (<span id="nav_amount_total">{{ sale_order.amount_total|currency }}</span>)
+                            (<span id="nav_amount_total">{{ sale_order.amount_total|to_currency }}</span>)
                         </a>
             {% else %}
                         <a class="btn btn-sm btn-default" id="nav_shopping_cart" style="visibility:hidden" href="{{  url_for('shopping_cart') }}">
                             <span class="glyphicon glyphicon-shopping-cart"/> - {{ _('Shopping Cart: ') }}
-                            (<span id="nav_amount_total">{{ 0|currency }}</span>)
+                            (<span id="nav_amount_total">{{ 0|to_currency }}</span>)
                         </a>
             {% endif %}
 
