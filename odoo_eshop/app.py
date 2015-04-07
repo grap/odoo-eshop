@@ -52,10 +52,10 @@ def partner_domain(partner_field):
     else:
         return (partner_field, '=', -1)
 
-def get_local_date(str_utc_date):
+def get_local_date(str_utc_date, schema):
     """From UTC string Datetime, return local datetime"""
     mytz = pytz.timezone(tz)
-    utc_date = datetime.strptime(str_utc_date, '%Y-%m-%d %H:%M:%S')
+    utc_date = datetime.strptime(str_utc_date, schema)
     return mytz.fromutc(utc_date)
 
 
@@ -66,7 +66,10 @@ def compute_currency(amount):
 
 @app.template_filter('to_day')
 def to_day(arg):
-    int_day = get_local_date(arg).strftime('%w')
+    if ' ' in arg:
+        int_day = get_local_date(arg, '%Y-%m-%d %H:%M:%S').strftime('%w')
+    else:
+        int_day = get_local_date(arg, '%Y-%m-%d').strftime('%w')
     return {
         '0': _('Sunday'),
         '1': _('Monday'),
@@ -80,17 +83,20 @@ def to_day(arg):
 
 @app.template_filter('to_date')
 def to_date(arg):
-    return get_local_date(arg).strftime('%d/%m/%Y')
+    if ' ' in arg:
+        return get_local_date(arg, '%Y-%m-%d %H:%M:%S').strftime('%d/%m/%Y')
+    else:
+        return get_local_date(arg, '%Y-%m-%d').strftime('%d/%m/%Y')
 
 
 @app.template_filter('to_datetime')
 def to_datetime(arg):
-    return get_local_date(arg).strftime('%d/%m/%Y %Hh%M')
+    return get_local_date(arg, '%Y-%m-%d %H:%M:%S').strftime('%d/%m/%Y %Hh%M')
 
 
 @app.template_filter('to_time')
 def to_time(arg):
-    return get_local_date(arg).strftime('%Hh:%M')
+    return get_local_date(arg, '%Y-%m-%d %H:%M:%S').strftime('%Hh:%M')
 
 
 @app.template_filter('get_current_quantity')
@@ -243,11 +249,14 @@ def catalog_tree(category_id):
 @requires_auth
 def catalog_inline(category_id):
     # Get Child Categories
-    categories = openerp.eshopCategory.browse(
-        [('type', '=', 'normal')])
+#    categories = openerp.eshopCategory.browse(
+#        [('type', '=', 'normal')])
+    sale_order = load_sale_order()
+    catalog_inline = openerp.saleOrder.get_current_eshop_product_list(
+        sale_order and sale_order.id or False)
     return render_template(
         'catalog_inline.html',
-        categories=categories,
+        catalog_inline=catalog_inline,
     )
 
 
@@ -360,8 +369,9 @@ def select_recovery_moment(recovery_moment_id):
             'moment_id': recovery_moment_id,
         })
         openerp.SaleOrder.action_button_confirm([sale_order.id])
+        openerp.SaleOrder.send_mail([sale_order.id])
         flash(_("Your Sale Order is now confirmed."), 'success')
-        return redirect(url_for('home'))
+        return redirect(url_for('orders'))
     else:
         # TODO do something
         pass
@@ -387,6 +397,10 @@ def account_update():
         session['partner_id'],
         request.form['new_phone'],
         request.form['new_mobile'],
+        request.form['new_street'],
+        request.form['new_street2'],
+        request.form['new_zip'],
+        request.form['new_city'],
     )
     if request.is_xhr:
         return jsonify(result=res)

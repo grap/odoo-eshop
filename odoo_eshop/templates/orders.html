@@ -10,11 +10,13 @@
 <table class="table table-hover">
     <thead>
         <tr>
+            <th>{{ _('Order Date') }}</th>
             <th>{{ _('Number') }}</th>
-            <th>{{ _('Date') }}</th>
-            <th>{{ _('Recovery') }}</th>
+            <th>{{ _('Recovery Place') }}</th>
+            <th>{{ _('Recovery Day') }}</th>
+            <th>{{ _('Recovery Date') }}</th>
+            <th>{{ _('Recovery Time') }}</th>
             <th>{{ _('Untaxed Amount') }}</th>
-            <th>{{ _('Taxes') }}</th>
             <th>{{ _('Total') }}</th>
             <th></th>
         <tr>
@@ -22,19 +24,22 @@
     <tbody>
 {% for order in orders %}
         <tr>
+            <td>{{ order.date_order|to_date }}</td>
             <td>{{ order.name }}</td>
-            <td>{{ order.date_order }}</td>
-
     {% if order.moment_id != False %}
-            <td>
-                {{ order.moment_id.place_id.name }}
-            </td>
+            <td>{{ order.moment_id.place_id.name }}</td>
+            <td>{{ order.moment_id.min_recovery_date|to_day }}</td>
+            <td>{{ order.moment_id.min_recovery_date|to_date }}</td>
+            <td>{{ order.moment_id.min_recovery_date|to_time }} - {{ order.moment_id.max_recovery_date|to_time }}</td>
+
     {% else %}
             <td>{{ _('Undefined') }}</td>
+            <td>{{ _('Undefined') }}</td>
+            <td>{{ _('Undefined') }}</td>
+            <td>{{ _('Undefined') }}</td>
     {% endif %}
-            <td>{{ order.amount_untaxed|currency }}</td>
-            <td>{{ order.amount_tax|currency }}</td>
-            <td>{{ order.amount_total|currency }}</td>
+            <td>{{ order.amount_untaxed|to_currency }}</td>
+            <td>{{ order.amount_total|to_currency }}</td>
             <td><a href="{{ url_for('order_download', order_id=order.id) }}">{{ _('Download') }}</a></td>
         </tr>
 {% endfor %}

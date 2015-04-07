@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-03-01 04:14+0100\n"
+"POT-Creation-Date: 2015-04-05 23:04+0200\n"
 "PO-Revision-Date: 2014-10-06 14:07+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: fr <LL@li.org>\n"
@@ -17,44 +17,68 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 1.3\n"
 
-#: app.py:85
+#: app.py:74
+msgid "Sunday"
+msgstr "Dimanche"
+
+#: app.py:75
+msgid "Monday"
+msgstr "Lundi"
+
+#: app.py:76
+msgid "Tuesday"
+msgstr "Mardi"
+
+#: app.py:77
+msgid "Wednesdsay"
+msgstr "Mercredi"
+
+#: app.py:78
+msgid "Thursday"
+msgstr "Jeudi"
+
+#: app.py:79
+msgid "Friday"
+msgstr "Vendredi"
+
+#: app.py:80
+msgid "Saturday"
+msgstr "Samedi"
+
+#: app.py:116
 msgid "Extra"
 msgstr "Extra"
 
-#: app.py:86
+#: app.py:117
 msgid "Category I"
 msgstr "Catégorie I"
 
-#: app.py:87
+#: app.py:118
 msgid "Category II"
 msgstr "Catégorie II"
 
-#: app.py:88
+#: app.py:119
 msgid "Category III"
 msgstr "Catégorie III"
 
-#: app.py:94 templates/orders.html:33
-msgid "Undefined"
-msgstr "Non Défini"
-
-#: app.py:280
+#: app.py:314
 msgid "Your shopping cart has been successfully deleted."
 msgstr "Votre panier a été supprimé avec succès."
 
-#: app.py:311
+#: app.py:345
 #, python-format
 msgid "You have not reached the ceiling of %(min)s."
 msgstr "Vous n'avez pas atteint le plafond de %(min)s"
 
-#: app.py:338
+#: app.py:373
 msgid "Your Sale Order is now confirmed."
 msgstr "Votre commande est désormais terminée."
 
-#: app.py:382
+#: app.py:433
 msgid "order"
 msgstr "commande"
 
-#: app.py:414
+#: app.py:465
 msgid "invoice"
 msgstr "Factures"
 
@@ -63,8 +87,8 @@ msgid ""
 "Distant Service Unavailable. If you had a pending purchase, You have not "
 "lost your Shopping Cart. Thank you connect again in a while."
 msgstr ""
-"Service Distant Indisponible. Si vous aviez une commande en cours, votre panier a"
-" été sauvegardé."
+"Service Distant Indisponible. Si vous aviez une commande en cours, votre "
+"panier a été sauvegardé."
 
 #: auth.py:66
 msgid "Login/password incorrects"
@@ -75,8 +99,24 @@ msgid ""
 "Local Service Unavailable. If you had a pending purchase, You have not "
 "lost your Shopping Cart. Thank you connect again in a while."
 msgstr ""
-"Service Local Indisponible. Si vous aviez une commande en cours, votre panier a"
-" été sauvegardé."
+"Service Local Indisponible. Si vous aviez une commande en cours, votre "
+"panier a été sauvegardé."
+
+#: res_partner.py:15
+#, python-format
+msgid "'%(phone)s' is not a valid phone number.It contains caracters."
+msgstr ""
+"'%(phone)s' n'est pas un numéro de téléphone valide. Il contient des "
+"caractères."
+
+#: res_partner.py:27
+#, fuzzy, python-format
+msgid "'%(phone)s' is not a valid phone number."
+msgstr "'%(qty)s' n'est pas une quantité valide."
+
+#: res_partner.py:60
+msgid "Account Datas updated successfully."
+msgstr "Données personnelles mise à jour."
 
 #: sale_order.py:59
 #, python-format
@@ -93,8 +133,8 @@ msgid ""
 "The new quantity for the product '%(prod)s' is now %(qty)s %(uom)s, due "
 "to minimum / rounded quantity rules."
 msgstr ""
-"La nouvelle quantité pour le produit '%(prod)s' est désormais '%(qty)s "
-"%(uom)s, à cause des règles de minimum et d'arrondie liées à cette fiche "
+"La nouvelle quantité pour le produit '%(prod)s' est désormais  de %(qty)s"
+" %(uom)s, à cause de règle de minimum et d'arrondie liées à cette fiche "
 "produit."
 
 #: sale_order.py:162
@@ -106,42 +146,63 @@ msgstr "Vous avez désormais %(qty)s %(uom)s de '%(prod)s' dans votre panier."
 msgid "Page not found"
 msgstr "Page non trouvée"
 
-#: templates/account.html:9 templates/base.html:62
+#: templates/account.html:8 templates/base.html:62
 msgid "Your Account"
 msgstr "Votre Compte"
 
-#: templates/account.html:15
+#: templates/account.html:12
 msgid "Complete Name"
 msgstr "Nom Complet"
 
-#: templates/account.html:18 templates/login.html:8
+#: templates/account.html:19 templates/login.html:8
 msgid "Email"
 msgstr "Email"
 
-#: templates/account.html:20
+#: templates/account.html:30
 msgid "Phone"
 msgstr "Téléphone"
 
-#: templates/account.html:22
+#: templates/account.html:37
 msgid "Cell Phone"
 msgstr "Téléphone Portable"
 
-#: templates/account.html:25
-msgid "Contact Address"
-msgstr "Adresse de contact"
+#: templates/account.html:46
+msgid "Street"
+msgstr "Adresse"
+
+#: templates/account.html:53
+msgid "Complement Street"
+msgstr "Complément d'adresse"
+
+#: templates/account.html:60
+msgid "ZIP"
+msgstr "Code Postal"
+
+#: templates/account.html:67
+msgid "City"
+msgstr "Ville"
+
+#: templates/account.html:78 templates/catalog_inline.html:89
+#: templates/shopping_cart.html:47
+msgid "Update"
+msgstr "Mettre à jour"
+
+#: templates/account.html:117 templates/catalog_inline.html:137
+#: templates/shopping_cart.html:152
+msgid "Something wrong occured, please refresh the page."
+msgstr "Quelque chose s'est mal déroulé, merci de rafraichir la page."
 
 #: templates/base.html:7
 msgid "eShop"
 msgstr "Boutique en ligne"
 
 #: templates/base.html:44
-msgid "Products List"
-msgstr "Liste des Produits"
+msgid "Purchase (List View)"
+msgstr "Achat (Vue Liste)"
 
-#: templates/base.html:45 templates/catalog_tree.html:6
-#: templates/product.html:6
-msgid "Catalog"
-msgstr "Catalogue"
+#: templates/base.html:45
+msgid "Purchase (Catalog View)"
+msgstr "Achat (Vue Catalogue)"
 
 #: templates/base.html:48 templates/base.html:53
 msgid "Shopping Cart: "
@@ -167,9 +228,9 @@ msgstr "Historique des Commandes"
 msgid "Invoices History"
 msgstr "Historique des Factures"
 
-#: templates/catalog_inline.html:139 templates/shopping_cart.html:152
-msgid "Something wrong occured, please refresh the page."
-msgstr "Quelque chose s'est mal déroulé, merci de rafraichir la page."
+#: templates/catalog_tree.html:6 templates/product.html:6
+msgid "Catalog"
+msgstr "Catalogue"
 
 #: templates/error.html:8
 msgid "Huge error"
@@ -179,7 +240,7 @@ msgstr "Erreur Fatale"
 msgid "Your Invoices"
 msgstr "Vos Factures"
 
-#: templates/invoices.html:13 templates/orders.html:13
+#: templates/invoices.html:13 templates/orders.html:14
 msgid "Number"
 msgstr "Numéro"
 
@@ -187,22 +248,17 @@ msgstr "Numéro"
 msgid "Invoice Date"
 msgstr "Date de facture"
 
-#: templates/invoices.html:15 templates/orders.html:16
+#: templates/invoices.html:15 templates/orders.html:19
 #: templates/shopping_cart.html:71
 msgid "Untaxed Amount"
 msgstr "Montant HT"
 
-#: templates/invoices.html:16 templates/orders.html:17
-#: templates/shopping_cart.html:73
-msgid "Taxes"
-msgstr "TVA"
-
-#: templates/invoices.html:17 templates/orders.html:18
+#: templates/invoices.html:16 templates/orders.html:20
 #: templates/shopping_cart.html:75
 msgid "Total"
 msgstr "Total TTC"
 
-#: templates/invoices.html:29 templates/orders.html:38
+#: templates/invoices.html:27 templates/orders.html:43
 msgid "Download"
 msgstr "Télécharger"
 
@@ -214,13 +270,30 @@ msgstr "Mot de passe"
 msgid "Your Orders"
 msgstr "Vos Commandes"
 
-#: templates/orders.html:14
-msgid "Date"
-msgstr "Date"
+#: templates/orders.html:13
+msgid "Order Date"
+msgstr "Date de commande"
 
 #: templates/orders.html:15
-msgid "Recovery"
-msgstr "Récupération"
+msgid "Recovery Place"
+msgstr "Lieu de récupération"
+
+#: templates/orders.html:16
+msgid "Recovery Day"
+msgstr "Jour de récupération"
+
+#: templates/orders.html:17
+msgid "Recovery Date"
+msgstr "Date de récupération"
+
+#: templates/orders.html:18
+msgid "Recovery Time"
+msgstr "Heures de Récupération"
+
+#: templates/orders.html:36 templates/orders.html:37 templates/orders.html:38
+#: templates/orders.html:39
+msgid "Undefined"
+msgstr "Non Défini"
 
 #: templates/product.html:61
 msgid "Price"
@@ -254,7 +327,7 @@ msgstr "Producteur"
 msgid "Fresh Category"
 msgstr "Catégorie Frais"
 
-#: templates/product.html:90 templates/recovery_moment_place.html:32
+#: templates/product.html:90 templates/recovery_moment_place.html:34
 msgid "Description"
 msgstr "Description"
 
@@ -279,40 +352,48 @@ msgid "Select Your Place and Moment for Recovery"
 msgstr "Choisissez le lieu et la date de récupération"
 
 #: templates/recovery_moment_place.html:29
-msgid "Place"
-msgstr "Lieu"
+msgid "Day"
+msgstr "Jour"
 
 #: templates/recovery_moment_place.html:30
+msgid "Date"
+msgstr "Date"
+
+#: templates/recovery_moment_place.html:31
 msgid "Min Time"
 msgstr "Heure de Début"
 
-#: templates/recovery_moment_place.html:31
+#: templates/recovery_moment_place.html:32
 msgid "Max Time"
 msgstr "Heure de Fin"
 
-#: templates/recovery_moment_place.html:51
+#: templates/recovery_moment_place.html:33
+msgid "Place"
+msgstr "Lieu"
+
+#: templates/recovery_moment_place.html:55
 msgid "Select"
 msgstr "Choisir"
 
-#: templates/recovery_moment_place.html:69
+#: templates/recovery_moment_place.html:72
 msgid "Confirm Order"
 msgstr "Confirmer l'achat"
 
-#: templates/recovery_moment_place.html:72
+#: templates/recovery_moment_place.html:75
 msgid "You are about to valid your Shopping Cart, this procedure is irreversible."
 msgstr ""
 "Vous êtes sur le point de valider votre panier, c'est procédure est "
 "définitive."
 
-#: templates/recovery_moment_place.html:73 templates/shopping_cart.html:108
+#: templates/recovery_moment_place.html:76 templates/shopping_cart.html:108
 msgid "Do you want to proceed?"
 msgstr "Voulez vous continuer ?"
 
-#: templates/recovery_moment_place.html:76 templates/shopping_cart.html:111
+#: templates/recovery_moment_place.html:79 templates/shopping_cart.html:111
 msgid "Cancel"
 msgstr "Annuler"
 
-#: templates/recovery_moment_place.html:77
+#: templates/recovery_moment_place.html:80
 msgid "Confirm"
 msgstr "Confirmer"
 
@@ -340,6 +421,10 @@ msgstr "Sous total HT"
 msgid "Remove"
 msgstr "Retirer"
 
+#: templates/shopping_cart.html:73
+msgid "Taxes"
+msgstr "TVA"
+
 #: templates/shopping_cart.html:89
 msgid "Delete Shopping Cart"
 msgstr "Effacer votre Panier"
@@ -358,7 +443,7 @@ msgid ""
 "irreversible."
 msgstr ""
 "Vous êtes sur le point de supprimer votre panier, cette procédure ne peut"
-" être annuler"
+" être annulée"
 
 #: templates/shopping_cart.html:112
 msgid "Delete"
@@ -367,3 +452,4 @@ msgstr "Supprimer"
 #: templates/unavailable_service.html:8
 msgid "Unavailable Service"
 msgstr "Service Indisponible"
+

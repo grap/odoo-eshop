@@ -28,8 +28,9 @@ def sanitize_phone(txt_phone, iso_locale):
                 "'%(phone)s' is not a valid phone number.",
                 phone=txt_phone)}
 
+
 def change_res_partner(
-        partner_id, phone, mobile):
+        partner_id, phone, mobile, street, street2, zip, city):
     # Sanityze phone value
     phone = sanitize_phone(phone, 'FR') if phone else ''
     if type(phone) is dict:
@@ -43,11 +44,19 @@ def change_res_partner(
     openerp.ResPartner.write(partner_id, {
         'phone': phone,
         'mobile': mobile,
+        'street': street,
+        'street2': street2,
+        'zip': zip,
+        'city': city,
     })
     res = {
         'state': 'success',
         'phone': phone,
         'mobile': mobile,
+        'street': street,
+        'street2': street2,
+        'zip': zip,
+        'city': city,
         'message': _(
             """Account Datas updated successfully.""")}
     print res
