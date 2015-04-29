@@ -110,9 +110,9 @@ msgstr ""
 "caractères."
 
 #: res_partner.py:27
-#, fuzzy, python-format
+#, python-format
 msgid "'%(phone)s' is not a valid phone number."
-msgstr "'%(qty)s' n'est pas une quantité valide."
+msgstr "'%(phone)s' n'est pas une quantité valide."
 
 #: res_partner.py:60
 msgid "Account Datas updated successfully."
@@ -382,7 +382,7 @@ msgstr "Confirmer l'achat"
 #: templates/recovery_moment_place.html:75
 msgid "You are about to valid your Shopping Cart, this procedure is irreversible."
 msgstr ""
-"Vous êtes sur le point de valider votre panier, c'est procédure est "
+"Vous êtes sur le point de valider votre panier, cette procédure est "
 "définitive."
 
 #: templates/recovery_moment_place.html:76 templates/shopping_cart.html:108
