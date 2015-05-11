@@ -64,6 +64,11 @@ def compute_currency(amount):
     return currency(amount)
 
 
+@app.template_filter('function_to_eval')
+def function_to_eval(arg):
+    return arg
+
+
 @app.template_filter('to_day')
 def to_day(arg):
     if ' ' in arg:
