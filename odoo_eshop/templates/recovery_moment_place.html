@@ -75,19 +75,31 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h4 class="modal-title" id="myModalLabel">{{ _('Confirm Order') }}</h4>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" id="confirm-part">
                 <p>{{ _('You are about to valid your Shopping Cart, this procedure is irreversible.') }}</p>
                 <p>{{ _('Do you want to proceed?') }}</p>
             </div>
+            <div class="modal-body loading" id="loading-part">
+                <div style="text-align: center">
+                    <img src="{{ url_for('static', filename='images/loading.gif') }}" style="width:30px;height=30px" />
+                    <p>{{ _('Please wait while your sale is being processed.<br /> This can take a few seconds.') }}</p>
+                </div>
+
+            </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">{{ _('Cancel') }}</button>
-                <a href="#" class="btn btn-info info">{{ _('Confirm') }}</a>
+                <a href="#" class="btn btn-info info" id="btn-confirm">{{ _('Confirm') }}</a>
             </div>
         </div>
     </div>
 </div>
 
 <script>
+    $('#loading-part').hide();
+    $('#btn-confirm').on('click', function(e) {
+    $('#loading-part').show();
+    $('#confirm-part').hide();
+    });
     $('#confirm-valid').on('show.bs.modal', function(e) {
         $(this).find('.info').attr('href', $(e.relatedTarget).data('href'));
     });

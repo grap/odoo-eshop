@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-05-11 16:26+0200\n"
+"POT-Creation-Date: 2015-05-11 16:51+0200\n"
 "PO-Revision-Date: 2014-10-06 14:07+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: fr <LL@li.org>\n"
@@ -393,11 +393,18 @@ msgstr ""
 msgid "Do you want to proceed?"
 msgstr "Voulez vous continuer ?"
 
-#: templates/recovery_moment_place.html:83 templates/shopping_cart.html:111
+#: templates/recovery_moment_place.html:85
+msgid ""
+"Please wait while your sale is being processed."
+"<br /> This can take a few seconds."
+msgstr "Merci de patienter : votre vente est en train d'être traitée."
+"<br /> Cela peut prendre quelques secondes."
+
+#: templates/recovery_moment_place.html:90 templates/shopping_cart.html:111
 msgid "Cancel"
 msgstr "Annuler"
 
-#: templates/recovery_moment_place.html:84
+#: templates/recovery_moment_place.html:91
 msgid "Confirm"
 msgstr "Confirmer"
 
