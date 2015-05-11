@@ -370,7 +370,7 @@ def select_recovery_moment(recovery_moment_id):
                 found = True
                 break
     if found:
-        openerp.SaleOrder.write(sale_order.id, {
+        openerp.SaleOrder.write([sale_order.id], {
             'moment_id': recovery_moment_id,
         })
         openerp.SaleOrder.action_button_confirm([sale_order.id])
