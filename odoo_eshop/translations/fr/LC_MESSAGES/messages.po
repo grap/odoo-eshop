@@ -351,7 +351,7 @@ msgstr "Lieu de récupération"
 msgid ""
 "Sorry. For the time being, there is no possibility to select a date to "
 "recovery your Shopping Cart."
-msgstr "Désolé. Pour le moment, il n'y a pas de dates pour récupérer votre panier."
+msgstr "Désolé. Pour le moment, il n'y a pas la possibilité de choisir une date pour récupérer votre panier."
 
 #: templates/recovery_moment_place.html:29
 msgid "Select Your Place and Moment for Recovery"
