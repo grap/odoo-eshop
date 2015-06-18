@@ -64,8 +64,9 @@
 {% endfor %}
     </tbody>
 </table>
+<hr />
 <div class="row">
-    <div class="col-md-6"></div>
+    <div class="col-md-8"></div>
     <div class="col-md-4">
         <dl class="dl-horizontal">
             <dt>{{ _('Untaxed Amount') }}</dt>
@@ -76,11 +77,8 @@
             <dd><input type="text" disabled class="form-control input-sm col-xs-2" id="amount_total" value="{{ sale_order.amount_total|to_currency }}"/></dd>
         </dl>
     </div>
-    <div class="col-md-2"></div>
 </div>
-
-<br />
-<br />
+<hr />
 <div class="row">
     <div class="col-md-6">
         <a data-href="{{ url_for('shopping_cart_delete') }}"
@@ -93,9 +91,8 @@
             class="col-sm-offset-3 btn btn-default" href="#" role="button">{{ _('Select Place and Moment Recovery') }}</a>
     </div>
 </div>
-
+<hr />
 <!-- Delete Shopping Cart PopUp-->
-
 <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">

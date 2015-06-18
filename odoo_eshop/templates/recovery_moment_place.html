@@ -14,14 +14,22 @@
 </script>
 
 
+
+
+    {% if recovery_moment_groups|length == 0 %}
+    <div class="flashes">
+        <p class="text-center bg-warning">{{ _('Sorry. For the time being, there is no possibility to select a date to recovery your Shopping Cart.')}}</p>
+    </div>
+
+    {% else %}
+
 <!-- Recovery Moment Group -->
 <div class="row">
     <div class="col-md-12">
         <h1>{{ _('Select Your Place and Moment for Recovery') }}</h1>
     </div>
 </div>
-
-    {% for recovery_moment_group in recovery_moment_groups %}
+        {% for recovery_moment_group in recovery_moment_groups %}
 
 <table class="table table-hover">
     <thead>
@@ -36,7 +44,7 @@
         </tr>
     </thead>
     <tbody>
-        {% for recovery_moment in recovery_moment_group.moment_ids %}
+            {% for recovery_moment in recovery_moment_group.moment_ids %}
         <tr>
             <td>{{recovery_moment.min_recovery_date|to_day}}</td>
             <td>{{recovery_moment.max_recovery_date|to_date}}</td>
@@ -44,28 +52,29 @@
             <td>{{recovery_moment.max_recovery_date|to_time}}</td>
             <td>{{recovery_moment.place_id.complete_name}}</td>
             <td>
-            {% if recovery_moment.description %}
-            {{recovery_moment.description}}
-            {% endif %}
+                {% if recovery_moment.description %}
+                {{recovery_moment.description}}
+                {% endif %}
             </td>
             <td>
-            {% if recovery_moment.is_complete|function_to_eval %}
+                {% if recovery_moment.is_complete|function_to_eval %}
                 {{ _('Complete')}} 
                 
-            {% else %}
+                {% else %}
                 <a data-href="{{ url_for('select_recovery_moment', recovery_moment_id=recovery_moment.id) }}"
                         data-toggle="modal" data-target="#confirm-valid"
                         class="btn btn-default" role="button">
                     <span class="glyphicon glyphicon-ok-circle"/> {{ _('Select')}}</a>
                 </a>
-            {% endif %}
+                {% endif %}
             </td>
         </tr>
-        {% endfor %}
+            {% endfor %}
     </tbody>
 </table>
 
-    {% endfor %}
+        {% endfor %}
+    {% endif %}
 
 <!-- Validate Shopping Cart PopUp -->
 <div class="modal fade" id="confirm-valid" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -97,8 +106,8 @@
 <script>
     $('#loading-part').hide();
     $('#btn-confirm').on('click', function(e) {
-    $('#loading-part').show();
-    $('#confirm-part').hide();
+        $('#loading-part').show();
+        $('#confirm-part').hide();
     });
     $('#confirm-valid').on('show.bs.modal', function(e) {
         $(this).find('.info').attr('href', $(e.relatedTarget).data('href'));

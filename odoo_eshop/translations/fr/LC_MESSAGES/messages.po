@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-05-11 16:51+0200\n"
+"POT-Creation-Date: 2015-06-18 20:52+0200\n"
 "PO-Revision-Date: 2014-10-06 14:07+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: fr <LL@li.org>\n"
@@ -70,15 +70,15 @@ msgstr "Votre panier a été supprimé avec succès."
 msgid "You have not reached the ceiling of %(min)s."
 msgstr "Vous n'avez pas atteint le plafond de %(min)s"
 
-#: app.py:378
+#: app.py:379
 msgid "Your Sale Order is now confirmed."
 msgstr "Votre commande est désormais terminée."
 
-#: app.py:438
+#: app.py:439
 msgid "order"
 msgstr "commande"
 
-#: app.py:470
+#: app.py:471
 msgid "invoice"
 msgstr "Factures"
 
@@ -188,7 +188,7 @@ msgid "Update"
 msgstr "Mettre à jour"
 
 #: templates/account.html:117 templates/catalog_inline.html:137
-#: templates/shopping_cart.html:152
+#: templates/shopping_cart.html:149
 msgid "Something wrong occured, please refresh the page."
 msgstr "Quelque chose s'est mal déroulé, merci de rafraichir la page."
 
@@ -249,12 +249,12 @@ msgid "Invoice Date"
 msgstr "Date de facture"
 
 #: templates/invoices.html:15 templates/orders.html:19
-#: templates/shopping_cart.html:71
+#: templates/shopping_cart.html:72
 msgid "Untaxed Amount"
 msgstr "Montant HT"
 
 #: templates/invoices.html:16 templates/orders.html:20
-#: templates/shopping_cart.html:75
+#: templates/shopping_cart.html:76
 msgid "Total"
 msgstr "Total TTC"
 
@@ -327,7 +327,7 @@ msgstr "Producteur"
 msgid "Fresh Category"
 msgstr "Catégorie Frais"
 
-#: templates/product.html:90 templates/recovery_moment_place.html:34
+#: templates/product.html:90 templates/recovery_moment_place.html:42
 msgid "Description"
 msgstr "Description"
 
@@ -347,64 +347,71 @@ msgstr "Panier"
 msgid "Recovery Moment Place"
 msgstr "Lieu de récupération"
 
-#: templates/recovery_moment_place.html:20
+#: templates/recovery_moment_place.html:21
+msgid ""
+"Sorry. For the time being, there is no possibility to select a date to "
+"recovery your Shopping Cart."
+msgstr "Désolé. Pour le moment, il n'y a pas de dates pour récupérer votre panier."
+
+#: templates/recovery_moment_place.html:29
 msgid "Select Your Place and Moment for Recovery"
 msgstr "Choisissez le lieu et la date de récupération"
 
-#: templates/recovery_moment_place.html:29
+#: templates/recovery_moment_place.html:37
 msgid "Day"
 msgstr "Jour"
 
-#: templates/recovery_moment_place.html:30
+#: templates/recovery_moment_place.html:38
 msgid "Date"
 msgstr "Date"
 
-#: templates/recovery_moment_place.html:31
+#: templates/recovery_moment_place.html:39
 msgid "Min Time"
 msgstr "Heure de Début"
 
-#: templates/recovery_moment_place.html:32
+#: templates/recovery_moment_place.html:40
 msgid "Max Time"
 msgstr "Heure de Fin"
 
-#: templates/recovery_moment_place.html:33
+#: templates/recovery_moment_place.html:41
 msgid "Place"
 msgstr "Lieu"
 
-#: templates/recovery_moment_place.html:53
+#: templates/recovery_moment_place.html:61
 msgid "Complete"
 msgstr "Complet"
 
-#: templates/recovery_moment_place.html:59
+#: templates/recovery_moment_place.html:67
 msgid "Select"
 msgstr "Choisir"
 
-#: templates/recovery_moment_place.html:76
+#: templates/recovery_moment_place.html:85
 msgid "Confirm Order"
 msgstr "Confirmer l'achat"
 
-#: templates/recovery_moment_place.html:79
+#: templates/recovery_moment_place.html:88
 msgid "You are about to valid your Shopping Cart, this procedure is irreversible."
 msgstr ""
 "Vous êtes sur le point de valider votre panier, cette procédure est "
 "définitive."
 
-#: templates/recovery_moment_place.html:80 templates/shopping_cart.html:108
+#: templates/recovery_moment_place.html:89 templates/shopping_cart.html:105
 msgid "Do you want to proceed?"
 msgstr "Voulez vous continuer ?"
 
-#: templates/recovery_moment_place.html:85
+#: templates/recovery_moment_place.html:94
 msgid ""
-"Please wait while your sale is being processed."
-"<br /> This can take a few seconds."
-msgstr "Merci de patienter : votre vente est en train d'être traitée."
-"<br /> Cela peut prendre quelques secondes."
+"Please wait while your sale is being processed.<br /> This can take a few"
+" seconds."
+msgstr ""
+"Merci de patienter : votre vente est en train d'être traitée.<br /> Cela "
+"peut prendre quelques secondes."
 
-#: templates/recovery_moment_place.html:90 templates/shopping_cart.html:111
+#: templates/recovery_moment_place.html:99 templates/shopping_cart.html:108
 msgid "Cancel"
 msgstr "Annuler"
 
-#: templates/recovery_moment_place.html:91
+#: templates/recovery_moment_place.html:100
 msgid "Confirm"
 msgstr "Confirmer"
 
@@ -432,23 +439,23 @@ msgstr "Sous total HT"
 msgid "Remove"
 msgstr "Retirer"
 
-#: templates/shopping_cart.html:73
+#: templates/shopping_cart.html:74
 msgid "Taxes"
 msgstr "TVA"
 
-#: templates/shopping_cart.html:89
+#: templates/shopping_cart.html:87
 msgid "Delete Shopping Cart"
 msgstr "Effacer votre Panier"
 
-#: templates/shopping_cart.html:93
+#: templates/shopping_cart.html:91
 msgid "Select Place and Moment Recovery"
 msgstr "Choisir le lieu et la date de récupération"
 
-#: templates/shopping_cart.html:104
+#: templates/shopping_cart.html:101
 msgid "Confirm Delete"
 msgstr "Confirmer la suppression"
 
-#: templates/shopping_cart.html:107
+#: templates/shopping_cart.html:104
 msgid ""
 "You are about to delete your Shopping Cart, this procedure is "
 "irreversible."
@@ -456,7 +463,7 @@ msgstr ""
 "Vous êtes sur le point de supprimer votre panier, cette procédure ne peut"
 " être annulée"
 
-#: templates/shopping_cart.html:112
+#: templates/shopping_cart.html:109
 msgid "Delete"
 msgstr "Supprimer"
 
