@@ -372,6 +372,7 @@ def select_recovery_moment(recovery_moment_id):
     if found:
         openerp.SaleOrder.write([sale_order.id], {
             'moment_id': recovery_moment_id,
+            'recovery_reminder_state': 'to_send',
         })
         openerp.SaleOrder.action_button_confirm([sale_order.id])
         openerp.SaleOrder.send_mail([sale_order.id])
