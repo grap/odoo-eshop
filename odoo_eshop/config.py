@@ -2,7 +2,7 @@
 # -*- encoding: utf-8 -*-
 
 from ConfigParser import ConfigParser
-from os.path import isfile, expanduser
+from os.path import dirname, isfile, expanduser, realpath
 
 
 def read_config():
@@ -10,7 +10,7 @@ def read_config():
     if not isfile(config_file):
         config_file = '/etc/odoo_eshop/config.ini'
     if not isfile(config_file):
-        config_file = os.path.dirname(os.path.realpath(__file__))\
+        config_file = dirname(realpath(__file__))\
             + '/../config/config.ini'
     assert isfile(config_file), (
         'Could not find config file (looking at %s)' % (
