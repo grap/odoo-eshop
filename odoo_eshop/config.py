@@ -5,15 +5,17 @@ from ConfigParser import ConfigParser
 from os.path import isfile, expanduser
 
 
-def read_config(filename=None):
-    config_file = filename
-    if config_file is None:
-        config_file = expanduser('~/.odoo_eshop.ini')
-        if not isfile(config_file):
-            config_file = '/etc/odoo_eshop/config.ini'
+def read_config():
+    config_file = expanduser('~/.odoo_eshop.ini')
+    if not isfile(config_file):
+        config_file = '/etc/odoo_eshop/config.ini'
+    if not isfile(config_file):
+        config_file = os.path.dirname(os.path.realpath(__file__))\
+            + '/../config/config.ini'
     assert isfile(config_file), (
         'Could not find config file (looking at %s)' % (
-            config_file or '~/.odoo_eshop.ini and /etc/odoo_eshop/config.ini'
+            config_file or "~/.odoo_eshop.ini', /etc/odoo_eshop/config.ini" + 
+            ", ./config/config.ini"
         )
     )
 
