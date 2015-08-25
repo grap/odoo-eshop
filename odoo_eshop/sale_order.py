@@ -124,7 +124,7 @@ def change_product_qty(quantity, mode, product_id=None, line_id=None):
             new_quantity = compute_quantity(product, desired_qty)
 
             qty_changed = (float(new_quantity) != float(desired_qty))
-            openerp.SaleOrderLine.write(line.id, {
+            openerp.SaleOrderLine.write([line.id], {
                 'product_uom_qty': new_quantity,
             })
         else:
