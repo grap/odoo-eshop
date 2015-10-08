@@ -1,12 +1,14 @@
-{% extends 'base_account.html' %}
+{% extends 'base.html' %}
 
-{% block container_account %}
+{% block container %}
+<!-- JQuery -->
 <script>
-    $('#nav_account_invoices').addClass('active');
+    $('#nav_account').addClass('active');
 </script>
 
-
+<!-- Invoices List -->
 <h1>{{ _('Your Invoices') }}</h1>
+{% if invoices %}
 <table class="table table-hover">
     <thead>
         <tr>
@@ -29,5 +31,8 @@
 {% endfor %}
     </tbody>
 </table>
+{% else %}
+<p>{{_('No Invoices for the time being.')}}</p>
+{% endif %}
 
 {% endblock %}

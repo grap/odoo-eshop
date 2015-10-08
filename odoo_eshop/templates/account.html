@@ -1,10 +1,12 @@
-{% extends 'base_account.html' %}
+{% extends 'base.html' %}
 
-{% block container_account %}
+{% block container %}
+<!-- JQuery -->
 <script>
-    $('#nav_account_account').addClass('active');
+    $('#nav_account').addClass('active');
 </script>
 
+<!-- Account Data -->
 <h1>{{ _('Your Account') }}</h1>
 <form class="form-horizontal" role="form" method="POST" action="{{ url_for('account_update') }}">
     <fieldset disabled>

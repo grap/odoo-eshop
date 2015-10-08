@@ -7,78 +7,87 @@
     $('#nav_catalog_inline').addClass('active');
 </script>
 
-
 <style type="text/css">
-    .catalog-inline .inline-category{
-        border-top:1px solid #CCC;
-        border-bottom:1px solid #CCC;
-    }
-    .col-sm-1,.col-sm-2,.col-sm-3,.col-sm-4,.col-sm-5,.col-sm-6,.col-sm-7,.col-sm-8,.col-sm-9,.col-sm-10,.col-sm-11,.col-sm-12{
-        padding:2px;
-    }
-    .col-lg-1,.col-lg-2,.col-lg-3,.col-lg-4,.col-lg-5,.col-lg-6,.col-lg-7,.col-lg-8,.col-lg-9,.col-lg-10,.col-lg-11,.col-lg-12{
-        padding:3px;
-    }
-    .inline-category{
-        height:60px;
-    }
-    .inline-category .thumbnail{
-        height:50px;width:50px; float: right;
-    }
-    .inline-product{
-        height:40px;
-    }
-    .inline-product .thumbnail{
-        height:30px;width:30px; float: right;
-    }
-    .inline-product .quantity{
-        width:80px;
-
-    }
-    .quantity-unit{
-        font-size:small;
-    }
-    .inline-product .form-inline{
+    .quantity{
+        width:150px !important;
         text-align:right;
-    }
-    .thumbnail{
-        margin-bottom:0px;
     }
     .not_null_qty{
         background-color:#DDFFFF;
         font-weight:bold;
     }
+    .input_text{
+        padding:0px !important;
+    }
+    .img-eshop-categ{
+        height:50px;width:50px;
+        display:inline;
+    }
+    th{
+        background-color:#FCFCFC;
+    }
+    .quantity-unit{
+        font-size:small;
+    }
+    .img-categ{
+        margin: 0px;
+        padding: 0px;
+        width:75px;
+        height:75px;
+    }
+    .img-label, .img-delivery-categ{
+        margin: 0px;
+        padding: 0px;
+        border: 0px;
+        height: 23px;
+        display: inline;
+    }
+    h2{
+        margin:0px;
+    }
 </style>
 
 
-<div class="catalog-inline">
+<table class="table table-condensed table-bordered">
 <!-- Categories -->
     {% for category in catalog_inline %}
-    <div class="row">
-        <div class="col-sm-2 inline-category">
-        {% if category['image_small'] %}
-            <img class="thumbnail img-responsive" src="data:image/png;base64,{{ category['image_small'] }}"/>
+
+    <tr>
+        <th colspan="6" style="text-align:center;">
+            <h2>
+        {% if category['image_medium'] %}
+            <img class="thumbnail img-responsive img-eshop-categ" src="data:image/png;base64,{{ category['image_medium'] }}"/>
         {% else %}
-            <img class="thumbnail img-responsive" src="{{ url_for('static', filename='images/category_without_image.png') }}"/>
+            <img class="thumbnail img-responsive img-eshop-categ" src="{{ url_for('static', filename='images/category_without_image.png') }}"/>
         {% endif %}
-        </div>
-        <div class="col-sm-8 inline-category">
-            <h2>{{ category['name'] }}</h2>
-        </div>
-        <div class="col-sm-2 inline-category">
-        </div>
+                {{ category['name'] }}
+            </h2>
+        </th>
+    </tr>
+
         {% for product in category['product_ids'] %}
-        <div class="col-sm-1 col-lg-1 inline-product">
-                    {% if product['image_small'] %}
-            <img class="thumbnail img-responsive" src="data:image/png;base64,{{ product['image_small'] }}"/>
-                    {% else %}
-            <img class="thumbnail img-responsive" src="{{ url_for('static', filename='images/product_without_image.png') }}"/>
-                    {% endif %}
-        </div>
-        <div class="col-sm-5 col-lg-3 inline-product">
+    <tr>
+        <td>
             <a href="{{url_for('product', product_id=product.id)}}">{{ product['name'] }}</a>
-        </div>
-        <div class="col-sm-3 col-lg-1 inline-product">
+        </td>
+        <td class="labels">
+            {% for label in product['label_ids'] %}
+                <img class="img-label" src="data:image/png;base64,{{ label['image_small'] }}" title="{{label['name']}}"/>
+            {% endfor %}
+        </td>
+        <td>
+                {{ product['list_price']|to_currency }} / {{ product['uom_eshop_description'] }}
+        </td>
+        <td>
+                {{ product['eshop_taxes_description'] }}
+        </td>
+        <td>
+            {% if product['delivery_categ_id'] %}
+            <img class="img-delivery-categ" src="data:image/png;base64,{{ product['delivery_categ_id']['image_small'] }}" title="{{ product['delivery_categ_id']['name'] }}"/>
+                
+            {% endif %}
+        </td>
+        <td class="input_text">
             <form class="form-inline" role="form" method="POST" action="{{ url_for('catalog_inline_quantity_update') }}">
                 <div class="form-group">
                     <input type="hidden" name="product_id" value="{{ product['id'] }}"/>
@@ -88,14 +97,14 @@
                 </div>
                 <button type="submit" class="btn btn-default update_btn">{{ _('Update')}}</button>
             </form>
-        </div>
-        <div class="col-sm-3 col-lg-1 inline-product quantity-unit">
-                {{ product['list_price']|to_currency }} / {{ product['uom_eshop_description'] }}
-        </div>
+        </td>
+    </tr>
         {% endfor %}
-    </div>
+
+
+
     {% endfor %}
-</div>
+</table>
 
 <!-- JQuery -->
 <script>

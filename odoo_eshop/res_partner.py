@@ -59,6 +59,5 @@ def change_res_partner(
         'city': city,
         'message': _(
             """Account Datas updated successfully.""")}
-    print res
     return res
 

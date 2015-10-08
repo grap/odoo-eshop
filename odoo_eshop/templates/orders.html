@@ -1,12 +1,15 @@
-{% extends 'base_account.html' %}
+{% extends 'base.html' %}
 
-{% block container_account %}
+{% block container %}
+<!-- JQuery -->
 <script>
-    $('#nav_account_orders').addClass('active');
+    $('#nav_account').addClass('active');
 </script>
 
-
+<!-- Orders List -->
 <h1>{{ _('Your Orders') }}</h1>
+
+{% if orders %}
 <table class="table table-hover">
     <thead>
         <tr>
@@ -45,5 +48,7 @@
 {% endfor %}
     </tbody>
 </table>
-
+{% else %}
+<p>{{_('No Orders for the time being.')}}</p>
+{% endif %}
 {% endblock %}

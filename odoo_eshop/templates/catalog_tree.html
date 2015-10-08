@@ -20,9 +20,6 @@
 </script>
 
 
-
-
-
 <!-- Categories -->
 {% if categories|length %}
 <div class="row">
@@ -40,7 +37,7 @@
         </a>
         <div>{{ category.name }}</div>
             {% if category.type == 'normal' %}
-        <div>({{ category.available_product_qty }} Products)</div>
+        <div>{{category.available_product_qty}} {{_('Products')}}</div>
         {% else %}
         <div>({{ category.child_qty }} Categories)</div>
         {% endif %}

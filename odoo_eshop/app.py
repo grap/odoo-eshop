@@ -20,7 +20,7 @@ from sale_order import load_sale_order, delete_sale_order, \
     currency, change_product_qty
 from res_partner import change_res_partner
 
-from erp import openerp, tz, get_invoice_pdf, get_order_pdf, get_account_qty
+from erp import openerp, tz, get_invoice_pdf, get_order_pdf
 
 # Initialization of the Apps
 app = Flask(__name__)
@@ -253,16 +253,11 @@ def catalog_tree(category_id):
 @app.route("/catalog_inline/<int:category_id>")
 @requires_auth
 def catalog_inline(category_id):
-    # Get Child Categories
-#    categories = openerp.eshopCategory.browse(
-#        [('type', '=', 'normal')])
     sale_order = load_sale_order()
     catalog_inline = openerp.saleOrder.get_current_eshop_product_list(
         sale_order and sale_order.id or False)
     return render_template(
-        'catalog_inline.html',
-        catalog_inline=catalog_inline,
-    )
+        'catalog_inline.html', catalog_inline=catalog_inline)
 
 
 @app.route('/catalog_inline_quantity_update', methods=['POST'])
@@ -390,11 +385,7 @@ def select_recovery_moment(recovery_moment_id):
 @requires_auth
 def account():
     partner = openerp.ResPartner.browse(session['partner_id'])
-    orders_qty, invoices_qty = get_account_qty(session['partner_id'])
-    return render_template(
-        'account.html', partner=partner,
-        orders_qty=orders_qty, invoices_qty=invoices_qty,
-    )
+    return render_template('account.html', partner=partner)
 
 
 @app.route('/account_update', methods=['POST'])
@@ -422,11 +413,7 @@ def orders():
     orders = openerp.SaleOrder.browse([
         partner_domain('partner_id'),
         ('state', 'not in', ('draft', 'cancel'))])
-    orders_qty, invoices_qty = get_account_qty(session['partner_id'])
-    return render_template(
-        'orders.html', orders=orders,
-        orders_qty=orders_qty, invoices_qty=invoices_qty,
-    )
+    return render_template('orders.html', orders=orders)
 
 
 @app.route('/order/<int:order_id>/download')
@@ -454,11 +441,7 @@ def invoices():
     invoices = openerp.AccountInvoice.browse([
         partner_domain('partner_id'),
         ('state', 'not in', ('draft', 'proforma', 'proforma2', 'cancel'))])
-    orders_qty, invoices_qty = get_account_qty(session['partner_id'])
-    return render_template(
-        'invoices.html', invoices=invoices,
-        orders_qty=orders_qty, invoices_qty=invoices_qty,
-    )
+    return render_template('invoices.html', invoices=invoices)
 
 
 @app.route('/invoices/<int:invoice_id>/download')

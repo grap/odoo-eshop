@@ -22,17 +22,6 @@ openerp, uid, tz = init_openerp(
     conf.get('openerp', 'database'),
 )
 
-
-def get_account_qty(partner_id):
-    orders_qty = len(openerp.SaleOrder.search([
-        ('partner_id', '=', partner_id),
-        ('state', 'not in', ('draft', 'cancel'))]))
-    invoices_qty = len(openerp.AccountInvoice.search([
-        ('partner_id', '=', partner_id),
-        ('state', 'not in', ('draft', 'proforma', 'proforma2', 'cancel'))]))
-    return orders_qty, invoices_qty
-
-
 def get_invoice_pdf(invoice_id):
     model_name, model_id = openerp.IrModelData.get_object_reference(
         'account', 'account_invoices'

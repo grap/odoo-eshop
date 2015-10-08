@@ -40,8 +40,9 @@
                             <img src="{{ url_for('static', filename='images/logo_small.png') }}" style="width:30px;height=30px" />
                         </a>
                     </div>
-                    <div class="nav navbar-left">
+
         {% if 'partner_name' in session %}
+                    <div class="nav navbar-left">
                         <a class="btn btn-sm btn-default" id="nav_catalog_inline" href="{{  url_for('catalog_inline') }}">{{ _('Purchase (List View)') }}</a>
                         <a class="btn btn-sm btn-default" id="nav_catalog_tree" href="{{  url_for('catalog_tree') }}">{{ _('Purchase (Catalog View)') }}</a>
             {% if sale_order %}
@@ -55,16 +56,34 @@
                             (<span id="nav_amount_total">{{ 0|to_currency }}</span>)
                         </a>
             {% endif %}
-
-        {% endif %}
                     </div>
+
                     <div class="nav navbar-right">
-            {% if 'partner_name' in session %}
-                        <a class="btn btn-sm btn-default" id="nav_account" href="{{  url_for('account') }}">{{ _('Your Account') }} - {{ session['partner_name'] }}</a>
-                        <a class="btn btn-sm btn-default" href="{{ url_for('logout_view') }}">
-                            <span class="glyphicon glyphicon-log-out"/> - {{ _('Log Out') }}
-                        </a>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="nav_account">
+                                {{ _('Your Account') }} - {{ session['partner_name'] }}
+                                <span class="caret" />
+                          </button>
+                          <ul class="dropdown-menu">
+                            <li><a class="btn-sm" href="{{ url_for('account')}}">
+                                {{ _('Personnal Datas') }}
+                                </a></li>
+                            <li><a class="btn-sm" href="{{ url_for('orders')}}">
+                                {{ _('Orders History') }}
+                                </a></li>
+                            <li><a class="btn-sm" href="{{ url_for('invoices')}}">
+                                {{ _('Invoices History') }}
+                                </a></li>
+                            <li role="separator" class="divider"></li>
+                            <li>
+                                <a class="btn-sm" href="{{ url_for('logout_view') }}">
+                                    <span class="glyphicon glyphicon-log-out"/> - {{ _('Log Out') }}
+                                </a></li>
+                          </ul>
+                        </div>
+
             {% else %}
+                    <div class="nav navbar-right">
                         <a class="btn btn-sm btn-default" href="{{ url_for('login_view') }}">
                             <span class="glyphicon glyphicon-log-in"/> - {{ _('Log In') }}
                         </a>
