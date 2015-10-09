@@ -41,7 +41,7 @@ def change_res_partner(
     if type(mobile) is dict:
         return mobile
 
-    openerp.ResPartner.write(partner_id, {
+    openerp.ResPartner.write([partner_id], {
         'phone': phone,
         'mobile': mobile,
         'street': street,
