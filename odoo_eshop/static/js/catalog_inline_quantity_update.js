@@ -19,7 +19,7 @@
 
 
 
-$('.quantity').change(function(e){
+$('.input-quantity').change(function(e){
     self = this;
     var new_quantity = e.currentTarget.value;
     var product_id = e.currentTarget.id.split('_')[1];
