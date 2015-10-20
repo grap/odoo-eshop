@@ -56,9 +56,9 @@ def requires_connection(f):
     def decorated(*args, **kwargs):
         if not openerp:
             flash(_(
-                """Distant Service Unavailable. If you had a pending"""
-                """ purchase, You have not lost your Shopping"""
-                """ Cart. Thank you connect again in a while."""),
+                "Distant Service Unavailable. If you had a pending purchase,"
+                " You have not lost your Shopping Cart."
+                " Thank you connect again in a while."),
                 'danger')
             return unavailable_service()
         else:

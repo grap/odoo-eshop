@@ -17,28 +17,19 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ******************************************************************************/
 
-
-$('.input-quantity').change(function(e){
+$('#shopping_cart_note').change(function(e){
     self = this;
-    var new_quantity = e.currentTarget.value;
-    var line_id = e.currentTarget.id.split('_')[1];
     $.ajax({
-        url: FLASK_URL_FOR['shopping_cart_quantity_update'],
+        url: FLASK_URL_FOR['shopping_cart_note_update'],
         type: "POST",
-        data: {new_quantity: new_quantity, line_id: line_id},
-        timeout: 1000,
+        data: {
+            note: $('#shopping_cart_note').val(),
+            }, timeout: 1000,
     }).done(function(msg){
         if (msg.result.state == 'success' || msg.result.state == 'warning'){
-            // Update Sale Order Line infos
-            $('#quantity_' + line_id).val(msg.result.quantity);
-            $('#price_subtotal_' + line_id).attr('placeholder', msg.result.price_subtotal);
-            // Update Sale Order infos
-            $('#amount_untaxed').attr('placeholder', msg.result.amount_untaxed);
-            $('#amount_tax').attr('placeholder', msg.result.amount_tax);
-            $('#amount_total').attr('placeholder', msg.result.amount_total);
+            $('#shopping_cart_note').val(msg.result.note);
         }
-        update_header(msg.result.amount_total, msg.result.minimum_ok);
-        display_message(msg.result.state, msg.result.message, false);
+        display_message(msg.result.state, msg.result.message, true);
     }).fail(function(xhr, textstatus){
         display_fail_message();
     });

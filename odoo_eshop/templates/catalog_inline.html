@@ -8,43 +8,14 @@
 </script>
 
 <style type="text/css">
-    .quantity{
-        width:150px !important;
-        text-align:right;
-    }
+
     .not_null_qty{
         background-color:#DDFFFF;
         font-weight:bold;
     }
-    .input_text{
-        padding:0px !important;
-    }
-    .img-eshop-categ{
-        height:50px;width:50px;
-        display:inline;
-    }
-    th{
-        background-color:#FCFCFC;
-    }
-    .quantity-unit{
-        font-size:small;
-    }
-    .img-categ{
-        margin: 0px;
-        padding: 0px;
-        width:75px;
-        height:75px;
-    }
-    .img-label, .img-delivery-categ{
-        margin: 0px;
-        padding: 0px;
-        border: 0px;
-        height: 23px;
-        display: inline;
-    }
-    h2{
-        margin:0px;
-    }
+
+
+
 </style>
 
 
@@ -53,12 +24,12 @@
     {% for category in catalog_inline %}
 
     <tr>
-        <th colspan="6" style="text-align:center;">
+        <th colspan="100%">
             <h2>
         {% if category['image_medium'] %}
-            <img class="thumbnail img-responsive img-eshop-categ" src="data:image/png;base64,{{ category['image_medium'] }}"/>
+            <img class="thumbnail img-responsive img-medium-eshop-categ" src="data:image/png;base64,{{ category['image_medium'] }}"/>
         {% else %}
-            <img class="thumbnail img-responsive img-eshop-categ" src="{{ url_for('static', filename='images/category_without_image.png') }}"/>
+            <img class="thumbnail img-responsive img-medium-eshop-categ" src="{{ url_for('static', filename='images/category_without_image.png') }}"/>
         {% endif %}
                 {{ category['name'] }}
             </h2>
@@ -68,29 +39,40 @@
         {% for product in category['product_ids'] %}
     <tr>
         <td>
-            <a href="{{url_for('product', product_id=product.id)}}">{{ product['name'] }}</a>
+
+            <a href="{{url_for('product', product_id=product.id)}}">
+            {% if not session['eshop_vat_included'] and product['default_code']%}{{ product['default_code']}} - {% endif %}
+                {{ product['name'] }}</a>
         </td>
         <td class="labels">
             {% for label in product['label_ids'] %}
-                <img class="img-label" src="data:image/png;base64,{{ label['image_small'] }}" title="{{label['name']}}"/>
+                <img class="img-small-label" src="data:image/png;base64,{{ label['image_small'] }}" title="{{label['name']}}"/>
             {% endfor %}
         </td>
         <td>
-                {{ product['list_price']|to_currency }} / {{ product['uom_eshop_description'] }}
+                {{ product['list_price']|to_currency }}
+                {% if session['eshop_vat_included']%}
+                {{_('VAT. Incl.')}}
+                {% else %}
+                {{_('VAT. Excl.')}}
+                {% endif %}
+                / {{ product['uom_eshop_description'] }}
         </td>
         <td>
                 {{ product['eshop_taxes_description'] }}
         </td>
+            {% if session['manage_delivery_moment'] %}
         <td>
-            {% if product['delivery_categ_id'] %}
-            <img class="img-delivery-categ" src="data:image/png;base64,{{ product['delivery_categ_id']['image_small'] }}" title="{{ product['delivery_categ_id']['name'] }}"/>
-            {% endif %}
+                {% if product['delivery_categ_id'] %}
+            <img class="img-small-delivery-categ" src="data:image/png;base64,{{ product['delivery_categ_id']['image_small'] }}" title="{{ product['delivery_categ_id']['name'] }}"/>
+                {% endif %}
         </td>
-        <td class="input_text">
+            {% endif %}
+        <td class="td-input-text">
             <form class="form-inline" role="form" method="POST" action="{{ url_for('catalog_inline_quantity_update') }}">
                 <div class="form-group">
                     <input type="hidden" name="product_id" value="{{ product['id'] }}"/>
-                    <input type="text" class="form-control quantity {{ product['current_qty'] and 'not_null_qty' or ''}}"
+                    <input type="text" class="form-control input-quantity {{ product['current_qty'] and 'not_null_qty' or ''}}"
                         id="quantity_{{product['id']}}"
                         name="new_quantity" value="{{ product['current_qty'] }}">
                 </div>

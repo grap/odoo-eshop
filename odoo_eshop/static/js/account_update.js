@@ -20,7 +20,7 @@
 $('.account_data').change(function(e){
     self = this;
     $.ajax({
-        url: "{{ url_for('account_update') }}",
+        url: FLASK_URL_FOR['account_update'],
         type: "POST",
         data: {
             new_phone: $('#account_phone').val(),
@@ -41,6 +41,6 @@ $('.account_data').change(function(e){
         }
         display_message(msg.result.state, msg.result.message, true);
     }).fail(function(xhr, textstatus){
-        $('.flashes').replaceWith("<div class='flashes'><p class='text-center bg-danger'>" + AJAX_MESSAGE_ERROR + "</p></div>");
+        display_fail_message();
     });
-
+});

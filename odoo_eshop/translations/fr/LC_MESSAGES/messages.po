@@ -354,8 +354,8 @@ msgid ""
 msgstr "Désolé. Pour le moment, il n'y a pas la possibilité de choisir une date pour récupérer votre panier."
 
 #: templates/recovery_moment_place.html:29
-msgid "Select Your Place and Moment for Recovery"
-msgstr "Choisissez le lieu et la date de récupération"
+msgid "Select Place and Moment for Recovery"
+msgstr "Choisir le lieu et la date de récupération"
 
 #: templates/recovery_moment_place.html:37
 msgid "Day"
@@ -448,7 +448,7 @@ msgid "Delete Shopping Cart"
 msgstr "Effacer votre Panier"
 
 #: templates/shopping_cart.html:91
-msgid "Select Place and Moment Recovery"
+msgid "Select the Place and Moment Recovery"
 msgstr "Choisir le lieu et la date de récupération"
 
 #: templates/shopping_cart.html:101

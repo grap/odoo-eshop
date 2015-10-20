@@ -17,7 +17,7 @@ from flask.ext.babel import Babel
 from config import conf
 from auth import login, logout, requires_auth, requires_connection
 from sale_order import load_sale_order, delete_sale_order, \
-    currency, change_product_qty
+    currency, change_product_qty, change_shopping_cart_note
 from res_partner import change_res_partner
 
 from erp import openerp, tz, get_invoice_pdf, get_order_pdf
@@ -247,7 +247,6 @@ def catalog_tree(category_id):
         products=products,
     )
 
-
 # ############################################################################
 # Catalog (Inline View) Routes
 # ############################################################################
@@ -272,7 +271,6 @@ def catalog_inline_quantity_update():
     flash(res['message'], res['state'])
     return redirect(url_for('catalog_inline'))
 
-
 # ############################################################################
 # Shopping Cart Management Routes
 # ############################################################################
@@ -285,6 +283,16 @@ def shopping_cart():
         sale_order=sale_order,
     )
 
+@app.route('/shopping_cart_note_update', methods=['POST'])
+def shopping_cart_note_update():
+    res = change_shopping_cart_note(
+        request.form['note'],
+    )
+    print res
+    if request.is_xhr:
+        return jsonify(result=res)
+    flash(res['message'], res['state'])
+    return redirect(url_for('account'))
 
 @app.route('/shopping_cart_quantity_update', methods=['POST'])
 def shopping_cart_quantity_update():
@@ -303,6 +311,7 @@ def shopping_cart_quantity_update():
     res = change_product_qty(
         request.form['new_quantity'], 'set',
         line_id=int(request.form['line_id']))
+    print res
     if request.is_xhr:
         return jsonify(result=res)
     flash(res['message'], res['state'])
@@ -338,20 +347,17 @@ def shopping_cart_delete_line(line_id):
 def recovery_moment_place():
     recovery_moment_groups = openerp.SaleRecoveryMomentGroup.browse(
         [('state', 'in', 'pending_sale')])
-    shop = openerp.SaleShop.browse(int(conf.get('openerp', 'shop_id')))
     sale_order = load_sale_order()
-    if (shop.eshop_minimum_price != 0
-            and shop.eshop_minimum_price > sale_order.amount_total):
+    if (session['eshop_minimum_price'] != 0
+            and session['eshop_minimum_price'] > sale_order.amount_total):
         flash(
             _("You have not reached the ceiling : ") +
-            compute_currency(shop.eshop_minimum_price),
+            compute_currency(session['eshop_minimum_price']),
             'warning')
         return redirect(url_for('shopping_cart'))
     return render_template(
         'recovery_moment_place.html',
-        recovery_moment_groups=recovery_moment_groups,
-        shop=shop,
-    )
+        recovery_moment_groups=recovery_moment_groups)
 
 
 @app.route("/select_recovery_moment/<int:recovery_moment_id>")
@@ -376,9 +382,35 @@ def select_recovery_moment(recovery_moment_id):
         flash(_("Your Sale Order is now confirmed."), 'success')
         return redirect(url_for('orders'))
     else:
-        # TODO do something
-        pass
+        flash(_(
+            "You have selected an obsolete recovery moment."
+            " Please try again."), 'error')
+        return redirect(url_for('shopping_cart'))
 
+
+# ############################################################################
+# Delivery Moment Place Route
+# ############################################################################
+@app.route("/delivery_moment")
+@requires_auth
+def delivery_moment():
+    sale_order = load_sale_order()
+    delivery_moments = openerp.SaleDeliveryMoment.load_delivery_moment(
+        sale_order.id)
+    recovery_moment_groups = openerp.SaleRecoveryMomentGroup.browse(
+        [('state', 'in', 'pending_sale')])
+
+    if (session['eshop_minimum_price'] != 0
+            and session['eshop_minimum_price'] > sale_order.amount_total):
+        flash(
+            _("You have not reached the ceiling : ") +
+            compute_currency(session['eshop_minimum_price']),
+            'warning')
+        return redirect(url_for('shopping_cart'))
+    return render_template(
+        'delivery_moment.html',
+        delivery_moments=delivery_moments,
+        recovery_moment_groups=recovery_moment_groups)
 
 # ############################################################################
 # Account Route
@@ -404,6 +436,7 @@ def account_update():
     if request.is_xhr:
         return jsonify(result=res)
     flash(res['message'], res['state'])
+    print res
     return redirect(url_for('account'))
 
 # ############################################################################

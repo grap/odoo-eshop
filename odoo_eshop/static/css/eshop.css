@@ -1,0 +1,35 @@
+body{
+/*    background-color:yellow;*/
+}
+
+/* Generic Style (Table, body, ...)*/
+th{
+    background-color:#F6F6F6;
+    text-align:center;
+}
+h2{
+    margin:0px;
+}
+
+.td-input-text{
+    padding:0px !important;
+}
+
+/* Catalog Style */
+.input-quantity{
+    width:150px !important;
+    text-align:right;
+}
+    
+.img-small-label, .img-small-delivery-categ{
+    margin: 0px;
+    padding: 0px;
+    border: 0px;
+    height: 23px;
+    display: inline;
+}
+
+.img-medium-eshop-categ{
+    height:50px;width:50px;
+    display:inline;
+}

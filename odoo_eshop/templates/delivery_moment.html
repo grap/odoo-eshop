@@ -3,7 +3,7 @@
 {% block breadcrumb %}
 <ol class="breadcrumb">
     <li><a href="{{ url_for('shopping_cart')}}">{{ _('Shopping Cart') }}</a></li>
-    <li class="active">{{ _('Recovery Moment Place') }}</li>
+    <li class="active">{{ _('Delivery Moment') }}</li>
 </ol>
 {% endblock %}
 
@@ -13,20 +13,19 @@
     $('#nav_shopping_cart').addClass('active');
 </script>
 
-<!-- Recovery Moment Group -->
+<!-- Delivery Moment -->
 <div class="row">
     <div class="col-md-12">
-        <h1>{{ _('Select Place and Moment for Recovery') }}</h1>
+        <h1>{{ _('Select Delivery Moment') }}</h1>
     </div>
 </div>
 
-    {% if recovery_moment_groups|length == 0 %}
+    {% if delivery_moment|length == 0 %}
     <div class="flashes">
-        <p class="text-center bg-warning">{{ _('Sorry. For the time being, there is no possibility to select a date to recovery your Shopping Cart.')}}</p>
+        <p class="text-center bg-warning">{{ _('Sorry. For the time being, there is no possibility to select a date to receive your order.')}}</p>
     </div>
 
     {% else %}
-        {% for recovery_moment_group in recovery_moment_groups %}
 
 <table class="table table-condensed table-bordered">
     <thead>
@@ -35,42 +34,46 @@
             <th>{{ _('Date') }}</th>
             <th>{{ _('Min Time') }}</th>
             <th>{{ _('Max Time') }}</th>
-            <th>{{ _('Place') }}</th>
             <th>{{ _('Description') }}</th>
             <th />
         </tr>
     </thead>
     <tbody>
-            {% for recovery_moment in recovery_moment_group.moment_ids %}
+        {% for delivery_moment in delivery_moments %}
         <tr>
-            <td>{{recovery_moment.min_recovery_date|to_day}}</td>
-            <td>{{recovery_moment.min_recovery_date|to_date}}</td>
-            <td>{{recovery_moment.min_recovery_date|to_time}}</td>
-            <td>{{recovery_moment.max_recovery_date|to_time}}</td>
-            <td>{{recovery_moment.place_id.complete_name}}</td>
+            <td>{{delivery_moment['min_recovery_date']|to_day}}</td>
+            <td>{{delivery_moment['min_recovery_date']|to_date}}</td>
+            <td>{{delivery_moment['min_recovery_date']|to_time}}</td>
+            <td>{{delivery_moment['max_recovery_date']|to_time}}</td>
             <td>
-                {% if recovery_moment.description %}
-                {{recovery_moment.description}}
+                {% if delivery_moment['description'] %}
+                {{delivery_moment['description']}}
                 {% endif %}
             </td>
             <td>
-                {% if recovery_moment.is_complete|function_to_eval %}
+                {% if delivery_moment['is_complete'] %}
                 {{ _('Complete')}} 
                 
                 {% else %}
-                <a data-href="{{ url_for('select_recovery_moment', recovery_moment_id=recovery_moment.id) }}"
-                        data-toggle="modal" data-target="#confirm-valid"
-                        class="btn btn-default" role="button">
-                    <span class="glyphicon glyphicon-ok-circle"/> {{ _('Select')}}</a>
-                </a>
+                {% if delivery_moment['is_partial'] %}
+                    <a data-href="{{ url_for('select_delivery_moment', delivery_moment_id=delivery_moment.id) }}"
+                            data-toggle="modal" data-target="#confirm-valid"
+                            class="btn btn-default btn-warning" role="button">
+                        <span class="glyphicon glyphicon-warning-sign"/> {{ _('Select')}}</a>
+                    </a>
+                    {% endif %}
+                    <a data-href="{{ url_for('select_delivery_moment', delivery_moment_id=delivery_moment.id) }}"
+                            data-toggle="modal" data-target="#confirm-valid"
+                            class="btn btn-default" role="button">
+                        <span class="glyphicon glyphicon-ok-circle"/> {{ _('Select')}}</a>
+                    </a>
                 {% endif %}
             </td>
+        {% endfor %}
         </tr>
-            {% endfor %}
     </tbody>
 </table>
 
-        {% endfor %}
     {% endif %}
 
 <!-- Validate Shopping Cart PopUp -->

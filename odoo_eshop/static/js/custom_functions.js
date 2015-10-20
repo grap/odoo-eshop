@@ -35,7 +35,7 @@ function update_header(amount_total, minimum_ok){
         }
     }
 }
-function display_message(state, message, allways){
+function display_message(state, message, always){
     if (state != 'success' || always) {
         $('.flashes').replaceWith("<div class='flashes'><p class='text-center bg-" + state + "'>" + message  + "</p></div>");
     }

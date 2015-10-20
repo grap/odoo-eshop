@@ -79,6 +79,16 @@ def compute_quantity(product, quantity):
                 math.ceil(division) * product.eshop_rounded_qty, digit)
 
 
+def change_shopping_cart_note(note):
+    sale_order = load_sale_order()
+    product = openerp.SaleOrder.write(
+        [sale_order.id], {'note': note})
+    sale_order = load_sale_order()
+    return {
+        'state': 'success',
+        'note': sale_order.note,
+        'message': _("Your comment has been successfully updated.")}
+
 def change_product_qty(quantity, mode, product_id=None, line_id=None):
     """ Mode: can be 'add' or 'set'"""
     res = sanitize_qty(quantity)
@@ -150,9 +160,8 @@ def change_product_qty(quantity, mode, product_id=None, line_id=None):
             'state': 'warning',
             'quantity': new_quantity,
             'message': _(
-                """The new quantity for the product '%(prod)s' is now"""
-                """ %(qty)s %(uom)s, due to minimum / rounded quantity"""
-                """ rules.""",
+                "The new quantity for the product '%(prod)s' is now %(qty)s"
+                "  %(uom)s, due to minimum / rounded quantity rules.",
                 qty=new_quantity, uom=product.uom_id.eshop_description,
                 prod=product.name)}
     else:
@@ -160,8 +169,8 @@ def change_product_qty(quantity, mode, product_id=None, line_id=None):
             'state': 'success',
             'quantity': new_quantity,
             'message': _(
-                """You have now %(qty)s %(uom)s of product '%(prod)s'"""
-                """ in your shopping cart.""",
+                "You have now %(qty)s %(uom)s of product '%(prod)s'"
+                " in your shopping cart.",
                 qty=new_quantity, uom=product.uom_id.eshop_description,
                 prod=product.name)}
 

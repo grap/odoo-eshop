@@ -6,7 +6,6 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>{{ _('eShop')}}{% block extra_title %}{% endblock %}</title>
 
-
     <!-- from : http://code.jquery.com/jquery-2.1.4.min.js -->
         <script src="{{ url_for('static', filename='lib/js/jquery-2.1.4.min.js') }}"></script>
 
@@ -28,11 +27,13 @@
             FLASK_URL_FOR = {
                 'catalog_inline_quantity_update': "{{ url_for('catalog_inline_quantity_update') }}",
                 'shopping_cart_quantity_update': "{{ url_for('shopping_cart_quantity_update') }}",
+                'shopping_cart_note_update': "{{ url_for('shopping_cart_note_update') }}",
                 'account_update': "{{ url_for('account_update') }}",
             };
             AJAX_MESSAGE_ERROR = "{{ _('Something wrong occured, please refresh the page.')}}";
-            
         </script>
+
+        <link href="{{ url_for('static', filename='css/eshop.css') }}" rel="stylesheet" />
 
     </head>
     <body>
