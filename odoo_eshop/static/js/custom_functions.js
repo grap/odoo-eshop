@@ -17,26 +17,29 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ******************************************************************************/
 
+function update_header(amount_total, minimum_ok){
+    if (amount_total == '0') {
+        $('#nav_shopping_cart').css('visibility', 'hidden');
+    }
+    else {
+        $('#nav_shopping_cart').css('visibility', 'visible');
+        $('#nav_amount_total').replaceWith("<span id='nav_amount_total'>" + amount_total + "</span>");
 
-
-$('.quantity').change(function(e){
-    self = this;
-    var new_quantity = e.currentTarget.value;
-    var product_id = e.currentTarget.id.split('_')[1];
-    
-    $.ajax({
-        url: FLASK_URL_FOR['catalog_inline_quantity_update'],
-        type: "POST",
-        data: {new_quantity: new_quantity, product_id: product_id},
-        timeout: 1000,
-    }).done(function(msg){
-        if (msg.result.state == 'success' || msg.result.state == 'warning'){
-            $('#quantity_' + product_id).val(msg.result.quantity);
-            $('#quantity_' + product_id).toggleClass('not_null_qty', (msg.result.quantity != '0'));
+        if (minimum_ok){
+            $('#nav_shopping_cart_ok').css('display', 'inline-block');
+            $('#nav_shopping_cart_warning').css('display', 'none');
         }
-        update_header(msg.result.amount_total, msg.result.minimum_ok);
-        display_message_if_required(msg.result.state, msg.result.message);
-    }).fail(function(xhr, textstatus){
-        $('.flashes').replaceWith("<div class='flashes'><p class='text-center bg-danger'>" + AJAX_MESSAGE_ERROR + "</p></div>");
-    });
-});
+        else{
+            $('#nav_shopping_cart_ok').css('display', 'none');
+            $('#nav_shopping_cart_warning').css('display', 'inline-block');
+        }
+    }
+}
+function display_message_if_required(state, message){
+    if (state != 'success') {
+        $('.flashes').replaceWith("<div class='flashes'><p class='text-center bg-" + state + "'>" + message  + "</p></div>");
+    }
+    else {
+        $('.flashes').replaceWith("<div class='flashes' />");
+    }
+}
