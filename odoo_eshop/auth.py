@@ -2,6 +2,7 @@
 # -*- encoding: utf-8 -*-
 
 # Standard Librairies
+from config import conf
 from functools import wraps
 from flask import (
     session,
@@ -24,7 +25,22 @@ def logout():
 
 
 def home():
-    return render_template('home.html')
+    try:
+        shop = openerp.SaleShop.browse(int(conf.get('openerp', 'shop_id')))
+        eshop_home_text=shop.eshop_home_text
+        eshop_image=shop.eshop_image
+    except:
+        # This exception is fully ignored because we have to display
+        # an home page, eventually with flashed messages that mention problems
+        eshop_home_text = eshop_image = False
+        flash(_(
+            "Distant Service Unavailable. If you had a pending"
+            " purchase, You have not lost your Shopping"
+            " Cart. Thank you connect again in a while."),
+            'danger')
+        return unavailable_service()
+    return render_template(
+        'home.html', eshop_home_text=eshop_home_text, eshop_image=eshop_image)
 
 
 def authenticate():
@@ -69,20 +85,27 @@ def requires_auth(f):
                 logout()
                 if openerp:
                     flash(_(
-                        """Local Service Unavailable. If you had a pending"""
-                        """ purchase, You have not lost your Shopping"""
-                        """ Cart. Thank you connect again in a while."""),
+                        "Local Service Unavailable. If you had a pending"
+                        " purchase, You have not lost your Shopping"
+                        " Cart. Thank you connect again in a while."),
                         'danger')
                 else:
                     flash(_(
-                        """Distant Service Unavailable. If you had a pending"""
-                        """ purchase, You have not lost your Shopping"""
-                        """ Cart. Thank you connect again in a while."""),
+                        "Distant Service Unavailable. If you had a pending"
+                        " purchase, You have not lost your Shopping"
+                        " Cart. Thank you connect again in a while."),
                         'danger')
                 return unavailable_service()
 
             session['partner_id'] = partner.id
             session['partner_name'] = partner.name
+
+            # Store in session some settings
+            shop = openerp.SaleShop.browse(int(conf.get('openerp', 'shop_id')))
+            session['eshop_minimum_price'] = shop.eshop_minimum_price
+            session['eshop_vat_included'] = shop.eshop_vat_included
+            session['manage_delivery_moment'] = shop.manage_delivery_moment
+            session['manage_recovery_moment'] = shop.manage_recovery_moment
 
             return f(*args, **kwargs)
         return home()

@@ -31,7 +31,7 @@
 </div>
         {% for recovery_moment_group in recovery_moment_groups %}
 
-<table class="table table-hover">
+<table class="table table-condensed table-bordered">
     <thead>
         <tr>
             <th>{{ _('Day') }}</th>
@@ -87,6 +87,10 @@
             <div class="modal-body" id="confirm-part">
                 <p>{{ _('You are about to valid your Shopping Cart, this procedure is irreversible.') }}</p>
                 <p>{{ _('Do you want to proceed?') }}</p>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">{{ _('Cancel') }}</button>
+                <a href="#" class="btn btn-info info" id="btn-confirm">{{ _('Confirm') }}</a>
+            </div>
             </div>
             <div class="modal-body loading" id="loading-part">
                 <div style="text-align: center">
@@ -95,10 +99,7 @@
                 </div>
 
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">{{ _('Cancel') }}</button>
-                <a href="#" class="btn btn-info info" id="btn-confirm">{{ _('Confirm') }}</a>
-            </div>
+
         </div>
     </div>
 </div>

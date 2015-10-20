@@ -32,22 +32,30 @@
         <a data-href="{{ url_for('shopping_cart_delete') }}"
             data-toggle="modal"
             data-target="#confirm-delete"
-            class="col-sm-offset-3 btn btn-default" href="#" role="button">{{ _('Delete Shopping Cart') }}</a>
+            class="col-sm-offset-3 btn btn-default" href="#" role="button">
+            <span class="glyphicon glyphicon-remove"/>
+            {{ _('Delete Shopping Cart') }}</a>
     </div>
     <div class="col-md-6">
         <a href="{{ url_for('recovery_moment_place') }}"
-            class="col-sm-offset-3 btn btn-default" href="#" role="button">{{ _('Select Place and Moment Recovery') }}</a>
+            class="col-sm-offset-3 btn btn-default" href="#" role="button">
+            <span class="glyphicon glyphicon-calendar"/>
+            {{ _('Select Place and Moment Recovery') }}</a>
+            
     </div>
 </div>
 
-<table class="table table-hover table-condensed table-bordered" style="margin-top:5px;">
+<hr />
+
+<table class="table table-condensed table-bordered">
     <thead>
         <tr>
             <th>{{ _('Product') }}</th>
             <th>{{ _('Quantity') }}</th>
             <th>{{ _('Unit') }}</th>
             <th>{{ _('Price Unit VAT Include') }}</th>
-            <th>{{ _('Subtotal VAT Exclude') }}</th>
+            <th>{{ _('Subtotal VAT Excluded') }}</th>
+            <th>{{ _('Subtotal VAT Included') }}</th>
             <th />
         <tr>
     </thead>
@@ -70,14 +78,12 @@
             </td>
             <td>{{ line.product_uom.eshop_description }}</td>
             <td>{{ line.price_unit|to_currency }}</td>
-            <td>
-                <input type="text" disabled class="form-control price"
-                    id="price_subtotal_{{line.id}}"
-                    value="{{ line.price_subtotal|to_currency }}" /></td>
+            <td>{{ line.price_subtotal|to_currency }}</td>
+            <td>{{ line.price_subtotal_taxinc|to_currency }}</td>
             <td>
                 <a href="{{ url_for('shopping_cart_delete_line', line_id=line.id) }}"
                     class="btn btn-default" role="button">
-                        <span class="glyphicon glyphicon-remove-circle"/> {{ _('Remove') }}</a>
+                        <span class="glyphicon glyphicon-trash"/> {{ _('Remove') }}</a>
                 </a>
             
             </td>
@@ -99,18 +105,7 @@
         </dl>
     </div>
 </div>
-<div class="row">
-    <div class="col-md-6">
-        <a data-href="{{ url_for('shopping_cart_delete') }}"
-            data-toggle="modal"
-            data-target="#confirm-delete"
-            class="col-sm-offset-3 btn btn-default" href="#" role="button">{{ _('Delete Shopping Cart') }}</a>
-    </div>
-    <div class="col-md-6">
-        <a href="{{ url_for('recovery_moment_place') }}"
-            class="col-sm-offset-3 btn btn-default" href="#" role="button">{{ _('Select Place and Moment Recovery') }}</a>
-    </div>
-</div>
+
 <!-- Delete Shopping Cart PopUp-->
 <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">

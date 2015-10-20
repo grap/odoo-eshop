@@ -10,15 +10,15 @@
 <h1>{{ _('Your Orders') }}</h1>
 
 {% if orders %}
-<table class="table table-hover">
+<table class="table table-condensed table-bordered">
     <thead>
         <tr>
             <th>{{ _('Order Date') }}</th>
             <th>{{ _('Number') }}</th>
-            <th>{{ _('Recovery Place') }}</th>
-            <th>{{ _('Recovery Day') }}</th>
-            <th>{{ _('Recovery Date') }}</th>
-            <th>{{ _('Recovery Time') }}</th>
+            <th>{{ _('Place') }}</th>
+            <th>{{ _('Day') }}</th>
+            <th>{{ _('Date') }}</th>
+            <th>{{ _('Time') }}</th>
             <th>{{ _('Untaxed Amount') }}</th>
             <th>{{ _('Total') }}</th>
             <th></th>
@@ -29,11 +29,11 @@
         <tr>
             <td>{{ order.date_order|to_date }}</td>
             <td>{{ order.name }}</td>
-    {% if order.moment_id != False %}
-            <td>{{ order.moment_id.place_id.name }}</td>
-            <td>{{ order.moment_id.min_recovery_date|to_day }}</td>
-            <td>{{ order.moment_id.min_recovery_date|to_date }}</td>
-            <td>{{ order.moment_id.min_recovery_date|to_time }} - {{ order.moment_id.max_recovery_date|to_time }}</td>
+    {% if order.recovery_moment_id != False %}
+            <td>{{ order.recovery_moment_id.place_id.name }}</td>
+            <td>{{ order.recovery_moment_id.min_recovery_date|to_day }}</td>
+            <td>{{ order.recovery_moment_id.min_recovery_date|to_date }}</td>
+            <td>{{ order.recovery_moment_id.min_recovery_date|to_time }} - {{ order.recovery_moment_id.max_recovery_date|to_time }}</td>
 
     {% else %}
             <td>{{ _('Undefined') }}</td>

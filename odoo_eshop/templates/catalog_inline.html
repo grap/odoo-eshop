@@ -115,8 +115,6 @@
         self = this;
         var new_quantity = e.currentTarget.value;
         var product_id = e.currentTarget.id.split('_')[1];
-        console.log(new_quantity);
-        console.log(product_id);
         
         $.ajax({
             url: "{{ url_for('catalog_inline_quantity_update') }}",
@@ -124,7 +122,7 @@
             data: {new_quantity: new_quantity, product_id: product_id},
             timeout: 1000,
         }).done(function(msg){
-            console.log(msg);
+            console.log(msg.result);
             if (msg.result.state == 'success' || msg.result.state == 'warning'){
                 $('#quantity_' + product_id).val(msg.result.quantity);
                 $('#quantity_' + product_id).toggleClass('not_null_qty', (msg.result.quantity != '0'));
@@ -134,6 +132,15 @@
                 else {
                     $('#nav_shopping_cart').css('visibility', 'visible');
                     $('#nav_amount_total').replaceWith("<span id='nav_amount_total'>" + msg.result.amount_total + "</span>");
+
+                    if (msg.result.minimum_ok){
+                        $('#nav_shopping_cart_ok').css('display', 'inline-block');
+                        $('#nav_shopping_cart_warning').css('display', 'none');
+                    }
+                    else{
+                        $('#nav_shopping_cart_ok').css('display', 'none');
+                        $('#nav_shopping_cart_warning').css('display', 'inline-block');
+                    }
                 }
             }
             if (msg.result.state != 'success') {

@@ -8,10 +8,15 @@
 </script>
 <div class="row">
     <div class="col-md-8">
-{{shop.eshop_home_text|safe}}
+{% if eshop_home_text %}
+    {{eshop_home_text|safe}}
+{% endif %}
+
     </div>
     <div class="col-md-4">
-        <img src="{{ url_for('static', filename='images/logo.png') }}" style="width:300px;height=300px" />
+        {% if eshop_image %}
+        <img src="data:image/png;base64,{{ eshop_image }}"  style="width:300px;height=300px" />
+        {% endif %}
     </div>
 
 {% endblock %}

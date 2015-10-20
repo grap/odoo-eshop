@@ -137,18 +137,20 @@ def empty_if_null(value):
 @requires_connection
 def home():
     shop = openerp.SaleShop.browse(int(conf.get('openerp', 'shop_id')))
+    eshop_home_text=shop.eshop_home_text
+    eshop_image=shop.eshop_image
     return render_template(
-        'home.html', shop=shop
-    )
+        'home.html', eshop_home_text=eshop_home_text, eshop_image=eshop_image)
 
 
 @app.route("/home_logged.html")
 @requires_auth
 def home_logged():
     shop = openerp.SaleShop.browse(int(conf.get('openerp', 'shop_id')))
+    eshop_home_text=shop.eshop_home_text
+    eshop_image=shop.eshop_image
     return render_template(
-        'home.html', shop=shop
-    )
+        'home.html', eshop_home_text=eshop_home_text, eshop_image=eshop_image)
 
 
 @app.route("/unavailable_service.html")

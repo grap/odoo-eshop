@@ -11,7 +11,7 @@ from flask.ext.babel import gettext as _
 def currency(n):
     if not n:
         n = 0
-    return ('%.02f' % n).replace('.', ',') + u' €'
+    return ('%.02f' % n).replace('.', ',') + u' € '
 
 
 def load_sale_order():
@@ -174,5 +174,8 @@ def change_product_qty(quantity, mode, product_id=None, line_id=None):
             sale_order.amount_tax if sale_order else 0),
         'amount_total': currency(
             sale_order.amount_total) if sale_order else 0,
+        'minimum_ok': session['eshop_vat_included'] and
+            (sale_order.amount_total >= session['eshop_minimum_price']) or
+            (sale_order.amount_untaxed >= session['eshop_minimum_price'])
     })
     return res

@@ -6,18 +6,13 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>{{ _('eShop')}}{% block extra_title %}{% endblock %}</title>
 
-<!--        <script data-require="jquery@*" data-semver="2.0.3" src="http://code.jquery.com/jquery-2.0.3.min.js"></script>-->
-<!--        <script data-require="bootstrap@*" data-semver="3.1.1" src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>-->
-<!--        <link data-require="bootstrap-css@3.1.1" data-semver="3.1.1" rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" />-->
 
     <!-- from : http://code.jquery.com/jquery-2.1.4.min.js -->
-        <script src="{{ url_for('static', filename='js/jquery-2.1.4.min.js') }}"></script>
+        <script src="{{ url_for('lib', filename='js/jquery-2.1.4.min.js') }}"></script>
 
-    <!-- from : http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js -->
-        <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
-
-    <!-- from : http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css -->
-        <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet" />
+    <!-- from : https://github.com/twbs/bootstrap/releases/download/v3.3.5/bootstrap-3.3.5-dist.zip -->
+        <script src="{{ url_for('lib', filename='js/bootstrap.min.js') }}"></script>
+        <link href="{{ url_for('lib', filename='css/bootstrap.min.css') }}" rel="stylesheet" />
 
     {% block extra_css %}{% endblock %}
 
@@ -27,7 +22,7 @@
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-        <link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
+
     </head>
     <body>
         <div class="container">
@@ -36,47 +31,73 @@
 
                 <div class="container-fluid">
                     <div class="nav navbar-left" style="margin-right:10px">
-                        <a class="btn btn-sm btn-default" id="nav_home" href="{{  url_for('home') }}">
-                            <img src="{{ url_for('static', filename='images/logo_small.png') }}" style="width:30px;height=30px" />
+                        <a class="btn btn-default" id="nav_home" href="{{  url_for('home') }}">
+                            <span class="glyphicon glyphicon-home"/>
                         </a>
                     </div>
 
         {% if 'partner_name' in session %}
                     <div class="nav navbar-left">
-                        <a class="btn btn-sm btn-default" id="nav_catalog_inline" href="{{  url_for('catalog_inline') }}">{{ _('Purchase (List View)') }}</a>
-                        <a class="btn btn-sm btn-default" id="nav_catalog_tree" href="{{  url_for('catalog_tree') }}">{{ _('Purchase (Catalog View)') }}</a>
+                        <a class="btn btn-default" id="nav_catalog_inline" href="{{  url_for('catalog_inline') }}">
+                            <span class="glyphicon glyphicon-th-list"/> {{ _('Purchase (List View)') }}</a>
+                        <a class="btn btn-default" id="nav_catalog_tree" href="{{  url_for('catalog_tree') }}">
+                            <span class="glyphicon glyphicon-th"/> {{ _('Purchase (Catalog View)') }}</a>
             {% if sale_order %}
-                        <a class="btn btn-sm btn-default" id="nav_shopping_cart" href="{{  url_for('shopping_cart') }}">
-                            <span class="glyphicon glyphicon-shopping-cart"/> - {{ _('Shopping Cart: ') }}
-                            (<span id="nav_amount_total">{{ sale_order.amount_total|to_currency }}</span>)
+                        <a class="btn btn-default" id="nav_shopping_cart" href="{{  url_for('shopping_cart') }}">
+                            <span class="glyphicon glyphicon-shopping-cart"/> {{ _('Shopping Cart: ') }}
+                            {% if session['eshop_vat_included'] %}
+                            <span id="nav_amount_total">{{ sale_order.amount_total|to_currency }}</span>
+                             {{_('VAT. Incl.')}}
+                                {% if sale_order.amount_total >= session['eshop_minimum_price']%}
+                            <span class="glyphicon glyphicon glyphicon-ok-circle"/> - 
+                            <span class="glyphicon glyphicon-warning-sign" style="display:none"/>
+                                {% else %}
+                            <span class="glyphicon glyphicon-warning-sign"/> - 
+                            <span class="glyphicon glyphicon-ok-circle" style="display:none"/>
+                                {% endif %}
+                            {% else %}
+                            <span id="nav_amount_total">{{ sale_order.amount_untaxed|to_currency }}</span>
+                             {{_('VAT. Excl.')}}
+                                {% if sale_order.amount_untaxed >= session['eshop_minimum_price']%}
+                            <span class="glyphicon glyphicon-ok-circle" id="nav_shopping_cart_ok" ></span>
+                            <span class="glyphicon glyphicon-warning-sign" id="nav_shopping_cart_warning" style="display:none"></span>
+                                {% else %}
+                            <span class="glyphicon glyphicon-ok-circle" id="nav_shopping_cart_ok" style="display:none"></span>
+                            <span class="glyphicon glyphicon-warning-sign" id="nav_shopping_cart_warning"></span>
+
+                                {% endif %}
+                            {% endif %}
+
                         </a>
             {% else %}
-                        <a class="btn btn-sm btn-default" id="nav_shopping_cart" style="visibility:hidden" href="{{  url_for('shopping_cart') }}">
-                            <span class="glyphicon glyphicon-shopping-cart"/> - {{ _('Shopping Cart: ') }}
-                            (<span id="nav_amount_total">{{ 0|to_currency }}</span>)
+                        <a class="btn btn-default" id="nav_shopping_cart" style="visibility:hidden" href="{{  url_for('shopping_cart') }}">
+                            <span class="glyphicon glyphicon-shopping-cart"/> {{ _('Shopping Cart: ') }}
+                            <span id="nav_amount_total">{{ 0|to_currency }}</span>
+                            <span class="glyphicon glyphicon-warning-sign" id="nav_shopping_cart_warning"/>
+                            <span class="glyphicon glyphicon glyphicon-ok-circle" id="nav_shopping_cart_ok" style="display:none"/>
                         </a>
             {% endif %}
                     </div>
 
                     <div class="nav navbar-right">
                         <div class="btn-group">
-                            <button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="nav_account">
-                                {{ _('Your Account') }} - {{ session['partner_name'] }}
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="nav_account">
+                                {{ _('Your Account') }}
                                 <span class="caret" />
                           </button>
                           <ul class="dropdown-menu">
-                            <li><a class="btn-sm" href="{{ url_for('account')}}">
+                            <li><a class="btn" href="{{ url_for('account')}}">
                                 {{ _('Personnal Datas') }}
                                 </a></li>
-                            <li><a class="btn-sm" href="{{ url_for('orders')}}">
+                            <li><a class="btn" href="{{ url_for('orders')}}">
                                 {{ _('Orders History') }}
                                 </a></li>
-                            <li><a class="btn-sm" href="{{ url_for('invoices')}}">
+                            <li><a class="btn" href="{{ url_for('invoices')}}">
                                 {{ _('Invoices History') }}
                                 </a></li>
                             <li role="separator" class="divider"></li>
                             <li>
-                                <a class="btn-sm" href="{{ url_for('logout_view') }}">
+                                <a class="btn" href="{{ url_for('logout_view') }}">
                                     <span class="glyphicon glyphicon-log-out"/> - {{ _('Log Out') }}
                                 </a></li>
                           </ul>
@@ -84,7 +105,7 @@
 
             {% else %}
                     <div class="nav navbar-right">
-                        <a class="btn btn-sm btn-default" href="{{ url_for('login_view') }}">
+                        <a class="btn btn-default" href="{{ url_for('login_view') }}">
                             <span class="glyphicon glyphicon-log-in"/> - {{ _('Log In') }}
                         </a>
         {% endif %}
