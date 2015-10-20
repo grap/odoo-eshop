@@ -8,11 +8,11 @@
 
 
     <!-- from : http://code.jquery.com/jquery-2.1.4.min.js -->
-        <script src="{{ url_for('lib', filename='js/jquery-2.1.4.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='lib/js/jquery-2.1.4.min.js') }}"></script>
 
     <!-- from : https://github.com/twbs/bootstrap/releases/download/v3.3.5/bootstrap-3.3.5-dist.zip -->
-        <script src="{{ url_for('lib', filename='js/bootstrap.min.js') }}"></script>
-        <link href="{{ url_for('lib', filename='css/bootstrap.min.css') }}" rel="stylesheet" />
+        <script src="{{ url_for('static', filename='lib/js/bootstrap.min.js') }}"></script>
+        <link href="{{ url_for('static', filename='lib/css/bootstrap.min.css') }}" rel="stylesheet" />
 
     {% block extra_css %}{% endblock %}
 
@@ -22,6 +22,12 @@
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+
+        <script>
+            FLASK_URL_FOR = {'catalog_inline_quantity_update': "{{ url_for('catalog_inline_quantity_update') }}"};
+            AJAX_MESSAGE_ERROR = "{{ _('Something wrong occured, please refresh the page.')}}";
+            
+        </script>
 
     </head>
     <body>

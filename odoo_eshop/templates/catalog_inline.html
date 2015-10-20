@@ -84,7 +84,6 @@
         <td>
             {% if product['delivery_categ_id'] %}
             <img class="img-delivery-categ" src="data:image/png;base64,{{ product['delivery_categ_id']['image_small'] }}" title="{{ product['delivery_categ_id']['name'] }}"/>
-                
             {% endif %}
         </td>
         <td class="input_text">
@@ -101,59 +100,12 @@
     </tr>
         {% endfor %}
 
-
-
     {% endfor %}
 </table>
 
 <!-- JQuery -->
-<script>
-    $('.update_btn').hide();
-    $('.update_btn').attr('disabled', 'disabled');
-    
-    $('.quantity').change(function(e){
-        self = this;
-        var new_quantity = e.currentTarget.value;
-        var product_id = e.currentTarget.id.split('_')[1];
-        
-        $.ajax({
-            url: "{{ url_for('catalog_inline_quantity_update') }}",
-            type: "POST",
-            data: {new_quantity: new_quantity, product_id: product_id},
-            timeout: 1000,
-        }).done(function(msg){
-            console.log(msg.result);
-            if (msg.result.state == 'success' || msg.result.state == 'warning'){
-                $('#quantity_' + product_id).val(msg.result.quantity);
-                $('#quantity_' + product_id).toggleClass('not_null_qty', (msg.result.quantity != '0'));
-                if (msg.result.amount_total == '0') {
-                    $('#nav_shopping_cart').css('visibility', 'hidden');
-                }
-                else {
-                    $('#nav_shopping_cart').css('visibility', 'visible');
-                    $('#nav_amount_total').replaceWith("<span id='nav_amount_total'>" + msg.result.amount_total + "</span>");
-
-                    if (msg.result.minimum_ok){
-                        $('#nav_shopping_cart_ok').css('display', 'inline-block');
-                        $('#nav_shopping_cart_warning').css('display', 'none');
-                    }
-                    else{
-                        $('#nav_shopping_cart_ok').css('display', 'none');
-                        $('#nav_shopping_cart_warning').css('display', 'inline-block');
-                    }
-                }
-            }
-            if (msg.result.state != 'success') {
-                $('.flashes').replaceWith("<div class='flashes'><p class='text-center bg-" + msg.result.state + "'>" + msg.result.message  + "</p></div>");
-            }
-            else {
-                $('.flashes').replaceWith("<div class='flashes' />");
-            }
-        }).fail(function(xhr, textstatus){
-            $('.flashes').replaceWith("<div class='flashes'><p class='text-center bg-danger'> {{ _('Something wrong occured, please refresh the page.')}}</p></div>");
-        });
-    });
-</script>
+<script src="{{ url_for('static', filename='js/update_btn_hide.js') }}"></script>
+<script src="{{ url_for('static', filename='js/catalog_inline_quantity_update.js') }}"></script>
 
 {% endblock %}
 
