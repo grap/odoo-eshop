@@ -35,11 +35,15 @@ function update_header(amount_total, minimum_ok){
         }
     }
 }
-function display_message_if_required(state, message){
-    if (state != 'success') {
+function display_message(state, message, allways){
+    if (state != 'success' || always) {
         $('.flashes').replaceWith("<div class='flashes'><p class='text-center bg-" + state + "'>" + message  + "</p></div>");
     }
     else {
         $('.flashes').replaceWith("<div class='flashes' />");
     }
+}
+
+function display_fail_message(){
+    $('.flashes').replaceWith("<div class='flashes'><p class='text-center bg-danger'>" + AJAX_MESSAGE_ERROR + "</p></div>");
 }

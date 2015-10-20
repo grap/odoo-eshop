@@ -83,44 +83,8 @@
 </form>
 
 <!-- JQuery -->
-<script>
-    $('.update_btn').hide();
-    $('.update_btn').attr('disabled', 'disabled');
 
-    $('.account_data').change(function(e){
-        self = this;
-        $.ajax({
-            url: "{{ url_for('account_update') }}",
-            type: "POST",
-            data: {
-                new_phone: $('#account_phone').val(),
-                new_mobile: $('#account_mobile').val(),
-                new_street: $('#account_street').val(),
-                new_street2: $('#account_street2').val(),
-                new_zip: $('#account_zip').val(),
-                new_city: $('#account_city').val(),
-                }, timeout: 1000,
-        }).done(function(msg){
-            if (msg.result.state == 'success' || msg.result.state == 'warning'){
-                $('#account_phone').val(msg.result.phone);
-                $('#account_mobile').val(msg.result.mobile);
-                $('#account_street').val(msg.result.street);
-                $('#account_street2').val(msg.result.street2);
-                $('#account_zip').val(msg.result.zip);
-                $('#account_city').val(msg.result.city);
-            }
-//            if (msg.result.state != 'success') {
-            $('.flashes').replaceWith("<div class='flashes'><p class='text-center bg-" + msg.result.state + "'>" + msg.result.message  + "</p></div>");
-//            }
-//            else {
-//                $('.flashes').replaceWith("<div class='flashes' />");
-//            }
-        }).fail(function(xhr, textstatus){
-            $('.flashes').replaceWith("<div class='flashes'><p class='text-center bg-danger'> {{ _('Something wrong occured, please refresh the page.')}}</p></div>");
-        });
-
-
-    });
-</script>
+<script src="{{ url_for('static', filename='js/update_btn_hide.js') }}"></script>
+<script src="{{ url_for('static', filename='js/account_update.js') }}"></script>
 
 {% endblock %}

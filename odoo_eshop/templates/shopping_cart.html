@@ -8,13 +8,9 @@
 {% endblock %}
 
 <style type="text/css">
-    .quantity .price{
+    .quantity{
         width:150px !important;
         text-align:right;
-    }
-    .not_null_qty{
-        background-color:#DDFFFF;
-        font-weight:bold;
     }
     .input_text{
         padding:0px !important;
@@ -33,7 +29,7 @@
             data-toggle="modal"
             data-target="#confirm-delete"
             class="col-sm-offset-3 btn btn-default" href="#" role="button">
-            <span class="glyphicon glyphicon-remove"/>
+            <span class="glyphicon glyphicon-trash"/>
             {{ _('Delete Shopping Cart') }}</a>
     </div>
     <div class="col-md-6">
@@ -51,11 +47,18 @@
     <thead>
         <tr>
             <th>{{ _('Product') }}</th>
+            {% if session['eshop_vat_included'] %}
+            <th>{{ _('Price Unit VAT Included') }}</th>
+            {% else %}
+            <th>{{ _('Price Unit VAT Excluded') }}</th>
+            {% endif %}
             <th>{{ _('Quantity') }}</th>
             <th>{{ _('Unit') }}</th>
-            <th>{{ _('Price Unit VAT Include') }}</th>
-            <th>{{ _('Subtotal VAT Excluded') }}</th>
+            {% if session['eshop_vat_included'] %}
             <th>{{ _('Subtotal VAT Included') }}</th>
+            {% else %}
+            <th>{{ _('Subtotal VAT Excluded') }}</th>
+            {% endif %}
             <th />
         <tr>
     </thead>
@@ -65,6 +68,7 @@
             <td>
                 <a href="{{url_for('product', product_id=line.product_id.id)}}">{{ line.name }}</a>
             </td>
+            <td>{{ line.price_unit|to_currency }}</td>
             <td class="input_text">
                 <form class="form-inline" role="form" method="POST" action="{{ url_for('shopping_cart_quantity_update') }}">
                     <div class="form-group">
@@ -77,34 +81,53 @@
                 </form>
             </td>
             <td>{{ line.product_uom.eshop_description }}</td>
-            <td>{{ line.price_unit|to_currency }}</td>
-            <td>{{ line.price_subtotal|to_currency }}</td>
-            <td>{{ line.price_subtotal_taxinc|to_currency }}</td>
+            {% if session['eshop_vat_included'] %}
+            <td>
+                <input type="text" class="form-control input-sm" id="price_subtotal_{{line.id}}" 
+                        placeholder="{{ line.price_subtotal_taxinc|to_currency }}" readonly/>
+            </td>
+            {% else %}
+            <td>
+                <input type="text" class="form-control input-sm" id="price_subtotal_{{line.id}}" 
+                        placeholder="{{ line.price_subtotal|to_currency }}" readonly/>
+            </td>
+            {% endif %}
             <td>
                 <a href="{{ url_for('shopping_cart_delete_line', line_id=line.id) }}"
                     class="btn btn-default" role="button">
-                        <span class="glyphicon glyphicon-trash"/> {{ _('Remove') }}</a>
+                        <span class="glyphicon glyphicon-remove"/> {{ _('Remove') }}</a>
                 </a>
-            
             </td>
         </tr>
 {% endfor %}
     </tbody>
+    <tfoot>
+        <tr>
+            <th colspan="3">&nbsp;</th>
+            <th>{{ _('Untaxed Amount') }}</th>
+            <td colspan="2">
+                <input type="text" class="form-control input-sm" id="amount_untaxed"
+                        placeholder="{{ sale_order.amount_untaxed|to_currency }}" readonly/></td>
+        </tr>
+        <tr>
+            <th colspan="3">&nbsp;</th>
+            <th>{{ _('Taxes') }}</th>
+            <td colspan="2">
+                <input type="text" class="form-control input-sm" id="amount_tax" 
+                        placeholder="{{ sale_order.amount_tax|to_currency }}" readonly/></td>
+        </tr>
+        <tr>
+            <th colspan="3">&nbsp;</th>
+            <th>{{ _('Total') }}</th>
+            <td colspan="2">
+                <input type="text" class="form-control input-sm" id="amount_total"
+                        placeholder="{{ sale_order.amount_total|to_currency }}" readonly/></td>
+        </tr>
+    </tfoot>
+    
 </table>
 
-<div class="row">
-    <div class="col-md-8"></div>
-    <div class="col-md-4">
-        <dl class="dl-horizontal">
-            <dt>{{ _('Untaxed Amount') }}</dt>
-            <dd><input type="text" disabled class="form-control input-sm col-xs-2" id="amount_untaxed" value="{{ sale_order.amount_untaxed|to_currency }}" /></dd>
-            <dt>{{ _('Taxes') }}</dt>
-            <dd><input type="text" disabled class="form-control input-sm col-xs-2" id="amount_tax" value="{{ sale_order.amount_tax|to_currency }}" /></dd>
-            <dt>{{ _('Total') }}</dt>
-            <dd><input type="text" disabled class="form-control input-sm col-xs-2" id="amount_total" value="{{ sale_order.amount_total|to_currency }}"/></dd>
-        </dl>
-    </div>
-</div>
+
 
 <!-- Delete Shopping Cart PopUp-->
 <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -131,38 +154,9 @@
     $('#confirm-delete').on('show.bs.modal', function(e) {
         $(this).find('.danger').attr('href', $(e.relatedTarget).data('href'));
     });
-
-    $('.update_btn').hide();
-    $('.update_btn').attr('disabled', 'disabled');
-
-    $('.quantity').change(function(e){
-        self = this;
-        var new_quantity = e.currentTarget.value;
-        var line_id = e.currentTarget.id.split('_')[1];
-        $.ajax({
-            url: "{{ url_for('shopping_cart_quantity_update') }}",
-            type: "POST",
-            data: {new_quantity: new_quantity, line_id: line_id},
-            timeout: 1000,
-        }).done(function(msg){
-            if (msg.result.state == 'success' || msg.result.state == 'warning'){
-                $('#price_subtotal_' + line_id).val(msg.result.price_subtotal);
-                $('#quantity_' + line_id).val(msg.result.quantity);
-                $('#amount_untaxed').val(msg.result.amount_untaxed);
-                $('#amount_tax').val(msg.result.amount_tax);
-                $('#amount_total').val(msg.result.amount_total);
-                $('#nav_amount_total').replaceWith("<span id='nav_amount_total'>" + msg.result.amount_total + "</span>");
-            }
-            if (msg.result.state != 'success') {
-                $('.flashes').replaceWith("<div class='flashes'><p class='text-center bg-" + msg.result.state + "'>" + msg.result.message  + "</p></div>");
-            }
-            else {
-                $('.flashes').replaceWith("<div class='flashes' />");
-            }
-        }).fail(function(xhr, textstatus){
-            $('.flashes').replaceWith("<div class='flashes'><p class='text-center bg-danger'> {{ _('Something wrong occured, please refresh the page.')}}</p></div>");
-        });
-    });
 </script>
+
+<script src="{{ url_for('static', filename='js/update_btn_hide.js') }}"></script>
+<script src="{{ url_for('static', filename='js/shopping_cart_quantity_update.js') }}"></script>
 
 {% endblock %}

@@ -18,21 +18,24 @@
 ******************************************************************************/
 
 
-
 $('.quantity').change(function(e){
     self = this;
     var new_quantity = e.currentTarget.value;
-    var product_id = e.currentTarget.id.split('_')[1];
-    
+    var line_id = e.currentTarget.id.split('_')[1];
     $.ajax({
-        url: FLASK_URL_FOR['catalog_inline_quantity_update'],
+        url: FLASK_URL_FOR['shopping_cart_quantity_update'],
         type: "POST",
-        data: {new_quantity: new_quantity, product_id: product_id},
+        data: {new_quantity: new_quantity, line_id: line_id},
         timeout: 1000,
     }).done(function(msg){
         if (msg.result.state == 'success' || msg.result.state == 'warning'){
-            $('#quantity_' + product_id).val(msg.result.quantity);
-            $('#quantity_' + product_id).toggleClass('not_null_qty', (msg.result.quantity != '0'));
+            // Update Sale Order Line infos
+            $('#quantity_' + line_id).val(msg.result.quantity);
+            $('#price_subtotal_' + line_id).attr('data-placeholder', msg.result.price_subtotal);
+            // Update Sale Order infos
+            $('#amount_untaxed').attr('data-placeholder', msg.result.amount_untaxed);
+            $('#amount_tax').attr('data-placeholder', msg.result.amount_tax);
+            $('#amount_total').attr('data-placeholder', msg.result.amount_total);
         }
         update_header(msg.result.amount_total, msg.result.minimum_ok);
         display_message(msg.result.state, msg.result.message, false);

@@ -17,26 +17,30 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ******************************************************************************/
 
-
-
-$('.quantity').change(function(e){
+$('.account_data').change(function(e){
     self = this;
-    var new_quantity = e.currentTarget.value;
-    var product_id = e.currentTarget.id.split('_')[1];
-    
     $.ajax({
-        url: FLASK_URL_FOR['catalog_inline_quantity_update'],
+        url: "{{ url_for('account_update') }}",
         type: "POST",
-        data: {new_quantity: new_quantity, product_id: product_id},
-        timeout: 1000,
+        data: {
+            new_phone: $('#account_phone').val(),
+            new_mobile: $('#account_mobile').val(),
+            new_street: $('#account_street').val(),
+            new_street2: $('#account_street2').val(),
+            new_zip: $('#account_zip').val(),
+            new_city: $('#account_city').val(),
+            }, timeout: 1000,
     }).done(function(msg){
         if (msg.result.state == 'success' || msg.result.state == 'warning'){
-            $('#quantity_' + product_id).val(msg.result.quantity);
-            $('#quantity_' + product_id).toggleClass('not_null_qty', (msg.result.quantity != '0'));
+            $('#account_phone').val(msg.result.phone);
+            $('#account_mobile').val(msg.result.mobile);
+            $('#account_street').val(msg.result.street);
+            $('#account_street2').val(msg.result.street2);
+            $('#account_zip').val(msg.result.zip);
+            $('#account_city').val(msg.result.city);
         }
-        update_header(msg.result.amount_total, msg.result.minimum_ok);
-        display_message(msg.result.state, msg.result.message, false);
+        display_message(msg.result.state, msg.result.message, true);
     }).fail(function(xhr, textstatus){
-        display_fail_message();
+        $('.flashes').replaceWith("<div class='flashes'><p class='text-center bg-danger'>" + AJAX_MESSAGE_ERROR + "</p></div>");
     });
-});
+

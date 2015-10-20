@@ -343,8 +343,8 @@ def recovery_moment_place():
     if (shop.eshop_minimum_price != 0
             and shop.eshop_minimum_price > sale_order.amount_total):
         flash(
-            _("You have not reached the ceiling of %(min)s.",
-                min=compute_currency(shop.eshop_minimum_price)),
+            _("You have not reached the ceiling : ") +
+            compute_currency(shop.eshop_minimum_price),
             'warning')
         return redirect(url_for('shopping_cart'))
     return render_template(

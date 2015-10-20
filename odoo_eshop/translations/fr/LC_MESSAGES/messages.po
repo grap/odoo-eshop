@@ -68,7 +68,7 @@ msgstr "Votre panier a été supprimé avec succès."
 #: app.py:350
 #, python-format
 msgid "You have not reached the ceiling of %(min)s."
-msgstr "Vous n'avez pas atteint le plafond de %(min)s"
+msgstr "Vous n'avez pas atteint le franco de %(min)s"
 
 #: app.py:379
 msgid "Your Sale Order is now confirmed."
