@@ -38,15 +38,22 @@ babel = Babel(app)
 
 @app.context_processor
 def current_sale_order():
-    sale_order = load_sale_order()
-    return {'sale_order': sale_order}
+    try:
+        sale_order = load_sale_order()
+        return {'sale_order': sale_order}
+    except:
+        pass
+    return {'sale_order': False}
 
 
 @babel.localeselector
 def locale_selector():
-    if 'partner_id' in session:
-        partner = openerp.ResPartner.browse(session['partner_id'])
-        return partner.lang
+    if session.get('partner_id', False):
+        try:
+            partner = openerp.ResPartner.browse(session['partner_id'])
+            return partner.lang
+        except:
+            pass
     return request.accept_languages.best_match(['fr', 'en'])
 
 
@@ -55,6 +62,7 @@ def partner_domain(partner_field):
         return (partner_field, '=', session['partner_id'])
     else:
         return (partner_field, '=', -1)
+
 
 def get_local_date(str_utc_date, schema):
     """From UTC string Datetime, return local datetime"""
@@ -141,24 +149,15 @@ def empty_if_null(value):
 @requires_connection
 def home():
     shop = openerp.SaleShop.browse(int(conf.get('openerp', 'shop_id')))
-    eshop_home_text=shop.eshop_home_text
-    eshop_image=shop.eshop_image
-    session['eshop_image_small']=shop.eshop_image_small
-    eshop_register_allowed = shop.eshop_register_allowed
-    return render_template(
-        'home.html', eshop_home_text=eshop_home_text, eshop_image=eshop_image,
-        eshop_register_allowed=eshop_register_allowed)
+    return render_template('home.html', shop=shop)
 
 
 @app.route("/home_logged.html")
 @requires_auth
 def home_logged():
     shop = openerp.SaleShop.browse(int(conf.get('openerp', 'shop_id')))
-    eshop_home_text=shop.eshop_home_text
-    eshop_image=shop.eshop_image
-    session['eshop_image_small']=shop.eshop_image_small
-    return render_template(
-        'home.html', eshop_home_text=eshop_home_text, eshop_image=eshop_image)
+    # TODO Message if PZI
+    return render_template('home.html', shop=shop)
 
 
 @app.route("/unavailable_service.html")
@@ -166,24 +165,28 @@ def home_logged():
 def unavailable_service():
     return render_template('unavailable_service.html')
 
-
 # ############################################################################
 # Auth Route
 # ############################################################################
 @app.route("/login.html", methods=['GET', 'POST'])
+@requires_connection
 def login_view():
-    shop = openerp.SaleShop.browse(int(conf.get('openerp', 'shop_id')))
-    session['eshop_image_small']=shop.eshop_image_small
-    eshop_register_allowed = shop.eshop_register_allowed
     if request.form.get('login', False):
-        login(request.form['login'], request.form['password'])
-        return redirect(url_for('home_logged'))
-    else:
-        return render_template('login.html',
-        eshop_register_allowed=eshop_register_allowed)
+        # Authentication asked
+        partner_id = openerp.ResPartner.login(
+            request.form['login'], request.form['password'])
+        if partner_id:
+            partner = openerp.ResPartner.browse(partner_id)
+            session['partner_id'] = partner.id
+            session['partner_name'] = partner.name
+            return redirect(url_for('home_logged'))
+        else:
+            flash(_('Login/password incorrects'), 'danger')
+    return render_template('login.html')
 
 
 @app.route("/logout.html")
+@requires_connection
 def logout_view():
     logout()
     return redirect(url_for('home'))
@@ -232,11 +235,11 @@ def password_check(password):
     }
 
 @app.route("/register.html", methods=['GET', 'POST'])
-#@requires_no_auth
+@requires_connection
 def register():
     # Check if the operation is possible
-    shop = openerp.SaleShop.browse(int(conf.get('openerp', 'shop_id')))
-    if not shop.eshop_register_allowed or session.get('partner_login', False):
+    if not session.get('eshop_register_allowed', False)\
+            or session.get('partner_login', False):
         return redirect(url_for('home'))
     previous_captcha = session.get('captcha', False)
     PATH_TTF = ['/tmp/test.ttf']
@@ -258,9 +261,7 @@ def register():
                 _("The 'captcha' field is not correct. Please try again"),
                 'danger')
             return render_template(
-                'register.html',
-                eshop_register_allowed = shop.eshop_register_allowed,
-                captcha_data=captcha_data)
+                'register.html', captcha_data=captcha_data)
         else:
             session['captcha_ok'] = True
 
@@ -297,11 +298,7 @@ def register():
                         " the problem.", email=email), 'danger')
 
         if not mail_ok:
-            return render_template(
-                'register.html',
-                eshop_register_allowed = shop.eshop_register_allowed)
-
-
+            return render_template('register.html')
 
         # Check Password
         if request.form.get('password_1') != request.form.get('password_2'):
@@ -344,14 +341,9 @@ def register():
                 email=request.form['email']), 'success')
             return redirect(url_for('home'))
         else:
-            return render_template(
-                'register.html',
-                eshop_register_allowed = shop.eshop_register_allowed,
-                captcha_data=captcha_data)
+            return render_template('register.html')
 
-    return render_template(
-        'register.html', eshop_register_allowed = shop.eshop_register_allowed,
-        captcha_data=captcha_data)
+    return render_template('register.html', captcha_data=captcha_data)
 
 @app.route("/activate_account/<int:id>/<string:email>", methods=['GET'])
 #@requires_no_auth
@@ -706,5 +698,7 @@ def page_not_found(e):
 
 @app.errorhandler(Exception)
 def error(e):
+    flash(_(
+        "An unexcepted error occured. Please try again in a while"), 'danger')
     logging.exception('an error occured')
     return render_template('error.html'), 500

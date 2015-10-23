@@ -7,7 +7,7 @@
     <div class="form-group">
         <label for="login" class="col-sm-offset-2 col-sm-2 control-label">{{ _('Email') }}</label>
         <div class="col-sm-5">
-            <input type="email" name="login" class="form-control" />
+            <input type="email" name="login" class="form-control" value="{{request.form['login']}}"/>
         </div>
         <div class="col-sm-3" >&nbsp;</div>
     </div>

@@ -8,14 +8,16 @@
 </script>
 <div class="row">
     <div class="col-md-8">
-{% if eshop_home_text %}
-    {{eshop_home_text|safe}}
+{% if shop.eshop_home_text %}
+    {{shop.eshop_home_text|safe}}
+{% else %}
+    {{_('eShop not set.')}}
 {% endif %}
 
     </div>
     <div class="col-md-4">
-        {% if eshop_image %}
-        <img src="data:image/png;base64,{{ eshop_image }}"  style="width:300px;height=300px" />
+        {% if shop.eshop_home_image %}
+        <img src="data:image/png;base64,{{ shop.eshop_home_image }}"  style="width:300px;height=300px" />
         {% endif %}
     </div>
 

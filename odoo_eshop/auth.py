@@ -8,6 +8,9 @@ from flask import (
     session,
     render_template,
     flash,
+    redirect,
+    url_for,
+    request,
 )
 from flask.ext.babel import gettext as _
 
@@ -23,95 +26,64 @@ def login(username, password):
 def logout():
     session.clear()
 
+def _load_global_data_if_needed():
+    # TODO: IMP. Set this information in "environment vars" and not
+    # "session" vars.
 
-def home():
-    try:
+    if not session.get('global_data_loaded', False):
         shop = openerp.SaleShop.browse(int(conf.get('openerp', 'shop_id')))
-        eshop_home_text=shop.eshop_home_text
-        eshop_image=shop.eshop_image
+        session['global_data_loaded'] = True
+        session['eshop_title']=shop.eshop_title
+        session['eshop_website_url']=shop.eshop_website_url
+        session['eshop_twitter_url']=shop.eshop_twitter_url
+        session['eshop_facebook_url']=shop.eshop_facebook_url
         session['eshop_image_small']=shop.eshop_image_small
-        eshop_register_allowed = shop.eshop_register_allowed
-    except:
-        # This exception is fully ignored because we have to display
-        # an home page, eventually with flashed messages that mention problems
-        eshop_register_allowed = eshop_home_text = eshop_image = False
-        flash(_(
-            "Distant Service Unavailable. If you had a pending purchase,"
-            " you have not lost your Shopping Cart."
-            " Thank you connect again in a while."),
-            'danger')
-        return unavailable_service()
-    return render_template(
-        'home.html', eshop_home_text=eshop_home_text, eshop_image=eshop_image,
-        eshop_register_allowed=eshop_register_allowed)
+        session['eshop_register_allowed'] = shop.eshop_register_allowed
+        session['eshop_minimum_price'] = shop.eshop_minimum_price
+        session['eshop_vat_included'] = shop.eshop_vat_included
 
-
-def authenticate():
-    return render_template('login.html')
-
-
-def unavailable_service():
-    return render_template('unavailable_service.html')
-
-
+# Decorator called for pages that DON'T require authentication
 def requires_connection(f):
     @wraps(f)
     def decorated(*args, **kwargs):
+        # Check OpenERP Connexion
         if not openerp:
+            # Connexion Failed, redirect to unavailable service page
             flash(_(
                 "Distant Service Unavailable. If you had a pending purchase,"
                 " you have not lost your Shopping Cart."
                 " Thank you connect again in a while."),
                 'danger')
-            return unavailable_service()
+            return render_template('unavailable_service.html')
         else:
+            # Connexion OK: Store in session some params and return asked page
+            _load_global_data_if_needed()
             return f(*args, **kwargs)
+
     return decorated
 
-
+# Decorator called for pages that requires authentication
 def requires_auth(f):
     @wraps(f)
     def decorated(*args, **kwargs):
-        if 'partner_login' in session and 'partner_password' in session:
-            partner = False
-            try:
-                # Partner Authentification
-                partner_id = openerp.ResPartner.login(
-                    session['partner_login'], session['partner_password'])
-                if partner_id:
-                    partner = openerp.ResPartner.browse(partner_id)
-                else:
-                    logout()
-                    flash(_('Login/password incorrects'), 'danger')
-                    return authenticate()
-            except:
-                logout()
-                if openerp:
-                    flash(_(
-                        "Local Service Unavailable. If you had a pending"
-                        " purchase, you have not lost your Shopping"
-                        " Cart. Thank you connect again in a while."),
-                        'danger')
-                else:
-                    flash(_(
-                        "Distant Service Unavailable. If you had a pending"
-                        " purchase, you have not lost your Shopping"
-                        " Cart. Thank you connect again in a while."),
-                        'danger')
-                return unavailable_service()
+        # Check OpenERP Connexion
+        if not openerp:
+            # Connexion Failed, redirect to unavailable service page
+            flash(_(
+                "Distant Service Unavailable. If you had a pending purchase,"
+                " you have not lost your Shopping Cart."
+                " Thank you connect again in a while."),
+                'danger')
+            return render_template('unavailable_service.html')
+        else:
+            # Connexion OK: Store in session some params 
+            _load_global_data_if_needed()
 
-            session['partner_id'] = partner.id
-            session['partner_name'] = partner.name
+            # Check OpenERP Authentication
+            if not session.get('partner_id', False):
+                # User no authenticated
+                return redirect(url_for('login_view'))
+            else:
+                return f(*args, **kwargs)
 
-            # Store in session some settings
-            shop = openerp.SaleShop.browse(int(conf.get('openerp', 'shop_id')))
-            session['eshop_minimum_price'] = shop.eshop_minimum_price
-            session['eshop_register_allowed'] = shop.eshop_register_allowed
-            session['eshop_vat_included'] = shop.eshop_vat_included
-            session['manage_delivery_moment'] = shop.manage_delivery_moment
-            session['manage_recovery_moment'] = shop.manage_recovery_moment
-            session['eshop_image_small'] = shop.eshop_image_small
-
-            return f(*args, **kwargs)
-        return home()
     return decorated

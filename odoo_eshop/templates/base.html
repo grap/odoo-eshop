@@ -44,7 +44,7 @@
                 <div class="container-fluid">
                     <div class="nav navbar-left" style="margin-right:10px">
 
-        {% if 'eshop_image_small' in session %}
+        {% if session.get('eshop_image_small', False) %}
                         <a class="btn btn-default" id="nav_home" href="{{  url_for('home') }}" style="padding: 0px">
                             <img src="data:image/png;base64,{{ session['eshop_image_small'] }}" style="max-height:32px;"/>
                         </a>
@@ -129,7 +129,7 @@
 
         {% else %}
                     <div class="nav navbar-right">
-            {% if eshop_register_allowed %}
+            {% if session.get('eshop_register_allowed', False) %}
                         <a class="btn btn-default" id="nav_register" href="{{ url_for('register') }}">
                             <span class="glyphicon  glyphicon glyphicon-pencil"/> {{ _('Register') }}
                         </a>
