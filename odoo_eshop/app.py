@@ -3,9 +3,13 @@
 
 # Standard Librairies
 import logging
-import io
+import io, re
+import base64
 from datetime import datetime, timedelta
 import pytz
+from captcha.image import ImageCaptcha
+
+from random import randint
 
 # Extra Librairies
 from flask import Flask, request, redirect, session, url_for, \
@@ -101,7 +105,7 @@ def to_datetime(arg):
 
 @app.template_filter('to_time')
 def to_time(arg):
-    return get_local_date(arg, '%Y-%m-%d %H:%M:%S').strftime('%Hh:%M')
+    return get_local_date(arg, '%Y-%m-%d %H:%M:%S').strftime('%Hh%M')
 
 
 @app.template_filter('get_current_quantity')
@@ -139,8 +143,11 @@ def home():
     shop = openerp.SaleShop.browse(int(conf.get('openerp', 'shop_id')))
     eshop_home_text=shop.eshop_home_text
     eshop_image=shop.eshop_image
+    session['eshop_image_small']=shop.eshop_image_small
+    eshop_register_allowed = shop.eshop_register_allowed
     return render_template(
-        'home.html', eshop_home_text=eshop_home_text, eshop_image=eshop_image)
+        'home.html', eshop_home_text=eshop_home_text, eshop_image=eshop_image,
+        eshop_register_allowed=eshop_register_allowed)
 
 
 @app.route("/home_logged.html")
@@ -149,6 +156,7 @@ def home_logged():
     shop = openerp.SaleShop.browse(int(conf.get('openerp', 'shop_id')))
     eshop_home_text=shop.eshop_home_text
     eshop_image=shop.eshop_image
+    session['eshop_image_small']=shop.eshop_image_small
     return render_template(
         'home.html', eshop_home_text=eshop_home_text, eshop_image=eshop_image)
 
@@ -156,9 +164,7 @@ def home_logged():
 @app.route("/unavailable_service.html")
 @requires_auth
 def unavailable_service():
-    return render_template(
-        'unavailable_service.html'
-    )
+    return render_template('unavailable_service.html')
 
 
 # ############################################################################
@@ -166,11 +172,15 @@ def unavailable_service():
 # ############################################################################
 @app.route("/login.html", methods=['GET', 'POST'])
 def login_view():
+    shop = openerp.SaleShop.browse(int(conf.get('openerp', 'shop_id')))
+    session['eshop_image_small']=shop.eshop_image_small
+    eshop_register_allowed = shop.eshop_register_allowed
     if request.form.get('login', False):
         login(request.form['login'], request.form['password'])
         return redirect(url_for('home_logged'))
     else:
-        return render_template('login.html')
+        return render_template('login.html',
+        eshop_register_allowed=eshop_register_allowed)
 
 
 @app.route("/logout.html")
@@ -178,6 +188,189 @@ def logout_view():
     logout()
     return redirect(url_for('home'))
 
+def sanitize_email(txt_email):
+    # TODO
+    return txt_email
+
+def password_check(password):
+    """
+    From : http://stackoverflow.com/questions/16709638/
+        checking-the-strength-of-a-password-how-to-check-conditions
+    Copyright : http://stackoverflow.com/users/3856785/epi27231423
+    Verify the strength of 'password'
+    Returns a dict indicating the wrong criteria
+    A password is considered strong if:
+        8 characters length or more
+        1 digit or more
+        1 symbol or more
+        1 uppercase letter or more
+        1 lowercase letter or more
+    """
+
+    # calculating the length
+    length_error = len(password) < 8
+
+    # searching for digits
+    digit_error = re.search(r"\d", password) is None
+
+    # searching for uppercase
+    uppercase_error = re.search(r"[A-Z]", password) is None
+
+    # searching for lowercase
+    lowercase_error = re.search(r"[a-z]", password) is None
+
+    # overall result
+    password_ok = not (
+        length_error or digit_error or uppercase_error or lowercase_error)
+
+    return {
+        'password_ok' : password_ok,
+        'length_error' : length_error,
+        'digit_error' : digit_error,
+        'uppercase_error' : uppercase_error,
+        'lowercase_error' : lowercase_error,
+    }
+
+@app.route("/register.html", methods=['GET', 'POST'])
+#@requires_no_auth
+def register():
+    # Check if the operation is possible
+    shop = openerp.SaleShop.browse(int(conf.get('openerp', 'shop_id')))
+    if not shop.eshop_register_allowed or session.get('partner_login', False):
+        return redirect(url_for('home'))
+    previous_captcha = session.get('captcha', False)
+    PATH_TTF = ['/tmp/test.ttf']
+    image = ImageCaptcha(fonts=PATH_TTF)
+
+    new_captcha = str(randint(0,999999)).replace('1', '3').replace('7', '4')
+    captcha_data = base64.b64encode(image.generate(new_captcha).getvalue())
+    session['captcha'] = new_captcha
+
+    if len(request.form) == 0:
+        session['captcha_ok'] = False
+    else:
+        # TODO refactor in a extra file or in Odoo
+        complete_data = mail_ok = password_ok = True
+        # Check captcha
+        if not session.get('captcha_ok', False) and\
+                request.form.get('captcha', False) != previous_captcha:
+            flash(
+                _("The 'captcha' field is not correct. Please try again"),
+                'danger')
+            return render_template(
+                'register.html',
+                eshop_register_allowed = shop.eshop_register_allowed,
+                captcha_data=captcha_data)
+        else:
+            session['captcha_ok'] = True
+
+        email = sanitize_email(request.form.get('email', False))
+        if email:
+            # Check email in Database (inactive account)
+            partner_ids = openerp.ResPartner.search([
+                ('email', '=', email)])
+            if len(partner_ids) > 1:
+                mail_ok = False
+                flash(_(
+                    "The '%(email)s' field is already used."
+                    "Please ask your seller to fix the problem.",
+                    email=email) , 'danger')
+            elif len(partner_ids) == 1:
+                mail_ok = False
+                partner = openerp.ResPartner.browse(partner_ids)[0]
+                if partner.eshop_active:
+                    flash(_(
+                        "The '%(email)s' field is already associated to an"
+                        " active account. Please ask your seller if you"
+                        " forgot your credentials.",
+                        email=email) , 'danger')
+                elif partner.eshop_state == 'email_to_confirm':
+                    flash(_(
+                        "The '%(email)s' field is already associated to an"
+                        " account. Please finish the process to create an"
+                        " account, by clicking on the link you received "
+                        " by email.", email=email), 'danger')
+                else:
+                    flash(_(
+                        "The '%(email)s' field is already associated to an"
+                        " inactive account. Please ask your seller to fix"
+                        " the problem.", email=email), 'danger')
+
+        if not mail_ok:
+            return render_template(
+                'register.html',
+                eshop_register_allowed = shop.eshop_register_allowed)
+
+
+
+        # Check Password
+        if request.form.get('password_1') != request.form.get('password_2'):
+            # Check consistencies
+            password_ok = False
+            flash(_("The 'Password' Fields do not match."), 'danger')
+        else:
+            # Check quality
+            res = password_check(request.form.get('password_1'))
+            if not res['password_ok']:
+                password_ok = False
+            for item in [
+                {'name': 'length_error', 'description': _(
+                    'Password must have 8 characters or more.')},
+                {'name': 'digit_error', 'description': _(
+                    'Password must have at least one digit.')},
+                {'name': 'uppercase_error', 'description': _(
+                    'Password must have at least one uppercase characters.')},
+                {'name': 'lowercase_error', 'description': _(
+                    'Password must have at least one lowercase characters.')}]:
+                if res[item['name']]:
+                    flash(item['description'], 'danger')
+
+        if complete_data and mail_ok and password_ok:
+            # Registration is over
+            openerp.ResPartner.create_from_eshop({
+                'first_name': request.form['first_name'],
+                'last_name': request.form['last_name'],
+                'email': request.form['email'],
+                'street': request.form['street'],
+                'street2': request.form['street2'],
+                'zip': request.form['zip'],
+                'city': request.form['city'],
+                'eshop_password': request.form['password_1'],
+            })
+            flash(_(
+                "The registration is complete. Please check your mail box"
+                " '%(email)s' and click on the link you received to activate"
+                " your account.",
+                email=request.form['email']), 'success')
+            return redirect(url_for('home'))
+        else:
+            return render_template(
+                'register.html',
+                eshop_register_allowed = shop.eshop_register_allowed,
+                captcha_data=captcha_data)
+
+    return render_template(
+        'register.html', eshop_register_allowed = shop.eshop_register_allowed,
+        captcha_data=captcha_data)
+
+@app.route("/activate_account/<int:id>/<string:email>", methods=['GET'])
+#@requires_no_auth
+def activate_account(id, email):
+    partner = openerp.ResPartner.browse([id])[0]
+    if not partner or partner.email != email:
+        flash(_("The validation process failed."), 'danger')
+    elif partner.eshop_state in ['first_purchase', 'enabled']:
+        flash(_("Your account is already enabled."), 'warning')
+    elif partner.eshop_state in ['email_to_confirm']:
+        openerp.ResPartner.write([partner.id], {
+            'email_state': 'first_purchase'})
+        flash(_("The validation process is over.\n"
+        " You can now log in to begin to purchase."), 'success')
+    else:
+        flash(_(
+            "The validation process failed because your account is disabled."
+            " Please ask your seller to fix the problem."), 'warning')
+    return redirect(url_for('home'))
 
 # ############################################################################
 # Product Routes
@@ -288,7 +481,6 @@ def shopping_cart_note_update():
     res = change_shopping_cart_note(
         request.form['note'],
     )
-    print res
     if request.is_xhr:
         return jsonify(result=res)
     flash(res['message'], res['state'])
@@ -311,7 +503,6 @@ def shopping_cart_quantity_update():
     res = change_product_qty(
         request.form['new_quantity'], 'set',
         line_id=int(request.form['line_id']))
-    print res
     if request.is_xhr:
         return jsonify(result=res)
     flash(res['message'], res['state'])
@@ -323,7 +514,7 @@ def shopping_cart_quantity_update():
 def shopping_cart_delete():
     delete_sale_order()
     flash(_("Your shopping cart has been successfully deleted."), 'success')
-    return home()
+    return redirect(url_for('home_logged'))
 
 
 @app.route("/shopping_cart_delete_line/<int:line_id>")
@@ -374,7 +565,7 @@ def select_recovery_moment(recovery_moment_id):
                 break
     if found:
         openerp.SaleOrder.write([sale_order.id], {
-            'moment_id': recovery_moment_id,
+            'recovery_moment_id': recovery_moment_id,
             'recovery_reminder_state': 'to_send',
         })
         openerp.SaleOrder.action_button_confirm([sale_order.id])
@@ -412,6 +603,17 @@ def delivery_moment():
         delivery_moments=delivery_moments,
         recovery_moment_groups=recovery_moment_groups)
 
+@app.route("/select_delivery_moment/<int:delivery_moment_id>")
+@requires_auth
+def select_delivery_moment(delivery_moment_id):
+    openerp.SaleOrder.select_delivery_moment_id(
+        [sale_order.id], delivery_moment_id)
+
+    flash(_("Your Sale Order is now confirmed."), 'success')
+    return redirect(url_for('orders'))
+#    return redirect(url_for('shopping_cart'))
+
+
 # ############################################################################
 # Account Route
 # ############################################################################
@@ -436,7 +638,6 @@ def account_update():
     if request.is_xhr:
         return jsonify(result=res)
     flash(res['message'], res['state'])
-    print res
     return redirect(url_for('account'))
 
 # ############################################################################

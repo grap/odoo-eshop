@@ -1,0 +1,122 @@
+{% extends 'base.html' %}
+
+{% block container %}
+<!-- JQuery -->
+<script>
+    $('#nav_register').addClass('active');
+</script>
+
+<!-- Account Data -->
+<h1>{{ _('Create a new account') }}</h1>
+
+<form class="form-horizontal" role="form" method="POST" action="{{ url_for('register') }}">
+    <table class="table table-condensed table-bordered">
+        <tbody>
+            <tr>
+                <th>
+                    <label for="account_name" class="control-label">{{ _('First Name') }} (*)</label>
+                </th>
+                <td>
+                    <input type="text" class="form-control account_data" name="first_name" value="{{ request.form['first_name']}}">
+                </td>
+                <th>
+                    <label for="account_name" class="control-label">{{ _('Last Name') }} (*)</label>
+                </th>
+                <td>
+                    <input type="text" class="form-control account_data" name="last_name" value="{{ request.form['last_name']}}">
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    <label for="account_email" class="control-label">{{ _('Email') }} (*)</label>
+                </th>
+                <td>
+                    <input type="email" class="form-control account_data" name="email" value="{{ request.form['email']}}">
+                </td>
+                <th>
+                    <label for="password_1" class="control-label">{{ _('Password') }} (*)</label>
+                </th>
+            
+                <td>
+                    <input type="password" class="form-control account_data" name="password_1" value="{{ request.form['password_1']}}">
+                </td>
+            </tr>
+            <tr>
+                <th colspan="2" />
+                <th>
+                    <label for="password_1" class="control-label">{{ _('Password (Check)') }} (*)</label>
+                </th>
+                <td>
+                    <input type="password" class="form-control account_data" name="password_2" value="{{ request.form['password_2']}}">
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    <label for="account_mobile" class="control-label">{{ _('Cell Phone') }}</label>
+                </th>
+                <td>
+                    <input type="tel" class="form-control account_data" name="mobile" value="{{ request.form['mobile']}}">
+                </td>
+                <th>
+                    <label for="account_phone" class="control-label">{{ _('Other Phone') }}</label>
+                </th>
+                <td>
+                    <input type="tel" class="form-control account_data" name="phone" value="{{ request.form['phone']}}" >
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    <label for="account_street" class="control-label">{{ _('Street') }} (*)</label>
+                </th>
+                <td colspan="100%">
+                    <input type="text" class="form-control account_data" name="street" value="{{ request.form['street']}}">
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    <label for="account_street2" class="control-label">{{ _('Street (Extra Info)') }}</label>
+                </th>
+                <td colspan="100%">
+                    <input type="text" class="form-control account_data" name="street2" value="{{ request.form['street2']}}">
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    <label for="account_zip" class="control-label">{{ _('ZIP Code') }} (*)</label>
+                </th>
+                <td>
+                    <input type="text" class="form-control account_data" name="zip" value="{{ request.form['zip']}}">
+                </td>
+                <th>
+                    <label for="account_city" class="control-label">{{ _('City') }} (*)</label>
+                </th>
+                <td>
+                    <input type="text" class="form-control account_data" name="city" value="{{ request.form['city']}}">
+                </td>
+            </tr>
+            </tr>
+        {% if not session.get('captcha_ok', False)%}
+            <tr>
+                <th>
+                    <label for="account_captcha" class="control-label">{{ _('Captcha') }} (*)</label>
+                </th>
+                <td>
+                    <input type="text" class="form-control account_data" name="captcha">
+                </td>
+                <td colspan="100%">
+                    <img src="data:image/png;base64,{{ captcha_data }}"/>
+                </td>
+            </tr>
+        {% endif %}
+            <tr>
+                <th colspan="100%">
+                    <button type="submit" class="btn btn-default update_btn">{{ _('Create')}}</button>
+                </th>
+            </tr>
+        </tbody>
+    </table>
+</form>
+
+<!-- JQuery -->
+
+{% endblock %}

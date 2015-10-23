@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-06-18 20:52+0200\n"
+"POT-Creation-Date: 2015-10-20 22:53+0200\n"
 "PO-Revision-Date: 2014-10-06 14:07+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: fr <LL@li.org>\n"
@@ -61,28 +61,32 @@ msgstr "Catégorie II"
 msgid "Category III"
 msgstr "Catégorie III"
 
-#: app.py:319
+#: app.py:325
 msgid "Your shopping cart has been successfully deleted."
 msgstr "Votre panier a été supprimé avec succès."
 
-#: app.py:350
-#, python-format
-msgid "You have not reached the ceiling of %(min)s."
-msgstr "Vous n'avez pas atteint le franco de %(min)s"
+#: app.py:354 app.py:406 templates/base.html:76 templates/base.html:80
+#: templates/base.html:91
+msgid "You have not reached the ceiling : "
+msgstr "Vous n'avez pas atteint le franco : "
 
-#: app.py:379
+#: app.py:382
 msgid "Your Sale Order is now confirmed."
 msgstr "Votre commande est désormais terminée."
 
-#: app.py:439
+#: app.py:385
+msgid "You have selected an obsolete recovery moment. Please try again."
+msgstr "Vous avez sélectionné un lieu de récupération obsolète. Veuillez réessayer."
+
+#: app.py:461
 msgid "order"
 msgstr "commande"
 
-#: app.py:471
+#: app.py:489
 msgid "invoice"
 msgstr "Factures"
 
-#: auth.py:42 auth.py:77
+#: auth.py:36 auth.py:58 auth.py:93
 msgid ""
 "Distant Service Unavailable. If you had a pending purchase, You have not "
 "lost your Shopping Cart. Thank you connect again in a while."
@@ -90,11 +94,11 @@ msgstr ""
 "Service Distant Indisponible. Si vous aviez une commande en cours, votre "
 "panier a été sauvegardé."
 
-#: auth.py:66
+#: auth.py:82
 msgid "Login/password incorrects"
-msgstr "Login et Mot de passe incorrects."
+msgstr "Login et Mot de passe incorrects"
 
-#: auth.py:71
+#: auth.py:87
 msgid ""
 "Local Service Unavailable. If you had a pending purchase, You have not "
 "lost your Shopping Cart. Thank you connect again in a while."
@@ -123,21 +127,24 @@ msgstr "Données personnelles mise à jour."
 msgid "'%(qty)s' is not a valid quantity."
 msgstr "'%(qty)s' n'est pas une quantité valide."
 
-#: sale_order.py:147
+#: sale_order.py:90
+msgid "Your comment has been successfully updated."
+msgstr "Votre commentaire a été modifié avec succès."
+
+#: sale_order.py:157
 msgid "Shopping Cart has been successfully deleted."
 msgstr "Votre panier a été supprimé avec succès."
 
-#: sale_order.py:152
-#, python-format
+#: sale_order.py:162
 msgid ""
-"The new quantity for the product '%(prod)s' is now %(qty)s %(uom)s, due "
+"The new quantity for the product '%(prod)s' is now %(qty)s  %(uom)s, due "
 "to minimum / rounded quantity rules."
 msgstr ""
 "La nouvelle quantité pour le produit '%(prod)s' est désormais  de %(qty)s"
 " %(uom)s, à cause de règle de minimum et d'arrondie liées à cette fiche "
 "produit."
 
-#: sale_order.py:162
+#: sale_order.py:171
 #, python-format
 msgid "You have now %(qty)s %(uom)s of product '%(prod)s' in your shopping cart."
 msgstr "Vous avez désormais %(qty)s %(uom)s de '%(prod)s' dans votre panier."
@@ -146,154 +153,254 @@ msgstr "Vous avez désormais %(qty)s %(uom)s de '%(prod)s' dans votre panier."
 msgid "Page not found"
 msgstr "Page non trouvée"
 
-#: templates/account.html:8 templates/base.html:62
+#: templates/account.html:10 templates/base.html:101
 msgid "Your Account"
 msgstr "Votre Compte"
 
-#: templates/account.html:12
+#: templates/account.html:17
 msgid "Complete Name"
 msgstr "Nom Complet"
 
-#: templates/account.html:19 templates/login.html:8
+#: templates/account.html:25 templates/login.html:8
 msgid "Email"
 msgstr "Email"
 
-#: templates/account.html:30
+#: templates/account.html:33
 msgid "Phone"
 msgstr "Téléphone"
 
-#: templates/account.html:37
+#: templates/account.html:41
 msgid "Cell Phone"
 msgstr "Téléphone Portable"
 
-#: templates/account.html:46
+#: templates/account.html:49
 msgid "Street"
 msgstr "Adresse"
 
-#: templates/account.html:53
+#: templates/account.html:57
 msgid "Complement Street"
 msgstr "Complément d'adresse"
 
-#: templates/account.html:60
+#: templates/account.html:65
 msgid "ZIP"
 msgstr "Code Postal"
 
-#: templates/account.html:67
+#: templates/account.html:74
 msgid "City"
 msgstr "Ville"
 
-#: templates/account.html:78 templates/catalog_inline.html:89
-#: templates/shopping_cart.html:47
+#: templates/account.html:83 templates/catalog_inline.html:78
+#: templates/shopping_cart.html:89
 msgid "Update"
 msgstr "Mettre à jour"
-
-#: templates/account.html:117 templates/catalog_inline.html:137
-#: templates/shopping_cart.html:149
-msgid "Something wrong occured, please refresh the page."
-msgstr "Quelque chose s'est mal déroulé, merci de rafraichir la page."
 
 #: templates/base.html:7
 msgid "eShop"
 msgstr "Boutique en ligne"
 
-#: templates/base.html:44
+#: templates/base.html:33
+msgid "Something wrong occured, please refresh the page."
+msgstr "Quelque chose s'est mal déroulé, merci de rafraichir la page."
+
+#: templates/base.html:54
 msgid "Purchase (List View)"
 msgstr "Achat (Vue Liste)"
 
-#: templates/base.html:45
+#: templates/base.html:56
 msgid "Purchase (Catalog View)"
 msgstr "Achat (Vue Catalogue)"
 
-#: templates/base.html:48 templates/base.html:53
+#: templates/base.html:59 templates/base.html:88
 msgid "Shopping Cart: "
 msgstr "Panier : "
 
-#: templates/base.html:64
-msgid "Log Out"
-msgstr "Se déconnecter"
+#: templates/base.html:62 templates/catalog_inline.html:54
+msgid "VAT. Incl."
+msgstr "TTC"
 
-#: templates/base.html:68
-msgid "Log In"
-msgstr "Se connecter"
+#: templates/base.html:72 templates/catalog_inline.html:56
+msgid "VAT. Excl."
+msgstr "HT"
 
-#: templates/base_account.html:13
+#: templates/base.html:106
 msgid "Personnal Datas"
 msgstr "Données Personnelles"
 
-#: templates/base_account.html:17
+#: templates/base.html:109
 msgid "Orders History"
 msgstr "Historique des Commandes"
 
-#: templates/base_account.html:22
+#: templates/base.html:112
 msgid "Invoices History"
 msgstr "Historique des Factures"
+
+#: templates/base.html:117
+msgid "Log Out"
+msgstr "Se déconnecter"
+
+#: templates/base.html:125
+msgid "Log In"
+msgstr "Se connecter"
 
 #: templates/catalog_tree.html:6 templates/product.html:6
 msgid "Catalog"
 msgstr "Catalogue"
 
+#: templates/catalog_tree.html:50
+msgid "Products"
+msgstr "Produits"
+
+#: templates/catalog_tree.html:52
+msgid "Categories"
+msgstr "Catégories"
+
+#: templates/delivery_moment.html:5 templates/recovery_moment_place.html:5
+#: templates/shopping_cart.html:6
+msgid "Shopping Cart"
+msgstr "Panier"
+
+#: templates/delivery_moment.html:6
+msgid "Delivery Moment"
+msgstr "Date de livraison"
+
+#: templates/delivery_moment.html:19 templates/shopping_cart.html:34
+msgid "Select Delivery Moment"
+msgstr "Choisir la date de livraison"
+
+#: templates/delivery_moment.html:25
+msgid ""
+"Sorry. For the time being, there is no possibility to select a date to "
+"receive your order."
+msgstr ""
+"Désolé. Pour le moment, il n'y a pas la possibilité de choisir une date "
+"pour être livré."
+
+#: templates/delivery_moment.html:33 templates/orders.html:19
+#: templates/recovery_moment_place.html:34
+msgid "Day"
+msgstr "Jour"
+
+#: templates/delivery_moment.html:34 templates/orders.html:20
+#: templates/recovery_moment_place.html:35
+msgid "Date"
+msgstr "Date"
+
+#: templates/delivery_moment.html:35 templates/recovery_moment_place.html:36
+msgid "Min Time"
+msgstr "Heure de Début"
+
+#: templates/delivery_moment.html:36 templates/recovery_moment_place.html:37
+msgid "Max Time"
+msgstr "Heure de Fin"
+
+#: templates/delivery_moment.html:37 templates/product.html:90
+#: templates/recovery_moment_place.html:39
+msgid "Description"
+msgstr "Description"
+
+#: templates/delivery_moment.html:55 templates/recovery_moment_place.html:58
+msgid "Complete"
+msgstr "Complet"
+
+#: templates/delivery_moment.html:62 templates/delivery_moment.html:68
+#: templates/recovery_moment_place.html:64
+msgid "Select"
+msgstr "Choisir"
+
+#: templates/delivery_moment.html:85 templates/recovery_moment_place.html:82
+msgid "Confirm Order"
+msgstr "Confirmer l'achat"
+
+#: templates/delivery_moment.html:88 templates/recovery_moment_place.html:85
+msgid "You are about to valid your Shopping Cart, this procedure is irreversible."
+msgstr ""
+"Vous êtes sur le point de valider votre panier, cette procédure est "
+"définitive."
+
+#: templates/delivery_moment.html:89 templates/recovery_moment_place.html:86
+#: templates/shopping_cart.html:156
+msgid "Do you want to proceed?"
+msgstr "Voulez vous continuer ?"
+
+#: templates/delivery_moment.html:91 templates/recovery_moment_place.html:88
+#: templates/shopping_cart.html:159
+msgid "Cancel"
+msgstr "Annuler"
+
+#: templates/delivery_moment.html:92 templates/recovery_moment_place.html:89
+msgid "Confirm"
+msgstr "Confirmer"
+
+#: templates/delivery_moment.html:98 templates/recovery_moment_place.html:95
+msgid ""
+"Please wait while your sale is being processed.<br /> This can take a few"
+" seconds."
+msgstr ""
+"Merci de patienter : votre vente est en train d'être traitée.<br /> Cela "
+"peut prendre quelques secondes."
+
 #: templates/error.html:8
 msgid "Huge error"
-msgstr "Erreur Fatale"
+msgstr "Erreur fatale"
 
-#: templates/invoices.html:9
+#: templates/invoices.html:10
 msgid "Your Invoices"
 msgstr "Vos Factures"
 
-#: templates/invoices.html:13 templates/orders.html:14
+#: templates/invoices.html:15 templates/orders.html:17
 msgid "Number"
 msgstr "Numéro"
 
-#: templates/invoices.html:14
+#: templates/invoices.html:16
 msgid "Invoice Date"
 msgstr "Date de facture"
 
-#: templates/invoices.html:15 templates/orders.html:19
-#: templates/shopping_cart.html:72
+#: templates/invoices.html:17 templates/orders.html:22
+#: templates/shopping_cart.html:122
 msgid "Untaxed Amount"
-msgstr "Montant HT"
+msgstr "Total HT"
 
-#: templates/invoices.html:16 templates/orders.html:20
-#: templates/shopping_cart.html:76
+#: templates/invoices.html:18 templates/orders.html:23
+#: templates/shopping_cart.html:136
 msgid "Total"
 msgstr "Total TTC"
 
-#: templates/invoices.html:27 templates/orders.html:43
+#: templates/invoices.html:29 templates/orders.html:46
 msgid "Download"
 msgstr "Télécharger"
 
-#: templates/login.html:14
+#: templates/invoices.html:35
+msgid "No Invoices for the time being."
+msgstr "Pas de factures pour le moment."
+
+#: templates/login.html:15
 msgid "Password"
 msgstr "Mot de passe"
 
-#: templates/orders.html:9
+#: templates/orders.html:10
 msgid "Your Orders"
 msgstr "Vos Commandes"
 
-#: templates/orders.html:13
+#: templates/orders.html:16
 msgid "Order Date"
 msgstr "Date de commande"
 
-#: templates/orders.html:15
-msgid "Recovery Place"
-msgstr "Lieu de récupération"
+#: templates/orders.html:18 templates/recovery_moment_place.html:38
+msgid "Place"
+msgstr "Lieu"
 
-#: templates/orders.html:16
-msgid "Recovery Day"
-msgstr "Jour de récupération"
+#: templates/orders.html:21
+msgid "Time"
+msgstr ""
 
-#: templates/orders.html:17
-msgid "Recovery Date"
-msgstr "Date de récupération"
-
-#: templates/orders.html:18
-msgid "Recovery Time"
-msgstr "Heures de Récupération"
-
-#: templates/orders.html:36 templates/orders.html:37 templates/orders.html:38
-#: templates/orders.html:39
+#: templates/orders.html:39 templates/orders.html:40 templates/orders.html:41
+#: templates/orders.html:42
 msgid "Undefined"
 msgstr "Non Défini"
+
+#: templates/orders.html:52
+msgid "No Orders for the time being."
+msgstr "Pas de commandes pour le moment."
 
 #: templates/product.html:61
 msgid "Price"
@@ -327,11 +434,7 @@ msgstr "Producteur"
 msgid "Fresh Category"
 msgstr "Catégorie Frais"
 
-#: templates/product.html:90 templates/recovery_moment_place.html:42
-msgid "Description"
-msgstr "Description"
-
-#: templates/product.html:98 templates/shopping_cart.html:26
+#: templates/product.html:98 templates/shopping_cart.html:57
 msgid "Quantity"
 msgstr "Quantité"
 
@@ -339,123 +442,79 @@ msgstr "Quantité"
 msgid "Add to Shopping Cart"
 msgstr "Ajouter au panier"
 
-#: templates/recovery_moment_place.html:5 templates/shopping_cart.html:5
-msgid "Shopping Cart"
-msgstr "Panier"
-
-#: templates/recovery_moment_place.html:6 templates/shopping_cart.html:6
+#: templates/recovery_moment_place.html:6
 msgid "Recovery Moment Place"
 msgstr "Lieu de récupération"
 
-#: templates/recovery_moment_place.html:21
-msgid ""
-"Sorry. For the time being, there is no possibility to select a date to "
-"recovery your Shopping Cart."
-msgstr "Désolé. Pour le moment, il n'y a pas la possibilité de choisir une date pour récupérer votre panier."
-
-#: templates/recovery_moment_place.html:29
+#: templates/recovery_moment_place.html:19 templates/shopping_cart.html:28
 msgid "Select Place and Moment for Recovery"
 msgstr "Choisir le lieu et la date de récupération"
 
-#: templates/recovery_moment_place.html:37
-msgid "Day"
-msgstr "Jour"
-
-#: templates/recovery_moment_place.html:38
-msgid "Date"
-msgstr "Date"
-
-#: templates/recovery_moment_place.html:39
-msgid "Min Time"
-msgstr "Heure de Début"
-
-#: templates/recovery_moment_place.html:40
-msgid "Max Time"
-msgstr "Heure de Fin"
-
-#: templates/recovery_moment_place.html:41
-msgid "Place"
-msgstr "Lieu"
-
-#: templates/recovery_moment_place.html:61
-msgid "Complete"
-msgstr "Complet"
-
-#: templates/recovery_moment_place.html:67
-msgid "Select"
-msgstr "Choisir"
-
-#: templates/recovery_moment_place.html:85
-msgid "Confirm Order"
-msgstr "Confirmer l'achat"
-
-#: templates/recovery_moment_place.html:88
-msgid "You are about to valid your Shopping Cart, this procedure is irreversible."
-msgstr ""
-"Vous êtes sur le point de valider votre panier, cette procédure est "
-"définitive."
-
-#: templates/recovery_moment_place.html:89 templates/shopping_cart.html:105
-msgid "Do you want to proceed?"
-msgstr "Voulez vous continuer ?"
-
-#: templates/recovery_moment_place.html:94
+#: templates/recovery_moment_place.html:25
 msgid ""
-"Please wait while your sale is being processed.<br /> This can take a few"
-" seconds."
+"Sorry. For the time being, there is no possibility to select a date to "
+"recovery your Shopping Cart."
 msgstr ""
-"Merci de patienter : votre vente est en train d'être traitée.<br /> Cela "
-"peut prendre quelques secondes."
+"Désolé. Pour le moment, il n'y a pas la possibilité de choisir une date "
+"pour récupérer votre panier."
 
-#: templates/recovery_moment_place.html:99 templates/shopping_cart.html:108
-msgid "Cancel"
-msgstr "Annuler"
-
-#: templates/recovery_moment_place.html:100
-msgid "Confirm"
-msgstr "Confirmer"
-
-#: templates/shopping_cart.html:19
+#: templates/shopping_cart.html:13
 msgid "Your Shopping Cart "
 msgstr "Votre Panier "
 
-#: templates/shopping_cart.html:25
-msgid "Product"
-msgstr "Produit"
-
-#: templates/shopping_cart.html:27
-msgid "Unit"
-msgstr "Unité"
-
-#: templates/shopping_cart.html:28
-msgid "Price Unit VAT Include"
-msgstr "Prix unitaire TTC"
-
-#: templates/shopping_cart.html:29
-msgid "Subtotal VAT Exclude"
-msgstr "Sous total HT"
-
-#: templates/shopping_cart.html:59
-msgid "Remove"
-msgstr "Retirer"
-
-#: templates/shopping_cart.html:74
-msgid "Taxes"
-msgstr "TVA"
-
-#: templates/shopping_cart.html:87
+#: templates/shopping_cart.html:21
 msgid "Delete Shopping Cart"
 msgstr "Effacer votre Panier"
 
-#: templates/shopping_cart.html:91
-msgid "Select the Place and Moment Recovery"
-msgstr "Choisir le lieu et la date de récupération"
+#: templates/shopping_cart.html:44
+msgid "Product"
+msgstr "Produit"
 
-#: templates/shopping_cart.html:101
+#: templates/shopping_cart.html:46
+msgid "Delivery Category"
+msgstr "Catégorie de livraison"
+
+#: templates/shopping_cart.html:47
+msgid "Categ."
+msgstr "Cat."
+
+#: templates/shopping_cart.html:52
+msgid "Price Unit VAT Incl."
+msgstr "P.U. TTC"
+
+#: templates/shopping_cart.html:54
+msgid "Price Unit VAT Excl."
+msgstr "P.U. HT"
+
+#: templates/shopping_cart.html:56 templates/shopping_cart.html:129
+msgid "Taxes"
+msgstr "TVA"
+
+#: templates/shopping_cart.html:58
+msgid "Unit"
+msgstr "Unité"
+
+#: templates/shopping_cart.html:60
+msgid "Subtotal VAT Incl."
+msgstr "Sous total TTC"
+
+#: templates/shopping_cart.html:62
+msgid "Subtotal VAT Excl."
+msgstr "Sous total HT"
+
+#: templates/shopping_cart.html:107
+msgid "Remove"
+msgstr "Retirer"
+
+#: templates/shopping_cart.html:120
+msgid "Extra Comments"
+msgstr "Commentaire facultatif"
+
+#: templates/shopping_cart.html:152
 msgid "Confirm Delete"
 msgstr "Confirmer la suppression"
 
-#: templates/shopping_cart.html:104
+#: templates/shopping_cart.html:155
 msgid ""
 "You are about to delete your Shopping Cart, this procedure is "
 "irreversible."
@@ -463,11 +522,10 @@ msgstr ""
 "Vous êtes sur le point de supprimer votre panier, cette procédure ne peut"
 " être annulée"
 
-#: templates/shopping_cart.html:109
+#: templates/shopping_cart.html:160
 msgid "Delete"
 msgstr "Supprimer"
 
 #: templates/unavailable_service.html:8
 msgid "Unavailable Service"
 msgstr "Service Indisponible"
-

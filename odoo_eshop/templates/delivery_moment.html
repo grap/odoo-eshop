@@ -20,7 +20,7 @@
     </div>
 </div>
 
-    {% if delivery_moment|length == 0 %}
+    {% if delivery_moments|length == 0 %}
     <div class="flashes">
         <p class="text-center bg-warning">{{ _('Sorry. For the time being, there is no possibility to select a date to receive your order.')}}</p>
     </div>
@@ -41,10 +41,10 @@
     <tbody>
         {% for delivery_moment in delivery_moments %}
         <tr>
-            <td>{{delivery_moment['min_recovery_date']|to_day}}</td>
-            <td>{{delivery_moment['min_recovery_date']|to_date}}</td>
-            <td>{{delivery_moment['min_recovery_date']|to_time}}</td>
-            <td>{{delivery_moment['max_recovery_date']|to_time}}</td>
+            <td>{{delivery_moment['min_delivery_date']|to_day}}</td>
+            <td>{{delivery_moment['min_delivery_date']|to_date}}</td>
+            <td>{{delivery_moment['min_delivery_date']|to_time}}</td>
+            <td>{{delivery_moment['max_delivery_date']|to_time}}</td>
             <td>
                 {% if delivery_moment['description'] %}
                 {{delivery_moment['description']}}
@@ -53,20 +53,21 @@
             <td>
                 {% if delivery_moment['is_complete'] %}
                 {{ _('Complete')}} 
-                
                 {% else %}
-                {% if delivery_moment['is_partial'] %}
-                    <a data-href="{{ url_for('select_delivery_moment', delivery_moment_id=delivery_moment.id) }}"
+                    {% if delivery_moment['is_partial'] %}
+                    <a data-href="{{ url_for('select_delivery_moment', delivery_moment_id=delivery_moment['id']) }}"
                             data-toggle="modal" data-target="#confirm-valid"
                             class="btn btn-default btn-warning" role="button">
                         <span class="glyphicon glyphicon-warning-sign"/> {{ _('Select')}}</a>
                     </a>
-                    {% endif %}
-                    <a data-href="{{ url_for('select_delivery_moment', delivery_moment_id=delivery_moment.id) }}"
+                    {% else %}
+                    <a data-href="{{ url_for('select_delivery_moment', delivery_moment_id=delivery_moment['id']) }}"
                             data-toggle="modal" data-target="#confirm-valid"
                             class="btn btn-default" role="button">
                         <span class="glyphicon glyphicon-ok-circle"/> {{ _('Select')}}</a>
                     </a>
+                    {% endif %}
+
                 {% endif %}
             </td>
         {% endfor %}

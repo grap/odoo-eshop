@@ -20,7 +20,11 @@ h2{
     width:150px !important;
     text-align:right;
 }
-    
+.input-amount{
+    width:120px !important;
+    text-align:right;
+}
+
 .img-small-label, .img-small-delivery-categ{
     margin: 0px;
     padding: 0px;

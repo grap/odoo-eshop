@@ -10,7 +10,7 @@
 {% block container %}
 
 <!-- Body                                                                   -->
-<h1>{{ _('Your Shopping Cart ') }}({{ sale_order.name }})</h1>
+<h1>{{ _('Your Shopping Cart ') }}</h1>
 <div class="row">
     <div class="col-md-6">
         <a data-href="{{ url_for('shopping_cart_delete') }}"
@@ -35,9 +35,7 @@
         {% endif %}
     </div>
 </div>
-
-<hr />
-
+<br />
 <table class="table table-condensed table-bordered">
     <thead>
         <tr>
@@ -53,6 +51,7 @@
             {% else %}
             <th>{{ _('Price Unit VAT Excl.') }}</th>
             {% endif %}
+            <th>{{ _('Taxes') }}</th>
             <th>{{ _('Quantity') }}</th>
             <th>{{ _('Unit') }}</th>
             {% if session['eshop_vat_included'] %}
@@ -77,6 +76,7 @@
             </td>
     {% endif %}
             <td>{{ line.price_unit|to_currency }}</td>
+            <td>{{ line.product_id.eshop_taxes_description }}</td>
             <td class="td-input-text">
                 <form class="form-inline" role="form" method="POST" action="{{ url_for('shopping_cart_quantity_update') }}">
                     <div class="form-group">
@@ -89,19 +89,19 @@
             </td>
             <td>{{ line.product_uom.eshop_description }}</td>
             {% if session['eshop_vat_included'] %}
-            <td>
-                <input type="text" class="form-control input-sm" id="price_subtotal_{{line.id}}" 
+            <td class="td-input-text">
+                <input type="text" class="form-control input-amount" id="price_subtotal_{{line.id}}" 
                         placeholder="{{ line.price_subtotal_taxinc|to_currency }}" readonly/>
             </td>
             {% else %}
-            <td>
-                <input type="text" class="form-control input-sm" id="price_subtotal_{{line.id}}" 
+            <td class="td-input-text">
+                <input type="text" class="form-control input-amount" id="price_subtotal_{{line.id}}" 
                         placeholder="{{ line.price_subtotal|to_currency }}" readonly/>
             </td>
             {% endif %}
-            <td>
+            <td class="td-input-text">
                 <a href="{{ url_for('shopping_cart_delete_line', line_id=line.id) }}"
-                    class="btn btn-default" role="button">
+                    class="btn btn-default btn-sm" role="button">
                         <span class="glyphicon glyphicon-remove"/> {{ _('Remove') }}</a>
                 </a>
             </td>
@@ -111,29 +111,33 @@
     <tfoot>
         <tr>
             {% if session['manage_delivery_moment'] %}
-            <td colspan="4" rowspan="3">
+            <td colspan="5" rowspan="3">
             {% else %}
-            <td colspan="3" rowspan="3">
+            <form class="form-inline" role="form" method="POST" action="{{ url_for('shopping_cart_note_update') }}">
+                <td colspan="4" rowspan="3">
             {% endif %}
-                <textarea class="form-control" rows="3" id="shopping_cart_note" name="shopping_cart_note" placeholder="{{_('Extra Comments')}}">{{ sale_order.note }}</textarea>
-            </td>
+
+                        <textarea class="form-control" rows="3" id="shopping_cart_note" name="shopping_cart_note" placeholder="{{_('Extra Comments')}}">{{ sale_order.note|empty_if_null }}</textarea>
+                    <button type="submit" class="btn btn-default update_btn">{{ _('Update')}}</button>
+                </td>
+            </form>
             <th>{{ _('Untaxed Amount') }}</th>
-            <td>
-                <input type="text" class="form-control input-sm" id="amount_untaxed"
+            <td class="td-input-text">
+                <input type="text" class="form-control input-amount" id="amount_untaxed"
                         placeholder="{{ sale_order.amount_untaxed|to_currency }}" readonly/></td>
             <td />
         </tr>
         <tr>
             <th>{{ _('Taxes') }}</th>
-            <td>
-                <input type="text" class="form-control input-sm" id="amount_tax" 
+            <td class="td-input-text">
+                <input type="text" class="form-control input-amount" id="amount_tax" 
                         placeholder="{{ sale_order.amount_tax|to_currency }}" readonly/></td>
             <td />
         </tr>
         <tr>
             <th>{{ _('Total') }}</th>
-            <td>
-                <input type="text" class="form-control input-sm" id="amount_total"
+            <td class="td-input-text">
+                <input type="text" class="form-control input-amount" id="amount_total"
                         placeholder="{{ sale_order.amount_total|to_currency }}" readonly/></td>
             <td />
         </tr>

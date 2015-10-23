@@ -29,18 +29,21 @@ def home():
         shop = openerp.SaleShop.browse(int(conf.get('openerp', 'shop_id')))
         eshop_home_text=shop.eshop_home_text
         eshop_image=shop.eshop_image
+        session['eshop_image_small']=shop.eshop_image_small
+        eshop_register_allowed = shop.eshop_register_allowed
     except:
         # This exception is fully ignored because we have to display
         # an home page, eventually with flashed messages that mention problems
-        eshop_home_text = eshop_image = False
+        eshop_register_allowed = eshop_home_text = eshop_image = False
         flash(_(
-            "Distant Service Unavailable. If you had a pending"
-            " purchase, You have not lost your Shopping"
-            " Cart. Thank you connect again in a while."),
+            "Distant Service Unavailable. If you had a pending purchase,"
+            " you have not lost your Shopping Cart."
+            " Thank you connect again in a while."),
             'danger')
         return unavailable_service()
     return render_template(
-        'home.html', eshop_home_text=eshop_home_text, eshop_image=eshop_image)
+        'home.html', eshop_home_text=eshop_home_text, eshop_image=eshop_image,
+        eshop_register_allowed=eshop_register_allowed)
 
 
 def authenticate():
@@ -57,7 +60,7 @@ def requires_connection(f):
         if not openerp:
             flash(_(
                 "Distant Service Unavailable. If you had a pending purchase,"
-                " You have not lost your Shopping Cart."
+                " you have not lost your Shopping Cart."
                 " Thank you connect again in a while."),
                 'danger')
             return unavailable_service()
@@ -86,13 +89,13 @@ def requires_auth(f):
                 if openerp:
                     flash(_(
                         "Local Service Unavailable. If you had a pending"
-                        " purchase, You have not lost your Shopping"
+                        " purchase, you have not lost your Shopping"
                         " Cart. Thank you connect again in a while."),
                         'danger')
                 else:
                     flash(_(
                         "Distant Service Unavailable. If you had a pending"
-                        " purchase, You have not lost your Shopping"
+                        " purchase, you have not lost your Shopping"
                         " Cart. Thank you connect again in a while."),
                         'danger')
                 return unavailable_service()
@@ -103,9 +106,11 @@ def requires_auth(f):
             # Store in session some settings
             shop = openerp.SaleShop.browse(int(conf.get('openerp', 'shop_id')))
             session['eshop_minimum_price'] = shop.eshop_minimum_price
+            session['eshop_register_allowed'] = shop.eshop_register_allowed
             session['eshop_vat_included'] = shop.eshop_vat_included
             session['manage_delivery_moment'] = shop.manage_delivery_moment
             session['manage_recovery_moment'] = shop.manage_recovery_moment
+            session['eshop_image_small'] = shop.eshop_image_small
 
             return f(*args, **kwargs)
         return home()

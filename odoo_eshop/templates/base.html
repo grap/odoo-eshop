@@ -43,9 +43,17 @@
 
                 <div class="container-fluid">
                     <div class="nav navbar-left" style="margin-right:10px">
+
+        {% if 'eshop_image_small' in session %}
+                        <a class="btn btn-default" id="nav_home" href="{{  url_for('home') }}" style="padding: 0px">
+                            <img src="data:image/png;base64,{{ session['eshop_image_small'] }}" style="max-height:32px;"/>
+                        </a>
+        {% else %}
                         <a class="btn btn-default" id="nav_home" href="{{  url_for('home') }}">
                             <span class="glyphicon glyphicon-home"/>
                         </a>
+
+        {% endif %}
                     </div>
 
         {% if 'partner_name' in session %}
@@ -119,10 +127,15 @@
                           </ul>
                         </div>
 
-            {% else %}
+        {% else %}
                     <div class="nav navbar-right">
+            {% if eshop_register_allowed %}
+                        <a class="btn btn-default" id="nav_register" href="{{ url_for('register') }}">
+                            <span class="glyphicon  glyphicon glyphicon-pencil"/> {{ _('Register') }}
+                        </a>
+            {% endif %}
                         <a class="btn btn-default" href="{{ url_for('login_view') }}">
-                            <span class="glyphicon glyphicon-log-in"/> - {{ _('Log In') }}
+                            <span class="glyphicon glyphicon-log-in"/> {{ _('Log In') }}
                         </a>
         {% endif %}
                     </div>
