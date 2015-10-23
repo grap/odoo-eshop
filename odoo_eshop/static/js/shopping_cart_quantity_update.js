@@ -37,7 +37,7 @@ $('.input-quantity').change(function(e){
             $('#amount_tax').attr('placeholder', msg.result.amount_tax);
             $('#amount_total').attr('placeholder', msg.result.amount_total);
         }
-        update_header(msg.result.amount_total, msg.result.minimum_ok);
+        update_header(msg.result.amount_total_header, msg.result.minimum_ok);
         display_message(msg.result.state, msg.result.message, false);
     }).fail(function(xhr, textstatus){
         display_fail_message();

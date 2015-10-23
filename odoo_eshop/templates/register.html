@@ -108,12 +108,21 @@
                 </td>
             </tr>
         {% endif %}
-            <tr>
-                <th colspan="100%">
-                    <button type="submit" class="btn btn-default update_btn">{{ _('Create')}}</button>
-                </th>
-            </tr>
         </tbody>
+        <tfoot>
+            <tr>
+                <td class="td-action" colspan="100%">
+                    <button type="submit" class="btn btn-default update_btn">{{ _('Create')}}</button>
+                </td>
+            </tr>
+            <tr>
+                <td class="td-action" colspan="100%">
+                    <a href="{{ url_for('login_view') }}">
+                        {{ _("I have already an account, sign in")}}
+                    </a>
+                </td>
+            </tr>
+        </tfoot>
     </table>
 </form>
 

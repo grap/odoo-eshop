@@ -17,13 +17,13 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ******************************************************************************/
 
-function update_header(amount_total, minimum_ok){
+function update_header(amount_total_header, minimum_ok){
     if (amount_total == '0') {
         $('#nav_shopping_cart').css('visibility', 'hidden');
     }
     else {
         $('#nav_shopping_cart').css('visibility', 'visible');
-        $('#nav_amount_total').replaceWith("<span id='nav_amount_total'>" + amount_total + "</span>");
+        $('#nav_amount_total').replaceWith("<span id='nav_amount_total'>" + amount_total_header + "</span>");
 
         if (minimum_ok){
             $('#nav_shopping_cart_ok').css('display', 'inline-block');

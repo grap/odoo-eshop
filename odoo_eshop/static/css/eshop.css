@@ -15,6 +15,15 @@ h2{
     padding:0px !important;
 }
 
+.td-action{
+    text-align:center;
+}
+/* Header Style */
+.navigation-button{
+    height:32px;
+    max-height:24px;
+}
+
 /* Catalog Style */
 .input-quantity{
     width:150px !important;
@@ -37,3 +46,4 @@ h2{
     height:50px;width:50px;
     display:inline;
 }
+

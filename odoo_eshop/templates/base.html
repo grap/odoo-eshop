@@ -45,7 +45,7 @@
                     <div class="nav navbar-left" style="margin-right:10px">
 
         {% if session.get('eshop_image_small', False) %}
-                        <a class="btn btn-default" id="nav_home" href="{{  url_for('home') }}" style="padding: 0px">
+                        <a class="btn btn-default navigation-button" id="nav_home" href="{{  url_for('home') }}" style="padding: 0px">
                             <img src="data:image/png;base64,{{ session['eshop_image_small'] }}" style="max-height:32px;"/>
                         </a>
         {% else %}
@@ -102,7 +102,32 @@
             {% endif %}
                     </div>
 
+        {% endif %}
                     <div class="nav navbar-right">
+            {% if session.get('eshop_facebook_url') %}
+                        <a class="btn btn-default" href="{{ session['eshop_facebook_url'] }}" style="padding: 0px">
+                            <img style="max-height: 32px"
+                                src="{{ url_for('static', filename='images/icon-facebook.png') }}"/>
+                        </a>
+            {% endif %}
+            {% if session.get('eshop_google_plus_url') %}
+                        <a class="btn btn-default" href="{{ session['eshop_google_plus_url'] }}" style="padding: 0px">
+                            <img style="max-height: 32px"
+                                src="{{ url_for('static', filename='images/icon-google-plus.png') }}"/>
+                        </a>
+            {% endif %}
+            {% if session.get('eshop_twitter_url') %}
+                        <a class="btn btn-default" href="{{ session['eshop_twitter_url'] }}" style="padding: 0px">
+                            <img style="max-height: 32px"
+                                src="{{ url_for('static', filename='images/icon-twitter.png') }}"/>
+                        </a>
+            {% endif %}
+            {% if session.get('eshop_website_url') %}
+                        <a class="btn btn-default" href="{{ session['eshop_website_url'] }}">
+                            {{_('Web Site')}}
+                        </a>
+            {% endif %}
+        {% if 'partner_name' in session %}
                         <div class="btn-group">
                             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="nav_account">
                             
@@ -128,7 +153,7 @@
                         </div>
 
         {% else %}
-                    <div class="nav navbar-right">
+
             {% if session.get('eshop_register_allowed', False) %}
                         <a class="btn btn-default" id="nav_register" href="{{ url_for('register') }}">
                             <span class="glyphicon  glyphicon glyphicon-pencil"/> {{ _('Register') }}

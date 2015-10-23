@@ -187,4 +187,11 @@ def change_product_qty(quantity, mode, product_id=None, line_id=None):
             (sale_order.amount_total >= session['eshop_minimum_price']) or
             (sale_order.amount_untaxed >= session['eshop_minimum_price'])
     })
+    if session.get('eshop_vat_included'):
+        res['amount_total_header'] = currency(
+            sale_order.amount_total) if sale_order else 0
+    else:
+        res['amount_total_header'] = currency(
+            sale_order.amount_untaxed) if sale_order else 0
+            
     return res

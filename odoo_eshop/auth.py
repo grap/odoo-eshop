@@ -37,6 +37,7 @@ def _load_global_data_if_needed():
         session['eshop_website_url']=shop.eshop_website_url
         session['eshop_twitter_url']=shop.eshop_twitter_url
         session['eshop_facebook_url']=shop.eshop_facebook_url
+        session['eshop_google_plus_url']=shop.eshop_google_plus_url
         session['eshop_image_small']=shop.eshop_image_small
         session['eshop_register_allowed'] = shop.eshop_register_allowed
         session['eshop_minimum_price'] = shop.eshop_minimum_price
