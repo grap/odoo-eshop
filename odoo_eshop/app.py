@@ -148,6 +148,8 @@ def empty_if_null(value):
 @app.route("/")
 @requires_connection
 def home():
+    if session.get('partner_id', False):
+        return redirect(url_for('home_logged'))
     shop = openerp.SaleShop.browse(int(conf.get('openerp', 'shop_id')))
     return render_template('home.html', shop=shop)
 
@@ -157,6 +159,45 @@ def home():
 def home_logged():
     shop = openerp.SaleShop.browse(int(conf.get('openerp', 'shop_id')))
     # TODO Message if PZI
+    if session['manage_recovery_moment']\
+        and not session['manage_delivery_moment']:
+        pending_moment_groups = openerp.SaleRecoveryMomentGroup.browse(
+            [('state', 'in', 'pending_sale')])
+        if len(pending_moment_groups) == 0:
+            # Not possible to purchase for the time being
+            futur_moment_groups = openerp.SaleRecoveryMomentGroup.browse(
+                [('state', 'in', 'futur')])
+            if len(futur_moment_groups) > 0:
+                min_date = futur_moment_groups[0].min_sale_date
+                for item in futur_moment_groups:
+                    min_date = min(min_date, item.min_sale_date)
+                flash(_(
+                    "It is not possible to buy for the time being,"
+                    " You can buy starting at %(day)s %(date)s %(time)s.",
+                    day=to_day(min_date), date=to_date(min_date),
+                    time=to_time(min_date)), 'warning')
+            else:
+                flash(_(
+                    "It is not possible to buy for the time being,"
+                    " but you can see the catalog in the meantime."),
+                    'warning')
+        elif len(pending_moment_groups) == 1:
+            # Display end Date to order
+            flash(_(
+                "You can buy until %(day)s %(date)s %(time)s.",
+                day=to_day(pending_moment_groups[0].max_sale_date),
+                date=to_date(pending_moment_groups[0].max_sale_date),
+                time=to_time(pending_moment_groups[0].max_sale_date)), 'info')
+    elif session['manage_delivery_moment']\
+        and not session['manage_recovery_moment']:
+        partner = openerp.ResPartner.browse([session['partner_id']])[0]
+        if not partner.delivery_categ_id:
+            flash(_(
+                "Your account is not correctly set : your delivery group"
+                " is not defined. Please contact your seller to fix the"
+                " problem"), 'danger')
+    else:
+        flash(_('Recovery / Delivery Moment Unset'), 'danger')
     return render_template('home.html', shop=shop)
 
 
@@ -282,8 +323,8 @@ def register():
                 if partner.eshop_active:
                     flash(_(
                         "The '%(email)s' field is already associated to an"
-                        " active account. Please ask your seller if you"
-                        " forgot your credentials.",
+                        " active account. Please click 'Recover Password',"
+                        " if your forgot your credentials.",
                         email=email) , 'danger')
                 elif partner.eshop_state == 'email_to_confirm':
                     flash(_(
@@ -294,8 +335,8 @@ def register():
                 else:
                     flash(_(
                         "The '%(email)s' field is already associated to an"
-                        " inactive account. Please ask your seller to fix"
-                        " the problem.", email=email), 'danger')
+                        " inactive account. Please ask your seller to activate"
+                        " your account.", email=email), 'danger')
 
         if not mail_ok:
             return render_template('register.html')

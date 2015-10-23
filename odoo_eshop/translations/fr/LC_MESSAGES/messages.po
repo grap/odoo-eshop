@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-10-23 15:02+0200\n"
+"POT-Creation-Date: 2015-10-23 18:44+0200\n"
 "PO-Revision-Date: 2014-10-06 14:07+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: fr <LL@li.org>\n"
@@ -61,143 +61,191 @@ msgstr "Catégorie II"
 msgid "Category III"
 msgstr "Catégorie III"
 
-#: app.py:184
+#: app.py:178
+msgid ""
+"It is not possible to buy for the time being, You can buy starting at "
+"%(day)s %(date)s %(time)s."
+msgstr ""
+"Il n'est pas possible de passer commande pour le moment, vous pourrez "
+"passer commande  à partir de %(day)s %(date)s %(time)s"
+
+#: app.py:180
+msgid ""
+"It is not possible to buy for the time being, but you can see the catalog"
+" in the meantime."
+msgstr ""
+"Il n'est pas possible de passer commande pour le moment, mais vous pouvez"
+" découvrir le catalogue des produits."
+
+#: app.py:190
+#, python-format
+msgid "You can buy until %(day)s %(date)s %(time)s."
+msgstr "Vous pouvez passer commande jusqu'à %(day)s %(date)s %(time)s."
+
+#: app.py:195
+msgid ""
+"Your account is not correctly set : your delivery group is not defined. "
+"Please contact your seller to fix the problem"
+msgstr ""
+"Votre compte n'est pas correctement paramétré: Votre groupe de livraison "
+"n'est pas défini. Merci de contacter votre vendeur pour corriger le "
+"problème."
+
+#: app.py:200
+msgid "Recovery / Delivery Moment Unset"
+msgstr "Point Relais / Livraison. Paramétrage manquant."
+
+#: app.py:225
 msgid "Login/password incorrects"
 msgstr "Login et Mot de passe incorrects"
 
-#: app.py:261 app.py:388
+#: app.py:302 app.py:429
 msgid "The 'captcha' field is not correct. Please try again"
-msgstr ""
+msgstr "Le 'captcha' n'est pas correct. merci de réessayer."
 
-#: app.py:275
+#: app.py:316
 #, python-format
 msgid ""
 "The '%(email)s' field is already used.Please ask your seller to fix the "
 "problem."
 msgstr ""
+"L'email '%(email)s' est déjà utilisé. Veuillez demander à votre vendeur "
+"de corriger le problème."
 
-#: app.py:283
-#, python-format
+#: app.py:324
 msgid ""
 "The '%(email)s' field is already associated to an active account. Please "
-"ask your seller if you forgot your credentials."
+"click 'Recover Password', if your forgot your credentials."
 msgstr ""
+"Le mail '%(email)s' est déjà associé à un compte qui n'est pas actif. "
+"Merci de demander à votre vendeur d'activer votre compte."
 
-#: app.py:289
+#: app.py:330
 #, python-format
 msgid ""
 "The '%(email)s' field is already associated to an account. Please finish "
 "the process to create an account, by clicking on the link you received  "
 "by email."
 msgstr ""
+"L'email '%(email)s' est déjà associé à un compte. Veuillez finir la "
+"procédure de création de compte, en cliquant sur le lien que vous avez "
+"reçu par mail."
 
-#: app.py:295
+#: app.py:336
 #, python-format
 msgid ""
 "The '%(email)s' field is already associated to an inactive account. "
-"Please ask your seller to fix the problem."
+"Please ask your seller to activate your account."
 msgstr ""
+"Le mail '%(email)s' est déjà associé à un compte qui n'est pas actif. "
+"Merci de demander à votre vendeur d'activer votre compte."
 
-#: app.py:307
+#: app.py:348
 msgid "The 'Password' Fields do not match."
-msgstr ""
+msgstr "Les champs 'mots de passe' ne correspondent pas."
 
-#: app.py:314
+#: app.py:355
 msgid "Password must have 8 characters or more."
-msgstr ""
+msgstr "Le mot de passe doit avoir 8 caractères ou plus."
 
-#: app.py:316
+#: app.py:357
 msgid "Password must have at least one digit."
-msgstr ""
+msgstr "Le mot de passe doit contenir au moins un chiffre."
 
-#: app.py:318
+#: app.py:359
 msgid "Password must have at least one uppercase characters."
-msgstr ""
+msgstr "Le mot de passe doit contenir une lettre en majuscule."
 
-#: app.py:320
+#: app.py:361
 msgid "Password must have at least one lowercase characters."
-msgstr ""
+msgstr "Le mot de passe doit contenir une lettre en minuscule."
 
-#: app.py:337
+#: app.py:378
 #, python-format
 msgid ""
 "The registration is complete. Please check your mail box '%(email)s' and "
 "click on the link you received to activate your account."
 msgstr ""
+"La création du compte est terminé. Veuillez vérifier votre boite mail et "
+"cliquer sur le lien que vous avez reçu pour activer votre compte."
 
-#: app.py:353
+#: app.py:394
 msgid "The validation process failed."
-msgstr ""
+msgstr "Le processus de validation a échoué."
 
-#: app.py:355
+#: app.py:396
 msgid "Your account is already enabled."
-msgstr ""
+msgstr "Votre compte est déjà activé."
 
-#: app.py:359
+#: app.py:400
 msgid ""
 "The validation process is over.\n"
 " You can now log in to begin to purchase."
 msgstr ""
+" La validation de votre compte est terminée.\n"
+" Vous pouvez désormais vous identifier pour passer commande."
 
-#: app.py:362
+#: app.py:403
 msgid ""
 "The validation process failed because your account is disabled. Please "
 "ask your seller to fix the problem."
 msgstr ""
+"La validation de votre compte a échoué car celui-ci a été désactivé. "
+"Veuillez contacter votre vendeur pour corriger le problème."
 
-#: app.py:395
+#: app.py:436
 msgid "'Email' Field is required"
-msgstr ""
+msgstr "Le champ 'email' est obligatoire."
 
-#: app.py:402
+#: app.py:443
 msgid "There is a problem with your account. Please contact your seller."
-msgstr ""
+msgstr "Il y a un problème avec votre compte. Veuillez contacter votre vendeur."
 
-#: app.py:409
+#: app.py:450
 msgid ""
 " we sent an email to this mailbox, if this email was linked to an active "
 "account."
-msgstr ""
+msgstr "Nous vous avons envoyé un email, si l'email fourni était lié à un compte."
 
-#: app.py:557
+#: app.py:598
 msgid "Your shopping cart has been successfully deleted."
 msgstr "Votre panier a été supprimé avec succès."
 
-#: app.py:586 app.py:638 templates/base.html:84 templates/base.html:88
+#: app.py:627 app.py:679 templates/base.html:84 templates/base.html:88
 #: templates/base.html:99
 msgid "You have not reached the ceiling : "
 msgstr "Vous n'avez pas atteint le franco : "
 
-#: app.py:614 app.py:653
+#: app.py:655 app.py:694
 msgid "Your Sale Order is now confirmed."
 msgstr "Votre commande est désormais terminée."
 
-#: app.py:617
+#: app.py:658
 msgid "You have selected an obsolete recovery moment. Please try again."
 msgstr ""
 "Vous avez sélectionné un lieu de récupération obsolète. Veuillez "
 "réessayer."
 
-#: app.py:703
+#: app.py:744
 msgid "order"
 msgstr "commande"
 
-#: app.py:731
+#: app.py:772
 msgid "invoice"
 msgstr "Factures"
 
-#: app.py:750
+#: app.py:791
 msgid "An unexcepted error occured. Please try again in a while"
-msgstr ""
+msgstr "Une erreur inattendue s'est produite. Veuillez réessayer dans un mooment."
 
-#: auth.py:54 auth.py:74
-#, fuzzy
+#: auth.py:55 auth.py:75
 msgid ""
 "Distant Service Unavailable. If you had a pending purchase, you have not "
 "lost your Shopping Cart. Thank you connect again in a while."
 msgstr ""
-"Service Distant Indisponible. Si vous aviez une commande en cours, votre "
-"panier a été sauvegardé."
+"Service distant indisponible. Si vous aviez une commande en cours, votre "
+"panier a été sauvegardé. Merci de vous connecter de nouveau dans un "
+"moment."
 
 #: res_partner.py:15
 #, python-format
@@ -244,11 +292,10 @@ msgid "You have now %(qty)s %(uom)s of product '%(prod)s' in your shopping cart.
 msgstr "Vous avez désormais %(qty)s %(uom)s de '%(prod)s' dans votre panier."
 
 #: templates/404.html:8
-#, fuzzy
 msgid "Page not found."
 msgstr "Page non trouvée"
 
-#: templates/account.html:10 templates/base.html:134
+#: templates/account.html:10 templates/base.html:135
 msgid "Your Account"
 msgstr "Votre Compte"
 
@@ -256,8 +303,8 @@ msgstr "Votre Compte"
 msgid "Complete Name"
 msgstr "Nom Complet"
 
-#: templates/account.html:25 templates/login.html:11
-#: templates/password_lost.html:11 templates/register.html:31
+#: templates/account.html:25 templates/login.html:12
+#: templates/password_lost.html:13 templates/register.html:31
 msgid "Email"
 msgstr "Email"
 
@@ -286,7 +333,7 @@ msgid "City"
 msgstr "Ville"
 
 #: templates/account.html:83 templates/catalog_inline.html:76
-#: templates/shopping_cart.html:87 templates/shopping_cart.html:121
+#: templates/shopping_cart.html:87 templates/shopping_cart.html:125
 msgid "Update"
 msgstr "Mettre à jour"
 
@@ -318,31 +365,47 @@ msgstr "TTC"
 msgid "VAT. Excl."
 msgstr "HT"
 
-#: templates/base.html:127
+#: templates/base.html:109
+msgid "Visit our Facebook Page"
+msgstr "Visiter notre page Facebook"
+
+#: templates/base.html:115
+msgid "Visit our Google + Page"
+msgstr "Visiter notre page Google +"
+
+#: templates/base.html:121
+msgid "Visit our Twitter Page"
+msgstr "Visiter notre page Twitter"
+
+#: templates/base.html:126
+msgid "Visit our Website"
+msgstr "Visiter notre site web"
+
+#: templates/base.html:128
 msgid "Web Site"
 msgstr "Site Web"
 
-#: templates/base.html:139
+#: templates/base.html:140
 msgid "Personnal Datas"
 msgstr "Données Personnelles"
 
-#: templates/base.html:142
+#: templates/base.html:143
 msgid "Orders History"
 msgstr "Historique des Commandes"
 
-#: templates/base.html:145
+#: templates/base.html:146
 msgid "Invoices History"
 msgstr "Historique des Factures"
 
-#: templates/base.html:150
+#: templates/base.html:151
 msgid "Log Out"
 msgstr "Se déconnecter"
 
-#: templates/base.html:159
+#: templates/base.html:160
 msgid "Register"
 msgstr "S'enregistrer"
 
-#: templates/base.html:163
+#: templates/base.html:164 templates/login.html:5
 msgid "Log In"
 msgstr "Se connecter"
 
@@ -422,12 +485,12 @@ msgstr ""
 "définitive."
 
 #: templates/delivery_moment.html:90 templates/recovery_moment_place.html:86
-#: templates/shopping_cart.html:158
+#: templates/shopping_cart.html:162
 msgid "Do you want to proceed?"
 msgstr "Voulez vous continuer ?"
 
 #: templates/delivery_moment.html:92 templates/recovery_moment_place.html:88
-#: templates/shopping_cart.html:161
+#: templates/shopping_cart.html:165
 msgid "Cancel"
 msgstr "Annuler"
 
@@ -445,11 +508,11 @@ msgstr ""
 
 #: templates/error.html:8
 msgid "Unexpected Error."
-msgstr ""
+msgstr "Erreur inattendue."
 
 #: templates/home.html:14
 msgid "eShop not set."
-msgstr ""
+msgstr "eBoutique non paramétrée."
 
 #: templates/invoices.html:10
 msgid "Your Invoices"
@@ -464,12 +527,12 @@ msgid "Invoice Date"
 msgstr "Date de facture"
 
 #: templates/invoices.html:17 templates/orders.html:22
-#: templates/shopping_cart.html:124
+#: templates/shopping_cart.html:128
 msgid "Untaxed Amount"
 msgstr "Total HT"
 
 #: templates/invoices.html:18 templates/orders.html:23
-#: templates/shopping_cart.html:138
+#: templates/shopping_cart.html:142
 msgid "Total"
 msgstr "Total TTC"
 
@@ -481,15 +544,15 @@ msgstr "Télécharger"
 msgid "No Invoices for the time being."
 msgstr "Pas de factures pour le moment."
 
-#: templates/login.html:19 templates/register.html:37
+#: templates/login.html:20 templates/register.html:37
 msgid "Password"
 msgstr "Mot de passe"
 
-#: templates/login.html:35
+#: templates/login.html:36
 msgid "I don't have an account yet, register"
 msgstr "Je n'ai pas encore de compte, s'enregistrer"
 
-#: templates/login.html:39
+#: templates/login.html:40
 msgid "I forgot my password"
 msgstr "J'ai oublié mon mot de passe"
 
@@ -518,7 +581,11 @@ msgstr "Non Défini"
 msgid "No Orders for the time being."
 msgstr "Pas de commandes pour le moment."
 
-#: templates/password_lost.html:19 templates/register.html:101
+#: templates/password_lost.html:6
+msgid "Recover Password"
+msgstr "Récupérer son mot de passe"
+
+#: templates/password_lost.html:21 templates/register.html:101
 msgid "Captcha"
 msgstr "Captcha"
 
@@ -642,7 +709,7 @@ msgstr "P.U. TTC"
 msgid "Price Unit VAT Excl."
 msgstr "P.U. HT"
 
-#: templates/shopping_cart.html:54 templates/shopping_cart.html:131
+#: templates/shopping_cart.html:54 templates/shopping_cart.html:135
 msgid "Taxes"
 msgstr "TVA"
 
@@ -662,15 +729,15 @@ msgstr "Sous total HT"
 msgid "Remove"
 msgstr "Retirer"
 
-#: templates/shopping_cart.html:120
+#: templates/shopping_cart.html:124
 msgid "Extra Comments"
 msgstr "Commentaire facultatif"
 
-#: templates/shopping_cart.html:154
+#: templates/shopping_cart.html:158
 msgid "Confirm Delete"
 msgstr "Confirmer la suppression"
 
-#: templates/shopping_cart.html:157
+#: templates/shopping_cart.html:161
 msgid ""
 "You are about to delete your Shopping Cart, this procedure is "
 "irreversible."
@@ -678,7 +745,7 @@ msgstr ""
 "Vous êtes sur le point de supprimer votre panier, cette procédure ne peut"
 " être annulée"
 
-#: templates/shopping_cart.html:162
+#: templates/shopping_cart.html:166
 msgid "Delete"
 msgstr "Supprimer"
 

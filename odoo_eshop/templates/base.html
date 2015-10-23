@@ -42,11 +42,11 @@
             <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
 
                 <div class="container-fluid">
-                    <div class="nav navbar-left" style="margin-right:10px">
+                    <div class="nav navbar-left div-home-link">
 
         {% if session.get('eshop_image_small', False) %}
-                        <a class="btn btn-default navigation-button" id="nav_home" href="{{  url_for('home') }}" style="padding: 0px">
-                            <img src="data:image/png;base64,{{ session['eshop_image_small'] }}" style="max-height:32px;"/>
+                        <a class="btn btn-default a-link-header" id="nav_home" href="{{  url_for('home') }}">
+                            <img src="data:image/png;base64,{{ session['eshop_image_small'] }}" class="img-icon-header"/>
                         </a>
         {% else %}
                         <a class="btn btn-default" id="nav_home" href="{{  url_for('home') }}">
@@ -105,25 +105,26 @@
         {% endif %}
                     <div class="nav navbar-right">
             {% if session.get('eshop_facebook_url') %}
-                        <a class="btn btn-default" href="{{ session['eshop_facebook_url'] }}" style="padding: 0px">
-                            <img style="max-height: 32px"
+                        <a class="btn btn-default a-link-header" href="{{ session['eshop_facebook_url'] }}" target="new">
+                            <img class="img-icon-header" title="{{_('Visit our Facebook Page')}}"
                                 src="{{ url_for('static', filename='images/icon-facebook.png') }}"/>
                         </a>
             {% endif %}
             {% if session.get('eshop_google_plus_url') %}
-                        <a class="btn btn-default" href="{{ session['eshop_google_plus_url'] }}" style="padding: 0px">
-                            <img style="max-height: 32px"
+                        <a class="btn btn-default a-link-header" href="{{ session['eshop_google_plus_url'] }}" target="new">
+                            <img class="img-icon-header" title="{{_('Visit our Google + Page')}}"
                                 src="{{ url_for('static', filename='images/icon-google-plus.png') }}"/>
                         </a>
             {% endif %}
             {% if session.get('eshop_twitter_url') %}
-                        <a class="btn btn-default" href="{{ session['eshop_twitter_url'] }}" style="padding: 0px">
-                            <img style="max-height: 32px"
+                        <a class="btn btn-default a-link-header" href="{{ session['eshop_twitter_url'] }}" target="new">
+                            <img class="img-icon-header" title="{{_('Visit our Twitter Page')}}"
                                 src="{{ url_for('static', filename='images/icon-twitter.png') }}"/>
                         </a>
             {% endif %}
             {% if session.get('eshop_website_url') %}
-                        <a class="btn btn-default" href="{{ session['eshop_website_url'] }}">
+                        <a class="btn btn-default" title="{{_('Visit our Website')}}" target="new"
+                            href="{{ session['eshop_website_url'] }}">
                             {{_('Web Site')}}
                         </a>
             {% endif %}
@@ -166,7 +167,7 @@
                     </div>
                 </div>
             </nav>
-    <div style="margin-top:70px;">
+    <div class="div-main-part">
     {% block breadcrumb_all %}
         {% block breadcrumb %}
         {% endblock %}

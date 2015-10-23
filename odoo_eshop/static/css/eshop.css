@@ -24,6 +24,22 @@ h2{
     max-height:24px;
 }
 
+.a-link-header{
+    padding: 0px;
+}
+.img-icon-header{
+    max-height: 32px;
+}
+
+.div-home-link{
+    margin-right:20px;
+}
+
+/* Main Part Style*/
+.div-main-part{
+    margin-top:70px;
+}
+
 /* Catalog Style */
 .input-quantity{
     width:150px !important;
