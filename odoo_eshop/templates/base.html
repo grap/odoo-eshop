@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>{{ _('eShop')}}{% block extra_title %}{% endblock %}</title>
+        <title>{{ session.get('eshop_title', _('eShop')) }}</title>
 
     <!-- from : http://code.jquery.com/jquery-2.1.4.min.js -->
         <script src="{{ url_for('static', filename='lib/js/jquery-2.1.4.min.js') }}"></script>
