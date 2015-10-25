@@ -239,7 +239,6 @@ msgid "Something wrong happened. Please select again your delivery moment."
 msgstr ""
 
 #: app.py:712
-#, fuzzy
 msgid "Your Shopping Cart has been deleted."
 msgstr "Votre panier a été supprimé avec succès."
 
@@ -253,7 +252,7 @@ msgstr "Factures"
 
 #: app.py:808
 msgid "An unexcepted error occured. Please try again in a while"
-msgstr "Une erreur inattendue s'est produite. Veuillez réessayer dans un mooment."
+msgstr "Une erreur inattendue s'est produite. Veuillez réessayer dans un moment."
 
 #: auth.py:55 auth.py:75
 msgid ""
@@ -514,11 +513,9 @@ msgid "Confirm Order"
 msgstr "Confirmer l'achat"
 
 #: templates/delivery_moment.html:103
-#, fuzzy
 msgid "You are about to partially valid your Shopping Cart."
 msgstr ""
-"Vous êtes sur le point de valider votre panier, cette procédure est "
-"définitive."
+"Vous êtes sur le point de valider votre panier"
 
 #: templates/delivery_moment.html:104 templates/delivery_moment.html:131
 #: templates/recovery_moment_place.html:86 templates/shopping_cart.html:162
@@ -545,11 +542,9 @@ msgstr ""
 "peut prendre quelques secondes."
 
 #: templates/delivery_moment.html:130
-#, fuzzy
 msgid "You are about to completely valid your Shopping Cart."
 msgstr ""
-"Vous êtes sur le point de valider votre panier, cette procédure est "
-"définitive."
+"Vous êtes sur le point de valider votre panier."
 
 #: templates/error.html:8
 msgid "Unexpected Error."
@@ -714,7 +709,7 @@ msgstr "Mot de passe (Vérification)"
 
 #: templates/register.html:61
 msgid "Other Phone"
-msgstr "Autre télphone"
+msgstr "Autre téléphone"
 
 #: templates/register.html:77
 msgid "Street (Extra Info)"

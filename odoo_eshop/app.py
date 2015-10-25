@@ -396,7 +396,7 @@ def activate_account(id, email):
         flash(_("Your account is already enabled."), 'warning')
     elif partner.eshop_state in ['email_to_confirm']:
         openerp.ResPartner.write([partner.id], {
-            'email_state': 'first_purchase'})
+            'eshop_state': 'first_purchase'})
         flash(_("The validation process is over.\n"
         " You can now log in to begin to purchase."), 'success')
     else:
