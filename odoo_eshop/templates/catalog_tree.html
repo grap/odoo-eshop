@@ -25,6 +25,7 @@
 p { margin: 0; padding: 0; font-family: sans-serif;}
 
 .ellipsis {
+    text-align:center;
     overflow: hidden;
     height: 44px;
 }
@@ -87,13 +88,17 @@ p { margin: 0; padding: 0; font-family: sans-serif;}
             {% else %}
             <img src="{{ url_for('static', filename='images/category_without_image.png') }}" style="max-width:120px;"/>
             {% endif %}
-            <div style="text-align:center;">
-                <span class="hideOverflow">{{ category.name }}</span>
-            {% if category.type == 'normal' %}
-            {{category.available_product_qty}} {{_('Products')}}
-            {% else %}
-            ({{ category.child_qty }} {{_('Categories')}})
-            {% endif %}
+            <div class="ellipsis">
+                <p>{{ category.name }}</p>
+            </div>
+            <div class="product-price">
+                <p>
+                {% if category.type == 'normal' %}
+                {{category.available_product_qty}} {{_('Products')}}
+                {% else %}
+                ({{ category.child_qty }} {{_('Categories')}})
+                {% endif %}
+                </p>
             </div>
         </a>
     </div>
@@ -107,7 +112,7 @@ p { margin: 0; padding: 0; font-family: sans-serif;}
 <div class="row">
     {% for product in products %}
     <div class="col-sm-3 col-md-2 col-xs-6">
-        <a class="thumbnail" href="{{ url_for('product', product_id=product.id)}}">
+        <a class="thumbnail" href="{{ url_for('product', product_id=product.id)}}" title="{{ product.name }}">
         {% if product.image_medium %}
             <img src="data:image/png;base64,{{ product.image_medium }}" style="max-width:120px;"/>
         {% else %}
