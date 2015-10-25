@@ -11,7 +11,7 @@ from flask.ext.babel import gettext as _
 def currency(n):
     if not n:
         n = 0
-    return ('%.02f' % n).replace('.', ',') + u' € '
+    return ('%.02f' % n).replace('.', ',') + u' €'
 
 
 def load_sale_order():

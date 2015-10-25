@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-10-23 18:44+0200\n"
+"POT-Creation-Date: 2015-10-24 00:47+0200\n"
 "PO-Revision-Date: 2014-10-06 14:07+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: fr <LL@li.org>\n"
@@ -62,6 +62,7 @@ msgid "Category III"
 msgstr "Catégorie III"
 
 #: app.py:178
+#, python-format
 msgid ""
 "It is not possible to buy for the time being, You can buy starting at "
 "%(day)s %(date)s %(time)s."
@@ -113,6 +114,7 @@ msgstr ""
 "de corriger le problème."
 
 #: app.py:324
+#, python-format
 msgid ""
 "The '%(email)s' field is already associated to an active account. Please "
 "click 'Recover Password', if your forgot your credentials."
@@ -207,34 +209,49 @@ msgid ""
 "account."
 msgstr "Nous vous avons envoyé un email, si l'email fourni était lié à un compte."
 
-#: app.py:598
+#: app.py:600
 msgid "Your shopping cart has been successfully deleted."
 msgstr "Votre panier a été supprimé avec succès."
 
-#: app.py:627 app.py:679 templates/base.html:84 templates/base.html:88
+#: app.py:629 app.py:681 templates/base.html:84 templates/base.html:88
 #: templates/base.html:99
 msgid "You have not reached the ceiling : "
 msgstr "Vous n'avez pas atteint le franco : "
 
-#: app.py:655 app.py:694
+#: app.py:657 app.py:704
 msgid "Your Sale Order is now confirmed."
 msgstr "Votre commande est désormais terminée."
 
-#: app.py:658
+#: app.py:660
 msgid "You have selected an obsolete recovery moment. Please try again."
 msgstr ""
 "Vous avez sélectionné un lieu de récupération obsolète. Veuillez "
 "réessayer."
 
-#: app.py:744
+#: app.py:697
+msgid ""
+"Your Sale Order has been partially confirmed.\n"
+" A residual Sale Order has been created with remaning Products."
+msgstr ""
+
+#: app.py:707
+msgid "Something wrong happened. Please select again your delivery moment."
+msgstr ""
+
+#: app.py:712
+#, fuzzy
+msgid "Your Shopping Cart has been deleted."
+msgstr "Votre panier a été supprimé avec succès."
+
+#: app.py:761
 msgid "order"
 msgstr "commande"
 
-#: app.py:772
+#: app.py:789
 msgid "invoice"
 msgstr "Factures"
 
-#: app.py:791
+#: app.py:808
 msgid "An unexcepted error occured. Please try again in a while"
 msgstr "Une erreur inattendue s'est produite. Veuillez réessayer dans un mooment."
 
@@ -437,10 +454,10 @@ msgstr "Choisir la date de livraison"
 #: templates/delivery_moment.html:25
 msgid ""
 "Sorry. For the time being, there is no possibility to select a date to "
-"receive your order."
+"receive your order. Please contact your seller."
 msgstr ""
 "Désolé. Pour le moment, il n'y a pas la possibilité de choisir une date "
-"pour être livré."
+"pour être livré. Veuillez contacter votre vendeur."
 
 #: templates/delivery_moment.html:33 templates/orders.html:19
 #: templates/recovery_moment_place.html:34
@@ -469,42 +486,70 @@ msgstr "Description"
 msgid "Complete"
 msgstr "Complet"
 
-#: templates/delivery_moment.html:61 templates/delivery_moment.html:67
-#: templates/recovery_moment_place.html:64
+#: templates/delivery_moment.html:58
+msgid "Too Short Deadline"
+msgstr "Délai trop court"
+
+#: templates/delivery_moment.html:61
+msgid "Partial Delivery doesn't rich minimum price"
+msgstr "La livraison partielle n'atteint pas le franco de port"
+
+#: templates/delivery_moment.html:72
+msgid "Partial Delivery"
+msgstr "Livraison partielle"
+
+#: templates/delivery_moment.html:75
+msgid "Some products with higher delay will not be delivered at this date"
+msgstr ""
+"Certains produits avec un délai plus important ne seront pas livrés à "
+"cette date"
+
+#: templates/delivery_moment.html:80 templates/recovery_moment_place.html:64
 msgid "Select"
 msgstr "Choisir"
 
-#: templates/delivery_moment.html:86 templates/recovery_moment_place.html:82
+#: templates/delivery_moment.html:100 templates/delivery_moment.html:127
+#: templates/recovery_moment_place.html:82
 msgid "Confirm Order"
 msgstr "Confirmer l'achat"
 
-#: templates/delivery_moment.html:89 templates/recovery_moment_place.html:85
-msgid "You are about to valid your Shopping Cart, this procedure is irreversible."
+#: templates/delivery_moment.html:103
+#, fuzzy
+msgid "You are about to partially valid your Shopping Cart."
 msgstr ""
 "Vous êtes sur le point de valider votre panier, cette procédure est "
 "définitive."
 
-#: templates/delivery_moment.html:90 templates/recovery_moment_place.html:86
-#: templates/shopping_cart.html:162
+#: templates/delivery_moment.html:104 templates/delivery_moment.html:131
+#: templates/recovery_moment_place.html:86 templates/shopping_cart.html:162
 msgid "Do you want to proceed?"
 msgstr "Voulez vous continuer ?"
 
-#: templates/delivery_moment.html:92 templates/recovery_moment_place.html:88
-#: templates/shopping_cart.html:165
+#: templates/delivery_moment.html:106 templates/delivery_moment.html:133
+#: templates/recovery_moment_place.html:88 templates/shopping_cart.html:165
 msgid "Cancel"
 msgstr "Annuler"
 
-#: templates/delivery_moment.html:93 templates/recovery_moment_place.html:89
+#: templates/delivery_moment.html:107 templates/delivery_moment.html:134
+#: templates/recovery_moment_place.html:89
 msgid "Confirm"
 msgstr "Confirmer"
 
-#: templates/delivery_moment.html:99 templates/recovery_moment_place.html:95
+#: templates/delivery_moment.html:113 templates/delivery_moment.html:140
+#: templates/recovery_moment_place.html:95
 msgid ""
 "Please wait while your sale is being processed.<br /> This can take a few"
 " seconds."
 msgstr ""
 "Merci de patienter : votre vente est en train d'être traitée.<br /> Cela "
 "peut prendre quelques secondes."
+
+#: templates/delivery_moment.html:130
+#, fuzzy
+msgid "You are about to completely valid your Shopping Cart."
+msgstr ""
+"Vous êtes sur le point de valider votre panier, cette procédure est "
+"définitive."
 
 #: templates/error.html:8
 msgid "Unexpected Error."
@@ -645,6 +690,12 @@ msgstr ""
 "Désolé. Pour le moment, il n'y a pas la possibilité de choisir une date "
 "pour récupérer votre panier."
 
+#: templates/recovery_moment_place.html:85
+msgid "You are about to valid your Shopping Cart, this procedure is irreversible."
+msgstr ""
+"Vous êtes sur le point de valider votre panier, cette procédure est "
+"définitive."
+
 #: templates/register.html:10
 msgid "Create a new account"
 msgstr "Créer un nouveau compte"
@@ -752,3 +803,4 @@ msgstr "Supprimer"
 #: templates/unavailable_service.html:8
 msgid "Unavailable Service"
 msgstr "Service Indisponible"
+

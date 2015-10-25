@@ -553,6 +553,8 @@ def catalog_inline_quantity_update():
 @requires_auth
 def shopping_cart():
     sale_order = load_sale_order()
+    if not sale_order:
+        return redirect(url_for('home'))
     return render_template(
         'shopping_cart.html',
         sale_order=sale_order,
@@ -668,11 +670,11 @@ def select_recovery_moment(recovery_moment_id):
 @requires_auth
 def delivery_moment():
     sale_order = load_sale_order()
-    delivery_moments = openerp.SaleDeliveryMoment.load_delivery_moment(
-        sale_order.id)
-    recovery_moment_groups = openerp.SaleRecoveryMomentGroup.browse(
-        [('state', 'in', 'pending_sale')])
+    delivery_moments = openerp.SaleDeliveryMoment.load_delivery_moment_data(
+        sale_order.id, session['eshop_minimum_price'],
+        session['eshop_vat_included'])
 
+    print delivery_moments
     if (session['eshop_minimum_price'] != 0
             and session['eshop_minimum_price'] > sale_order.amount_total):
         flash(
@@ -681,19 +683,34 @@ def delivery_moment():
             'warning')
         return redirect(url_for('shopping_cart'))
     return render_template(
-        'delivery_moment.html',
-        delivery_moments=delivery_moments,
-        recovery_moment_groups=recovery_moment_groups)
+        'delivery_moment.html', delivery_moments=delivery_moments)
 
 @app.route("/select_delivery_moment/<int:delivery_moment_id>")
 @requires_auth
 def select_delivery_moment(delivery_moment_id):
-    openerp.SaleOrder.select_delivery_moment_id(
-        [sale_order.id], delivery_moment_id)
-
-    flash(_("Your Sale Order is now confirmed."), 'success')
-    return redirect(url_for('orders'))
-#    return redirect(url_for('shopping_cart'))
+    sale_order = load_sale_order()
+    if sale_order:
+        if openerp.SaleOrder.select_delivery_moment_id(
+                sale_order.id, delivery_moment_id):
+            sale_order = load_sale_order()
+            if sale_order:
+                flash(_(
+                    "Your Sale Order has been partially confirmed.\n"
+                    " A residual shopping Cart has been created with remaning"
+                    " Products."), 'warning')
+                return redirect(url_for('shopping_cart'))
+            
+            else:
+                flash(_("Your Sale Order is now confirmed."), 'success')
+                return redirect(url_for('orders'))
+        else:
+            flash(_(
+                "Something wrong happened."
+                " Please select again your delivery moment."), 'danger')
+            return redirect(url_for('shopping_cart'))
+    else:
+        flash(_("Your Shopping Cart has been deleted."), 'danger')
+        return redirect(url_for('home'))
 
 
 # ############################################################################

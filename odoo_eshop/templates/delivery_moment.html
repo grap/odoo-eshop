@@ -22,7 +22,7 @@
 
     {% if delivery_moments|length == 0 %}
     <div class="flashes">
-        <p class="text-center bg-warning">{{ _('Sorry. For the time being, there is no possibility to select a date to receive your order.')}}</p>
+        <p class="text-center bg-danger">{{ _('Sorry. For the time being, there is no possibility to select a date to receive your order. Please contact your seller.')}}</p>
     </div>
 
     {% else %}
@@ -50,24 +50,38 @@
                 {{delivery_moment['description']}}
                 {% endif %}
             </td>
-            <td>
+            <td class="td-action">
                 {% if delivery_moment['is_complete'] %}
                 {{ _('Complete')}} 
                 {% else %}
-                    {% if delivery_moment['is_partial'] %}
-                    <a data-href="{{ url_for('select_delivery_moment', delivery_moment_id=delivery_moment['id']) }}"
-                            data-toggle="modal" data-target="#confirm-valid"
-                            class="btn btn-default btn-warning" role="button">
-                        <span class="glyphicon glyphicon-warning-sign"/> {{ _('Select')}}</a>
-                    </a>
+                    {% if not delivery_moment['is_delay_possible'] %}
+                {{_('Too Short Deadline')}}
                     {% else %}
-                    <a data-href="{{ url_for('select_delivery_moment', delivery_moment_id=delivery_moment['id']) }}"
-                            data-toggle="modal" data-target="#confirm-valid"
-                            class="btn btn-default" role="button">
-                        <span class="glyphicon glyphicon-ok-circle"/> {{ _('Select')}}</a>
-                    </a>
+                        {% if not delivery_moment['is_limit_ok'] %}
+                {{_("Partial Delivery doesn't rich minimum price")}}<br />
+                            {% if session['eshop_vat_included']%}
+                                ({{ delivery_moment['amount_vat_included']|to_currency}} / {{ session['eshop_minimum_price']|to_currency}}))
+                            {% else %}
+                                ({{ delivery_moment['amount_vat_excluded']|to_currency}} / {{ session['eshop_minimum_price']|to_currency}})
+                            {% endif %}
+                        {% else %}
+                            {% if delivery_moment['is_partial'] %}
+                            <a data-href="{{ url_for('select_delivery_moment', delivery_moment_id=delivery_moment['id']) }}"
+                                    data-toggle="modal" data-target="#confirm-partial-valid"
+                                    class="btn btn-default btn-warning" role="button">
+                                <span class="glyphicon glyphicon-warning-sign"/> {{ _('Partial Delivery')}}</a>
+                            </a>
+                            <br/>
+                            {{_("Some products with higher delay will not be delivered at this date")}}<br />
+                            {% else %}
+                            <a data-href="{{ url_for('select_delivery_moment', delivery_moment_id=delivery_moment['id']) }}"
+                                    data-toggle="modal" data-target="#confirm-valid"
+                                    class="btn btn-default btn-success" role="button">
+                                <span class="glyphicon glyphicon-ok-circle"/> {{ _('Select')}}</a>
+                            </a>
+                            {% endif %}
+                        {% endif %}
                     {% endif %}
-
                 {% endif %}
             </td>
         {% endfor %}
@@ -77,7 +91,34 @@
 
     {% endif %}
 
-<!-- Validate Shopping Cart PopUp -->
+<!-- Validate Shopping Cart PopUp Partial-->
+<div class="modal fade" id="confirm-partial-valid" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">{{ _('Confirm Order') }}</h4>
+            </div>
+            <div class="modal-body confirm-part">
+                <p>{{ _('You are about to partially valid your Shopping Cart.') }}</p>
+                <p>{{ _('Do you want to proceed?') }}</p>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">{{ _('Cancel') }}</button>
+                <a href="#" class="btn btn-warning btn-confirm">{{ _('Confirm') }}</a>
+            </div>
+            </div>
+            <div class="modal-body loading loading-part">
+                <div style="text-align: center">
+                    <img src="{{ url_for('static', filename='images/loading.gif') }}" style="width:30px;height=30px" />
+                    <p>{{ _('Please wait while your sale is being processed.<br /> This can take a few seconds.') }}</p>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- Validate Shopping Cart PopUp Complete-->
 <div class="modal fade" id="confirm-valid" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -85,15 +126,15 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h4 class="modal-title" id="myModalLabel">{{ _('Confirm Order') }}</h4>
             </div>
-            <div class="modal-body" id="confirm-part">
-                <p>{{ _('You are about to valid your Shopping Cart, this procedure is irreversible.') }}</p>
+            <div class="modal-body confirm-part">
+                <p>{{ _('You are about to completely valid your Shopping Cart.') }}</p>
                 <p>{{ _('Do you want to proceed?') }}</p>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">{{ _('Cancel') }}</button>
-                <a href="#" class="btn btn-info info" id="btn-confirm">{{ _('Confirm') }}</a>
+                <a href="#" class="btn btn-success btn-confirm">{{ _('Confirm') }}</a>
             </div>
             </div>
-            <div class="modal-body loading" id="loading-part">
+            <div class="modal-body loading loading-part">
                 <div style="text-align: center">
                     <img src="{{ url_for('static', filename='images/loading.gif') }}" style="width:30px;height=30px" />
                     <p>{{ _('Please wait while your sale is being processed.<br /> This can take a few seconds.') }}</p>
@@ -106,13 +147,16 @@
 </div>
 
 <script>
-    $('#loading-part').hide();
-    $('#btn-confirm').on('click', function(e) {
-        $('#loading-part').show();
-        $('#confirm-part').hide();
+    $('.loading-part').hide();
+    $('.btn-confirm').on('click', function(e) {
+        $('.loading-part').show();
+        $('.confirm-part').hide();
     });
     $('#confirm-valid').on('show.bs.modal', function(e) {
-        $(this).find('.info').attr('href', $(e.relatedTarget).data('href'));
+        $(this).find('.btn-confirm').attr('href', $(e.relatedTarget).data('href'));
+    });
+    $('#confirm-partial-valid').on('show.bs.modal', function(e) {
+        $(this).find('.btn-confirm').attr('href', $(e.relatedTarget).data('href'));
     });
 </script>
 
