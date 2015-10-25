@@ -22,7 +22,8 @@ from config import conf
 from auth import login, logout, requires_auth, requires_connection
 from sale_order import load_sale_order, delete_sale_order, \
     currency, change_product_qty, change_shopping_cart_note
-from res_partner import change_res_partner
+from res_partner import change_res_partner, password_check_quality, \
+    sanitize_email
 
 from erp import openerp, tz, get_invoice_pdf, get_order_pdf
 
@@ -142,6 +143,29 @@ def empty_if_null(value):
     return value if value else ''
 
 
+def check_password(password_1, password_2):
+    # Check Password
+    if password_1 != password_2:
+        # Check consistencies
+        flash(_("The 'Password' Fields do not match."), 'danger')
+        return False
+    else:
+        # Check quality
+        res = password_check_quality(request.form.get('password_1'))
+
+        for item in [
+            {'name': 'length_error', 'description': _(
+                'Password must have 8 characters or more.')},
+            {'name': 'digit_error', 'description': _(
+                'Password must have at least one digit.')},
+            {'name': 'uppercase_error', 'description': _(
+                'Password must have at least one uppercase characters.')},
+            {'name': 'lowercase_error', 'description': _(
+                'Password must have at least one lowercase characters.')}]:
+            if res[item['name']]:
+                flash(item['description'], 'danger')
+        return res['password_ok']
+
 # ############################################################################
 # Home Route
 # ############################################################################
@@ -232,48 +256,6 @@ def logout_view():
     logout()
     return redirect(url_for('home'))
 
-def sanitize_email(txt_email):
-    # TODO
-    return txt_email
-
-def password_check(password):
-    """
-    From : http://stackoverflow.com/questions/16709638/
-        checking-the-strength-of-a-password-how-to-check-conditions
-    Copyright : http://stackoverflow.com/users/3856785/epi27231423
-    Verify the strength of 'password'
-    Returns a dict indicating the wrong criteria
-    A password is considered strong if:
-        8 characters length or more
-        1 digit or more
-        1 symbol or more
-        1 uppercase letter or more
-        1 lowercase letter or more
-    """
-
-    # calculating the length
-    length_error = len(password) < 8
-
-    # searching for digits
-    digit_error = re.search(r"\d", password) is None
-
-    # searching for uppercase
-    uppercase_error = re.search(r"[A-Z]", password) is None
-
-    # searching for lowercase
-    lowercase_error = re.search(r"[a-z]", password) is None
-
-    # overall result
-    password_ok = not (
-        length_error or digit_error or uppercase_error or lowercase_error)
-
-    return {
-        'password_ok' : password_ok,
-        'length_error' : length_error,
-        'digit_error' : digit_error,
-        'uppercase_error' : uppercase_error,
-        'lowercase_error' : lowercase_error,
-    }
 
 @app.route("/register.html", methods=['GET', 'POST'])
 @requires_connection
@@ -341,27 +323,8 @@ def register():
         if not mail_ok:
             return render_template('register.html')
 
-        # Check Password
-        if request.form.get('password_1') != request.form.get('password_2'):
-            # Check consistencies
-            password_ok = False
-            flash(_("The 'Password' Fields do not match."), 'danger')
-        else:
-            # Check quality
-            res = password_check(request.form.get('password_1'))
-            if not res['password_ok']:
-                password_ok = False
-            for item in [
-                {'name': 'length_error', 'description': _(
-                    'Password must have 8 characters or more.')},
-                {'name': 'digit_error', 'description': _(
-                    'Password must have at least one digit.')},
-                {'name': 'uppercase_error', 'description': _(
-                    'Password must have at least one uppercase characters.')},
-                {'name': 'lowercase_error', 'description': _(
-                    'Password must have at least one lowercase characters.')}]:
-                if res[item['name']]:
-                    flash(item['description'], 'danger')
+        password_ok = check_password(
+            request.form['password_1'], request.form['password_2'])
 
         if complete_data and mail_ok and password_ok:
             # Registration is over
@@ -387,7 +350,7 @@ def register():
     return render_template('register.html', captcha_data=captcha_data)
 
 @app.route("/activate_account/<int:id>/<string:email>", methods=['GET'])
-#@requires_no_auth
+@requires_connection
 def activate_account(id, email):
     partner = openerp.ResPartner.browse([id])[0]
     if not partner or partner.email != email:
@@ -716,28 +679,31 @@ def select_delivery_moment(delivery_moment_id):
 # ############################################################################
 # Account Route
 # ############################################################################
-@app.route("/account")
+@app.route("/account", methods=['GET', 'POST'])
 @requires_auth
 def account():
     partner = openerp.ResPartner.browse(session['partner_id'])
+    if not len(request.form) == 0:
+        new_password = False
+        if request.form.has_key('checkbox-change-password'):
+            password_ok = check_password(
+                request.form['password_1'], request.form['password_2'])
+            if password_ok:
+                new_password = request.form['password_1']
+                flash(_("Password changed successfully"), 'success')
+
+        res = change_res_partner(
+            partner.id,
+            request.form['phone'],
+            request.form['mobile'],
+            request.form['street'],
+            request.form['street2'],
+            request.form['zip'],
+            request.form['city'],
+            new_password)
+        flash(res['message'], res['state'])
+
     return render_template('account.html', partner=partner)
-
-
-@app.route('/account_update', methods=['POST'])
-def account_update():
-    res = change_res_partner(
-        session['partner_id'],
-        request.form['new_phone'],
-        request.form['new_mobile'],
-        request.form['new_street'],
-        request.form['new_street2'],
-        request.form['new_zip'],
-        request.form['new_city'],
-    )
-    if request.is_xhr:
-        return jsonify(result=res)
-    flash(res['message'], res['state'])
-    return redirect(url_for('account'))
 
 # ############################################################################
 # Orders Route

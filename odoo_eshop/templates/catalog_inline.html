@@ -73,7 +73,7 @@
                         id="quantity_{{product['id']}}"
                         name="new_quantity" value="{{ product['current_qty'] }}">
                 </div>
-                <button type="submit" class="btn btn-default update_btn">{{ _('Update')}}</button>
+                <button type="submit" class="btn btn-default hide_if_jquery_enabled">{{ _('Update')}}</button>
             </form>
         </td>
     </tr>
@@ -83,7 +83,7 @@
 </table>
 
 <!-- JQuery -->
-<script src="{{ url_for('static', filename='js/update_btn_hide.js') }}"></script>
+<script src="{{ url_for('static', filename='js/hide_if_jquery_enabled.js') }}"></script>
 <script src="{{ url_for('static', filename='js/catalog_inline_quantity_update.js') }}"></script>
 
 {% endblock %}

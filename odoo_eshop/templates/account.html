@@ -9,31 +9,23 @@
 <!-- Account Data -->
 <h1>{{ _('Your Account') }}</h1>
 
-<form class="form-horizontal" role="form" method="POST" action="{{ url_for('account_update') }}">
+<form class="form-horizontal" role="form" method="POST" action="{{ url_for('account') }}">
     <table class="table table-condensed table-bordered">
         <tbody>
             <tr>
                 <th>
-                    <label for="account_name" class="control-label">{{ _('Complete Name') }}</label>
+                    <label for="account_name" class="control-label">{{ _('Name') }}</label>
                 </th>
-                <td>
-                    <input type="text" class="form-control account_data" name="account_name" value="{{ partner.name }}" readonly>
+                <td colspan="100%">
+                    <input type="text" class="form-control account_data" value="{{ partner.name|empty_if_null }}" readonly>
                 </td>
             </tr>
             <tr>
                 <th>
-                    <label for="account_email" class="control-label">{{ _('Email') }}</label>
+                    <label for="account_email" class="control-label">{{ _('Email') }} (*)</label>
                 </th>
-                <td>
-                    <input type="text" class="form-control account_data" name="account_email" value="{{ partner.email|empty_if_null }}" readonly>
-                </td>
-            </tr>
-            <tr>
-                <th>
-                    <label for="account_phone" class="control-label">{{ _('Phone') }}</label>
-                </th>
-                <td>
-                    <input type="text" class="form-control account_data" id="account_phone" name="account_phone" value="{{ partner.phone|empty_if_null }}">
+                <td colspan="100%">
+                    <input type="email" class="form-control account_data" name="email" value="{{ partner.email|empty_if_null }}" readonly>
                 </td>
             </tr>
             <tr>
@@ -41,55 +33,99 @@
                     <label for="account_mobile" class="control-label">{{ _('Cell Phone') }}</label>
                 </th>
                 <td>
-                    <input type="text" class="form-control account_data" id="account_mobile" name="account_mobile" value="{{ partner.mobile|empty_if_null }}">
+                    <input type="tel" class="form-control account_data" name="mobile" value="{{ partner.mobile|empty_if_null }}"">
+                </td>
+                <th>
+                    <label for="account_phone" class="control-label">{{ _('Other Phone') }}</label>
+                </th>
+                <td>
+                    <input type="tel" class="form-control account_data" name="phone" value="{{ partner.phone|empty_if_null }}"" >
                 </td>
             </tr>
             <tr>
                 <th>
-                    <label for="account_street" class="control-label">{{ _('Street') }}</label>
+                    <label for="account_street" class="control-label">{{ _('Street') }} (*)</label>
                 </th>
-                <td>
-                    <input type="text" class="form-control account_data" id="account_street" name="account_street" value="{{ partner.street|empty_if_null }}">
+                <td colspan="100%">
+                    <input type="text" class="form-control account_data" name="street" value="{{ partner.street|empty_if_null }}"">
                 </td>
             </tr>
             <tr>
                 <th>
-                    <label for="account_street2" class="control-label">{{ _('Complement Street') }}</label>
+                    <label for="account_street2" class="control-label">{{ _('Street (Extra Info)') }}</label>
                 </th>
-                <td>
-                    <input type="text" class="form-control account_data" id="account_street2" name="account_street2" value="{{ partner.street2|empty_if_null }}">
+                <td colspan="100%">
+                    <input type="text" class="form-control account_data" name="street2" value="{{ partner.street2|empty_if_null }}"">
                 </td>
             </tr>
             <tr>
                 <th>
-                    <label for="account_zip" class="control-label">{{ _('ZIP') }}</label>
+                    <label for="account_zip" class="control-label">{{ _('ZIP Code') }} (*)</label>
                 </th>
                 <td>
-                    <input type="text" class="form-control account_data" id="account_zip" name="account_zip" value="{{ partner.zip|empty_if_null }}">
+                    <input type="text" class="form-control account_data" name="zip" value="{{ partner.zip|empty_if_null }}"">
+                </td>
+                <th>
+                    <label for="account_city" class="control-label">{{ _('City') }} (*)</label>
+                </th>
+                <td>
+                    <input type="text" class="form-control account_data" name="city" value="{{ partner.city|empty_if_null }}"">
+                </td>
+            </tr>
+            <tr>
+                <th colspan="100%">
+                    <div class="checkbox">
+                      <label>
+                        <input type="checkbox" id="checkbox-change-password" name="checkbox-change-password" {{ request.form.has_key('checkbox-change-password') and 'checked' or ''}}>
+                        Check this box if you want to change your password
+                      </label>
+                    </div>
+                </th>
+            </tr>
+            {% if request.form.has_key('checkbox-change-password') %}
+            <tr>
+            {% else %}
+            <tr class="hide_if_jquery_enabled">
+            {% endif %}
+                <th>
+                    <label for="password_1" class="control-label">{{ _('Password') }} (*)</label>
+                </th>
+                <td>
+                    <input type="password" class="form-control account_data" name="password_1">
+                </td>
+                <th>
+                    <label for="password_1" class="control-label">{{ _('Password (Check)') }} (*)</label>
+                </th>
+                <td>
+                    <input type="password" class="form-control account_data" name="password_2">
                 </td>
             </tr>
 
-            <tr>
-                <th>
-                    <label for="account_city" class="control-label">{{ _('City') }}</label>
-                </th>
-                <td>
-                    <input type="text" class="form-control account_data" id="account_city" name="account_city" value="{{ partner.city|empty_if_null }}">
-                </td>
-            </tr>
-
-            <tr>
-                <th colspan="2">
-                    <button type="submit" class="btn btn-default update_btn">{{ _('Update')}}</button>
-                </th>
-            </tr>
         </tbody>
+        <tfoot>
+            <tr>
+                <td class="td-action" colspan="100%">
+                    <button type="submit" class="btn btn-default">{{ _('Update')}}</button>
+                </td>
+            </tr>
+        </tfoot>
     </table>
 </form>
 
 <!-- JQuery -->
+<script src="{{ url_for('static', filename='js/hide_if_jquery_enabled.js') }}"></script>
 
-<script src="{{ url_for('static', filename='js/update_btn_hide.js') }}"></script>
-<script src="{{ url_for('static', filename='js/account_update.js') }}"></script>
+<script>
+$(document).ready(function() {
+    $('#checkbox-change-password').change(function() {
+        if ($(this).is(':checked')){
+            $('.hide_if_jquery_enabled').show();
+        }
+        else{
+            $('.hide_if_jquery_enabled').hide();
+        }
+    });
+});
+</script>
 
 {% endblock %}

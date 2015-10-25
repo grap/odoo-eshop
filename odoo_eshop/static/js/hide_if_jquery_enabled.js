@@ -18,5 +18,5 @@
 ******************************************************************************/
 
 
-$('.update_btn').hide();
-$('.update_btn').attr('disabled', 'disabled');
+$('.hide_if_jquery_enabled').hide();
+$('.hide_if_jquery_enabled').attr('disabled', 'disabled');
