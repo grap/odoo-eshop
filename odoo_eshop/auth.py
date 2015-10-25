@@ -41,6 +41,7 @@ def _load_global_data_if_needed():
         session['eshop_image_small']=shop.eshop_image_small
         session['eshop_register_allowed'] = shop.eshop_register_allowed
         session['eshop_minimum_price'] = shop.eshop_minimum_price
+        session['eshop_list_view_enabled'] = shop.eshop_list_view_enabled
         session['eshop_vat_included'] = shop.eshop_vat_included
         session['manage_recovery_moment'] = shop.manage_recovery_moment
         session['manage_delivery_moment'] = shop.manage_delivery_moment

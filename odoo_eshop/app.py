@@ -155,7 +155,7 @@ def check_password(password_1, password_2):
 
         for item in [
             {'name': 'length_error', 'description': _(
-                'Password must have 8 characters or more.')},
+                'Password must have 6 characters or more.')},
             {'name': 'digit_error', 'description': _(
                 'Password must have at least one digit.')},
             {'name': 'uppercase_error', 'description': _(
@@ -376,7 +376,7 @@ def password_lost():
     if session.get('partner_login', False):
         return redirect(url_for('home'))
     previous_captcha = session.get('captcha', False)
-    PATH_TTF = ['/tmp/test.ttf']
+    PATH_TTF = conf.get('captcha', 'font_path').split(',')
     image = ImageCaptcha(fonts=PATH_TTF)
 
     new_captcha = str(randint(0,999999)).replace('1', '3').replace('7', '4')
