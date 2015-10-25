@@ -283,7 +283,7 @@ def register():
             or session.get('partner_login', False):
         return redirect(url_for('home'))
     previous_captcha = session.get('captcha', False)
-    PATH_TTF = ['/tmp/test.ttf']
+    PATH_TTF = conf.get('captcha', 'font_path').split(',')
     image = ImageCaptcha(fonts=PATH_TTF)
 
     new_captcha = str(randint(0,999999)).replace('1', '3').replace('7', '4')
