@@ -18,7 +18,7 @@
 ******************************************************************************/
 
 function update_header(amount_total_header, minimum_ok){
-    if (amount_total == '0') {
+    if (amount_total_header == '0') {
         $('#nav_shopping_cart').css('visibility', 'hidden');
     }
     else {
