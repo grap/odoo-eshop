@@ -32,10 +32,12 @@
             </tr>
             <tr>
                 <td class="td-action" colspan="100%">
+    {% if session.get('eshop_register_allowed', False) %}
                     <a href="{{ url_for('register') }}">
                         {{ _("I don't have an account yet, register")}}
                     </a>
                     <br />
+    {% endif %}
                     <a href="{{ url_for('password_lost') }}">
                         {{ _("I forgot my password")}}
                     </a>
