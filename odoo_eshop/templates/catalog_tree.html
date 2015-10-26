@@ -83,11 +83,13 @@ p { margin: 0; padding: 0; font-family: sans-serif;}
         {% if category.available_product_qty != 0 or category.child_qty != 0  %}
     <div class="col-sm-3 col-md-2 col-xs-6">
         <a class="thumbnail" href="{{ url_for('catalog_tree', category_id=category.id)}}">
+            <div style="text-align:center;min-height:120px;">
             {% if category.image_medium %}
             <img src="data:image/png;base64,{{ category.image_medium }}" style="max-width:120px;"/>
             {% else %}
             <img src="{{ url_for('static', filename='images/category_without_image.png') }}" style="max-width:120px;"/>
             {% endif %}
+            </div>
             <div class="ellipsis">
                 <p>{{ category.name }}</p>
             </div>
@@ -113,11 +115,13 @@ p { margin: 0; padding: 0; font-family: sans-serif;}
     {% for product in products %}
     <div class="col-sm-3 col-md-2 col-xs-6">
         <a class="thumbnail" href="{{ url_for('product', product_id=product.id)}}" title="{{ product.name }}">
+            <div style="text-align:center;min-height:120px;">
         {% if product.image_medium %}
             <img src="data:image/png;base64,{{ product.image_medium }}" style="max-width:120px;"/>
         {% else %}
             <img src="{{ url_for('static', filename='images/product_without_image.png') }}" style="max-width:120px;"/>
         {% endif %}
+            </div>
             <div class="ellipsis">
                 <p>{{ product.name }}</p>
             </div>
