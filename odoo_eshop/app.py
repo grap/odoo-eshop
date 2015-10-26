@@ -7,7 +7,7 @@ import io, re
 import base64
 from datetime import datetime, timedelta
 import pytz
-from captcha.image import ImageCaptcha
+#from captcha.image import ImageCaptcha
 
 from random import randint
 
@@ -264,29 +264,32 @@ def register():
     if not session.get('eshop_register_allowed', False)\
             or session.get('partner_login', False):
         return redirect(url_for('home'))
-    previous_captcha = session.get('captcha', False)
-    PATH_TTF = conf.get('captcha', 'font_path').split(',')
-    image = ImageCaptcha(fonts=PATH_TTF)
+#    previous_captcha = session.get('captcha', False)
+#    PATH_TTF = conf.get('captcha', 'font_path').split(',')
+#    image = ImageCaptcha(fonts=PATH_TTF)
 
-    new_captcha = str(randint(0,999999)).replace('1', '3').replace('7', '4')
-    captcha_data = base64.b64encode(image.generate(new_captcha).getvalue())
-    session['captcha'] = new_captcha
+#    new_captcha = str(randint(0,999999)).replace('1', '3').replace('7', '4')
+#    captcha_data = base64.b64encode(image.generate(new_captcha).getvalue())
+#    session['captcha'] = new_captcha
+
+    captcha_data = False
 
     if len(request.form) == 0:
-        session['captcha_ok'] = False
+        pass
+#        session['captcha_ok'] = False
     else:
         # TODO refactor in a extra file or in Odoo
         complete_data = mail_ok = password_ok = True
         # Check captcha
-        if not session.get('captcha_ok', False) and\
-                request.form.get('captcha', False) != previous_captcha:
-            flash(
-                _("The 'captcha' field is not correct. Please try again"),
-                'danger')
-            return render_template(
-                'register.html', captcha_data=captcha_data)
-        else:
-            session['captcha_ok'] = True
+#        if not session.get('captcha_ok', False) and\
+#                request.form.get('captcha', False) != previous_captcha:
+#            flash(
+#                _("The 'captcha' field is not correct. Please try again"),
+#                'danger')
+#            return render_template(
+#                'register.html', captcha_data=captcha_data)
+#        else:
+#            session['captcha_ok'] = True
 
         email = sanitize_email(request.form.get('email', False))
         if email:
@@ -375,30 +378,33 @@ def password_lost():
     # Check if the operation is possible
     if session.get('partner_login', False):
         return redirect(url_for('home'))
-    previous_captcha = session.get('captcha', False)
-    PATH_TTF = conf.get('captcha', 'font_path').split(',')
-    image = ImageCaptcha(fonts=PATH_TTF)
+#    previous_captcha = session.get('captcha', False)
+#    PATH_TTF = conf.get('captcha', 'font_path').split(',')
+#    image = ImageCaptcha(fonts=PATH_TTF)
 
-    new_captcha = str(randint(0,999999)).replace('1', '3').replace('7', '4')
-    captcha_data = base64.b64encode(image.generate(new_captcha).getvalue())
-    session['captcha'] = new_captcha
+#    new_captcha = str(randint(0,999999)).replace('1', '3').replace('7', '4')
+#    captcha_data = base64.b64encode(image.generate(new_captcha).getvalue())
+#    session['captcha'] = new_captcha
+
+    captcha_data = False
 
     if len(request.form) == 0:
-        session['captcha_ok'] = False
+        pass
+#        session['captcha_ok'] = False
     else:
         # Check captcha
-        if request.form.get('captcha', False) != previous_captcha:
-            flash(
-                _("The 'captcha' field is not correct. Please try again"),
-                'danger')
-            return render_template(
-                'password_lost.html', captcha_data=captcha_data)
+#        if request.form.get('captcha', False) != previous_captcha:
+#            flash(
+#                _("The 'captcha' field is not correct. Please try again"),
+#                'danger')
+#            return render_template(
+#                'password_lost.html', captcha_data=captcha_data)
 
         email = sanitize_email(request.form.get('login', False))
         if not email:
                 flash(_("'Email' Field is required"), 'danger')
                 return render_template(
-                    'password_lost.html', captcha_data=captcha_data)
+                    'password_lost.html')
         else:
             partner_ids = openerp.ResPartner.search([
                 ('email', '=', email)])
