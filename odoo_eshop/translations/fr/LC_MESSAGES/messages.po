@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-10-25 20:59+0100\n"
+"POT-Creation-Date: 2015-10-29 01:34+0100\n"
 "PO-Revision-Date: 2014-10-06 14:07+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: fr <LL@li.org>\n"
@@ -66,8 +66,8 @@ msgid "The 'Password' Fields do not match."
 msgstr "Les champs 'mots de passe' ne correspondent pas."
 
 #: app.py:157
-msgid "Password must have 8 characters or more."
-msgstr "Le mot de passe doit avoir 8 caractères ou plus."
+msgid "Password must have 6 characters or more."
+msgstr "Le mot de passe doit avoir 6 caractères ou plus."
 
 #: app.py:159
 msgid "Password must have at least one digit."
@@ -120,11 +120,7 @@ msgstr "Point Relais / Livraison. Paramétrage manquant."
 msgid "Login/password incorrects"
 msgstr "Login et Mot de passe incorrects"
 
-#: app.py:284 app.py:392
-msgid "The 'captcha' field is not correct. Please try again"
-msgstr "Le 'captcha' n'est pas correct. merci de réessayer."
-
-#: app.py:298
+#: app.py:301
 #, python-format
 msgid ""
 "The '%(email)s' field is already used.Please ask your seller to fix the "
@@ -133,7 +129,7 @@ msgstr ""
 "L'email '%(email)s' est déjà utilisé. Veuillez demander à votre vendeur "
 "de corriger le problème."
 
-#: app.py:306
+#: app.py:309
 #, python-format
 msgid ""
 "The '%(email)s' field is already associated to an active account. Please "
@@ -142,7 +138,7 @@ msgstr ""
 "Le mail '%(email)s' est déjà associé à un compte qui n'est pas actif. "
 "Merci de demander à votre vendeur d'activer votre compte."
 
-#: app.py:312
+#: app.py:315
 #, python-format
 msgid ""
 "The '%(email)s' field is already associated to an account. Please finish "
@@ -153,7 +149,7 @@ msgstr ""
 "procédure de création de compte, en cliquant sur le lien que vous avez "
 "reçu par mail."
 
-#: app.py:318
+#: app.py:321
 #, python-format
 msgid ""
 "The '%(email)s' field is already associated to an inactive account. "
@@ -162,7 +158,7 @@ msgstr ""
 "Le mail '%(email)s' est déjà associé à un compte qui n'est pas actif. "
 "Merci de demander à votre vendeur d'activer votre compte."
 
-#: app.py:341
+#: app.py:344
 #, python-format
 msgid ""
 "The registration is complete. Please check your mail box '%(email)s' and "
@@ -171,15 +167,15 @@ msgstr ""
 "La création du compte est terminé. Veuillez vérifier votre boite mail et "
 "cliquer sur le lien que vous avez reçu pour activer votre compte."
 
-#: app.py:357
+#: app.py:360
 msgid "The validation process failed."
 msgstr "Le processus de validation a échoué."
 
-#: app.py:359
+#: app.py:362
 msgid "Your account is already enabled."
 msgstr "Votre compte est déjà activé."
 
-#: app.py:363
+#: app.py:366
 msgid ""
 "The validation process is over.\n"
 " You can now log in to begin to purchase."
@@ -187,7 +183,7 @@ msgstr ""
 " La validation de votre compte est terminée.\n"
 " Vous pouvez désormais vous identifier pour passer commande."
 
-#: app.py:366
+#: app.py:369
 msgid ""
 "The validation process failed because your account is disabled. Please "
 "ask your seller to fix the problem."
@@ -195,40 +191,40 @@ msgstr ""
 "La validation de votre compte a échoué car celui-ci a été désactivé. "
 "Veuillez contacter votre vendeur pour corriger le problème."
 
-#: app.py:399
+#: app.py:405
 msgid "'Email' Field is required"
 msgstr "Le champ 'email' est obligatoire."
 
-#: app.py:406
+#: app.py:412
 msgid "There is a problem with your account. Please contact your seller."
 msgstr "Il y a un problème avec votre compte. Veuillez contacter votre vendeur."
 
-#: app.py:413
+#: app.py:419
 msgid ""
 " we sent an email to this mailbox, if this email was linked to an active "
 "account."
 msgstr "Nous vous avons envoyé un email, si l'email fourni était lié à un compte."
 
-#: app.py:563
+#: app.py:569
 msgid "Your shopping cart has been successfully deleted."
 msgstr "Votre panier a été supprimé avec succès."
 
-#: app.py:592 app.py:644 templates/base.html:83 templates/base.html:87
-#: templates/base.html:98
+#: app.py:598 app.py:650 templates/base.html:85 templates/base.html:89
+#: templates/base.html:100
 msgid "You have not reached the ceiling : "
 msgstr "Vous n'avez pas atteint le franco : "
 
-#: app.py:620 app.py:667
+#: app.py:626 app.py:673
 msgid "Your Sale Order is now confirmed."
 msgstr "Votre commande est désormais terminée."
 
-#: app.py:623
+#: app.py:629
 msgid "You have selected an obsolete recovery moment. Please try again."
 msgstr ""
 "Vous avez sélectionné un lieu de récupération obsolète. Veuillez "
 "réessayer."
 
-#: app.py:660
+#: app.py:666
 msgid ""
 "Your Sale Order has been partially confirmed.\n"
 " A residual shopping Cart has been created with remaning Products."
@@ -236,31 +232,33 @@ msgstr ""
 "Votre bon de commande a été partiellement confirmé.\n"
 " Un panier résiduel a été créé avec les produits restants."
 
-#: app.py:670
+#: app.py:676
 msgid "Something wrong happened. Please select again your delivery moment."
-msgstr "Quelque chose s'est mal déroulé. veuillez sélectionner de nouveau votre date de livraison."
+msgstr ""
+"Quelque chose s'est mal déroulé. veuillez sélectionner de nouveau votre "
+"date de livraison."
 
-#: app.py:675
+#: app.py:681
 msgid "Your Shopping Cart has been deleted."
 msgstr "Votre panier a été supprimé avec succès."
 
-#: app.py:693
+#: app.py:699
 msgid "Password changed successfully"
 msgstr "Le mot de passe a été changé avec succès"
 
-#: app.py:727
+#: app.py:733
 msgid "order"
 msgstr "commande"
 
-#: app.py:755
+#: app.py:761
 msgid "invoice"
 msgstr "Factures"
 
-#: app.py:774
+#: app.py:780
 msgid "An unexcepted error occured. Please try again in a while"
 msgstr "Une erreur inattendue s'est produite. Veuillez réessayer dans un moment."
 
-#: auth.py:55 auth.py:75
+#: auth.py:56 auth.py:76
 msgid ""
 "Distant Service Unavailable. If you had a pending purchase, you have not "
 "lost your Shopping Cart. Thank you connect again in a while."
@@ -317,7 +315,7 @@ msgstr "Vous avez désormais %(qty)s %(uom)s de '%(prod)s' dans votre panier."
 msgid "Page not found."
 msgstr "Page non trouvée"
 
-#: templates/account.html:10 templates/base.html:134
+#: templates/account.html:10 templates/base.html:136
 msgid "Your Account"
 msgstr "Votre Compte"
 
@@ -375,67 +373,67 @@ msgstr "Boutique en ligne"
 msgid "Something wrong occured, please refresh the page."
 msgstr "Quelque chose s'est mal déroulé, merci de rafraichir la page."
 
-#: templates/base.html:61
+#: templates/base.html:62
 msgid "Purchase (List View)"
 msgstr "Achat (Vue Liste)"
 
-#: templates/base.html:63
+#: templates/base.html:65
 msgid "Purchase (Catalog View)"
 msgstr "Achat (Vue Catalogue)"
 
-#: templates/base.html:66 templates/base.html:95
+#: templates/base.html:68 templates/base.html:97
 msgid "Shopping Cart: "
 msgstr "Panier : "
 
-#: templates/base.html:69 templates/catalog_inline.html:52
+#: templates/base.html:71 templates/catalog_inline.html:52
 msgid "VAT. Incl."
 msgstr "TTC"
 
-#: templates/base.html:79 templates/catalog_inline.html:54
+#: templates/base.html:81 templates/catalog_inline.html:54
 msgid "VAT. Excl."
 msgstr "HT"
 
-#: templates/base.html:108
+#: templates/base.html:110
 msgid "Visit our Facebook Page"
 msgstr "Visiter notre page Facebook"
 
-#: templates/base.html:114
+#: templates/base.html:116
 msgid "Visit our Google + Page"
 msgstr "Visiter notre page Google +"
 
-#: templates/base.html:120
+#: templates/base.html:122
 msgid "Visit our Twitter Page"
 msgstr "Visiter notre page Twitter"
 
-#: templates/base.html:125
+#: templates/base.html:127
 msgid "Visit our Website"
 msgstr "Visiter notre site web"
 
-#: templates/base.html:127
+#: templates/base.html:129
 msgid "Web Site"
 msgstr "Site Web"
 
-#: templates/base.html:139
+#: templates/base.html:141
 msgid "Personnal Datas"
 msgstr "Données Personnelles"
 
-#: templates/base.html:142
+#: templates/base.html:144
 msgid "Orders History"
 msgstr "Historique des Commandes"
 
-#: templates/base.html:145
+#: templates/base.html:147
 msgid "Invoices History"
 msgstr "Historique des Factures"
 
-#: templates/base.html:150
+#: templates/base.html:152
 msgid "Log Out"
 msgstr "Se déconnecter"
 
-#: templates/base.html:159
+#: templates/base.html:161
 msgid "Register"
 msgstr "S'enregistrer"
 
-#: templates/base.html:163 templates/login.html:5
+#: templates/base.html:165 templates/login.html:5
 msgid "Log In"
 msgstr "Se connecter"
 
@@ -443,11 +441,11 @@ msgstr "Se connecter"
 msgid "Catalog"
 msgstr "Catalogue"
 
-#: templates/catalog_tree.html:50
+#: templates/catalog_tree.html:99
 msgid "Products"
 msgstr "Produits"
 
-#: templates/catalog_tree.html:52
+#: templates/catalog_tree.html:101
 msgid "Categories"
 msgstr "Catégories"
 
@@ -588,7 +586,7 @@ msgstr "Total HT"
 msgid "Total"
 msgstr "Total TTC"
 
-#: templates/invoices.html:29 templates/orders.html:46
+#: templates/invoices.html:29 templates/orders.html:50
 msgid "Download"
 msgstr "Télécharger"
 
@@ -596,11 +594,11 @@ msgstr "Télécharger"
 msgid "No Invoices for the time being."
 msgstr "Pas de factures pour le moment."
 
-#: templates/login.html:36
+#: templates/login.html:37
 msgid "I don't have an account yet, register"
 msgstr "Je n'ai pas encore de compte, s'enregistrer"
 
-#: templates/login.html:40
+#: templates/login.html:42
 msgid "I forgot my password"
 msgstr "J'ai oublié mon mot de passe"
 
@@ -620,22 +618,18 @@ msgstr "Lieu"
 msgid "Time"
 msgstr "Heure"
 
-#: templates/orders.html:39 templates/orders.html:40 templates/orders.html:41
-#: templates/orders.html:42
+#: templates/orders.html:43 templates/orders.html:44 templates/orders.html:45
+#: templates/orders.html:46
 msgid "Undefined"
 msgstr "Non Défini"
 
-#: templates/orders.html:52
+#: templates/orders.html:56
 msgid "No Orders for the time being."
 msgstr "Pas de commandes pour le moment."
 
 #: templates/password_lost.html:6
 msgid "Recover Password"
 msgstr "Récupérer son mot de passe"
-
-#: templates/password_lost.html:21 templates/register.html:101
-msgid "Captcha"
-msgstr "Captcha"
 
 #: templates/product.html:61
 msgid "Price"
@@ -711,11 +705,11 @@ msgstr "Prénom"
 msgid "Last Name"
 msgstr "Nom"
 
-#: templates/register.html:115
+#: templates/register.html:101
 msgid "Create"
 msgstr "Créer"
 
-#: templates/register.html:121
+#: templates/register.html:107
 msgid "I have already an account, sign in"
 msgstr "J'ai déjà un compte, s'identifier"
 
