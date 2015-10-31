@@ -6,11 +6,10 @@ import re
 import phonenumbers
 
 # Extra Lib
-from flask import session
 from flask.ext.babel import gettext as _
 
 # Custom Tools
-from ..tools.erp import openerp, uid
+from ..tools.erp import openerp
 
 
 def password_check_quality(password):
@@ -45,16 +44,18 @@ def password_check_quality(password):
         length_error or digit_error or uppercase_error or lowercase_error)
 
     return {
-        'password_ok' : password_ok,
-        'length_error' : length_error,
-        'digit_error' : digit_error,
-        'uppercase_error' : uppercase_error,
-        'lowercase_error' : lowercase_error,
+        'password_ok': password_ok,
+        'length_error': length_error,
+        'digit_error': digit_error,
+        'uppercase_error': uppercase_error,
+        'lowercase_error': lowercase_error,
     }
+
 
 def sanitize_email(txt_email):
     # TODO
     return txt_email
+
 
 def sanitize_phone(txt_phone, iso_locale):
     if re.search('[a-zA-Z]+', txt_phone):
@@ -105,4 +106,3 @@ def change_res_partner(
         'state': 'success',
         'message': _("Account Datas updated successfully.")}
     return res
-

@@ -12,6 +12,7 @@ from flask.ext.babel import gettext as _
 from ..tools.config import conf
 from ..tools.erp import openerp, uid
 
+
 def currency(n):
     if not n:
         n = 0
@@ -85,13 +86,14 @@ def compute_quantity(product, quantity):
 
 def change_shopping_cart_note(note):
     sale_order = load_sale_order()
-    product = openerp.SaleOrder.write(
+    openerp.SaleOrder.write(
         [sale_order.id], {'note': note})
     sale_order = load_sale_order()
     return {
         'state': 'success',
         'note': sale_order.note,
         'message': _("Your comment has been successfully updated.")}
+
 
 def change_product_qty(quantity, mode, product_id=None, line_id=None):
     """ Mode: can be 'add' or 'set'"""
@@ -187,9 +189,10 @@ def change_product_qty(quantity, mode, product_id=None, line_id=None):
             sale_order.amount_tax if sale_order else 0),
         'amount_total': currency(
             sale_order.amount_total) if sale_order else 0,
-        'minimum_ok': session['eshop_vat_included'] and
+        'minimum_ok': (
+            session['eshop_vat_included'] and
             (sale_order.amount_total >= session['eshop_minimum_price']) or
-            (sale_order.amount_untaxed >= session['eshop_minimum_price'])
+            (sale_order.amount_untaxed >= session['eshop_minimum_price']))
     })
     if session.get('eshop_vat_included'):
         res['amount_total_header'] = currency(
@@ -197,5 +200,5 @@ def change_product_qty(quantity, mode, product_id=None, line_id=None):
     else:
         res['amount_total_header'] = currency(
             sale_order.amount_untaxed) if sale_order else 0
-            
+
     return res

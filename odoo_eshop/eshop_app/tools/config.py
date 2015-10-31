@@ -1,8 +1,11 @@
 #! /usr/bin/env python
 # -*- encoding: utf-8 -*-
 
-from ConfigParser import ConfigParser
+# Standard Lib
 from os.path import dirname, isfile, expanduser, realpath
+
+# Extra Lib
+from ConfigParser import ConfigParser
 
 
 def read_config():
@@ -14,7 +17,7 @@ def read_config():
             + '/../config/config.ini'
     assert isfile(config_file), (
         'Could not find config file (looking at %s)' % (
-            config_file or "~/.odoo_eshop.ini', /etc/odoo_eshop/config.ini" + 
+            config_file or "~/.odoo_eshop.ini', /etc/odoo_eshop/config.ini" +
             ", ./config/config.ini"
         )
     )

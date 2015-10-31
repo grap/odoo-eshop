@@ -1,8 +1,14 @@
+#! /usr/bin/env python
+# -*- encoding: utf-8 -*-
+
+# Standard Lib
 import base64
 
+# Extra Lib
 import erppeek
 
-from config import conf
+# Custom Tools
+from .config import conf
 
 
 def init_openerp(url, login, password, database):
@@ -21,6 +27,7 @@ openerp, uid, tz = init_openerp(
     conf.get('auth', 'user_password'),
     conf.get('openerp', 'database'),
 )
+
 
 def get_invoice_pdf(invoice_id):
     model_name, model_id = openerp.IrModelData.get_object_reference(

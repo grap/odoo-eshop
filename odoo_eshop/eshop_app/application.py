@@ -1,10 +1,11 @@
+#! /usr/bin/env python
+# -*- encoding: utf-8 -*-
+
 # Standard Lib
-from datetime import datetime, timedelta
+from datetime import timedelta
 
 # Extra Lib
-from flask import Flask, request, redirect, session, url_for, \
-    render_template, flash, abort, send_file, jsonify
-from flask.ext.babel import gettext as _
+from flask import Flask
 from flask.ext.babel import Babel
 
 # Custom Tools

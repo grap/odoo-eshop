@@ -3,23 +3,21 @@
 
 # Standard Lib
 import logging
-import io, re
-import base64
-from datetime import datetime, timedelta
+import io
+from datetime import datetime
 import pytz
-#from captcha.image import ImageCaptcha
-
-from random import randint
+# import base64
+# from captcha.image import ImageCaptcha
+# from random import randint
 
 # Extra Lib
-from flask import Flask, request, redirect, session, url_for, \
+from flask import request, redirect, session, url_for, \
     render_template, flash, abort, send_file, jsonify
 from flask.ext.babel import gettext as _
-from flask.ext.babel import Babel
 
 # Custom Tools
 from ..tools.config import conf
-from ..tools.auth import login, logout, requires_auth, requires_connection
+from ..tools.auth import logout, requires_auth, requires_connection
 from ..tools.erp import openerp, tz, get_invoice_pdf, get_order_pdf
 
 # Custom Models
@@ -30,11 +28,6 @@ from ..models.obs_res_partner import change_res_partner, \
 
 from eshop_app.application import app
 from eshop_app.application import babel
-
-# Initialization of the Apps
-#import sys
-#from os import path
-#sys.path.append( path.dirname( path.dirname( path.abspath(__file__) ) ) )
 
 
 @app.context_processor
@@ -166,6 +159,7 @@ def check_password(password_1, password_2):
                 flash(item['description'], 'danger')
         return res['password_ok']
 
+
 # ############################################################################
 # Home Route
 # ############################################################################
@@ -182,9 +176,8 @@ def home():
 @requires_auth
 def home_logged():
     shop = openerp.SaleShop.browse(int(conf.get('openerp', 'shop_id')))
-    # TODO Message if PZI
     if session['manage_recovery_moment']\
-        and not session['manage_delivery_moment']:
+            and not session['manage_delivery_moment']:
         pending_moment_groups = openerp.SaleRecoveryMomentGroup.browse(
             [('state', 'in', 'pending_sale')])
         if len(pending_moment_groups) == 0:
@@ -213,7 +206,7 @@ def home_logged():
                 date=to_date(pending_moment_groups[0].max_sale_date),
                 time=to_time(pending_moment_groups[0].max_sale_date)), 'info')
     elif session['manage_delivery_moment']\
-        and not session['manage_recovery_moment']:
+            and not session['manage_recovery_moment']:
         partner = openerp.ResPartner.browse([session['partner_id']])[0]
         if not partner.delivery_categ_id:
             flash(_(
@@ -229,6 +222,7 @@ def home_logged():
 @requires_auth
 def unavailable_service():
     return render_template('unavailable_service.html')
+
 
 # ############################################################################
 # Auth Route
@@ -301,7 +295,7 @@ def register():
                 flash(_(
                     "The '%(email)s' field is already used."
                     "Please ask your seller to fix the problem.",
-                    email=email) , 'danger')
+                    email=email), 'danger')
             elif len(partner_ids) == 1:
                 mail_ok = False
                 partner = openerp.ResPartner.browse(partner_ids)[0]
@@ -309,8 +303,8 @@ def register():
                     flash(_(
                         "The '%(email)s' field is already associated to an"
                         " active account. Please click 'Recover Password',"
-                        " if your forgot your credentials.",
-                        email=email) , 'danger')
+                        " if your forgot your credentials.", email=email),
+                        'danger')
                 elif partner.eshop_state == 'email_to_confirm':
                     flash(_(
                         "The '%(email)s' field is already associated to an"
@@ -352,6 +346,7 @@ def register():
 
     return render_template('register.html', captcha_data=captcha_data)
 
+
 @app.route("/activate_account/<int:id>/<string:email>", methods=['GET'])
 @requires_connection
 def activate_account(id, email):
@@ -363,8 +358,9 @@ def activate_account(id, email):
     elif partner.eshop_state in ['email_to_confirm']:
         openerp.ResPartner.write([partner.id], {
             'eshop_state': 'first_purchase'})
-        flash(_("The validation process is over.\n"
-        " You can now log in to begin to purchase."), 'success')
+        flash(_(
+            "The validation process is over.\n"
+            " You can now log in to begin to purchase."), 'success')
     else:
         flash(_(
             "The validation process failed because your account is disabled."
@@ -393,12 +389,12 @@ def password_lost():
 #        session['captcha_ok'] = False
     else:
         # Check captcha
-#        if request.form.get('captcha', False) != previous_captcha:
-#            flash(
-#                _("The 'captcha' field is not correct. Please try again"),
-#                'danger')
-#            return render_template(
-#                'password_lost.html', captcha_data=captcha_data)
+        # if request.form.get('captcha', False) != previous_captcha:
+        #    flash(
+        #        _("The 'captcha' field is not correct. Please try again"),
+        #        'danger')
+        #    return render_template(
+        #        'password_lost.html', captcha_data=captcha_data)
 
         email = sanitize_email(request.form.get('login', False))
         if not email:
@@ -411,17 +407,18 @@ def password_lost():
             if len(partner_ids) > 1:
                 flash(_(
                     "There is a problem with your account."
-                    " Please contact your seller.") , 'danger')
+                    " Please contact your seller."), 'danger')
                 return redirect(url_for('home'))
             else:
                 if len(partner_ids) == 1:
                     openerp.ResPartner.send_credentials(partner_ids)
                 flash(_(
                     " we sent an email to this mailbox, if this email was"
-                    " linked to an active account.") , 'success')
+                    " linked to an active account."), 'success')
                 return redirect(url_for('home'))
 
     return render_template('password_lost.html', captcha_data=captcha_data)
+
 
 # ############################################################################
 # Product Routes
@@ -491,6 +488,7 @@ def catalog_tree(category_id):
         products=products,
     )
 
+
 # ############################################################################
 # Catalog (Inline View) Routes
 # ############################################################################
@@ -515,6 +513,7 @@ def catalog_inline_quantity_update():
     flash(res['message'], res['state'])
     return redirect(url_for('catalog_inline'))
 
+
 # ############################################################################
 # Shopping Cart Management Routes
 # ############################################################################
@@ -529,6 +528,7 @@ def shopping_cart():
         sale_order=sale_order,
     )
 
+
 @app.route('/shopping_cart_note_update', methods=['POST'])
 def shopping_cart_note_update():
     res = change_shopping_cart_note(
@@ -538,6 +538,7 @@ def shopping_cart_note_update():
         return jsonify(result=res)
     flash(res['message'], res['state'])
     return redirect(url_for('account'))
+
 
 @app.route('/shopping_cart_quantity_update', methods=['POST'])
 def shopping_cart_quantity_update():
@@ -654,6 +655,7 @@ def delivery_moment():
     return render_template(
         'delivery_moment.html', delivery_moments=delivery_moments)
 
+
 @app.route("/select_delivery_moment/<int:delivery_moment_id>")
 @requires_auth
 def select_delivery_moment(delivery_moment_id):
@@ -668,7 +670,6 @@ def select_delivery_moment(delivery_moment_id):
                     " A residual shopping Cart has been created with remaning"
                     " Products."), 'warning')
                 return redirect(url_for('shopping_cart'))
-            
             else:
                 flash(_("Your Sale Order is now confirmed."), 'success')
                 return redirect(url_for('orders'))
@@ -691,7 +692,7 @@ def account():
     partner = openerp.ResPartner.browse(session['partner_id'])
     if not len(request.form) == 0:
         new_password = False
-        if request.form.has_key('checkbox-change-password'):
+        if 'checkbox-change-password' in request.form:
             password_ok = check_password(
                 request.form['password_1'], request.form['password_2'])
             if password_ok:
@@ -710,6 +711,7 @@ def account():
         flash(res['message'], res['state'])
 
     return render_template('account.html', partner=partner)
+
 
 # ############################################################################
 # Orders Route
