@@ -77,7 +77,7 @@
                     <div class="checkbox">
                       <label>
                         <input type="checkbox" id="checkbox-change-password" name="checkbox-change-password" {{ request.form.has_key('checkbox-change-password') and 'checked' or ''}}>
-                        Check this box if you want to change your password
+                        {{ _('Check this box if you want to change your password') }}
                       </label>
                     </div>
                 </th>
