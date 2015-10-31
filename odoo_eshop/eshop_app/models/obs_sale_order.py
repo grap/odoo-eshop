@@ -1,12 +1,16 @@
 #! /usr/bin/env python
 # -*- encoding: utf-8 -*-
 
+# Standard Lib
 import math
+
+# Extra Lib
 from flask import session
-from config import conf
-from erp import openerp, uid
 from flask.ext.babel import gettext as _
 
+# Custom Tools
+from ..tools.config import conf
+from ..tools.erp import openerp, uid
 
 def currency(n):
     if not n:

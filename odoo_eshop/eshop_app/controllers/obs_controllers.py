@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 # -*- encoding: utf-8 -*-
 
-# Standard Librairies
+# Standard Lib
 import logging
 import io, re
 import base64
@@ -11,30 +11,30 @@ import pytz
 
 from random import randint
 
-# Extra Librairies
+# Extra Lib
 from flask import Flask, request, redirect, session, url_for, \
     render_template, flash, abort, send_file, jsonify
 from flask.ext.babel import gettext as _
 from flask.ext.babel import Babel
 
-# Custom Modules
-from config import conf
-from auth import login, logout, requires_auth, requires_connection
-from sale_order import load_sale_order, delete_sale_order, \
-    currency, change_product_qty, change_shopping_cart_note
-from res_partner import change_res_partner, password_check_quality, \
-    sanitize_email
+# Custom Tools
+from ..tools.config import conf
+from ..tools.auth import login, logout, requires_auth, requires_connection
+from ..tools.erp import openerp, tz, get_invoice_pdf, get_order_pdf
 
-from erp import openerp, tz, get_invoice_pdf, get_order_pdf
+# Custom Models
+from ..models.obs_sale_order import load_sale_order, delete_sale_order, \
+    currency, change_product_qty, change_shopping_cart_note
+from ..models.obs_res_partner import change_res_partner, \
+    password_check_quality, sanitize_email
+
+from eshop_app.application import app
+from eshop_app.application import babel
 
 # Initialization of the Apps
-app = Flask(__name__)
-app.secret_key = conf.get('flask', 'secret_key')
-app.debug = conf.get('flask', 'debug') == 'True'
-app.config['BABEL_DEFAULT_LOCALE'] = conf.get('localization', 'locale')
-app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(
-    minutes=int(conf.get('auth', 'session_minute')))
-babel = Babel(app)
+#import sys
+#from os import path
+#sys.path.append( path.dirname( path.dirname( path.abspath(__file__) ) ) )
 
 
 @app.context_processor

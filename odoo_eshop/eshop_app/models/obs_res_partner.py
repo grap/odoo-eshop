@@ -1,11 +1,17 @@
 #! /usr/bin/env python
 # -*- encoding: utf-8 -*-
 
+# Standard Lib
 import re
 import phonenumbers
+
+# Extra Lib
 from flask import session
-from erp import openerp, uid
 from flask.ext.babel import gettext as _
+
+# Custom Tools
+from ..tools.erp import openerp, uid
+
 
 def password_check_quality(password):
     """
