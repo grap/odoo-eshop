@@ -2,3 +2,4 @@ flask
 flask-babel
 erppeek
 phonenumbers
+Flask-Cache
