@@ -182,7 +182,7 @@ def change_product_qty(quantity, mode, product_id=None, line_id=None):
                 prod=product.name)}
 
     company = get_openerp_object(
-            'res.company', int(conf.get('openerp', 'company_id')))
+        'res.company', int(conf.get('openerp', 'company_id')))
 
     res.update({
         'price_subtotal': currency(

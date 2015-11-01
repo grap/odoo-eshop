@@ -31,24 +31,17 @@ from ..models.obs_res_partner import change_res_partner, \
 from eshop_app.application import app
 from eshop_app.application import babel
 
+
 @app.context_processor
 def utility_processor():
     def get_object(model_name, id):
         return get_openerp_object(model_name, id)
+
     def get_company():
         return get_openerp_object(
             'res.company', int(conf.get('openerp', 'company_id')))
+
     return dict(get_object=get_object, get_company=get_company)
-
-
-#@app.context_processor
-#def current_sale_order():
-#    try:
-#        sale_order = load_sale_order()
-#        return {'sale_order': sale_order}
-#    except:
-#        pass
-#    return {'sale_order': False}
 
 
 @babel.localeselector
