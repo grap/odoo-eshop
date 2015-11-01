@@ -10,6 +10,9 @@
 {% block container %}
 
 <!-- Body                                                                   -->
+
+{% set company = get_company %} 
+
 <h1>{{ _('Your Shopping Cart ') }}</h1>
 <div class="row">
     <div class="col-md-6">
@@ -21,13 +24,13 @@
             {{ _('Delete Shopping Cart') }}</a>
     </div>
     <div class="col-md-6">
-        {% if session['manage_recovery_moment'] %}
+        {% if company.manage_recovery_moment %}
         <a href="{{ url_for('recovery_moment_place') }}"
             class="col-sm-offset-3 btn btn-default" href="#" role="button">
             <span class="glyphicon glyphicon-calendar"/>
             {{ _('Select Place and Moment for Recovery') }}</a>
         {% endif %}
-        {% if session['manage_delivery_moment'] %}
+        {% if company.manage_delivery_moment %}
         <a href="{{ url_for('delivery_moment') }}"
             class="col-sm-offset-3 btn btn-default" href="#" role="button">
             <span class="glyphicon glyphicon-calendar"/>
@@ -40,13 +43,13 @@
     <thead>
         <tr>
             <th>{{ _('Product') }}</th>
-            {% if session['manage_delivery_moment'] %}
+            {% if company.manage_delivery_moment %}
                     <th title="{{ _('Delivery Category') }}">
                         {{ _('Categ.') }}
                     </th>
             {% endif %}
 
-            {% if session['eshop_vat_included'] %}
+            {% if company.eshop_vat_included %}
             <th>{{ _('Price Unit VAT Incl.') }}</th>
             {% else %}
             <th>{{ _('Price Unit VAT Excl.') }}</th>
@@ -54,7 +57,7 @@
             <th>{{ _('Taxes') }}</th>
             <th>{{ _('Quantity') }}</th>
             <th>{{ _('Unit') }}</th>
-            {% if session['eshop_vat_included'] %}
+            {% if company.eshop_vat_included %}
             <th>{{ _('Subtotal VAT Incl.') }}</th>
             {% else %}
             <th>{{ _('Subtotal VAT Excl.') }}</th>
@@ -68,7 +71,7 @@
             <td>
                 <a href="{{url_for('product', product_id=line.product_id.id)}}">{{ line.product_id.name }}</a>
             </td>
-    {% if session['manage_delivery_moment'] %}
+    {% if company.manage_delivery_moment %}
             <td>
         {% if line.product_id.delivery_categ_id %}
                 <img class="img-small-delivery-categ" src="data:image/png;base64,{{ line.product_id.delivery_categ_id.image }}" title="{{ line.product_id.delivery_categ_id.name }}"/>
@@ -88,7 +91,7 @@
                 </form>
             </td>
             <td>{{ line.product_uom.eshop_description }}</td>
-            {% if session['eshop_vat_included'] %}
+            {% if company.eshop_vat_included %}
             <td class="td-input-text">
                 <input type="text" class="form-control input-amount" id="price_subtotal_{{line.id}}" 
                         placeholder="{{ line.price_subtotal_taxinc|to_currency }}" readonly/>
@@ -114,7 +117,7 @@
         </tr>
 
         <tr>
-            {% if session['manage_delivery_moment'] %}
+            {% if company.manage_delivery_moment %}
             <td colspan="5" rowspan="3">
             {% else %}
             <form class="form-inline" role="form" method="POST" action="{{ url_for('shopping_cart_note_update') }}">

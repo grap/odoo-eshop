@@ -13,6 +13,8 @@
     $('#nav_shopping_cart').addClass('active');
 </script>
 
+{% set company = get_company %} 
+
 <!-- Delivery Moment -->
 <div class="row">
     <div class="col-md-12">
@@ -59,10 +61,10 @@
                     {% else %}
                         {% if not delivery_moment['is_limit_ok'] %}
                 {{_("Partial Delivery doesn't rich minimum price")}}<br />
-                            {% if session['eshop_vat_included']%}
-                                ({{ delivery_moment['amount_vat_included']|to_currency}} / {{ session['eshop_minimum_price']|to_currency}}))
+                            {% if company.eshop_vat_included %}
+                                ({{ delivery_moment['amount_vat_included']|to_currency}} / {{ company.eshop_minimum_price|to_currency}}))
                             {% else %}
-                                ({{ delivery_moment['amount_vat_excluded']|to_currency}} / {{ session['eshop_minimum_price']|to_currency}})
+                                ({{ delivery_moment['amount_vat_excluded']|to_currency}} / {{ company.eshop_minimum_price|to_currency}})
                             {% endif %}
                         {% else %}
                             {% if delivery_moment['is_partial'] %}

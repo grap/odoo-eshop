@@ -11,6 +11,7 @@ from flask.ext.babel import gettext as _
 # Custom Tools
 from ..tools.config import conf
 from ..tools.erp import openerp, uid
+from .models import get_openerp_object
 
 
 def currency(n):
@@ -37,13 +38,13 @@ def create_sale_order():
     if partner.property_product_pricelist:
         pricelist_id = partner.property_product_pricelist.id
     else:
-        shop = openerp.SaleShop.browse(conf.get('openerp', 'shop_id'))
-        pricelist_id = shop.pricelist_id.id
+        company = get_openerp_object(
+            'res.company', int(conf.get('openerp', 'company_id')))
+        pricelist_id = company.eshop_pricelist_id.id
     sale_order = openerp.SaleOrder.create({
         'partner_id': session['partner_id'],
         'partner_invoice_id': session['partner_id'],
         'partner_shipping_id': session['partner_id'],
-        'shop_id': conf.get('openerp', 'shop_id'),
         'pricelist_id': pricelist_id,
     })
     return sale_order
@@ -180,6 +181,9 @@ def change_product_qty(quantity, mode, product_id=None, line_id=None):
                 qty=new_quantity, uom=product.uom_id.eshop_description,
                 prod=product.name)}
 
+    company = get_openerp_object(
+            'res.company', int(conf.get('openerp', 'company_id')))
+
     res.update({
         'price_subtotal': currency(
             line.price_subtotal if (sale_order and line) else 0),
@@ -190,11 +194,11 @@ def change_product_qty(quantity, mode, product_id=None, line_id=None):
         'amount_total': currency(
             sale_order.amount_total) if sale_order else 0,
         'minimum_ok': (
-            session['eshop_vat_included'] and
-            (sale_order.amount_total >= session['eshop_minimum_price']) or
-            (sale_order.amount_untaxed >= session['eshop_minimum_price']))
+            company.eshop_vat_included and
+            (sale_order.amount_total >= company.eshop_minimum_price) or
+            (sale_order.amount_untaxed >= company.eshop_minimum_price))
     })
-    if session.get('eshop_vat_included'):
+    if company.eshop_vat_included:
         res['amount_total_header'] = currency(
             sale_order.amount_total) if sale_order else 0
     else:

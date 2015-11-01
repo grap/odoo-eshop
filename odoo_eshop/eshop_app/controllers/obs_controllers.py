@@ -21,6 +21,8 @@ from ..tools.auth import logout, requires_auth, requires_connection
 from ..tools.erp import openerp, tz, get_invoice_pdf, get_order_pdf
 
 # Custom Models
+from eshop_app.models.models import get_openerp_object
+
 from ..models.obs_sale_order import load_sale_order, delete_sale_order, \
     currency, change_product_qty, change_shopping_cart_note
 from ..models.obs_res_partner import change_res_partner, \
@@ -29,15 +31,24 @@ from ..models.obs_res_partner import change_res_partner, \
 from eshop_app.application import app
 from eshop_app.application import babel
 
-
 @app.context_processor
-def current_sale_order():
-    try:
-        sale_order = load_sale_order()
-        return {'sale_order': sale_order}
-    except:
-        pass
-    return {'sale_order': False}
+def utility_processor():
+    def get_object(model_name, id):
+        return get_openerp_object(model_name, id)
+    def get_company():
+        return get_openerp_object(
+            'res.company', int(conf.get('openerp', 'company_id')))
+    return dict(get_object=get_object, get_company=get_company)
+
+
+#@app.context_processor
+#def current_sale_order():
+#    try:
+#        sale_order = load_sale_order()
+#        return {'sale_order': sale_order}
+#    except:
+#        pass
+#    return {'sale_order': False}
 
 
 @babel.localeselector
@@ -92,6 +103,11 @@ def to_day(arg):
     }[int_day]
 
 
+@app.template_filter('to_ids')
+def to_ids(arg):
+    return [x.id for x in arg]
+
+
 @app.template_filter('to_date')
 def to_date(arg):
     if ' ' in arg:
@@ -144,7 +160,7 @@ def check_password(password_1, password_2):
         return False
     else:
         # Check quality
-        res = password_check_quality(request.form.get('password_1'))
+        res = password_check_quality(password_1)
 
         for item in [
             {'name': 'length_error', 'description': _(
@@ -168,16 +184,16 @@ def check_password(password_1, password_2):
 def home():
     if session.get('partner_id', False):
         return redirect(url_for('home_logged'))
-    shop = openerp.SaleShop.browse(int(conf.get('openerp', 'shop_id')))
-    return render_template('home.html', shop=shop)
+    return render_template('home.html')
 
 
 @app.route("/home_logged.html")
 @requires_auth
 def home_logged():
-    shop = openerp.SaleShop.browse(int(conf.get('openerp', 'shop_id')))
-    if session['manage_recovery_moment']\
-            and not session['manage_delivery_moment']:
+    company = get_openerp_object(
+        'res.company', int(conf.get('openerp', 'company_id')))
+    if company.manage_recovery_moment\
+            and not company.manage_delivery_moment:
         pending_moment_groups = openerp.SaleRecoveryMomentGroup.browse(
             [('state', 'in', 'pending_sale')])
         if len(pending_moment_groups) == 0:
@@ -205,8 +221,8 @@ def home_logged():
                 day=to_day(pending_moment_groups[0].max_sale_date),
                 date=to_date(pending_moment_groups[0].max_sale_date),
                 time=to_time(pending_moment_groups[0].max_sale_date)), 'info')
-    elif session['manage_delivery_moment']\
-            and not session['manage_recovery_moment']:
+    elif company.manage_delivery_moment\
+            and not company.manage_recovery_moment:
         partner = openerp.ResPartner.browse([session['partner_id']])[0]
         if not partner.delivery_categ_id:
             flash(_(
@@ -215,7 +231,7 @@ def home_logged():
                 " problem"), 'danger')
     else:
         flash(_('Recovery / Delivery Moment Unset'), 'danger')
-    return render_template('home.html', shop=shop)
+    return render_template('home.html')
 
 
 @app.route("/unavailable_service.html")
@@ -255,7 +271,9 @@ def logout_view():
 @requires_connection
 def register():
     # Check if the operation is possible
-    if not session.get('eshop_register_allowed', False)\
+    company = get_openerp_object(
+        'res.company', int(conf.get('openerp', 'company_id')))
+    if not company.eshop_register_allowed\
             or session.get('partner_login', False):
         return redirect(url_for('home'))
 #    previous_captcha = session.get('captcha', False)
@@ -590,14 +608,16 @@ def shopping_cart_delete_line(line_id):
 @app.route("/recovery_moment_place")
 @requires_auth
 def recovery_moment_place():
+    company = get_openerp_object(
+        'res.company', int(conf.get('openerp', 'company_id')))
     recovery_moment_groups = openerp.SaleRecoveryMomentGroup.browse(
         [('state', 'in', 'pending_sale')])
     sale_order = load_sale_order()
-    if (session['eshop_minimum_price'] != 0
-            and session['eshop_minimum_price'] > sale_order.amount_total):
+    if (company.eshop_minimum_price != 0
+            and company.eshop_minimum_price > sale_order.amount_total):
         flash(
             _("You have not reached the ceiling : ") +
-            compute_currency(session['eshop_minimum_price']),
+            compute_currency(company.eshop_minimum_price),
             'warning')
         return redirect(url_for('shopping_cart'))
     return render_template(
@@ -639,17 +659,18 @@ def select_recovery_moment(recovery_moment_id):
 @app.route("/delivery_moment")
 @requires_auth
 def delivery_moment():
+    company = get_openerp_object(
+        'res.company', int(conf.get('openerp', 'company_id')))
     sale_order = load_sale_order()
     delivery_moments = openerp.SaleDeliveryMoment.load_delivery_moment_data(
-        sale_order.id, session['eshop_minimum_price'],
-        session['eshop_vat_included'])
+        sale_order.id, company.eshop_minimum_price,
+        company.eshop_vat_included)
 
-    print delivery_moments
-    if (session['eshop_minimum_price'] != 0
-            and session['eshop_minimum_price'] > sale_order.amount_total):
+    if (company.eshop_minimum_price != 0
+            and company.eshop_minimum_price > sale_order.amount_total):
         flash(
             _("You have not reached the ceiling : ") +
-            compute_currency(session['eshop_minimum_price']),
+            compute_currency(company.eshop_minimum_price),
             'warning')
         return redirect(url_for('shopping_cart'))
     return render_template(

@@ -27,6 +27,10 @@
     </div>
 </div>
 
+{% set uom = get_object('product.uom', product.uom_id.id) %} 
+{% set country = get_object('res.country', product.country_id.id)%}
+{% set department = get_object('res.country.department', product.department_id.id)%}
+
 <div class="row">
     <div class="col-md-4">
         <center>
@@ -45,7 +49,8 @@
             <div>
     {% if product.label_ids|length %}
                 <center>
-        {% for label in product.label_ids %}
+        {% for label_id in product.label_ids|to_ids %}
+            {% set label = get_object('product.label', label_id) %} 
                     <img src="data:image/png;base64,{{ label.image }}" 
                         class="img-thumbnail"
                         alt="{{ label.name }}" style="max-width:80px;"/>
@@ -59,19 +64,19 @@
         <dl class="dl-horizontal">
 
             <dt>{{ _('Price') }}</dt>
-            <dd>{{ product.list_price|to_currency }} / {{ product.uom_id.eshop_description }}</dd>
+            <dd>{{ product.list_price|to_currency }} / {{ uom.eshop_description }}</dd>
             <dt>{{ _('Minimum Quantity') }}</dt>
-            <dd>{{ product.eshop_minimum_qty}} {{ product.uom_id.eshop_description }}</dd>
+            <dd>{{ product.eshop_minimum_qty}} {{ uom.eshop_description }}</dd>
             <dt>{{ _('Rounding Quantity') }}</dt>
-            <dd>{{ product.eshop_rounded_qty}} {{ product.uom_id.eshop_description }}</dd>
+            <dd>{{ product.eshop_rounded_qty}} {{ uom.eshop_description }}</dd>
             <br />
-    {% if product.country_id != False %}
+    {% if country != False %}
             <dt>{{ _('Country') }}</dt>
-            <dd>{{ product.country_id.name }}</dd>
+            <dd>{{ country.name }}</dd>
     {% endif %}
-    {% if product.department_id != False %}
+    {% if department != False %}
             <dt>{{ _('Department') }}</dt>
-            <dd>{{ product.department_id.name }}</dd>
+            <dd>{{ department.name }}</dd>
     {% endif %}
     {% if product.origin_description != False %}
             <dt>{{ _('Origin Description') }}</dt>
@@ -97,7 +102,7 @@
             <div class="form-group">
                 <label class="col-sm-3 control-label">{{ _('Quantity') }}</label>
                 <div class="col-sm-5">
-                    <input type="text" class="form-control" name="quantity" placeholder="({{ product.uom_id.eshop_description }})"/>
+                    <input type="text" class="form-control" name="quantity" placeholder="({{ uom.eshop_description }})"/>
                 </div>
             </div>
             <div class="form-group">

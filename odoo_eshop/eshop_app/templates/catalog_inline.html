@@ -15,6 +15,8 @@
     }
 </style>
 
+{% set company = get_company %} 
+
 
 <table class="table table-condensed table-bordered">
 <!-- Categories -->
@@ -38,7 +40,7 @@
         <td>
 
             <a href="{{url_for('product', product_id=product.id)}}">
-            {% if not session['eshop_vat_included'] and product['default_code']%}{{ product['default_code']}} - {% endif %}
+            {% if not company.eshop_vat_included and product['default_code']%}{{ product['default_code']}} - {% endif %}
                 {{ product['name'] }}</a>
         </td>
         <td class="labels">
@@ -48,7 +50,7 @@
         </td>
         <td>
                 {{ product['list_price']|to_currency }}
-                {% if session['eshop_vat_included']%}
+                {% if company.eshop_vat_included %}
                 {{_('VAT. Incl.')}}
                 {% else %}
                 {{_('VAT. Excl.')}}
@@ -58,7 +60,7 @@
         <td>
                 {{ product['eshop_taxes_description'] }}
         </td>
-            {% if session['manage_delivery_moment'] %}
+            {% if company.manage_delivery_moment %}
         <td>
                 {% if product['delivery_categ_id'] %}
             <img class="img-small-delivery-categ" src="data:image/png;base64,{{ product['delivery_categ_id']['image_small'] }}" title="{{ product['delivery_categ_id']['name'] }}"/>

@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+{% set company = get_company %} 
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>{{ session.get('eshop_title', _('eShop')) }}</title>
+        <title>{{ company.eshop_title }}</title>
 
     <!-- from : http://code.jquery.com/jquery-2.1.4.min.js -->
         <script src="{{ url_for('static', filename='lib/js/jquery-2.1.4.min.js') }}"></script>
@@ -43,9 +44,9 @@
                 <div class="container-fluid">
                     <div class="nav navbar-left div-home-link">
 
-        {% if session.get('eshop_image_small', False) %}
+        {% if company.eshop_image_small %}
                         <a class="btn btn-default a-link-header" id="nav_home" href="{{  url_for('home') }}">
-                            <img src="data:image/png;base64,{{ session['eshop_image_small'] }}" class="img-icon-header"/>
+                            <img src="data:image/png;base64,{{ company.eshop_image_small }}" class="img-icon-header"/>
                         </a>
         {% else %}
                         <a class="btn btn-default" id="nav_home" href="{{  url_for('home') }}">
@@ -57,7 +58,7 @@
 
         {% if session.get('partner_name', False) %}
                     <div class="nav navbar-left">
-            {% if session.get('eshop_list_view_enabled', False) %}
+            {% if company.eshop_list_view_enabled %}
                         <a class="btn btn-default" id="nav_catalog_inline" href="{{  url_for('catalog_inline') }}">
                             <span class="glyphicon glyphicon-th-list"/> {{ _('Purchase (List View)') }}</a>
             {% endif %}
@@ -66,10 +67,10 @@
             {% if sale_order %}
                         <a class="btn btn-default" id="nav_shopping_cart" href="{{  url_for('shopping_cart') }}">
                             <span class="glyphicon glyphicon-shopping-cart"/> {{ _('Shopping Cart: ') }}
-                            {% if session['eshop_vat_included'] %}
+                            {% if company.eshop_vat_included %}
                             <span id="nav_amount_total">{{ sale_order.amount_total|to_currency }}</span>
                              {{_('VAT. Incl.')}}
-                                {% if sale_order.amount_total >= session['eshop_minimum_price']%}
+                                {% if sale_order.amount_total >= company.eshop_minimum_price %}
                             <span class="glyphicon glyphicon-ok-circle"/> - 
                             <span class="glyphicon glyphicon-warning-sign" style="display:none"/>
                                 {% else %}
@@ -79,14 +80,14 @@
                             {% else %}
                             <span id="nav_amount_total">{{ sale_order.amount_untaxed|to_currency }}</span>
                              {{_('VAT. Excl.')}}
-                                {% if sale_order.amount_untaxed >= session['eshop_minimum_price']%}
+                                {% if sale_order.amount_untaxed >= company.eshop_minimum_price %}
                             <span class="glyphicon glyphicon-ok-circle" id="nav_shopping_cart_ok" ></span>
                             <span class="glyphicon glyphicon-warning-sign" id="nav_shopping_cart_warning" style="display:none"
-                                title="{{_('You have not reached the ceiling : ')}} {{session['eshop_minimum_price']|to_currency}}"></span>
+                                title="{{_('You have not reached the ceiling : ')}} {{company.eshop_minimum_price|to_currency}}"></span>
                                 {% else %}
                             <span class="glyphicon glyphicon-ok-circle" id="nav_shopping_cart_ok" style="display:none"></span>
                             <span class="glyphicon glyphicon-warning-sign" id="nav_shopping_cart_warning"
-                                title="{{_('You have not reached the ceiling : ')}} {{session['eshop_minimum_price']|to_currency}}"></span>
+                                title="{{_('You have not reached the ceiling : ')}} {{company.eshop_minimum_price|to_currency}}"></span>
 
                                 {% endif %}
                             {% endif %}
@@ -97,7 +98,7 @@
                             <span class="glyphicon glyphicon-shopping-cart"/> {{ _('Shopping Cart: ') }}
                             <span id="nav_amount_total">{{ 0|to_currency }}</span>
                             <span class="glyphicon glyphicon-warning-sign" id="nav_shopping_cart_warning"
-                                title="{{_('You have not reached the ceiling : ')}} {{session['eshop_minimum_price']|to_currency}}"></span>
+                                title="{{_('You have not reached the ceiling : ')}} {{company.eshop_minimum_price|to_currency}}"></span>
                             <span class="glyphicon glyphicon-ok-circle" id="nav_shopping_cart_ok" style="display:none"></span>
                         </a>
             {% endif %}
@@ -105,27 +106,27 @@
 
         {% endif %}
                     <div class="nav navbar-right">
-            {% if session.get('eshop_facebook_url') %}
-                        <a class="btn btn-default a-link-header" href="{{ session['eshop_facebook_url'] }}" target="new">
+            {% if company.eshop_facebook_url %}
+                        <a class="btn btn-default a-link-header" href="{{ company.eshop_facebook_url }}" target="new">
                             <img class="img-icon-header" title="{{_('Visit our Facebook Page')}}"
                                 src="{{ url_for('static', filename='images/icon-facebook.png') }}"/>
                         </a>
             {% endif %}
-            {% if session.get('eshop_google_plus_url') %}
-                        <a class="btn btn-default a-link-header" href="{{ session['eshop_google_plus_url'] }}" target="new">
+            {% if company.eshop_google_plus_url %}
+                        <a class="btn btn-default a-link-header" href="{{ company.eshop_google_plus_url }}" target="new">
                             <img class="img-icon-header" title="{{_('Visit our Google + Page')}}"
                                 src="{{ url_for('static', filename='images/icon-google-plus.png') }}"/>
                         </a>
             {% endif %}
-            {% if session.get('eshop_twitter_url') %}
-                        <a class="btn btn-default a-link-header" href="{{ session['eshop_twitter_url'] }}" target="new">
+            {% if company.eshop_twitter_url %}
+                        <a class="btn btn-default a-link-header" href="{{ company.eshop_twitter_url }}" target="new">
                             <img class="img-icon-header" title="{{_('Visit our Twitter Page')}}"
                                 src="{{ url_for('static', filename='images/icon-twitter.png') }}"/>
                         </a>
             {% endif %}
-            {% if session.get('eshop_website_url') %}
+            {% if company.website %}
                         <a class="btn btn-default" title="{{_('Visit our Website')}}" target="new"
-                            href="{{ session['eshop_website_url'] }}">
+                            href="{{ company.eshop_website_url }}">
                             {{_('Web Site')}}
                         </a>
             {% endif %}
@@ -156,7 +157,7 @@
 
         {% else %}
 
-            {% if session.get('eshop_register_allowed', False) %}
+            {% if company.eshop_register_allowed %}
                         <a class="btn btn-default" id="nav_register" href="{{ url_for('register') }}">
                             <span class="glyphicon  glyphicon glyphicon-pencil"/> {{ _('Register') }}
                         </a>

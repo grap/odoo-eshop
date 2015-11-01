@@ -1,23 +1,25 @@
 {% extends 'base.html' %}
 
-
 {% block container %}
 <!-- JQuery -->
 <script>
     $('#nav_home').addClass('active');
 </script>
+
+{% set company = get_company %} 
+
 <div class="row">
     <div class="col-md-8">
-{% if shop.eshop_home_text %}
-    {{shop.eshop_home_text|safe}}
+{% if company.eshop_home_text %}
+    {{company.eshop_home_text|safe}}
 {% else %}
     {{_('eShop not set.')}}
 {% endif %}
 
     </div>
     <div class="col-md-4">
-        {% if shop.eshop_home_image %}
-        <img src="data:image/png;base64,{{ shop.eshop_home_image }}"  style="width:300px;height=300px" />
+        {% if company.eshop_home_image %}
+        <img src="data:image/png;base64,{{ company.eshop_home_image }}"  style="width:300px;height=300px" />
         {% endif %}
     </div>
 

@@ -25,4 +25,4 @@ app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(
 babel = Babel(app)
 
 # Manage Cache for the new application
-cache = Cache(app,config={'CACHE_TYPE': conf.get('cache', 'method')})
+cache = Cache(app, config={'CACHE_TYPE': conf.get('cache', 'method')})
