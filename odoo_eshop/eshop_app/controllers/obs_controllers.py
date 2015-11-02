@@ -432,28 +432,6 @@ def password_lost():
     return render_template('password_lost.html', captcha_data=captcha_data)
 
 
-# ############################################################################
-# Product Routes
-# ############################################################################
-@app.route("/product/<int:product_id>")
-@requires_auth
-def product(product_id):
-    # Get Products
-    product = openerp.ProductProduct.browse(product_id)
-
-    # Get Parent Categories
-    parent_categories = []
-    parent = product.eshop_category_id
-    while parent:
-        parent_categories.insert(0, {'id': parent.id, 'name': parent.name})
-        parent = parent.parent_id
-
-    return render_template(
-        'product.html', product=product,
-        parent_categories=parent_categories,
-    )
-
-
 @app.route("/product_add_qty/<int:product_id>", methods=['POST'])
 @requires_auth
 def product_add_qty(product_id):

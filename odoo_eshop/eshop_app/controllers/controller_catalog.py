@@ -29,18 +29,33 @@ def catalog_tree(category_id):
         ('eshop_category_id', '=', category_id)], order='name')
 
     parent_categories = []
+    parent = get_openerp_object('eshop.category', category_id)
     # Get Parent Categories
-    if category_id:
-        parent = get_openerp_object('eshop.category', category_id)
-        # Get Parent Categories
-        while parent:
-            parent_categories.insert(
-                0, {'id': parent.id, 'name': parent.name})
-            parent = parent.parent_id
+    while parent:
+        parent_categories.insert(0, {'id': parent.id, 'name': parent.name})
+        parent = get_openerp_object('eshop.category', parent.parent_id)
 
     return render_template(
-        'catalog_tree.html',
-        parent_categories=parent_categories,
-        category_ids=category_ids,
-        product_ids=product_ids,
-    )
+        'catalog_tree.html', parent_categories=parent_categories,
+        category_ids=category_ids, product_ids=product_ids)
+
+
+# ############################################################################
+# Product Routes
+# ############################################################################
+@app.route("/product/<int:product_id>")
+@requires_auth
+def product(product_id):
+    # Get Products
+    product = get_openerp_object('product.product', product_id)
+
+    # Get Parent Categories
+    parent_categories = []
+    parent = get_openerp_object('eshop.category', product.eshop_category_id)
+    while parent:
+        parent_categories.insert(0, {'id': parent.id, 'name': parent.name})
+        parent = get_openerp_object('eshop.category', parent.parent_id)
+
+    return render_template(
+        'product.html', product_id=product_id,
+        parent_categories=parent_categories)

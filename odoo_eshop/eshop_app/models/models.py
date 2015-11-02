@@ -10,7 +10,11 @@ from eshop_app.application import cache
 _ESHOP_OPENERP_MODELS = {
     'product.product': {
         'model': openerp.ProductProduct,
-        'fields': ['id', 'name', 'uom_id', 'image_medium', 'list_price'],
+        'fields': [
+            'id', 'name', 'uom_id', 'image', 'image_medium', 'list_price',
+            'eshop_category_id', 'label_ids', 'eshop_minimum_qty',
+            'eshop_rounded_qty', 'origin_description', 'maker_description',
+            'fresh_category', 'description', 'country_id', 'department_id'],
     },
     'eshop.category': {
         'model': openerp.eshopCategory,

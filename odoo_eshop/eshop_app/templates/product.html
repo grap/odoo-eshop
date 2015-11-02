@@ -21,21 +21,22 @@
 
 
 <!-- Products -->
+{% set product = get_object('product.product', product_id) %} 
+{% set uom = get_object('product.uom', product.uom_id) %} 
+{% set country = get_object('res.country', product.country_id)%}
+{% set department = get_object('res.country.department', product.department_id)%}
+
 <div class="row">
     <div class="col-md-12">
         <h1>{{ product.name }}</h1>
     </div>
 </div>
 
-{% set uom = get_object('product.uom', product.uom_id.id) %} 
-{% set country = get_object('res.country', product.country_id.id)%}
-{% set department = get_object('res.country.department', product.department_id.id)%}
-
 <div class="row">
     <div class="col-md-4">
         <center>
             <div>
-    {% if product.image_small %}
+    {% if product.image %}
                 <img src="data:image/png;base64,{{ product.image }}" 
                     style="max-width:250px;"
                     class="img-thumbnail"/>
@@ -49,7 +50,7 @@
             <div>
     {% if product.label_ids|length %}
                 <center>
-        {% for label_id in product.label_ids|to_ids %}
+        {% for label_id in product.label_ids %}
             {% set label = get_object('product.label', label_id) %} 
                     <img src="data:image/png;base64,{{ label.image }}" 
                         class="img-thumbnail"
