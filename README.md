@@ -13,6 +13,10 @@ Installation
     * sudo pip install erppeek
 
 
+* Install redis:
+    * sudo apt-get install redis-server
+
+
 TODO
 ----
     * Product quantity:

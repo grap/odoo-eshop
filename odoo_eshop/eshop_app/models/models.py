@@ -42,7 +42,8 @@ _ESHOP_OPENERP_MODELS = {
 def get_openerp_object(model_name, id):
     if not id:
         return False
-    return _get_openerp_object(model_name, id)
+    res = _get_openerp_object(model_name, id)
+    return res
 
 
 # Public Section
@@ -52,9 +53,12 @@ def _get_openerp_object(model_name, id):
         return False
     myModel = _ESHOP_OPENERP_MODELS[model_name]
     myObj = _OpenerpModel(id)
-    data = myModel['model'].browse(id)
+    data = myModel['model'].read(id, myModel['fields'])
     for key in myModel['fields']:
-        setattr(myObj, key, getattr(data, key))
+        if key[-3:] == '_id':
+            setattr(myObj, key, data[key][0])
+        else:
+            setattr(myObj, key, data[key])
     return myObj
 
 

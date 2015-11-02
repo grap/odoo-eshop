@@ -464,44 +464,6 @@ def product_add_qty(product_id):
 
 
 # ############################################################################
-# Catalog (Tree View) Routes
-# ############################################################################
-@app.route('/catalog_tree/', defaults={'category_id': False})
-@app.route("/catalog_tree/<int:category_id>")
-@requires_auth
-def catalog_tree(category_id):
-    parent_categories = []
-    current_category = False
-
-    # Get Child Categories
-    categories = openerp.eshopCategory.browse(
-        [('parent_id', '=', category_id)])
-
-    parent_categories = []
-    # Get Parent Categories
-    if category_id:
-        current_category = openerp.eshopCategory.browse(category_id)
-        # Get Parent Categories
-        parent = current_category
-        while parent:
-            parent_categories.insert(
-                0, {'id': parent.id, 'name': parent.name})
-            parent = parent.parent_id
-
-    # Get Products
-    products = openerp.ProductProduct.browse([
-        ('eshop_state', '=', 'available'),
-        ('eshop_category_id', '=', category_id)], order='name')
-    return render_template(
-        'catalog_tree.html',
-        categories=categories,
-        parent_categories=parent_categories,
-        current_category=current_category,
-        products=products,
-    )
-
-
-# ############################################################################
 # Catalog (Inline View) Routes
 # ############################################################################
 @app.route('/catalog_inline/', defaults={'category_id': False})
@@ -791,7 +753,7 @@ def invoice_download(invoice_id):
 @requires_connection
 def invalidation_cache(key, model, id):
     if key == conf.get('cache', 'invalidation_key'):
-        invalidate_openerp_object(model, id)
+        invalidate_openerp_object(str(model), id)
     return render_template('200.html'), 200
 
 

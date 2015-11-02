@@ -110,9 +110,12 @@ p { margin: 0; padding: 0; font-family: sans-serif;}
 {% endif %}
 
 <!-- Products -->
-{% if products|length %}
+{% if product_ids|length %}
 <div class="row">
-    {% for product in products %}
+    {% for product_id in product_ids %}
+        {% set product = get_object('product.product', product_id) %} 
+        {% set uom = get_object('product.uom', product.uom_id) %} 
+
     <div class="col-sm-3 col-md-2 col-xs-6">
         <a class="thumbnail" href="{{ url_for('product', product_id=product.id)}}" title="{{ product.name }}">
             <div style="text-align:center;min-height:120px;">
@@ -127,7 +130,7 @@ p { margin: 0; padding: 0; font-family: sans-serif;}
             </div>
             <div class="product-price">
                 <p>
-                {{ product.list_price|to_currency }} / {{ product.uom_id.eshop_description }}
+                {{ product.list_price|to_currency }} / {{ uom.eshop_description }}
                 </p>
             </div>
         </a>
