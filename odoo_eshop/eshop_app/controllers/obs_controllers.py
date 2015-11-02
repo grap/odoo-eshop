@@ -21,7 +21,8 @@ from ..tools.auth import logout, requires_auth, requires_connection
 from ..tools.erp import openerp, tz, get_invoice_pdf, get_order_pdf
 
 # Custom Models
-from eshop_app.models.models import get_openerp_object
+from eshop_app.models.models import get_openerp_object, \
+    invalidate_openerp_object
 
 from ..models.obs_sale_order import load_sale_order, delete_sale_order, \
     currency, change_product_qty, change_shopping_cart_note
@@ -41,7 +42,7 @@ def utility_processor():
         return get_openerp_object(
             'res.company', int(conf.get('openerp', 'company_id')))
 
-    return dict(get_object=get_object, get_company=get_company)
+    return dict(get_company=get_company, get_object=get_object)
 
 
 @babel.localeselector
@@ -786,6 +787,14 @@ def invoice_download(invoice_id):
 # ############################################################################
 # Technical Routes
 # ############################################################################
+@app.route("/invalidation_cache/<string:key>/<string:model>/<int:id>/")
+@requires_connection
+def invalidation_cache(key, model, id):
+    if key == conf.get('cache', 'invalidation_key'):
+        invalidate_openerp_object(model, id)
+    return render_template('200.html'), 200
+
+
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('404.html'), 404

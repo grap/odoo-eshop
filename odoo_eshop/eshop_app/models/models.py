@@ -7,7 +7,7 @@ from eshop_app.application import cache
 
 
 # Private Consts
-_MODELS = {
+_ESHOP_OPENERP_MODELS = {
     'product.label': {
         'model': openerp.ProductLabel,
         'fields': ['name', 'code', 'image_small', 'image'],
@@ -27,7 +27,8 @@ _MODELS = {
     'res.company': {
         'model': openerp.ResCompany,
         'fields': [
-            'has_eshop', 'eshop_minimum_price', 'eshop_title', 'eshop_url',
+            'name', 'has_eshop', 'eshop_minimum_price', 'eshop_title',
+            'eshop_url',
             'eshop_facebook_url', 'eshop_twitter_url', 'eshop_google_plus_url',
             'eshop_home_text', 'eshop_home_image', 'eshop_image_small',
             'eshop_vat_included', 'eshop_register_allowed',
@@ -38,17 +39,27 @@ _MODELS = {
 }
 
 
-# Public Section
-@cache.memoize()
 def get_openerp_object(model_name, id):
     if not id:
         return False
-    myModel = _MODELS[model_name]
+    return _get_openerp_object(model_name, id)
+
+
+# Public Section
+@cache.memoize()
+def _get_openerp_object(model_name, id):
+    if not id:
+        return False
+    myModel = _ESHOP_OPENERP_MODELS[model_name]
     myObj = _OpenerpModel(id)
     data = myModel['model'].browse(id)
     for key in myModel['fields']:
         setattr(myObj, key, getattr(data, key))
     return myObj
+
+
+def invalidate_openerp_object(model_name, id):
+    cache.delete_memoized(_get_openerp_object, model_name, id)
 
 
 # Private Model
