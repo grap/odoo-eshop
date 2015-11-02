@@ -432,13 +432,6 @@ def password_lost():
     return render_template('password_lost.html', captcha_data=captcha_data)
 
 
-@app.route("/product_add_qty/<int:product_id>", methods=['POST'])
-@requires_auth
-def product_add_qty(product_id):
-    res = change_product_qty(
-        request.form['quantity'], 'add', product_id=product_id)
-    flash(res['message'], res['state'])
-    return redirect(url_for('product', product_id=product_id))
 
 
 # ############################################################################

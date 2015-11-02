@@ -2,13 +2,14 @@
 # -*- encoding: utf-8 -*-
 
 # Extra Libs
-from flask import render_template
+from flask import request, render_template, flash, redirect, url_for
 
 # Custom Tools
 from eshop_app.application import app
 from eshop_app.tools.erp import openerp
 from eshop_app.tools.auth import requires_auth
 from eshop_app.models.models import get_openerp_object
+from eshop_app.models.obs_sale_order import change_product_qty
 
 
 # ############################################################################
@@ -59,3 +60,12 @@ def product(product_id):
     return render_template(
         'product.html', product_id=product_id,
         parent_categories=parent_categories)
+
+@app.route("/product_add_qty/<int:product_id>", methods=['POST'])
+@requires_auth
+def product_add_qty(product_id):
+    res = change_product_qty(
+        request.form['quantity'], 'add', product_id=product_id)
+    flash(res['message'], res['state'])
+    return redirect(url_for('product', product_id=product_id))
+
