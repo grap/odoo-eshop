@@ -8,26 +8,36 @@ from eshop_app.application import cache
 
 # Private Consts
 _ESHOP_OPENERP_MODELS = {
+    'product.product': {
+        'model': openerp.ProductProduct,
+        'fields': ['id', 'name', 'uom_id', 'image_medium', 'list_price'],
+    },
+    'eshop.category': {
+        'model': openerp.eshopCategory,
+        'fields': [
+            'id', 'name', 'available_product_qty', 'child_qty',
+            'image_medium', 'type', 'parent_id'],
+    },
     'product.label': {
         'model': openerp.ProductLabel,
-        'fields': ['name', 'code', 'image_small', 'image'],
+        'fields': ['id', 'name', 'code', 'image_small', 'image'],
     },
     'res.country': {
         'model': openerp.ResCountry,
-        'fields': ['name'],
+        'fields': ['id', 'name'],
     },
     'res.country.department': {
         'model': openerp.ResCountryDepartment,
-        'fields': ['name'],
+        'fields': ['id', 'name'],
     },
     'product.uom': {
         'model': openerp.ProductUom,
-        'fields': ['name', 'eshop_description'],
+        'fields': ['id', 'name', 'eshop_description'],
     },
     'res.company': {
         'model': openerp.ResCompany,
         'fields': [
-            'name', 'has_eshop', 'eshop_minimum_price', 'eshop_title',
+            'id', 'name', 'has_eshop', 'eshop_minimum_price', 'eshop_title',
             'eshop_url',
             'eshop_facebook_url', 'eshop_twitter_url', 'eshop_google_plus_url',
             'eshop_home_text', 'eshop_home_image', 'eshop_image_small',
@@ -55,7 +65,7 @@ def _get_openerp_object(model_name, id):
     myObj = _OpenerpModel(id)
     data = myModel['model'].read(id, myModel['fields'])
     for key in myModel['fields']:
-        if key[-3:] == '_id':
+        if key[-3:] == '_id' and data[key]:
             setattr(myObj, key, data[key][0])
         else:
             setattr(myObj, key, data[key])
