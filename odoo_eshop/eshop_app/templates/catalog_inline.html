@@ -15,65 +15,69 @@
     }
 </style>
 
-{% set company = get_company %} 
+{% set company = get_company() %} 
 
 
 <table class="table table-condensed table-bordered">
 <!-- Categories -->
-    {% for category in catalog_inline %}
-
+    {% for category_id in category_ids %}
+    {% set category = get_object('eshop.category', category_id) %} 
     <tr>
         <th colspan="100%">
             <h2>
-        {% if category['image_medium'] %}
-            <img class="thumbnail img-responsive img-medium-eshop-categ" src="data:image/png;base64,{{ category['image_medium'] }}"/>
+        {% if category.image_medium %}
+            <img class="thumbnail img-responsive img-medium-eshop-categ" src="data:image/png;base64,{{ category.image_medium }}"/>
         {% else %}
             <img class="thumbnail img-responsive img-medium-eshop-categ" src="{{ url_for('static', filename='images/category_without_image.png') }}"/>
         {% endif %}
-                {{ category['name'] }}
+                {{ category.complete_name }}
             </h2>
         </th>
     </tr>
 
-        {% for product in category['product_ids'] %}
+        {% for product_id in category.product_ids %}
+            {% set product = get_object('product.product', product_id) %} 
+            {% set uom = get_object('product.uom', product.uom_id) %} 
     <tr>
         <td>
 
             <a href="{{url_for('product', product_id=product.id)}}">
-            {% if not company.eshop_vat_included and product['default_code']%}{{ product['default_code']}} - {% endif %}
-                {{ product['name'] }}</a>
+            {% if not company.eshop_vat_included and product.default_code%}{{ product.default_code}} - {% endif %}
+                {{ product.name }}</a>
         </td>
         <td class="labels">
-            {% for label in product['label_ids'] %}
-                <img class="img-small-label" src="data:image/png;base64,{{ label['image_small'] }}" title="{{label['name']}}"/>
+            {% for label_id in product.label_ids %}
+                {% set label = get_object('product.label', label_id) %} 
+                <img class="img-small-label" src="data:image/png;base64,{{ label.image_small }}" title="{{label.name}}"/>
             {% endfor %}
         </td>
         <td>
-                {{ product['list_price']|to_currency }}
+                {{ product.list_price|to_currency }}
                 {% if company.eshop_vat_included %}
                 {{_('VAT. Incl.')}}
                 {% else %}
                 {{_('VAT. Excl.')}}
                 {% endif %}
-                / {{ product['uom_eshop_description'] }}
+                / {{ uom.eshop_description }}
         </td>
         <td>
-                {{ product['eshop_taxes_description'] }}
+                {{ product.eshop_taxes_description }}
         </td>
             {% if company.manage_delivery_moment %}
         <td>
-                {% if product['delivery_categ_id'] %}
-            <img class="img-small-delivery-categ" src="data:image/png;base64,{{ product['delivery_categ_id']['image_small'] }}" title="{{ product['delivery_categ_id']['name'] }}"/>
+                {% if product.delivery_categ_id %}
+                    {% set delivery_category = get_object('product.delivery.category', product.delivery_categ_id) %} 
+            <img class="img-small-delivery-categ" src="data:image/png;base64,{{ delivery_category.image }}" title="{{ delivery_category.name }}"/>
                 {% endif %}
         </td>
             {% endif %}
         <td class="td-input-text">
             <form class="form-inline" role="form" method="POST" action="{{ url_for('catalog_inline_quantity_update') }}">
                 <div class="form-group">
-                    <input type="hidden" name="product_id" value="{{ product['id'] }}"/>
-                    <input type="text" class="form-control input-quantity {{ product['current_qty'] and 'not_null_qty' or ''}}"
-                        id="quantity_{{product['id']}}"
-                        name="new_quantity" value="{{ product['current_qty'] }}">
+                    <input type="hidden" name="product_id" value="{{ product.id }}"/>
+                    <input type="text" class="form-control input-quantity {{ product_qty_dict.get(product.id, False) and 'not_null_qty' or ''}}"
+                        id="quantity_{{product.id}}"
+                        name="new_quantity" value="{{product_qty_dict.get(product.id, 0)}}">
                 </div>
                 <button type="submit" class="btn btn-default hide_if_jquery_enabled">{{ _('Update')}}</button>
             </form>

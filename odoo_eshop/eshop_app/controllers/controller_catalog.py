@@ -2,14 +2,15 @@
 # -*- encoding: utf-8 -*-
 
 # Extra Libs
-from flask import request, render_template, flash, redirect, url_for
+from flask import request, render_template, flash, redirect, url_for, \
+    jsonify
 
 # Custom Tools
 from eshop_app.application import app
 from eshop_app.tools.erp import openerp
 from eshop_app.tools.auth import requires_auth
 from eshop_app.models.models import get_openerp_object
-from eshop_app.models.obs_sale_order import change_product_qty
+from eshop_app.models.obs_sale_order import change_product_qty, load_sale_order
 
 
 # ############################################################################
@@ -39,6 +40,45 @@ def catalog_tree(category_id):
     return render_template(
         'catalog_tree.html', parent_categories=parent_categories,
         category_ids=category_ids, product_ids=product_ids)
+
+
+# ############################################################################
+# Catalog (Inline View) Routes
+# ############################################################################
+@app.route('/catalog_inline/', defaults={'category_id': False})
+@app.route("/catalog_inline/<int:category_id>")
+@requires_auth
+def catalog_inline(category_id):
+    sale_order = load_sale_order()
+
+    category_ids = openerp.eshopCategory.search([
+        ('type', '=', 'normal')])
+
+    product_qty_dict = {}
+    for line in sale_order.order_line:
+        if line.product_id.id in product_qty_dict.keys():
+            product_qty_dict[line.product_id.id] += line.product_uom_qty
+        else:
+            product_qty_dict[line.product_id.id] = line.product_uom_qty
+
+#    product_ids = openerp.ProductProduct.search([
+#        ('eshop_state', '=', 'available')], order='eshop_category_id, name')
+#    catalog_inline = openerp.saleOrder.get_current_eshop_product_list(
+#        sale_order and sale_order.id or False)
+    return render_template(
+        'catalog_inline.html', category_ids=category_ids,
+        product_qty_dict=product_qty_dict)
+
+
+@app.route('/catalog_inline_quantity_update', methods=['POST'])
+def catalog_inline_quantity_update():
+    res = change_product_qty(
+        request.form['new_quantity'], 'set',
+        product_id=int(request.form['product_id']))
+    if request.is_xhr:
+        return jsonify(result=res)
+    flash(res['message'], res['state'])
+    return redirect(url_for('catalog_inline'))
 
 
 # ############################################################################

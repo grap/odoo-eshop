@@ -42,7 +42,12 @@ def utility_processor():
         return get_openerp_object(
             'res.company', int(conf.get('openerp', 'company_id')))
 
-    return dict(get_company=get_company, get_object=get_object)
+    def get_current_sale_order():
+        return load_sale_order()
+
+    return dict(
+        get_company=get_company, get_object=get_object,
+        get_current_sale_order=get_current_sale_order)
 
 
 @babel.localeselector
@@ -430,33 +435,6 @@ def password_lost():
                 return redirect(url_for('home'))
 
     return render_template('password_lost.html', captcha_data=captcha_data)
-
-
-
-
-# ############################################################################
-# Catalog (Inline View) Routes
-# ############################################################################
-@app.route('/catalog_inline/', defaults={'category_id': False})
-@app.route("/catalog_inline/<int:category_id>")
-@requires_auth
-def catalog_inline(category_id):
-    sale_order = load_sale_order()
-    catalog_inline = openerp.saleOrder.get_current_eshop_product_list(
-        sale_order and sale_order.id or False)
-    return render_template(
-        'catalog_inline.html', catalog_inline=catalog_inline)
-
-
-@app.route('/catalog_inline_quantity_update', methods=['POST'])
-def catalog_inline_quantity_update():
-    res = change_product_qty(
-        request.form['new_quantity'], 'set',
-        product_id=int(request.form['product_id']))
-    if request.is_xhr:
-        return jsonify(result=res)
-    flash(res['message'], res['state'])
-    return redirect(url_for('catalog_inline'))
 
 
 # ############################################################################

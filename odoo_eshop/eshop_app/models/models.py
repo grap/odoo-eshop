@@ -14,17 +14,22 @@ _ESHOP_OPENERP_MODELS = {
             'id', 'name', 'uom_id', 'image', 'image_medium', 'list_price',
             'eshop_category_id', 'label_ids', 'eshop_minimum_qty',
             'eshop_rounded_qty', 'origin_description', 'maker_description',
-            'fresh_category', 'description', 'country_id', 'department_id'],
+            'fresh_category', 'description', 'country_id', 'department_id',
+            'default_code', 'delivery_categ_id', 'eshop_taxes_description'],
     },
     'eshop.category': {
         'model': openerp.eshopCategory,
         'fields': [
             'id', 'name', 'available_product_qty', 'child_qty',
-            'image_medium', 'type', 'parent_id'],
+            'image_medium', 'type', 'parent_id', 'product_ids', 'complete_name'],
+    },
+    'product.delivery.category': {
+        'model': openerp.ProductDeliveryCategory,
+        'fields': ['id', 'name', 'image'],
     },
     'product.label': {
         'model': openerp.ProductLabel,
-        'fields': ['id', 'name', 'code', 'image_small', 'image'],
+        'fields': ['id', 'name', 'code', 'image', 'image_small'],
     },
     'res.country': {
         'model': openerp.ResCountry,
