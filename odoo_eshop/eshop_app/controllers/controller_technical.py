@@ -57,7 +57,6 @@ def get_image(model, id, field):
 
     response = make_response(base64.decodestring(image_data))
     response.headers['Content-Type'] = 'image/jpeg'
-    response.headers['Content-Disposition'] = 'attachment; filename=image.jpeg'
     return response
 
 
