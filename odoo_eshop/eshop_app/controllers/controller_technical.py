@@ -2,17 +2,20 @@
 # -*- encoding: utf-8 -*-
 
 # Standard Lib
+import base64
 import logging
 from datetime import datetime
 import pytz
 
 # Extra Lib
-from flask import request, session, render_template, flash
+from flask import request, session, render_template, flash, make_response,\
+    url_for
 
 from flask.ext.babel import gettext as _
 
 # Custom Tools
 from ..application import app
+from ..application import cache
 from ..application import babel
 
 from ..tools.config import conf
@@ -20,10 +23,78 @@ from ..tools.auth import requires_connection
 from ..tools.erp import openerp, tz
 
 # Custom Models
-from eshop_app.models.models import get_openerp_object, \
+from ..models.models import get_openerp_object, \
     invalidate_openerp_object
 
 from ..models.obs_sale_order import load_sale_order, currency
+
+
+# ############################################################################
+# image Routes
+# ############################################################# ###############
+@app.route("/get_image/<string:model>/<int:id>/<string:field>/product.jpg")
+@cache.cached()
+def get_image(model, id, field):
+    openerp_model = {
+        'product': openerp.ProductProduct,
+        'product_category': openerp.eshopCategory,
+        'delivery_category': openerp.ProductDeliveryCategory,
+        'label': openerp.ProductLabel,
+        'company': openerp.ResCompany,
+    }[model]
+    if not openerp_model:
+        # Incorrect Call
+        return render_template('404.html'), 404
+    image_data = openerp_model.read(id, field)
+    if not image_data:
+        # No image found
+        file_name = {
+            'product': 'images/product_without_image.png',
+            'XXX': 'images/XXX_without_image.png',
+        }[model]
+        return url_for('static', filename=file_name)
+
+    response = make_response(base64.decodestring(image_data))
+    response.headers['Content-Type'] = 'image/jpeg'
+    response.headers['Content-Disposition'] = 'attachment; filename=img.jpeg'
+    return response
+
+
+# ############################################################################
+# Technical Routes
+# ############################################################################
+@app.route(
+    "/invalidation_cache/" +
+    "<string:key>/<string:model>/<int:id>/<string:fields_text>/")
+@requires_connection
+def invalidation_cache(key, model, id, fields_text):
+    if key == conf.get('cache', 'invalidation_key'):
+        if ',' in fields_text:
+            fields = str(fields_text).split(',')
+        else:
+            fields = [str(fields_text)]
+        data_fields = [x for x in fields if 'image' not in x]
+        image_fields = [x for x in fields if 'image' in x]
+        if len(data_fields):
+            # Invalidate Object cache
+            invalidate_openerp_object(str(model), int(id))
+        if len(image_fields):
+            # Invalidate Root Cache
+            # TODO
+    return render_template('200.html'), 200
+
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
+
+
+@app.errorhandler(Exception)
+def error(e):
+    flash(_(
+        "An unexcepted error occured. Please try again in a while"), 'danger')
+    logging.exception('an error occured')
+    return render_template('error.html'), 500
 
 
 # ############################################################################
@@ -144,43 +215,3 @@ def fresh_category(value):
 @app.template_filter('empty_if_null')
 def empty_if_null(value):
     return value if value else ''
-
-
-# ############################################################################
-# Technical Routes
-# ############################################################################
-@app.route(
-    "/invalidation_cache/" +
-    "<string:key>/<string:model>/<int:id>/<string:fields_text>/")
-@requires_connection
-def invalidation_cache(key, model, id, fields_text):
-    print "invalidation"
-    if key == conf.get('cache', 'invalidation_key'):
-        if ',' in fields_text:
-            fields = str(fields_text).split(',')
-        else:
-            fields = [str(fields_text)]
-        data_fields = [x for x in fields if 'image' not in x]
-        image_fields = [x for x in fields if 'image' in x]
-        if len(data_fields):
-            print "data_fields : %s" % data_fields
-            # Invalidate Object cache
-            invalidate_openerp_object(str(model), int(id))
-        if len(image_fields):
-            print "image_fields : %s" % image_fields
-            # Invalidate Root Cache
-            # TODO
-    return render_template('200.html'), 200
-
-
-@app.errorhandler(404)
-def page_not_found(e):
-    return render_template('404.html'), 404
-
-
-@app.errorhandler(Exception)
-def error(e):
-    flash(_(
-        "An unexcepted error occured. Please try again in a while"), 'danger')
-    logging.exception('an error occured')
-    return render_template('error.html'), 500

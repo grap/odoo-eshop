@@ -2,8 +2,8 @@
 # -*- encoding: utf-8 -*-
 
 # Custom Tools
-from eshop_app.tools.erp import openerp
-from eshop_app.application import cache
+from ..tools.erp import openerp
+from ..application import cache
 
 
 # Private Consts

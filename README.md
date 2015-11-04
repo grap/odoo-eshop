@@ -19,21 +19,9 @@ Installation
 
 TODO
 ----
-    * Product quantity:
-        * manage minimum_qty and rounding_qty; (and add them in sale-eshop module);
 
-    * shopping_cart:
-        * possibility to change quantity;
-
-    * Validate the sale order:
-        * select the sale_moment_recovery;
-
-    * at login:
-        * display sale_moment_group information;
-
-    * Add password on res.partner and manage it;
-
-    * Make dynamic currency;
-
-    * Make dynamic the choice of locale (fr) for user;
-
+* controller_technical.py
+    * l'url d'image renvoie un fichier à télécharger, plutot qu'une image
+      a afficher;
+    * IMPORTANT le code est toujours 200, et devrait être 304 pour alléger la
+      charge serveur + réduire le transfert;
