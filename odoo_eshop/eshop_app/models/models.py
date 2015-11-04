@@ -11,7 +11,9 @@ _ESHOP_OPENERP_MODELS = {
     'product.product': {
         'model': openerp.ProductProduct,
         'fields': [
-            'id', 'name', 'uom_id', 'image', 'image_medium', 'list_price',
+            'id', 'name', 'uom_id',
+            # 'image', 'image_medium',
+            'list_price',
             'eshop_category_id', 'label_ids', 'eshop_minimum_qty',
             'eshop_rounded_qty', 'origin_description', 'maker_description',
             'fresh_category', 'description', 'country_id', 'department_id',
@@ -21,15 +23,22 @@ _ESHOP_OPENERP_MODELS = {
         'model': openerp.eshopCategory,
         'fields': [
             'id', 'name', 'available_product_qty', 'child_qty',
-            'image_medium', 'type', 'parent_id', 'product_ids', 'complete_name'],
+            # 'image_medium',
+            'type', 'parent_id', 'product_ids', 'complete_name'],
     },
     'product.delivery.category': {
         'model': openerp.ProductDeliveryCategory,
-        'fields': ['id', 'name', 'image'],
+        'fields': [
+            'id', 'name',
+            # 'image',
+        ],
     },
     'product.label': {
         'model': openerp.ProductLabel,
-        'fields': ['id', 'name', 'code', 'image', 'image_small'],
+        'fields': [
+            'id', 'name', 'code',
+            # 'image', 'image_small',
+        ],
     },
     'res.country': {
         'model': openerp.ResCountry,
@@ -47,9 +56,10 @@ _ESHOP_OPENERP_MODELS = {
         'model': openerp.ResCompany,
         'fields': [
             'id', 'name', 'has_eshop', 'eshop_minimum_price', 'eshop_title',
-            'eshop_url',
+            'eshop_url', 'website',
             'eshop_facebook_url', 'eshop_twitter_url', 'eshop_google_plus_url',
-            'eshop_home_text', 'eshop_home_image', 'eshop_image_small',
+            'eshop_home_text',
+            # 'eshop_home_image', 'eshop_image_small',
             'eshop_vat_included', 'eshop_register_allowed',
             'eshop_list_view_enabled',
             'manage_delivery_moment', 'manage_recovery_moment',

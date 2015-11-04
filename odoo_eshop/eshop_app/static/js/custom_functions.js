@@ -47,3 +47,12 @@ function display_message(state, message, always){
 function display_fail_message(){
     $('.flashes').replaceWith("<div class='flashes'><p class='text-center bg-danger'>" + AJAX_MESSAGE_ERROR + "</p></div>");
 }
+
+function set_table_float_thead(){
+    var $table = $("table.eshop_table_float_thead");
+    $table.floatThead({
+        scrollContainer: function($table){return $table.closest('.wrapper');},
+        top: 50,
+    });
+}
+

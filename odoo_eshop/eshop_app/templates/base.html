@@ -6,10 +6,14 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta http-equiv="X-UA-Compatible" content="IE=10; IE=9; IE=8; IE=7; IE=EDGE" />
         <title>{{ company.eshop_title }}</title>
 
     <!-- from : http://code.jquery.com/jquery-2.1.4.min.js -->
         <script src="{{ url_for('static', filename='lib/js/jquery-2.1.4.min.js') }}"></script>
+
+    <!-- from : http://mkoryak.github.io/floatThead/#download -->
+        <script src="{{ url_for('static', filename='lib/js/jquery.floatThead.min.js') }}"></script>
 
     <!-- from : https://github.com/twbs/bootstrap/releases/download/v3.3.5/bootstrap-3.3.5-dist.zip -->
         <script src="{{ url_for('static', filename='lib/js/bootstrap.min.js') }}"></script>
@@ -37,159 +41,157 @@
         <link href="{{ url_for('static', filename='css/eshop.css') }}" rel="stylesheet" />
 
     </head>
+
+
     <body>
-        <div class="container">
 
-            <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-default navbar-fixed-top eshop_navbar_default">
+      <div class="container eshop_head_container">
 
-                <div class="container-fluid">
-                    <div class="nav navbar-left div-home-link">
-
-        {% if company.eshop_image_small %}
-                        <a class="btn btn-default a-link-header" id="nav_home" href="{{  url_for('home') }}">
-                            <img src="data:image/png;base64,{{ company.eshop_image_small }}" class="img-icon-header"/>
-                        </a>
-        {% else %}
-                        <a class="btn btn-default" id="nav_home" href="{{  url_for('home') }}">
-                            <span class="glyphicon glyphicon-home"/>
-                        </a>
-
-        {% endif %}
-                    </div>
-
-        {% if session.get('partner_name', False) %}
-                    <div class="nav navbar-left">
-            {% if company.eshop_list_view_enabled %}
-                        <a class="btn btn-default" id="nav_catalog_inline" href="{{  url_for('catalog_inline') }}">
-                            <span class="glyphicon glyphicon-th-list"/> {{ _('Purchase (List View)') }}</a>
-            {% endif %}
-                        <a class="btn btn-default" id="nav_catalog_tree" href="{{  url_for('catalog_tree') }}">
-                            <span class="glyphicon glyphicon-th"/> {{ _('Purchase (Catalog View)') }}</a>
-            {% if sale_order %}
-                        <a class="btn btn-default" id="nav_shopping_cart" href="{{  url_for('shopping_cart') }}">
-                            <span class="glyphicon glyphicon-shopping-cart"/> {{ _('Shopping Cart: ') }}
-                            {% if company.eshop_vat_included %}
-                            <span id="nav_amount_total">{{ sale_order.amount_total|to_currency }}</span>
-                             {{_('VAT. Incl.')}}
-                                {% if sale_order.amount_total >= company.eshop_minimum_price %}
-                            <span class="glyphicon glyphicon-ok-circle"/> - 
-                            <span class="glyphicon glyphicon-warning-sign" style="display:none"/>
-                                {% else %}
-                            <span class="glyphicon glyphicon-warning-sign"/> - 
-                            <span class="glyphicon glyphicon-ok-circle" style="display:none"/>
-                                {% endif %}
-                            {% else %}
-                            <span id="nav_amount_total">{{ sale_order.amount_untaxed|to_currency }}</span>
-                             {{_('VAT. Excl.')}}
-                                {% if sale_order.amount_untaxed >= company.eshop_minimum_price %}
-                            <span class="glyphicon glyphicon-ok-circle" id="nav_shopping_cart_ok" ></span>
-                            <span class="glyphicon glyphicon-warning-sign" id="nav_shopping_cart_warning" style="display:none"
-                                title="{{_('You have not reached the ceiling : ')}} {{company.eshop_minimum_price|to_currency}}"></span>
-                                {% else %}
-                            <span class="glyphicon glyphicon-ok-circle" id="nav_shopping_cart_ok" style="display:none"></span>
-                            <span class="glyphicon glyphicon-warning-sign" id="nav_shopping_cart_warning"
-                                title="{{_('You have not reached the ceiling : ')}} {{company.eshop_minimum_price|to_currency}}"></span>
-
-                                {% endif %}
-                            {% endif %}
-
-                        </a>
-            {% else %}
-                        <a class="btn btn-default" id="nav_shopping_cart" style="visibility:hidden" href="{{  url_for('shopping_cart') }}">
-                            <span class="glyphicon glyphicon-shopping-cart"/> {{ _('Shopping Cart: ') }}
-                            <span id="nav_amount_total">{{ 0|to_currency }}</span>
-                            <span class="glyphicon glyphicon-warning-sign" id="nav_shopping_cart_warning"
-                                title="{{_('You have not reached the ceiling : ')}} {{company.eshop_minimum_price|to_currency}}"></span>
-                            <span class="glyphicon glyphicon-ok-circle" id="nav_shopping_cart_ok" style="display:none"></span>
-                        </a>
-            {% endif %}
-                    </div>
-
-        {% endif %}
-                    <div class="nav navbar-right">
-            {% if company.eshop_facebook_url %}
-                        <a class="btn btn-default a-link-header" href="{{ company.eshop_facebook_url }}" target="new">
-                            <img class="img-icon-header" title="{{_('Visit our Facebook Page')}}"
-                                src="{{ url_for('static', filename='images/icon-facebook.png') }}"/>
-                        </a>
-            {% endif %}
-            {% if company.eshop_google_plus_url %}
-                        <a class="btn btn-default a-link-header" href="{{ company.eshop_google_plus_url }}" target="new">
-                            <img class="img-icon-header" title="{{_('Visit our Google + Page')}}"
-                                src="{{ url_for('static', filename='images/icon-google-plus.png') }}"/>
-                        </a>
-            {% endif %}
-            {% if company.eshop_twitter_url %}
-                        <a class="btn btn-default a-link-header" href="{{ company.eshop_twitter_url }}" target="new">
-                            <img class="img-icon-header" title="{{_('Visit our Twitter Page')}}"
-                                src="{{ url_for('static', filename='images/icon-twitter.png') }}"/>
-                        </a>
-            {% endif %}
-            {% if company.website %}
-                        <a class="btn btn-default" title="{{_('Visit our Website')}}" target="new"
-                            href="{{ company.eshop_website_url }}">
-                            {{_('Web Site')}}
-                        </a>
-            {% endif %}
-        {% if 'partner_name' in session %}
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="nav_account">
-                            
-                            <span class="glyphicon glyphicon-user"/> {{ _('Your Account') }}
-                            <span class="caret" />
-                          </button>
-                          <ul class="dropdown-menu">
-                            <li><a class="btn" href="{{ url_for('account')}}">
-                                {{ _('Personnal Datas') }}
-                                </a></li>
-                            <li><a class="btn" href="{{ url_for('orders')}}">
-                                {{ _('Orders History') }}
-                                </a></li>
-                            <li><a class="btn" href="{{ url_for('invoices')}}">
-                                {{ _('Invoices History') }}
-                                </a></li>
-                            <li role="separator" class="divider"></li>
-                            <li>
-                                <a class="btn" href="{{ url_for('logout_view') }}">
-                                    <span class="glyphicon glyphicon-log-out"/> {{ _('Log Out') }}
-                                </a></li>
-                          </ul>
-                        </div>
-
-        {% else %}
-
-            {% if company.eshop_register_allowed %}
-                        <a class="btn btn-default" id="nav_register" href="{{ url_for('register') }}">
-                            <span class="glyphicon  glyphicon glyphicon-pencil"/> {{ _('Register') }}
-                        </a>
-            {% endif %}
-                        <a class="btn btn-default" href="{{ url_for('login_view') }}">
-                            <span class="glyphicon glyphicon-log-in"/> {{ _('Log In') }}
-                        </a>
-        {% endif %}
-                    </div>
-                </div>
-            </nav>
-    <div class="div-main-part">
-    {% block breadcrumb_all %}
-        {% block breadcrumb %}
-        {% endblock %}
-    {% endblock %}
-          <div class="flashes">
-      {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-          {% for category, message in messages %}
-            <p class="text-center bg-{{ category }}">{{ message }}</p>
-          {% endfor %}
-        {% endif %}
-      {% endwith %}
-          </div>
-      {% block container %}{% endblock %}
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">{{ _('Toggle navigation')}}</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
         </div>
+
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+                <li>
+        {% if company.eshop_image_small %}
+                    <a class="btn-default eshop_a_link_header" id="nav_home" href="{{  url_for('home') }}">
+                        <img src="data:image/png;base64,{{ company.eshop_image_small }}" class="img-icon-header"/>
+                    </a>
+        {% else %}
+                    <a class="btn-default eshop_a_link_header" id="nav_home" href="{{  url_for('home') }}">
+                        <span class="glyphicon glyphicon-home"/>
+                    </a>
+        {% endif %}
+
+{% if session.get('partner_name', False) %}
+    {% if company.eshop_list_view_enabled %}
+            <li><a class="btn-default eshop_a_link_header" id="nav_catalog_inline" href="{{  url_for('catalog_inline') }}">
+                    <span class="glyphicon glyphicon-th-list"/> {{ _('Purchase (List View)') }}
+                </a></li>
+    {% endif %}
+            <li><a class="btn-default eshop_a_link_header" id="nav_catalog_tree" href="{{  url_for('catalog_tree') }}">
+                    <span class="glyphicon glyphicon-th"/> {{ _('Purchase (Catalog View)') }}
+                </a></li>
+    {% if sale_order %}
+            <li><a class="btn-default eshop_a_link_header" id="nav_shopping_cart" href="{{  url_for('shopping_cart') }}">
+                <span class="glyphicon glyphicon-shopping-cart"/> {{ _('Shopping Cart: ') }}
+        {% if company.eshop_vat_included %}
+                <span id="nav_amount_total">{{ sale_order.amount_total|to_currency }}</span>
+                             {{_('VAT. Incl.')}}
+            {% if sale_order.amount_total >= company.eshop_minimum_price %}
+                <span class="glyphicon glyphicon-ok-circle"/> - 
+                <span class="glyphicon glyphicon-warning-sign" style="display:none"/>
+            {% else %}
+                <span class="glyphicon glyphicon-warning-sign"/> - 
+                <span class="glyphicon glyphicon-ok-circle" style="display:none"/>
+            {% endif %}
+        {% else %}
+                <span id="nav_amount_total">{{ sale_order.amount_untaxed|to_currency }}</span>
+                             {{_('VAT. Excl.')}}
+            {% if sale_order.amount_untaxed >= company.eshop_minimum_price %}
+                <span class="glyphicon glyphicon-ok-circle" id="nav_shopping_cart_ok" ></span>
+                <span class="glyphicon glyphicon-warning-sign" id="nav_shopping_cart_warning"
+                        style="display:none"
+                        title="{{_('You have not reached the ceiling : ')}} {{company.eshop_minimum_price|to_currency}}"></span>
+            {% else %}
+                    <span class="glyphicon glyphicon-ok-circle" id="nav_shopping_cart_ok"
+                            style="display:none"></span>
+                    <span class="glyphicon glyphicon-warning-sign" id="nav_shopping_cart_warning"
+                                title="{{_('You have not reached the ceiling : ')}} {{company.eshop_minimum_price|to_currency}}"></span>
+
+            {% endif %}
+        {% endif %}
+
+                </a></li>
+    {% else %}
+            <li>
+                <a class="btn-default eshop_a_link_header" id="nav_shopping_cart" style="visibility:hidden" href="{{  url_for('shopping_cart') }}">
+                    <span class="glyphicon glyphicon-shopping-cart"/> {{ _('Shopping Cart: ') }}
+                    <span id="nav_amount_total">{{ 0|to_currency }}</span>
+                    <span class="glyphicon glyphicon-warning-sign" id="nav_shopping_cart_warning"
+                            title="{{_('You have not reached the ceiling : ')}} {{company.eshop_minimum_price|to_currency}}"></span>
+                    <span class="glyphicon glyphicon-ok-circle" id="nav_shopping_cart_ok" 
+                            style="display:none"></span>
+                </a></li>
+    {% endif %}
+{% endif %}
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+{% if company.eshop_facebook_url %}
+            <li><a class="btn-default eshop_a_link_header" href="{{ company.eshop_facebook_url }}" target="_blank">
+                <img class="eshop_img_icon_header" title="{{_('Visit our Facebook Page')}}"
+                        src="{{ url_for('static', filename='images/icon-facebook.png') }}"/>
+            </a></li>
+{% endif %}
+{% if company.eshop_google_plus_url %}
+            <li><a class="btn-default eshop_a_link_header" href="{{ company.eshop_google_plus_url }}" target="_blank">
+                <img class="eshop_img_icon_header" title="{{_('Visit our Google + Page')}}"
+                        src="{{ url_for('static', filename='images/icon-google-plus.png') }}"/>
+            </a></li>
+{% endif %}
+{% if company.eshop_twitter_url %}
+            <li><a class="btn-default eshop_a_link_header" href="{{ company.eshop_twitter_url }}" target="_blank">
+                <img class="eshop_img_icon_header" title="{{_('Visit our Twitter Page')}}"
+                        src="{{ url_for('static', filename='images/icon-twitter.png') }}"/>
+            </a></li>
+{% endif %}
+{% if company.name %}
+            <li><a class="btn-default eshop_a_link_header" title="{{_('Visit our Website')}}" target="_blank"
+                    href="{{ company.website }}">
+                {{_('Web Site')}}
+            </a></li>
+{% endif %}
+
+{% if 'partner_name' in session %}
+
+            <li class="dropdown">
+                <a href="#" class="btn-default dropdown-toggle eshop_a_link_header" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                    <span class="glyphicon glyphicon-user"/> {{ _('Your Account') }}
+                    <span class="caret" /></a>
+                <ul class="dropdown-menu">
+                    <li><a class="btn-default eshop_a_link_header" href="{{ url_for('account')}}">
+                        {{ _('Personnal Datas') }}
+                    </a></li>
+                    <li><a class="btn-default eshop_a_link_header" href="{{ url_for('orders')}}">
+                        {{ _('Orders History') }}
+                    </a></li>
+                    <li><a class="btn-default eshop_a_link_header" href="{{ url_for('invoices')}}">
+                        {{ _('Invoices History') }}
+                    </a></li>
+                    <li role="separator" class="divider"></li>
+                    <li><a class="btn-default eshop_a_link_header" href="{{ url_for('logout_view') }}">
+                            <span class="glyphicon glyphicon-log-out"/> {{ _('Log Out') }}
+                    </a></li>
+                </ul>
+            </li>
+{% else %}
+
+    {% if company.eshop_register_allowed %}
+            <li><a class="btn-default eshop_a_link_header" id="nav_register" href="{{ url_for('register') }}">
+                <span class="glyphicon  glyphicon glyphicon-pencil"/> {{ _('Register') }}
+            </a></li>
+    {% endif %}
+            <li><a class="btn-default eshop_a_link_header" href="{{ url_for('login_view') }}">
+                <span class="glyphicon glyphicon-log-in"/> {{ _('Log In') }}
+            </a></li>
+{% endif %}
+
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container">
+          {% block container %}{% endblock %}
     </div>
-
-    {% block extra_js %}{% endblock %}
-
 
     </body>
 </html>

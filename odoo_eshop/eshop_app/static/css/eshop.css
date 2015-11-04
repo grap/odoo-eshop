@@ -1,8 +1,38 @@
+/* -------------------------------------------------------------------------- */
+
 body{
+    padding-top: 70px;
 /*    background-color:yellow;*/
 }
 
-/* Generic Style (Table, body, ...)*/
+/* -------------------------------------------------------------------------- */
+/* Header Style                                                               */
+/* -------------------------------------------------------------------------- */
+.eshop_navbar_default{
+    background-color:#FFF;
+}
+
+.eshop_head_container{
+    width:100%;
+
+}
+
+.eshop_a_link_header{
+    padding-top: 10px !important;
+    height:50px;
+}
+
+.eshop_a_link_header:hover{
+    background-color:#E7E7E7 !important;
+}
+
+.eshop_img_icon_header{
+    max-height: 24px;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Generic Style (Table, body, ...)                                           */
+/* -------------------------------------------------------------------------- */
 th{
     background-color:#F6F6F6;
     text-align:center;
@@ -18,27 +48,12 @@ h2{
 .td-action{
     text-align:center;
 }
-/* Header Style */
-.navigation-button{
-    height:32px;
-    max-height:24px;
-}
 
-.a-link-header{
-    padding: 0px;
-}
-.img-icon-header{
-    max-height: 32px;
-}
 
 .div-home-link{
     margin-right:20px;
 }
 
-/* Main Part Style*/
-.div-main-part{
-    margin-top:70px;
-}
 
 /* Catalog Style */
 .input-quantity{

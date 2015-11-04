@@ -101,6 +101,7 @@ def product(product_id):
         'product.html', product_id=product_id,
         parent_categories=parent_categories)
 
+
 @app.route("/product_add_qty/<int:product_id>", methods=['POST'])
 @requires_auth
 def product_add_qty(product_id):
@@ -108,4 +109,3 @@ def product_add_qty(product_id):
         request.form['quantity'], 'add', product_id=product_id)
     flash(res['message'], res['state'])
     return redirect(url_for('product', product_id=product_id))
-
