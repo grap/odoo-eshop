@@ -87,8 +87,7 @@
             <td>
                 {% if product.delivery_categ_id %}
                     {% set delivery_category = get_object('product.delivery.category', product.delivery_categ_id) %} 
-                <img class="img-small-delivery-categ" title="{{ delivery_category.name }}"
-                    src="{{ url_for('get_image', model='product.delivery.category', id=product.delivery_categ_id, field='image') }}"/>
+                {{ delivery_category.name }}
                 {% endif %}
             </td>
             {% endif %}
