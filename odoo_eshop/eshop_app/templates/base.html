@@ -67,16 +67,16 @@
                     </a>
 
 {% if session.get('partner_name', False) %}
+            <li><a class="btn-default eshop_a_link_header" id="nav_catalog_tree" href="{{ url_for('catalog_tree') }}">
+                    <span class="glyphicon glyphicon-th"/> {{ _('Products Catalog)') }}
+                </a></li>
     {% if company.eshop_list_view_enabled %}
-            <li><a class="btn-default eshop_a_link_header" id="nav_catalog_inline" href="{{  url_for('catalog_inline') }}">
-                    <span class="glyphicon glyphicon-th-list"/> {{ _('Purchase (List View)') }}
+            <li><a class="btn-default eshop_a_link_header" id="nav_catalog_inline" href="{{ url_for('catalog_inline') }}">
+                    <span class="glyphicon glyphicon-th-list"/> {{ _('Quick Purchase') }}
                 </a></li>
     {% endif %}
-            <li><a class="btn-default eshop_a_link_header" id="nav_catalog_tree" href="{{  url_for('catalog_tree') }}">
-                    <span class="glyphicon glyphicon-th"/> {{ _('Purchase (Catalog View)') }}
-                </a></li>
     {% if sale_order %}
-            <li><a class="btn-default eshop_a_link_header" id="nav_shopping_cart" href="{{  url_for('shopping_cart') }}">
+            <li><a class="btn-default eshop_a_link_header" id="nav_shopping_cart" href="{{ url_for('shopping_cart') }}">
                 <span class="glyphicon glyphicon-shopping-cart"/> {{ _('Shopping Cart: ') }}
         {% if company.eshop_vat_included %}
                 <span id="nav_amount_total">{{ sale_order.amount_total|to_currency }}</span>
