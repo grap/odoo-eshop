@@ -9,7 +9,7 @@ import pytz
 
 # Extra Lib
 from flask import request, session, render_template, flash, make_response,\
-    url_for
+    url_for, redirect
 
 from flask.ext.babel import gettext as _
 
@@ -32,15 +32,15 @@ from ..models.obs_sale_order import load_sale_order, currency
 # ############################################################################
 # image Routes
 # ############################################################# ###############
-@app.route("/get_image/<string:model>/<int:id>/<string:field>/product.jpg")
-@cache.cached()
+@app.route("/get_image/<string:model>/<int:id>/<string:field>/")
+@cache.cached(key_prefix='odoo_eshop/%s')
 def get_image(model, id, field):
     openerp_model = {
-        'product': openerp.ProductProduct,
-        'product_category': openerp.eshopCategory,
-        'delivery_category': openerp.ProductDeliveryCategory,
-        'label': openerp.ProductLabel,
-        'company': openerp.ResCompany,
+        'product.product': openerp.ProductProduct,
+        'eshop.category': openerp.eshopCategory,
+        'product.delivery.category': openerp.ProductDeliveryCategory,
+        'product.label': openerp.ProductLabel,
+        'res.company': openerp.ResCompany,
     }[model]
     if not openerp_model:
         # Incorrect Call
@@ -49,14 +49,15 @@ def get_image(model, id, field):
     if not image_data:
         # No image found
         file_name = {
-            'product': 'images/product_without_image.png',
-            'XXX': 'images/XXX_without_image.png',
+            'product.product': 'images/product_product_without_image.png',
+            'eshop.category': 'images/eshop_category_without_image.png',
+            'res.company': 'images/res_company_without_image.png',
         }[model]
-        return url_for('static', filename=file_name)
+        return redirect(url_for('static', filename=file_name))
 
     response = make_response(base64.decodestring(image_data))
     response.headers['Content-Type'] = 'image/jpeg'
-    response.headers['Content-Disposition'] = 'attachment; filename=img.jpeg'
+    response.headers['Content-Disposition'] = 'attachment; filename=image.jpeg'
     return response
 
 
@@ -80,7 +81,11 @@ def invalidation_cache(key, model, id, fields_text):
             invalidate_openerp_object(str(model), int(id))
         if len(image_fields):
             # Invalidate Root Cache
-            # TODO
+            for image_field in image_fields:
+                url = url_for(
+                    'get_image',
+                    model=str(model), id=int(id), field=str(image_field))
+            cache.delete('odoo_eshop/%s' % (url))
     return render_template('200.html'), 200
 
 

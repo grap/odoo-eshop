@@ -18,9 +18,8 @@
 
     </div>
     <div class="col-md-4">
-        {% if company.eshop_home_image %}
-        <img src="data:image/png;base64,{{ company.eshop_home_image }}"  style="width:300px;height=300px" />
-        {% endif %}
+        <img src="{{ url_for('get_image', model='res.company', id=company.id, field='eshop_home_image') }}"
+            style="width:300px;height=300px" />
     </div>
-
+</div>
 {% endblock %}

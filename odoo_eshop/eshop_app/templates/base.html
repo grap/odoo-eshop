@@ -61,15 +61,10 @@
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
                 <li>
-        {% if company.eshop_image_small %}
                     <a class="btn-default eshop_a_link_header" id="nav_home" href="{{  url_for('home') }}">
-                        <img src="data:image/png;base64,{{ company.eshop_image_small }}" class="img-icon-header"/>
+                        <img src="{{ url_for('get_image', model='res.company', id=company.id, field='eshop_image_small') }}"
+                            class="img-icon-header"/>
                     </a>
-        {% else %}
-                    <a class="btn-default eshop_a_link_header" id="nav_home" href="{{  url_for('home') }}">
-                        <span class="glyphicon glyphicon-home"/>
-                    </a>
-        {% endif %}
 
 {% if session.get('partner_name', False) %}
     {% if company.eshop_list_view_enabled %}

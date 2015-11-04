@@ -50,11 +50,11 @@
             {% endif %}
 
             {% if company.eshop_vat_included %}
-            <th>{{ _('Price Unit VAT Incl.') }}</th>
+            <th>{{ _('U.P. VAT Incl.') }}</th>
             {% else %}
-            <th>{{ _('Price Unit VAT Excl.') }}</th>
+            <th>{{ _('U.P. VAT Excl.') }}</th>
             {% endif %}
-            <th>{{ _('Taxes') }}</th>
+            <th>{{ _('VAT') }}</th>
             <th>{{ _('Quantity') }}</th>
             <th>{{ _('Unit') }}</th>
             {% if company.eshop_vat_included %}
@@ -74,7 +74,9 @@
     {% if company.manage_delivery_moment %}
             <td>
         {% if line.product_id.delivery_categ_id %}
-                <img class="img-small-delivery-categ" src="data:image/png;base64,{{ line.product_id.delivery_categ_id.image }}" title="{{ line.product_id.delivery_categ_id.name }}"/>
+                <img class="img-small-delivery-categ"
+                src="{{ url_for('get_image', model='product.delivery.category', id=line.product_id.delivery_categ_id.id, field='image') }}"
+                title="{{ line.product_id.delivery_categ_id.name }}"/>
         {% endif %}
             </td>
     {% endif %}

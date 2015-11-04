@@ -21,9 +21,24 @@
 <table class="table table-condensed table-bordered eshop_table_float_thead">
     <thead>
         <tr>
-            <th colspan="100%">
-            COINCOIN
+            <th>{{_('Product Name')}}</th>
+            <th>{{_('Labels')}}</th>
+            <th>
+{% if company.eshop_vat_included %}
+                {{_('U.P. VAT. Incl.')}}
+{% else %}
+                {{_('U.P. VAT. Excl.')}}
+{% endif %}
             </th>
+            <th>{{_('Unit')}}</th>
+            <th>{{_('Min.')}}</th>
+            <th>{{_('VAT')}}</th>
+{% if company.manage_delivery_moment %}
+            <th title="{{ _('Delivery Category') }}">
+                {{ _('Categ.') }}
+            </th>
+{% endif %}
+            <th>{{ _('Quantity') }}</th>
         </tr>
     </thead>
     <tbody>
@@ -33,11 +48,8 @@
         <tr>
             <th colspan="100%">
                 <h2>
-        {% if category.image_medium %}
-                    <img class="thumbnail img-responsive img-medium-eshop-categ" src="data:image/png;base64,{{ category.image_medium }}"/>
-        {% else %}
-                    <img class="thumbnail img-responsive img-medium-eshop-categ" src="{{ url_for('static', filename='images/category_without_image.png') }}"/>
-        {% endif %}
+                    <img class="thumbnail img-responsive img-medium-eshop-categ"
+                        src="{{ url_for('get_image', model='eshop.category', id=category.id, field='image_medium') }}"/>
                 {{ category.complete_name }}
                 </h2>
             </th>
@@ -55,17 +67,18 @@
             <td class="labels">
             {% for label_id in product.label_ids %}
                 {% set label = get_object('product.label', label_id) %} 
-                    <img class="img-small-label" src="data:image/png;base64,{{ label.image_small }}" title="{{label.name}}"/>
+                    <img class="img-small-label" title="{{label.name}}"
+                        src="{{ url_for('get_image', model='product.label', id=label_id, field='image_small') }}"/>
             {% endfor %}
             </td>
             <td>
                 {{ product.list_price|to_currency }}
-                {% if company.eshop_vat_included %}
-                {{_('VAT. Incl.')}}
-                {% else %}
-                {{_('VAT. Excl.')}}
-                {% endif %}
-                / {{ uom.eshop_description }}
+            </td>
+            <td>
+                {{ uom.eshop_description }}
+            </td>
+            <td>
+                {{product.eshop_minimum_qty}}
             </td>
             <td>
                 {{ product.eshop_taxes_description }}
@@ -74,7 +87,8 @@
             <td>
                 {% if product.delivery_categ_id %}
                     {% set delivery_category = get_object('product.delivery.category', product.delivery_categ_id) %} 
-                <img class="img-small-delivery-categ" src="data:image/png;base64,{{ delivery_category.image }}" title="{{ delivery_category.name }}"/>
+                <img class="img-small-delivery-categ" title="{{ delivery_category.name }}"
+                    src="{{ url_for('get_image', model='product.delivery.category', id=product.delivery_categ_id, field='image') }}"/>
                 {% endif %}
             </td>
             {% endif %}
