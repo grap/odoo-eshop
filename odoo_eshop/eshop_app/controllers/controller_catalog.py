@@ -64,6 +64,7 @@ def catalog_inline_new():
         'catalog_inline_new.html', category_ids=category_ids,
         product_qty_dict=product_qty_dict)
 
+
 @app.route('/catalog_inline/')
 @requires_auth
 def catalog_inline():

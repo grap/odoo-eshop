@@ -185,7 +185,19 @@
     </nav>
 
     <div class="container">
-          {% block container %}{% endblock %}
+{% block breadcrumb_all %}
+    {% block breadcrumb %}{% endblock %}
+{% endblock %}
+        <div class="flashes">
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            <p class="text-center bg-{{ category }}">{{ message }}</p>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+        </div>
+    {% block container %}{% endblock %}
     </div>
 
     </body>
