@@ -68,7 +68,7 @@
 
 {% if session.get('partner_name', False) %}
             <li><a class="btn-default eshop_a_link_header" id="nav_catalog_tree" href="{{ url_for('catalog_tree') }}">
-                    <span class="glyphicon glyphicon-th"/> {{ _('Products Catalog)') }}
+                    <span class="glyphicon glyphicon-th"/> {{ _('Products Catalog') }}
                 </a></li>
     {% if company.eshop_list_view_enabled %}
             <li><a class="btn-default eshop_a_link_header" id="nav_catalog_inline" href="{{ url_for('catalog_inline') }}">

@@ -45,10 +45,9 @@ def catalog_tree(category_id):
 # ############################################################################
 # Catalog (Inline View) Routes
 # ############################################################################
-@app.route('/catalog_inline/', defaults={'category_id': False})
-@app.route("/catalog_inline/<int:category_id>")
+@app.route('/catalog_inline_new/')
 @requires_auth
-def catalog_inline(category_id):
+def catalog_inline_new():
     sale_order = load_sale_order()
 
     category_ids = openerp.eshopCategory.search([
@@ -61,13 +60,23 @@ def catalog_inline(category_id):
         else:
             product_qty_dict[line.product_id.id] = line.product_uom_qty
 
-#    product_ids = openerp.ProductProduct.search([
-#        ('eshop_state', '=', 'available')], order='eshop_category_id, name')
-#    catalog_inline = openerp.saleOrder.get_current_eshop_product_list(
-#        sale_order and sale_order.id or False)
     return render_template(
-        'catalog_inline.html', category_ids=category_ids,
+        'catalog_inline_new.html', category_ids=category_ids,
         product_qty_dict=product_qty_dict)
+
+@app.route('/catalog_inline/')
+@requires_auth
+def catalog_inline():
+    sale_order = load_sale_order()
+
+    catalog_inline = openerp.saleOrder.get_current_eshop_product_list(
+        sale_order and sale_order.id or False)
+
+    print catalog_inline
+
+    return render_template(
+        'catalog_inline.html',
+        catalog_inline=catalog_inline)
 
 
 @app.route('/catalog_inline_quantity_update', methods=['POST'])
