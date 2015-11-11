@@ -1,71 +1,17 @@
 #! /usr/bin/env python
 # -*- encoding: utf-8 -*-
 
+# Standard Libs
+import hashlib
+
 # Custom Tools
 from ..tools.erp import openerp
-from ..application import cache
+from ..application import cache, app
 
 
-# Private Consts
-_ESHOP_OPENERP_MODELS = {
-    'product.product': {
-        'model': openerp.ProductProduct,
-        'fields': [
-            'id', 'name', 'uom_id',
-            # 'image', 'image_medium',
-            'list_price',
-            'eshop_category_id', 'label_ids', 'eshop_minimum_qty',
-            'eshop_rounded_qty', 'origin_description', 'maker_description',
-            'fresh_category', 'description', 'country_id', 'department_id',
-            'default_code', 'delivery_categ_id', 'eshop_taxes_description'],
-    },
-    'eshop.category': {
-        'model': openerp.eshopCategory,
-        'fields': [
-            'id', 'name', 'available_product_qty', 'child_qty',
-            # 'image_medium',
-            'type', 'parent_id', 'product_ids', 'complete_name'],
-    },
-    'product.delivery.category': {
-        'model': openerp.ProductDeliveryCategory,
-        'fields': [
-            'id', 'name',
-            # 'image',
-        ],
-    },
-    'product.label': {
-        'model': openerp.ProductLabel,
-        'fields': [
-            'id', 'name', 'code',
-            # 'image', 'image_small',
-        ],
-    },
-    'res.country': {
-        'model': openerp.ResCountry,
-        'fields': ['id', 'name'],
-    },
-    'res.country.department': {
-        'model': openerp.ResCountryDepartment,
-        'fields': ['id', 'name'],
-    },
-    'product.uom': {
-        'model': openerp.ProductUom,
-        'fields': ['id', 'name', 'eshop_description'],
-    },
-    'res.company': {
-        'model': openerp.ResCompany,
-        'fields': [
-            'id', 'name', 'has_eshop', 'eshop_minimum_price', 'eshop_title',
-            'eshop_url', 'website',
-            'eshop_facebook_url', 'eshop_twitter_url', 'eshop_google_plus_url',
-            'eshop_home_text',
-            # 'eshop_home_image', 'eshop_image_small',
-            'eshop_vat_included', 'eshop_register_allowed',
-            'eshop_list_view_enabled',
-            'manage_delivery_moment', 'manage_recovery_moment',
-        ],
-    },
-}
+# Public Section
+def invalidate_openerp_object(model_name, id):
+    cache.delete_memoized(_get_openerp_object, model_name, id)
 
 
 def get_openerp_object(model_name, id):
@@ -75,24 +21,54 @@ def get_openerp_object(model_name, id):
     return res
 
 
-# Public Section
+# Private Section
+def _get_openerp_models():
+    if hasattr(app, '_eshop_openerp_models'):
+        _eshop_openerp_models = getattr(app, '_eshop_openerp_models')
+    else:
+        # Load Model
+        _eshop_openerp_models = openerp.ResCompany.GetEshopModel()
+        for model, data in _eshop_openerp_models.iteritems():
+            manage_write_date = False
+            for field in data['fields']:
+                if 'image' in field:
+                    manage_write_date = True
+                    data['fields'].remove(field)
+            # allways load 'id' fields
+            data['fields'].append('id')
+            # If there are image, we manage write date
+            data['manage_write_date'] = manage_write_date
+            data['proxy'] = {
+                'product.product': openerp.ProductProduct,
+                'eshop.category': openerp.eshopCategory,
+                'product.delivery.category': openerp.ProductDeliveryCategory,
+                'product.label': openerp.ProductLabel,
+                'res.country': openerp.ResCountry,
+                'res.country.department': openerp.ResCountryDepartment,
+                'product.uom': openerp.ProductUom,
+                'res.company': openerp.ResCompany,
+            }[model]
+            # we set model
+        setattr(app, '_eshop_openerp_models', _eshop_openerp_models)
+    return _eshop_openerp_models
+
+
 @cache.memoize()
 def _get_openerp_object(model_name, id):
     if not id:
         return False
-    myModel = _ESHOP_OPENERP_MODELS[model_name]
+    myModel = _get_openerp_models()[model_name]
     myObj = _OpenerpModel(id)
-    data = myModel['model'].read(id, myModel['fields'])
+    data = myModel['proxy'].read(id, myModel['fields'])
+    if myModel['manage_write_date']:
+        write_date = myModel['proxy'].perm_read(id)[0]['write_date']
+        setattr(myObj, 'sha1', hashlib.sha1(str(write_date)).hexdigest())
     for key in myModel['fields']:
         if key[-3:] == '_id' and data[key]:
             setattr(myObj, key, data[key][0])
         else:
             setattr(myObj, key, data[key])
     return myObj
-
-
-def invalidate_openerp_object(model_name, id):
-    cache.delete_memoized(_get_openerp_object, model_name, id)
 
 
 # Private Model
