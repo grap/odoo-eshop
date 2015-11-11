@@ -1,15 +1,15 @@
 #! /usr/bin/env python
 # -*- encoding: utf-8 -*-
 
-# Standard Lib
+# Standard Libs
 import base64
 import logging
-from datetime import datetime
+from datetime import datetime  # , timedelta
 import pytz
 
-# Extra Lib
+# Extra Libs
 from flask import request, session, render_template, flash, make_response,\
-    url_for, redirect
+    url_for, redirect, Response
 
 from flask.ext.babel import gettext as _
 
@@ -32,9 +32,17 @@ from ..models.obs_sale_order import load_sale_order, currency
 # ############################################################################
 # image Routes
 # ############################################################# ###############
-@app.route("/get_image/<string:model>/<int:id>/<string:field>/")
+@app.route(
+    "/get_image/<string:model>/<int:id>/<string:field>/<string:sha1>/")
 @cache.cached(key_prefix='odoo_eshop/%s')
-def get_image(model, id, field):
+def get_image(model, id, field, sha1):
+    """Return an image depending of
+    @param model: Odoo model. Ex: 'product.product';
+    @param id: Id of the object. Ex: 4235';
+    @param field: Odoo field name. Ex: 'image_medium';
+    @param sha1: unused param in the function. Used to force client
+        to reload obsolete images.
+    """
     openerp_model = {
         'product.product': openerp.ProductProduct,
         'eshop.category': openerp.eshopCategory,
@@ -56,6 +64,12 @@ def get_image(model, id, field):
         return redirect(url_for('static', filename=file_name))
 
     response = make_response(base64.decodestring(image_data))
+    # TODO FIXME Ask Arthur how to manage cached dynamic datas
+#    expiry_time = datetime.utcnow() + timedelta(days=30)
+#    response.headers["Expires"] = \
+#        expiry_time.strftime("%a, %d %b %Y %H:%M:%S GMT")
+#    response.headers['Last-Modified'] = "Fri, 23 Oct 2015 12:33:52 GMT"
+#    response.headers['Cache-Control'] = 'max-age=300000000'
     response.headers['Content-Type'] = 'image/jpeg'
     return response
 
@@ -85,7 +99,7 @@ def invalidation_cache(key, model, id, fields_text):
                     'get_image',
                     model=str(model), id=int(id), field=str(image_field))
             cache.delete('odoo_eshop/%s' % (url))
-    return render_template('200.html'), 200
+    return Response(status=204)
 
 
 @app.errorhandler(404)
@@ -145,6 +159,7 @@ def get_local_date(str_utc_date, schema):
 # ############################################################################
 # Template filters
 # ############################################################################
+
 @app.template_filter('to_currency')
 def compute_currency(amount):
     return currency(amount)

@@ -62,7 +62,7 @@
           <ul class="nav navbar-nav">
                 <li>
                     <a class="btn-default eshop_a_link_header" id="nav_home" href="{{  url_for('home') }}">
-                        <img src="{{ url_for('get_image', model='res.company', id=company.id, field='eshop_image_small') }}"
+                        <img src="{{ url_for('get_image', model='res.company', id=company.id, field='eshop_image_small', sha1=company.sha1) }}"
                             class="img-icon-header"/>
                     </a>
 

@@ -36,7 +36,7 @@
     <div class="col-md-4">
         <center>
             <div>
-                <img src="{{ url_for('get_image', model='product.product', id=product.id, field='image') }}"
+                <img src="{{ url_for('get_image', model='product.product', id=product.id, field='image', sha1=product.sha1) }}"
                     style="width:250px;"
                     class="img-thumbnail"/> 
 
@@ -47,7 +47,7 @@
                 <center>
         {% for label_id in product.label_ids %}
             {% set label = get_object('product.label', label_id) %}
-                <img src="{{ url_for('get_image', model='product.label', id=label.id, field='image') }}"
+                <img src="{{ url_for('get_image', model='product.label', id=label.id, field='image', sha1=label.sha1) }}"
                     class="img-thumbnail"
                     alt="{{ label.name }}" style="width:80px;"/> 
         {% endfor %}
