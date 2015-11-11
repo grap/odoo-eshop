@@ -48,7 +48,7 @@
         {% for product in category['product_ids'] %}
         <tr>
             <td>
-                <a href="{{url_for('product', product_id=product['id'])}}">
+                <a href="#" data-featherlight="{{ url_for('product_popup', product_id=product['id']) }}">
             {% if not company.eshop_vat_included and product['default_code']%}{{ product['default_code']}} - {% endif %}
                 {{ product['name'] }}</a>
             </td>

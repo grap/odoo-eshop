@@ -112,6 +112,18 @@ def product(product_id):
         parent_categories=parent_categories)
 
 
+@app.route("/product_popup/<int:product_id>")
+@requires_auth
+def product_popup(product_id):
+    return render_template('product_popup.html', product_id=product_id)
+
+
+@app.route("/product_image_popup/<int:product_id>")
+@requires_auth
+def product_image_popup(product_id):
+    return render_template('product_image_popup.html', product_id=product_id)
+
+
 @app.route("/product_add_qty/<int:product_id>", methods=['POST'])
 @requires_auth
 def product_add_qty(product_id):

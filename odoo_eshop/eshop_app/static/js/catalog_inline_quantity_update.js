@@ -30,7 +30,7 @@ $('.input-quantity').change(function(e){
     }).done(function(msg){
         if (msg.result.state == 'success' || msg.result.state == 'warning'){
             $('#quantity_' + product_id).val(msg.result.quantity);
-            $('#quantity_' + product_id).toggleClass('not_null_qty', (msg.result.quantity != '0'));
+            $('#quantity_' + product_id).toggleClass('input-not-null-qty', (msg.result.quantity != '0'));
         }
         update_header(msg.result.amount_total_header, msg.result.minimum_ok);
         display_message(msg.result.state, msg.result.message, false);

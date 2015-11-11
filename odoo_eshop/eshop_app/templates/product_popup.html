@@ -1,25 +1,6 @@
-{% extends 'base.html' %}
+{% extends 'base_popup.html' %}
 
-{% block breadcrumb %}
-<ol class="breadcrumb">
-    <li class="active">
-        <a href="{{ url_for('catalog_tree')}}">{{ _('Catalog') }}</a>
-    </li>
-    {% for parent_category in parent_categories %}
-    <li class="active">
-        <a href="{{ url_for('catalog_tree', category_id=parent_category['id'])}}">{{ parent_category['name'] }}</a>
-    </li>
-    {% endfor %}
-</ol>
-{% endblock %}
-
-{% block container %}
-<!-- JQuery -->
-<script>
-    $('#nav_catalog_tree').addClass('active');
-</script>
-
-
+{% block container_popup %}
 <!-- Products -->
 {% set product = get_object('product.product', product_id) %} 
 {% set uom = get_object('product.uom', product.uom_id) %} 
@@ -57,7 +38,7 @@
             </div>
         </center>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-8">
         <dl class="dl-horizontal">
 
             <dt>{{ _('Price') }}</dt>
@@ -93,21 +74,6 @@
             <dd>{{ product.description }}</dd>
     {% endif %}
         </dl>
-    </div>
-    <div class="col-md-4">
-        <form class="form-horizontal" role="form" method="POST" action="{{ url_for('product_add_qty', product_id=product.id) }}">
-            <div class="form-group">
-                <label class="col-sm-3 control-label">{{ _('Quantity') }}</label>
-                <div class="col-sm-5">
-                    <input type="text" class="form-control" name="quantity" placeholder="({{ uom.eshop_description }})"/>
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="col-sm-5 col-sm-offset-3">
-                    <button type="submit" class="btn btn-default">{{ _('Add to Shopping Cart') }}</button>
-                </div>
-            </div>
-        </form>
     </div>
 </div>
 
