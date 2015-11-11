@@ -171,7 +171,7 @@
 
     {% if company.eshop_register_allowed %}
             <li><a class="btn-default eshop_a_link_header" id="nav_register" href="{{ url_for('register') }}">
-                <span class="glyphicon  glyphicon glyphicon-pencil"/> {{ _('Register') }}
+                <span class="glyphicon glyphicon glyphicon-pencil"/> {{ _('Register') }}
             </a></li>
     {% endif %}
             <li><a class="btn-default eshop_a_link_header" href="{{ url_for('login_view') }}">
@@ -185,9 +185,7 @@
     </nav>
 
     <div class="container">
-{% block breadcrumb_all %}
-    {% block breadcrumb %}{% endblock %}
-{% endblock %}
+{% block breadcrumb %}{% endblock %}
         <div class="flashes">
 {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
@@ -197,7 +195,7 @@
     {% endif %}
 {% endwith %}
         </div>
-    {% block container %}{% endblock %}
+{% block container %}{% endblock %}
     </div>
 
     </body>
