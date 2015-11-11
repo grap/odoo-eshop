@@ -1,8 +1,7 @@
 /* -------------------------------------------------------------------------- */
 
 body{
-    padding-top: 70px;
-/*    background-color:yellow;*/
+    padding-top: 75px;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -10,11 +9,18 @@ body{
 /* -------------------------------------------------------------------------- */
 .eshop_navbar_default{
     background-color:#FFF;
+    border-color:#FFF;
 }
 
 .eshop_head_container{
     width:100%;
+    border-bottom: 1px solid;
+    border-color:#CCC;
+}
 
+.eshop_flash_container{
+    padding-top:5px;
+    width:100%;
 }
 
 .eshop_a_link_header{
@@ -37,6 +43,7 @@ th{
     background-color:#F6F6F6;
     text-align:center;
 }
+
 h2{
     margin:0px;
 }
@@ -49,17 +56,18 @@ h2{
     text-align:center;
 }
 
-
 .div-home-link{
     margin-right:20px;
 }
 
-
-/* Catalog Style */
+/* -------------------------------------------------------------------------- */
+/* Catalog Style                                                              */
+/* -------------------------------------------------------------------------- */
 .input-quantity{
     width:150px !important;
     text-align:right;
 }
+
 .input-amount{
     width:120px !important;
     text-align:right;
@@ -76,5 +84,66 @@ h2{
 .img-medium-eshop-categ{
     height:50px;width:50px;
     display:inline;
+}
+
+.input-not-null-qty{
+    background-color:#DDFFFF;
+    font-weight:bold;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Ellipsis Effect (for catalog Tree view)                                    */
+/* -------------------------------------------------------------------------- */
+
+p { margin: 0; padding: 0; font-family: sans-serif;}
+
+.ellipsis {
+    text-align:center;
+    overflow: hidden;
+    height: 44px;
+}
+
+.ellipsis:before {
+    content:"";
+    float: left;
+    width: 5px; height: 44px;
+}
+
+.ellipsis > *:first-child {
+    float: right;
+    width: 100%;
+    margin-left: -5px;
+}
+
+.product-price{
+    text-align:center;
+    height:22px;
+}
+.product-price > *:first-child {
+    float: right;
+    width: 100%;
+    margin-left: -5px;
+}
+
+.ellipsis:after {
+    content: "\02026";
+
+    box-sizing: content-box;
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+
+    float: right; position: relative;
+    top: -25px; left: 100%; 
+    width: 3em; margin-left: -3em;
+    padding-right: 5px;
+
+    text-align: right;
+
+    background: -webkit-gradient(linear, left top, right top,
+        from(rgba(255, 255, 255, 0)), to(white), color-stop(50%, white));
+    background: -moz-linear-gradient(to right, rgba(255, 255, 255, 0), white 50%, white);
+    background: -o-linear-gradient(to right, rgba(255, 255, 255, 0), white 50%, white);
+    background: -ms-linear-gradient(to right, rgba(255, 255, 255, 0), white 50%, white);
+    background: linear-gradient(to right, rgba(255, 255, 255, 0), white 50%, white);
 }
 

@@ -7,17 +7,7 @@
     $('#nav_catalog_inline').addClass('active');
 </script>
 
-<style type="text/css">
-
-    .not_null_qty{
-        background-color:#DDFFFF;
-        font-weight:bold;
-    }
-</style>
-
-
 {% set company = get_company() %} 
-
 
 <table class="table table-condensed table-bordered eshop_table_float_thead">
     <thead>
@@ -91,7 +81,7 @@
                 <form class="form-inline" role="form" method="POST" action="{{ url_for('catalog_inline_quantity_update') }}">
                     <div class="form-group">
                         <input type="hidden" name="product_id" value="{{ product['id'] }}"/>
-                        <input type="text" class="form-control input-quantity {{ product['current_qty'] and 'not_null_qty' or ''}}"
+                        <input type="text" class="form-control input-quantity {{ product['current_qty'] and 'input-not-null-qty' or ''}}"
                             id="quantity_{{product['id']}}"
                             name="new_quantity" value="{{ product['current_qty'] }}">
                     </div>

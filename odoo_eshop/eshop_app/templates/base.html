@@ -182,11 +182,7 @@
           </ul>
         </div>
       </div>
-    </nav>
-
-    <div class="container">
-{% block breadcrumb %}{% endblock %}
-        <div class="flashes">
+      <div class="container eshop_flash_container flashes">
 {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
         {% for category, message in messages %}
@@ -194,7 +190,12 @@
         {% endfor %}
     {% endif %}
 {% endwith %}
-        </div>
+      </div>
+    </nav>
+
+    <div class="container">
+{% block breadcrumb %}{% endblock %}
+
 {% block container %}{% endblock %}
     </div>
 

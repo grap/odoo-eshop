@@ -7,14 +7,6 @@
     $('#nav_catalog_inline').addClass('active');
 </script>
 
-<style type="text/css">
-
-    .not_null_qty{
-        background-color:#DDFFFF;
-        font-weight:bold;
-    }
-</style>
-
 {% set company = get_company() %} 
 
 
@@ -95,7 +87,7 @@
                 <form class="form-inline" role="form" method="POST" action="{{ url_for('catalog_inline_quantity_update') }}">
                     <div class="form-group">
                         <input type="hidden" name="product_id" value="{{ product.id }}"/>
-                        <input type="text" class="form-control input-quantity {{ product_qty_dict.get(product.id, False) and 'not_null_qty' or ''}}"
+                        <input type="text" class="form-control input-quantity {{ product_qty_dict.get(product.id, False) and 'input-not-null-qty' or ''}}"
                             id="quantity_{{product.id}}"
                             name="new_quantity" value="{{product_qty_dict.get(product.id, 0)}}">
                     </div>
