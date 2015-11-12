@@ -6,11 +6,11 @@ from flask import request, render_template, flash, redirect, url_for, \
     jsonify
 
 # Custom Tools
-from eshop_app.application import app
-from eshop_app.tools.erp import openerp
-from eshop_app.tools.auth import requires_auth
-from eshop_app.models.models import get_openerp_object
-from eshop_app.models.obs_sale_order import change_product_qty, load_sale_order
+from ..application import app
+from ..tools.erp import openerp
+from ..tools.auth import requires_auth
+from ..models.models import get_openerp_object
+from ..models.obs_sale_order import change_product_qty, load_sale_order
 
 
 # ############################################################################
