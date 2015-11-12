@@ -12,7 +12,6 @@ from flask.ext.cache import Cache
 # Custom Tools
 from tools.config import conf
 
-
 # Create Aplication
 app = Flask(__name__)
 app.secret_key = conf.get('flask', 'secret_key')
