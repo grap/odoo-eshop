@@ -99,7 +99,9 @@ def invalidation_cache(key, model, id, fields_text):
                     'get_image',
                     model=str(model), id=int(id), field=str(image_field))
             cache.delete('odoo_eshop/%s' % (url))
-    return Response(status=204)
+        return render_template('200.html'), 200
+    else:
+        return render_template('404.html'), 404
 
 
 @app.errorhandler(404)
@@ -112,7 +114,7 @@ def error(e):
     flash(_(
         "An unexcepted error occured. Please try again in a while"), 'danger')
     logging.exception('an error occured')
-    return render_template('error.html'), 500
+    return render_template('500.html'), 500
 
 
 # ############################################################################

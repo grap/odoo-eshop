@@ -26,3 +26,6 @@ babel = Babel(app)
 
 # Manage Cache for the new application
 cache = Cache(app, config={'CACHE_TYPE': conf.get('cache', 'method')})
+
+# Clear Cache
+cache.clear()

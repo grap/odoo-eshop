@@ -4,6 +4,7 @@
 from eshop_app.tools.config import conf
 from eshop_app.application import app
 
+# Run Apps
 app.run(
     host=conf.get('flask', 'host'),
     port=conf.getint('flask', 'port'),
