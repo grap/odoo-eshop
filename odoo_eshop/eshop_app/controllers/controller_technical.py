@@ -83,22 +83,8 @@ def get_image(model, id, field, sha1):
 @requires_connection
 def invalidation_cache(key, model, id, fields_text):
     if key == conf.get('cache', 'invalidation_key'):
-        if ',' in fields_text:
-            fields = str(fields_text).split(',')
-        else:
-            fields = [str(fields_text)]
-        data_fields = [x for x in fields if 'image' not in x]
-        image_fields = [x for x in fields if 'image' in x]
-        if len(data_fields):
-            # Invalidate Object cache
-            invalidate_openerp_object(str(model), int(id))
-        if len(image_fields):
-            # Invalidate Root Cache
-            for image_field in image_fields:
-                url = url_for(
-                    'get_image',
-                    model=str(model), id=int(id), field=str(image_field))
-            cache.delete('odoo_eshop/%s' % (url))
+        # Invalidate Object cache
+        invalidate_openerp_object(str(model), int(id))
         return render_template('200.html'), 200
     else:
         return render_template('404.html'), 404
