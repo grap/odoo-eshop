@@ -14,20 +14,21 @@
         <tr>
             <th>{{_('Product Name')}}</th>
             <th>{{_('Labels')}}</th>
-            <th>
 {% if company.eshop_vat_included %}
-                {{_('U.P. VAT Incl.')}}
+                <th>{{_('U.P. VAT Incl.')}}</th>
 {% else %}
-                {{_('U.P. VAT Excl.')}}
+                <th>{{_('U.P. VAT Excl.')}}</th>
 {% endif %}
-            </th>
             <th>{{_('Unit')}}</th>
             <th>{{_('Min.')}}</th>
-            <th>{{_('VAT')}}</th>
+
 {% if company.manage_delivery_moment %}
             <th title="{{ _('Delivery Category') }}">
                 {{ _('Categ.') }}
             </th>
+{% endif %}
+{% if not company.eshop_vat_included %}
+            <th>{{_('VAT')}}</th>
 {% endif %}
             <th>{{ _('Quantity') }}</th>
         </tr>
@@ -72,19 +73,20 @@
             <td>
                 {{item['eshop_minimum_qty']|float_to_string}}
             </td>
-            <td>
-            {% for tax_id in item['tax_ids'] %}
-                {% set tax = get_object('account.tax', tax_id) %}
-                {{ tax.eshop_description }} 
-            {% endfor %}
-
-            </td>
             {% if company.manage_delivery_moment %}
             <td>
                 {% if item['delivery_categ_id'] %}
                     {% set delivery_category = get_object('product.delivery.category', item['delivery_categ_id']) %} 
                     {{ delivery_category.name }}
                 {% endif %}
+            </td>
+            {% endif %}
+            {% if not company.eshop_vat_included %}
+            <td>
+                {% for tax_id in item['tax_ids'] %}
+                    {% set tax = get_object('account.tax', tax_id) %}
+                    {{ tax.eshop_description }} 
+                {% endfor %}
             </td>
             {% endif %}
             <td class="td-input-text">
