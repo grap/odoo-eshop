@@ -70,10 +70,8 @@ def catalog_inline_new():
 def catalog_inline():
     sale_order = load_sale_order()
 
-    catalog_inline = openerp.saleOrder.get_current_eshop_product_list(
+    catalog_inline = openerp.productProduct.get_current_eshop_product_list(
         sale_order and sale_order.id or False)
-
-    print catalog_inline
 
     return render_template(
         'catalog_inline.html',

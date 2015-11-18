@@ -9,7 +9,7 @@ import pytz
 
 # Extra Libs
 from flask import request, session, render_template, flash, make_response,\
-    url_for, redirect, Response
+    url_for, redirect
 
 from flask.ext.babel import gettext as _
 
@@ -31,7 +31,7 @@ from ..models.obs_sale_order import load_sale_order, currency
 
 # ############################################################################
 # image Routes
-# ############################################################# ###############
+# ############################################################################
 @app.route(
     "/get_image/<string:model>/<int:id>/<string:field>/<string:sha1>/")
 @cache.cached(key_prefix='odoo_eshop/%s')
@@ -151,6 +151,14 @@ def get_local_date(str_utc_date, schema):
 @app.template_filter('to_currency')
 def compute_currency(amount):
     return currency(amount)
+
+
+@app.template_filter('float_to_string')
+def float_to_string(value):
+    if (value % 1) == 0:
+        return str(int(value))
+    else:
+        return str(value).replace('.', ',')
 
 
 @app.template_filter('function_to_eval')

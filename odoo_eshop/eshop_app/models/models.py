@@ -47,6 +47,7 @@ def _get_openerp_models():
                 'res.country.department': openerp.ResCountryDepartment,
                 'product.uom': openerp.ProductUom,
                 'res.company': openerp.ResCompany,
+                'account.tax': openerp.AccountTax,
             }[model]
             # we set model
         setattr(app, '_eshop_openerp_models', _eshop_openerp_models)
