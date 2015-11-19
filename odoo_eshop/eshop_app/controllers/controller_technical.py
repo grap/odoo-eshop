@@ -161,6 +161,18 @@ def float_to_string(value):
         return str(value).replace('.', ',')
 
 
+@app.template_filter('discount_to_string')
+def discount_to_string(value):
+    if not value:
+        return ''
+    elif value < 0:
+        # Display a Surcharge
+        return '(+ %s)' % float_to_string(value)
+    else:
+        # Display a discount
+        return '(- %s)' % float_to_string(value)
+
+
 @app.template_filter('function_to_eval')
 def function_to_eval(arg):
     return arg

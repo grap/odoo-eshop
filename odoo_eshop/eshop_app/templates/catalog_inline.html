@@ -21,7 +21,9 @@
 {% endif %}
             <th>{{_('Unit')}}</th>
             <th>{{_('Min.')}}</th>
-
+{% if company.eshop_manage_unpacking %}
+            <th>{{_('Unp.')}}</th>
+{% endif %}
 {% if company.manage_delivery_moment %}
             <th title="{{ _('Delivery Category') }}">
                 {{ _('Categ.') }}
@@ -73,6 +75,14 @@
             <td>
                 {{item['eshop_minimum_qty']|float_to_string}}
             </td>
+            {% if company.eshop_manage_unpacking %}
+            <td>
+                {% if item['eshop_unpack_qty'] < item['eshop_minimum_qty'] %}
+                    {{item['eshop_unpack_qty']|float_to_string}}
+                    {{item['eshop_minimum_surcharge']|discount_to_string}}
+                {% endif %}
+            </td>
+            {% endif %}
             {% if company.manage_delivery_moment %}
             <td>
                 {% if item['delivery_categ_id'] %}
@@ -93,9 +103,9 @@
                 <form class="form-inline" role="form" method="POST" action="{{ url_for('catalog_inline_quantity_update') }}">
                     <div class="form-group">
                         <input type="hidden" name="product_id" value="{{ item['id'] }}"/>
-                        <input type="text" class="form-control input-quantity {{ item['current_qty'] and 'input-not-null-qty' or ''}}"
+                        <input type="text" class="form-control input-quantity {{ item['qty'] and 'input-not-null-qty' or ''}} {{ item['discount'] < 0 and 'input-surcharge' or ''}}"
                             id="quantity_{{item['id']}}"
-                            name="new_quantity" value="{{ item['current_qty'] }}">
+                            name="new_quantity" value="{{ item['qty'] }}">
                     </div>
                     <button type="submit" class="btn btn-default hide_if_jquery_enabled">{{ _('Update')}}</button>
                 </form>

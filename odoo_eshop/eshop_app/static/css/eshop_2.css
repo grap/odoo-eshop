@@ -90,6 +90,10 @@ h2{
     background-color:#DDFFFF;
     font-weight:bold;
 }
+.input-surcharge{
+    background-color:#EEE8AA;
+    font-weight:bold;
+}
 
 /* -------------------------------------------------------------------------- */
 /* Ellipsis Effect (for catalog Tree view)                                    */
