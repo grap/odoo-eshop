@@ -22,7 +22,7 @@
             <th>{{_('Unit')}}</th>
             <th>{{_('Min.')}}</th>
 {% if company.eshop_manage_unpacking %}
-            <th>{{_('Unp.')}}</th>
+            <th>{{_('Unpacking')}}</th>
 {% endif %}
 {% if company.manage_delivery_moment %}
             <th title="{{ _('Delivery Category') }}">
@@ -77,9 +77,9 @@
             </td>
             {% if company.eshop_manage_unpacking %}
             <td>
-                {% if item['eshop_unpack_qty'] < item['eshop_minimum_qty'] %}
+                {% if item['eshop_unpack_qty'] %}
                     {{item['eshop_unpack_qty']|float_to_string}}
-                    {{item['eshop_minimum_surcharge']|discount_to_string}}
+                    {{item['eshop_unpack_surcharge']|surcharge_to_string}}
                 {% endif %}
             </td>
             {% endif %}

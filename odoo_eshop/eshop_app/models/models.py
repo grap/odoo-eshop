@@ -9,6 +9,13 @@ from ..tools.erp import openerp
 from ..application import cache, app
 
 
+# Tools Function
+def currency(n):
+    if not n:
+        n = 0
+    return ('%.02f' % n).replace('.', ',') + u' €'
+
+
 # Public Section
 def invalidate_openerp_object(model_name, id):
     cache.delete_memoized(_get_openerp_object, model_name, id)

@@ -26,7 +26,8 @@ from ..tools.erp import openerp, tz
 from ..models.models import get_openerp_object, \
     invalidate_openerp_object
 
-from ..models.obs_sale_order import load_sale_order, currency
+from ..models.obs_sale_order import (
+    get_current_sale_order, currency
 
 
 # ############################################################################
@@ -77,6 +78,12 @@ def get_image(model, id, field, sha1):
 # ############################################################################
 # Technical Routes
 # ############################################################################
+@app.route("/unavailable_service.html")
+@requires_auth
+def unavailable_service():
+    return render_template('unavailable_service.html')
+
+
 @app.route(
     "/invalidation_cache/" +
     "<string:key>/<string:model>/<int:id>/<string:fields_text>/")
@@ -111,16 +118,16 @@ def utility_processor():
     def get_object(model_name, id):
         return get_openerp_object(model_name, id)
 
-    def get_company():
+    def current_company():
         return get_openerp_object(
             'res.company', int(conf.get('openerp', 'company_id')))
 
-    def get_current_sale_order():
-        return load_sale_order()
+    def current_sale_order():
+        return get_current_sale_order()
 
     return dict(
-        get_company=get_company, get_object=get_object,
-        get_current_sale_order=get_current_sale_order)
+        current_company=current_company, get_object=get_object,
+        current_sale_order=current_sale_order)
 
 
 # ############################################################################
@@ -161,16 +168,16 @@ def float_to_string(value):
         return str(value).replace('.', ',')
 
 
-@app.template_filter('discount_to_string')
-def discount_to_string(value):
+@app.template_filter('surcharge_to_string')
+def surcharge_to_string(value):
     if not value:
         return ''
-    elif value < 0:
+    elif value > 0:
         # Display a Surcharge
-        return '(+ %s)' % float_to_string(value)
+        return '(+%s%%)' % float_to_string(value)
     else:
         # Display a discount
-        return '(- %s)' % float_to_string(value)
+        return '(-%s%%)' % float_to_string(value)
 
 
 @app.template_filter('function_to_eval')
@@ -216,16 +223,6 @@ def to_datetime(arg):
 @app.template_filter('to_time')
 def to_time(arg):
     return get_local_date(arg, '%Y-%m-%d %H:%M:%S').strftime('%Hh%M')
-
-
-@app.template_filter('get_current_quantity')
-def get_current_quantity(product_id):
-    sale_order = load_sale_order()
-    if sale_order:
-        for line in sale_order.order_line:
-            if line.product_id.id == product_id:
-                return line.product_uom_qty
-    return 0
 
 
 # TODO FIXME: Problem with erpeek. Text of field selection unavaible

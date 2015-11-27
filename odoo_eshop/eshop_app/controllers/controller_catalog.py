@@ -10,7 +10,10 @@ from ..application import app
 from ..tools.erp import openerp
 from ..tools.auth import requires_auth
 from ..models.models import get_openerp_object
-from ..models.obs_sale_order import change_product_qty, load_sale_order
+from ..models.obs_sale_order import (
+    get_current_sale_order, get_current_sale_order_id,
+    set_quantity, add_quantity,
+)
 
 
 # ############################################################################
@@ -48,7 +51,7 @@ def catalog_tree(category_id):
 @app.route('/catalog_inline_new/')
 @requires_auth
 def catalog_inline_new():
-    sale_order = load_sale_order()
+    sale_order = get_current_sale_order()
 
     category_ids = openerp.eshopCategory.search([
         ('type', '=', 'normal')])
@@ -68,10 +71,8 @@ def catalog_inline_new():
 @app.route('/catalog_inline/')
 @requires_auth
 def catalog_inline():
-    sale_order = load_sale_order()
-
     catalog_inline = openerp.productProduct.get_current_eshop_product_list(
-        sale_order and sale_order.id or False)
+        get_current_sale_order_id)
 
     return render_template(
         'catalog_inline.html',
@@ -80,8 +81,8 @@ def catalog_inline():
 
 @app.route('/catalog_inline_quantity_update', methods=['POST'])
 def catalog_inline_quantity_update():
-    res = change_product_qty(
-        request.form['new_quantity'], 'set',
+    res = set_quantity(
+        request.form['new_quantity'],
         product_id=int(request.form['product_id']))
     if request.is_xhr:
         return jsonify(result=res)
@@ -125,7 +126,7 @@ def product_image_popup(product_id):
 @app.route("/product_add_qty/<int:product_id>", methods=['POST'])
 @requires_auth
 def product_add_qty(product_id):
-    res = change_product_qty(
-        request.form['quantity'], 'add', product_id=product_id)
+    res = add_quantity(
+        request.form['quantity'], product_id=product_id)
     flash(res['message'], res['state'])
     return redirect(url_for('product', product_id=product_id))
