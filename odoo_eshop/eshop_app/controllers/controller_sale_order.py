@@ -2,20 +2,27 @@
 # -*- encoding: utf-8 -*-
 
 # Extra Libs
-from flask import request, render_template, flash, redirect, url_for, \
-    jsonify
+from flask import (
+    request, render_template, flash, redirect, url_for, jsonify,
+)
+from flask.ext.babel import gettext as _
 
 # Custom Tools
+from .controller_technical import compute_currency
+
 from ..application import app
+from ..tools.config import conf
 from ..tools.erp import openerp
 from ..tools.auth import requires_auth
 from ..models.models import get_openerp_object
-from ..models.obs_sale_order import (
+from ..models.sale_order import (
     change_sale_order_note,
     get_current_sale_order,
     get_current_sale_order_id,
+    delete_current_sale_order,
+    delete_sale_order_line,
     set_quantity,
-    add_quantity,
+    sanitize_qty,
 )
 
 
@@ -70,17 +77,12 @@ def shopping_cart_delete():
 @app.route("/shopping_cart_delete_line/<int:line_id>")
 @requires_auth
 def shopping_cart_delete_line(line_id):
-    
-    sale_order = load_sale_order()
-    if len(sale_order.order_line) > 1:
-        for order_line in sale_order.order_line:
-            if order_line.id == line_id:
-                order_line.unlink()
-    
+    delete_sale_order_line(line_id)
     if get_current_sale_order_id():
-        _("Your shopping cart has been successfully deleted."), 'success')
+        flash(_("The Line has been successfully deleted."), 'success')
     else:
-        _("Your shopping cart has been successfully deleted."), 'success')
+        flash(_("Your shopping cart has been deleted."), 'success')
+
     return shopping_cart()
 
 
@@ -94,7 +96,7 @@ def recovery_moment_place():
         'res.company', int(conf.get('openerp', 'company_id')))
     recovery_moment_groups = openerp.SaleRecoveryMomentGroup.browse(
         [('state', 'in', 'pending_sale')])
-    sale_order = load_sale_order()
+    sale_order = get_current_sale_order()
     if (company.eshop_minimum_price != 0
             and company.eshop_minimum_price > sale_order.amount_total):
         flash(
@@ -113,19 +115,19 @@ def select_recovery_moment(recovery_moment_id):
     found = False
     recovery_moment_groups = openerp.SaleRecoveryMomentGroup.browse(
         [('state', 'in', 'pending_sale')])
-    sale_order = load_sale_order()
+    sale_order_id = get_current_sale_order_id()
     for recovery_moment_group in recovery_moment_groups:
         for recovery_moment in recovery_moment_group.moment_ids:
             if recovery_moment.id == recovery_moment_id:
                 found = True
                 break
     if found:
-        openerp.SaleOrder.write([sale_order.id], {
+        openerp.SaleOrder.write([sale_order_id], {
             'recovery_moment_id': recovery_moment_id,
             'reminder_state': 'to_send',
         })
-        openerp.SaleOrder.action_button_confirm([sale_order.id])
-        openerp.SaleOrder.send_mail([sale_order.id])
+        openerp.SaleOrder.action_button_confirm([sale_order_id])
+        openerp.SaleOrder.send_mail([sale_order_id])
         flash(_("Your Sale Order is now confirmed."), 'success')
         return redirect(url_for('orders'))
     else:
@@ -143,7 +145,7 @@ def select_recovery_moment(recovery_moment_id):
 def delivery_moment():
     company = get_openerp_object(
         'res.company', int(conf.get('openerp', 'company_id')))
-    sale_order = load_sale_order()
+    sale_order = get_current_sale_order()
     delivery_moments = openerp.SaleDeliveryMoment.load_delivery_moment_data(
         sale_order.id, company.eshop_minimum_price,
         company.eshop_vat_included)
@@ -162,12 +164,11 @@ def delivery_moment():
 @app.route("/select_delivery_moment/<int:delivery_moment_id>")
 @requires_auth
 def select_delivery_moment(delivery_moment_id):
-    sale_order = load_sale_order()
-    if sale_order:
+    sale_order_id = get_current_sale_order_id()
+    if sale_order_id:
         if openerp.SaleOrder.select_delivery_moment_id(
-                sale_order.id, delivery_moment_id):
-            sale_order = load_sale_order()
-            if sale_order:
+                sale_order_id, delivery_moment_id):
+            if get_current_sale_order_id():
                 flash(_(
                     "Your Sale Order has been partially confirmed.\n"
                     " A residual shopping Cart has been created with remaning"
@@ -184,4 +185,3 @@ def select_delivery_moment(delivery_moment_id):
     else:
         flash(_("Your Shopping Cart has been deleted."), 'danger')
         return redirect(url_for('home'))
-

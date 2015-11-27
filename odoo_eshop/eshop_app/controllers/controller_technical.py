@@ -19,15 +19,19 @@ from ..application import cache
 from ..application import babel
 
 from ..tools.config import conf
-from ..tools.auth import requires_connection
+from ..tools.auth import requires_connection, requires_auth
 from ..tools.erp import openerp, tz
 
 # Custom Models
-from ..models.models import get_openerp_object, \
-    invalidate_openerp_object
+from ..models.models import (
+    get_openerp_object,
+    invalidate_openerp_object,
+    currency,
+)
 
-from ..models.obs_sale_order import (
-    get_current_sale_order, currency
+from ..models.sale_order import (
+    get_current_sale_order,
+)
 
 
 # ############################################################################

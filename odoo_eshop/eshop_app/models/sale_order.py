@@ -9,9 +9,9 @@ from flask import session
 from flask.ext.babel import gettext as _
 
 # Custom Tools
-# from ..tools.config import conf
 from ..tools.erp import openerp
-from .models import get_openerp_object
+# from .models import get_openerp_object
+# from ..tools.config import conf
 
 
 # Tools Function
@@ -23,7 +23,7 @@ def sanitize_qty(quantity):
             'state': 'danger',
             'message': _("'%(qty)s' is not a valid quantity.", qty=quantity)}
     if quantity == 0:
-        res = {
+        return {
             'state': 'danger',
             'message': _("You can not set a null Quantity.")}
     return {
@@ -31,7 +31,10 @@ def sanitize_qty(quantity):
         'quantity': quantity,
     }
 
+
+# ############################################################################
 # I/O OpenERP - Sale Order
+# ############################################################################
 def get_current_sale_order_id():
     """Return current order id, or False if not Found"""
     return openerp.SaleOrder.get_current_sale_order_id(
@@ -57,20 +60,36 @@ def delete_current_sale_order():
 def change_sale_order_note(note):
     sale_order = get_current_sale_order_id
     openerp.SaleOrder.write([sale_order.id], {'note': note})
-    sale_order = load_current_sale_order()
+    sale_order = get_current_sale_order()
     return {
         'state': 'success',
         'note': sale_order.note,
         'message': _("Your comment has been successfully updated.")}
 
 
+# ############################################################################
 # I/O OpenERP - Sale Order Line
+# ############################################################################
 def set_quantity(product_id, quantity):
     res = openerp.SaleOrder.eshop_set_quantity(
         session.get('partner_id', False), product_id, quantity)
     # TODO
     return res
 
+
+def delete_sale_order_line(line_id):
+    sale_order = get_current_sale_order()
+    if len(sale_order.order_line) > 1:
+        for order_line in sale_order.order_line:
+            if order_line.id == line_id:
+                order_line.unlink()
+    else:
+        openerp.SaleOrder.unlink(sale_order.id)
+
+
+# ############################################################################
+# OBSOLETE
+# ############################################################################
 
 # def add_quantity(product_id, quantity):
 #    res = openerp.SaleOrder.eshop_add_quantity(
