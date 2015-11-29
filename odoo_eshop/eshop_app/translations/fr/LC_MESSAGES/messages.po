@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-11-11 19:40+0100\n"
+"POT-Creation-Date: 2015-11-29 19:41+0100\n"
 "PO-Revision-Date: 2014-10-06 14:07+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: fr <LL@li.org>\n"
@@ -17,75 +17,122 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 1.3\n"
 
-#: controllers/controller_technical.py:112
+#: controllers/controller_sale_order.py:84
+msgid "Your shopping cart has been successfully deleted."
+msgstr "Votre panier a été supprimé avec succès."
+
+#: controllers/controller_sale_order.py:93
+msgid "The Line has been successfully deleted."
+msgstr "La ligne de votre panier a été supprimée avec succès."
+
+#: controllers/controller_sale_order.py:95
+msgid "Your shopping cart has been deleted."
+msgstr "Votre panier a été supprimé avec succès."
+
+#: controllers/controller_sale_order.py:114
+#: controllers/controller_sale_order.py:167 templates/base.html:103
+#: templates/base.html:108 templates/base.html:120
+msgid "You have not reached the ceiling : "
+msgstr "Vous n'avez pas atteint le franco : "
+
+#: controllers/controller_sale_order.py:142
+#: controllers/controller_sale_order.py:189
+msgid "Your Sale Order is now confirmed."
+msgstr "Votre commande est désormais terminée."
+
+#: controllers/controller_sale_order.py:145
+msgid "You have selected an obsolete recovery moment. Please try again."
+msgstr ""
+"Vous avez sélectionné un lieu de récupération obsolète. Veuillez "
+"réessayer."
+
+#: controllers/controller_sale_order.py:183
+msgid ""
+"Your Sale Order has been partially confirmed.\n"
+" A residual shopping Cart has been created with remaning Products."
+msgstr ""
+"Votre bon de commande a été partiellement confirmé.\n"
+" Un panier résiduel a été créé avec les produits restants."
+
+#: controllers/controller_sale_order.py:192
+msgid "Something wrong happened. Please select again your delivery moment."
+msgstr ""
+"Quelque chose s'est mal déroulé. veuillez sélectionner de nouveau votre "
+"date de livraison."
+
+#: controllers/controller_sale_order.py:197
+msgid "Your Shopping Cart has been deleted."
+msgstr "Votre panier a été supprimé avec succès."
+
+#: controllers/controller_technical.py:115
 msgid "An unexcepted error occured. Please try again in a while"
 msgstr "Une erreur inattendue s'est produite. Veuillez réessayer dans un moment."
 
-#: controllers/controller_technical.py:180
+#: controllers/controller_technical.py:202
 msgid "Sunday"
 msgstr "Dimanche"
 
-#: controllers/controller_technical.py:181
+#: controllers/controller_technical.py:203
 msgid "Monday"
 msgstr "Lundi"
 
-#: controllers/controller_technical.py:182
+#: controllers/controller_technical.py:204
 msgid "Tuesday"
 msgstr "Mardi"
 
-#: controllers/controller_technical.py:183
+#: controllers/controller_technical.py:205
 msgid "Wednesdsay"
 msgstr "Mercredi"
 
-#: controllers/controller_technical.py:184
+#: controllers/controller_technical.py:206
 msgid "Thursday"
 msgstr "Jeudi"
 
-#: controllers/controller_technical.py:185
+#: controllers/controller_technical.py:207
 msgid "Friday"
 msgstr "Vendredi"
 
-#: controllers/controller_technical.py:186
+#: controllers/controller_technical.py:208
 msgid "Saturday"
 msgstr "Samedi"
 
-#: controllers/controller_technical.py:227
+#: controllers/controller_technical.py:239
 msgid "Extra"
 msgstr "Extra"
 
-#: controllers/controller_technical.py:228
+#: controllers/controller_technical.py:240
 msgid "Category I"
 msgstr "Catégorie I"
 
-#: controllers/controller_technical.py:229
+#: controllers/controller_technical.py:241
 msgid "Category II"
 msgstr "Catégorie II"
 
-#: controllers/controller_technical.py:230
+#: controllers/controller_technical.py:242
 msgid "Category III"
 msgstr "Catégorie III"
 
-#: controllers/obs_controllers.py:49
+#: controllers/obs_controllers.py:51
 msgid "The 'Password' Fields do not match."
 msgstr "Les champs 'mots de passe' ne correspondent pas."
 
-#: controllers/obs_controllers.py:56
+#: controllers/obs_controllers.py:58
 msgid "Password must have 6 characters or more."
 msgstr "Le mot de passe doit avoir 6 caractères ou plus."
 
-#: controllers/obs_controllers.py:58
+#: controllers/obs_controllers.py:60
 msgid "Password must have at least one digit."
 msgstr "Le mot de passe doit contenir au moins un chiffre."
 
-#: controllers/obs_controllers.py:60
+#: controllers/obs_controllers.py:62
 msgid "Password must have at least one uppercase characters."
 msgstr "Le mot de passe doit contenir une lettre en majuscule."
 
-#: controllers/obs_controllers.py:62
+#: controllers/obs_controllers.py:64
 msgid "Password must have at least one lowercase characters."
 msgstr "Le mot de passe doit contenir une lettre en minuscule."
 
-#: controllers/obs_controllers.py:101
+#: controllers/obs_controllers.py:103
 #, python-format
 msgid ""
 "It is not possible to buy for the time being, You can buy starting at "
@@ -94,7 +141,7 @@ msgstr ""
 "Il n'est pas possible de passer commande pour le moment, vous pourrez "
 "passer commande  à partir de %(day)s %(date)s %(time)s"
 
-#: controllers/obs_controllers.py:103
+#: controllers/obs_controllers.py:105
 msgid ""
 "It is not possible to buy for the time being, but you can see the catalog"
 " in the meantime."
@@ -102,12 +149,12 @@ msgstr ""
 "Il n'est pas possible de passer commande pour le moment, mais vous pouvez"
 " découvrir le catalogue des produits."
 
-#: controllers/obs_controllers.py:113
+#: controllers/obs_controllers.py:115
 #, python-format
 msgid "You can buy until %(day)s %(date)s %(time)s."
 msgstr "Vous pouvez passer commande jusqu'à %(day)s %(date)s %(time)s."
 
-#: controllers/obs_controllers.py:118
+#: controllers/obs_controllers.py:120
 msgid ""
 "Your account is not correctly set : your delivery group is not defined. "
 "Please contact your seller to fix the problem"
@@ -116,15 +163,15 @@ msgstr ""
 "n'est pas défini. Merci de contacter votre vendeur pour corriger le "
 "problème."
 
-#: controllers/obs_controllers.py:123
+#: controllers/obs_controllers.py:125
 msgid "Recovery / Delivery Moment Unset"
 msgstr "Point Relais / Livraison. Paramétrage manquant."
 
-#: controllers/obs_controllers.py:149
+#: controllers/obs_controllers.py:145
 msgid "Login/password incorrects"
 msgstr "Login et Mot de passe incorrects"
 
-#: controllers/obs_controllers.py:203
+#: controllers/obs_controllers.py:199
 #, python-format
 msgid ""
 "The '%(email)s' field is already used.Please ask your seller to fix the "
@@ -133,7 +180,7 @@ msgstr ""
 "L'email '%(email)s' est déjà utilisé. Veuillez demander à votre vendeur "
 "de corriger le problème."
 
-#: controllers/obs_controllers.py:211
+#: controllers/obs_controllers.py:207
 #, python-format
 msgid ""
 "The '%(email)s' field is already associated to an active account. Please "
@@ -142,7 +189,7 @@ msgstr ""
 "Le mail '%(email)s' est déjà associé à un compte qui n'est pas actif. "
 "Merci de demander à votre vendeur d'activer votre compte."
 
-#: controllers/obs_controllers.py:217
+#: controllers/obs_controllers.py:213
 #, python-format
 msgid ""
 "The '%(email)s' field is already associated to an account. Please finish "
@@ -153,7 +200,7 @@ msgstr ""
 "procédure de création de compte, en cliquant sur le lien que vous avez "
 "reçu par mail."
 
-#: controllers/obs_controllers.py:223
+#: controllers/obs_controllers.py:219
 #, python-format
 msgid ""
 "The '%(email)s' field is already associated to an inactive account. "
@@ -162,7 +209,7 @@ msgstr ""
 "Le mail '%(email)s' est déjà associé à un compte qui n'est pas actif. "
 "Merci de demander à votre vendeur d'activer votre compte."
 
-#: controllers/obs_controllers.py:246
+#: controllers/obs_controllers.py:242
 #, python-format
 msgid ""
 "The registration is complete. Please check your mail box '%(email)s' and "
@@ -171,15 +218,15 @@ msgstr ""
 "La création du compte est terminé. Veuillez vérifier votre boite mail et "
 "cliquer sur le lien que vous avez reçu pour activer votre compte."
 
-#: controllers/obs_controllers.py:263
+#: controllers/obs_controllers.py:259
 msgid "The validation process failed."
 msgstr "Le processus de validation a échoué."
 
-#: controllers/obs_controllers.py:265
+#: controllers/obs_controllers.py:261
 msgid "Your account is already enabled."
 msgstr "Votre compte est déjà activé."
 
-#: controllers/obs_controllers.py:269
+#: controllers/obs_controllers.py:265
 msgid ""
 "The validation process is over.\n"
 " You can now log in to begin to purchase."
@@ -187,7 +234,7 @@ msgstr ""
 " La validation de votre compte est terminée.\n"
 " Vous pouvez désormais vous identifier pour passer commande."
 
-#: controllers/obs_controllers.py:273
+#: controllers/obs_controllers.py:269
 msgid ""
 "The validation process failed because your account is disabled. Please "
 "ask your seller to fix the problem."
@@ -195,118 +242,74 @@ msgstr ""
 "La validation de votre compte a échoué car celui-ci a été désactivé. "
 "Veuillez contacter votre vendeur pour corriger le problème."
 
-#: controllers/obs_controllers.py:309
+#: controllers/obs_controllers.py:305
 msgid "'Email' Field is required"
 msgstr "Le champ 'email' est obligatoire."
 
-#: controllers/obs_controllers.py:316
+#: controllers/obs_controllers.py:312
 msgid "There is a problem with your account. Please contact your seller."
 msgstr "Il y a un problème avec votre compte. Veuillez contacter votre vendeur."
 
-#: controllers/obs_controllers.py:323
+#: controllers/obs_controllers.py:319
 msgid ""
 " we sent an email to this mailbox, if this email was linked to an active "
 "account."
 msgstr "Nous vous avons envoyé un email, si l'email fourni était lié à un compte."
 
-#: controllers/obs_controllers.py:384
-msgid "Your shopping cart has been successfully deleted."
-msgstr "Votre panier a été supprimé avec succès."
-
-#: controllers/obs_controllers.py:415 controllers/obs_controllers.py:468
-#: templates/base.html:98 templates/base.html:103 templates/base.html:115
-msgid "You have not reached the ceiling : "
-msgstr "Vous n'avez pas atteint le franco : "
-
-#: controllers/obs_controllers.py:443 controllers/obs_controllers.py:491
-msgid "Your Sale Order is now confirmed."
-msgstr "Votre commande est désormais terminée."
-
-#: controllers/obs_controllers.py:446
-msgid "You have selected an obsolete recovery moment. Please try again."
-msgstr ""
-"Vous avez sélectionné un lieu de récupération obsolète. Veuillez "
-"réessayer."
-
-#: controllers/obs_controllers.py:485
-msgid ""
-"Your Sale Order has been partially confirmed.\n"
-" A residual shopping Cart has been created with remaning Products."
-msgstr ""
-"Votre bon de commande a été partiellement confirmé.\n"
-" Un panier résiduel a été créé avec les produits restants."
-
-#: controllers/obs_controllers.py:494
-msgid "Something wrong happened. Please select again your delivery moment."
-msgstr ""
-"Quelque chose s'est mal déroulé. veuillez sélectionner de nouveau votre "
-"date de livraison."
-
-#: controllers/obs_controllers.py:499
-msgid "Your Shopping Cart has been deleted."
-msgstr "Votre panier a été supprimé avec succès."
-
-#: controllers/obs_controllers.py:517
+#: controllers/obs_controllers.py:341
 msgid "Password changed successfully"
 msgstr "Le mot de passe a été changé avec succès"
 
-#: controllers/obs_controllers.py:552
+#: controllers/obs_controllers.py:376
 msgid "order"
 msgstr "commande"
 
-#: controllers/obs_controllers.py:580
+#: controllers/obs_controllers.py:404
 msgid "invoice"
 msgstr "Factures"
 
-#: models/obs_res_partner.py:64
+#: models/res_partner.py:64
 #, python-format
 msgid "'%(phone)s' is not a valid phone number.It contains caracters."
 msgstr ""
 "'%(phone)s' n'est pas un numéro de téléphone valide. Il contient des "
 "caractères."
 
-#: models/obs_res_partner.py:76
+#: models/res_partner.py:76
 #, python-format
 msgid "'%(phone)s' is not a valid phone number."
 msgstr "'%(phone)s' n'est pas une quantité valide."
 
-#: models/obs_res_partner.py:107
+#: models/res_partner.py:107
 msgid "Account Datas updated successfully."
 msgstr "Données personnelles mise à jour."
 
-#: models/obs_sale_order.py:65
+#: models/sale_order.py:24
 #, python-format
 msgid "'%(qty)s' is not a valid quantity."
 msgstr "'%(qty)s' n'est pas une quantité valide."
 
-#: models/obs_sale_order.py:96
+#: models/sale_order.py:28
+msgid "You can not set a null Quantity."
+msgstr "Vous ne pouvez pas mettre une quantité nulle."
+
+#: models/sale_order.py:67
 msgid "Your comment has been successfully updated."
 msgstr "Votre commentaire a été modifié avec succès."
 
-#: models/obs_sale_order.py:164
-msgid "Shopping Cart has been successfully deleted."
-msgstr "Votre panier a été supprimé avec succès."
+#: templates/200.html:6
+msgid "Request fulfilled."
+msgstr "Requête exécutée."
 
-#: models/obs_sale_order.py:169
-#, python-format
-msgid ""
-"The new quantity for the product '%(prod)s' is now %(qty)s  %(uom)s, due "
-"to minimum / rounded quantity rules."
-msgstr ""
-"La nouvelle quantité pour le produit '%(prod)s' est désormais  de %(qty)s"
-" %(uom)s, à cause de règle de minimum et d'arrondie liées à cette fiche "
-"produit."
-
-#: models/obs_sale_order.py:178
-#, python-format
-msgid "You have now %(qty)s %(uom)s of product '%(prod)s' in your shopping cart."
-msgstr "Vous avez désormais %(qty)s %(uom)s de '%(prod)s' dans votre panier."
-
-#: templates/404.html:8
+#: templates/404.html:5
 msgid "Page not found."
 msgstr "Page non trouvée"
 
-#: templates/account.html:10 templates/base.html:152
+#: templates/500.html:5
+msgid "Unexpected Error."
+msgstr "Erreur inattendue."
+
+#: templates/account.html:10 templates/base.html:157
 msgid "Your Account"
 msgstr "Votre Compte"
 
@@ -345,7 +348,7 @@ msgstr "Ville"
 
 #: templates/account.html:80
 msgid "Check this box if you want to change your password"
-msgstr ""
+msgstr "Cochez cette case si vous voulez changer votre mot de passe"
 
 #: templates/account.html:91 templates/login.html:20 templates/register.html:37
 msgid "Password"
@@ -355,128 +358,136 @@ msgstr "Mot de passe"
 msgid "Password (Check)"
 msgstr "Mot de passe (Vérification)"
 
-#: templates/account.html:108 templates/catalog_inline.html:98
-#: templates/catalog_inline_new.html:102 templates/shopping_cart.html:96
+#: templates/account.html:108 templates/catalog_inline.html:110
+#: templates/catalog_inline_new.html:94 templates/shopping_cart.html:97
 #: templates/shopping_cart.html:134
 msgid "Update"
 msgstr "Mettre à jour"
 
-#: templates/base.html:38
+#: templates/base.html:43
 msgid "Something wrong occured, please refresh the page."
 msgstr "Quelque chose s'est mal déroulé, merci de rafraichir la page."
 
-#: templates/base.html:54
+#: templates/base.html:59 templates/base_error.html:47
 msgid "Toggle navigation"
 msgstr "Changer de navigation"
 
-#: templates/base.html:71
+#: templates/base.html:76
 msgid "Products Catalog"
 msgstr "Catalogue produits"
 
-#: templates/base.html:75
+#: templates/base.html:80
 msgid "Quick Purchase"
 msgstr "Achat rapide"
 
-#: templates/base.html:80 templates/base.html:112
+#: templates/base.html:85 templates/base.html:117
 msgid "Shopping Cart: "
 msgstr "Panier : "
 
-#: templates/base.html:83
+#: templates/base.html:88
 msgid "VAT. Incl."
 msgstr "TTC"
 
-#: templates/base.html:93
+#: templates/base.html:98
 msgid "VAT. Excl."
 msgstr "HT"
 
-#: templates/base.html:125
+#: templates/base.html:130
 msgid "Visit our Facebook Page"
 msgstr "Visiter notre page Facebook"
 
-#: templates/base.html:131
+#: templates/base.html:136
 msgid "Visit our Google + Page"
 msgstr "Visiter notre page Google +"
 
-#: templates/base.html:137
+#: templates/base.html:142
 msgid "Visit our Twitter Page"
 msgstr "Visiter notre page Twitter"
 
-#: templates/base.html:142
+#: templates/base.html:147
 msgid "Visit our Website"
 msgstr "Visiter notre site web"
 
-#: templates/base.html:144
+#: templates/base.html:149
 msgid "Web Site"
 msgstr "Site Web"
 
-#: templates/base.html:156
+#: templates/base.html:161
 msgid "Personnal Datas"
 msgstr "Données Personnelles"
 
-#: templates/base.html:159
+#: templates/base.html:164
 msgid "Orders History"
 msgstr "Historique des Commandes"
 
-#: templates/base.html:162
+#: templates/base.html:167
 msgid "Invoices History"
 msgstr "Historique des Factures"
 
-#: templates/base.html:166
+#: templates/base.html:171
 msgid "Log Out"
 msgstr "Se déconnecter"
 
-#: templates/base.html:174
+#: templates/base.html:179
 msgid "Register"
 msgstr "S'enregistrer"
 
-#: templates/base.html:178 templates/login.html:5
+#: templates/base.html:183 templates/login.html:5
 msgid "Log In"
 msgstr "Se connecter"
 
-#: templates/catalog_inline.html:25 templates/catalog_inline_new.html:24
+#: templates/base_error.html:8
+msgid "Error - Unavailable eShop"
+msgstr "Erreur - Boutique inacessible"
+
+#: templates/catalog_inline.html:15 templates/catalog_inline_new.html:16
 msgid "Product Name"
 msgstr "Nom du produit"
 
-#: templates/catalog_inline.html:26 templates/catalog_inline_new.html:25
+#: templates/catalog_inline.html:16 templates/catalog_inline_new.html:17
 msgid "Labels"
 msgstr "Labels"
 
-#: templates/catalog_inline.html:29 templates/catalog_inline_new.html:28
-#: templates/shopping_cart.html:53
+#: templates/catalog_inline.html:18 templates/catalog_inline_new.html:20
+#: templates/shopping_cart.html:51
 msgid "U.P. VAT Incl."
 msgstr "P.U. TTC"
 
-#: templates/catalog_inline.html:31 templates/catalog_inline_new.html:30
-#: templates/shopping_cart.html:55
+#: templates/catalog_inline.html:20 templates/catalog_inline_new.html:22
+#: templates/shopping_cart.html:53
 msgid "U.P. VAT Excl."
 msgstr "P.U. HT"
 
-#: templates/catalog_inline.html:34 templates/catalog_inline_new.html:33
-#: templates/shopping_cart.html:59
+#: templates/catalog_inline.html:22 templates/catalog_inline_new.html:25
+#: templates/shopping_cart.html:55
 msgid "Unit"
 msgstr "Unité"
 
-#: templates/catalog_inline.html:35 templates/catalog_inline_new.html:34
+#: templates/catalog_inline.html:23 templates/catalog_inline_new.html:26
 msgid "Min."
 msgstr "Min."
 
-#: templates/catalog_inline.html:36 templates/catalog_inline_new.html:35
-#: templates/shopping_cart.html:57
-msgid "VAT"
-msgstr "TVA"
+#: templates/catalog_inline.html:25
+msgid "Unp."
+msgstr "Déc."
 
-#: templates/catalog_inline.html:38 templates/catalog_inline_new.html:37
-#: templates/shopping_cart.html:47
+#: templates/catalog_inline.html:28 templates/catalog_inline_new.html:29
+#: templates/shopping_cart.html:45
 msgid "Delivery Category"
 msgstr "Catégorie de livraison"
 
-#: templates/catalog_inline.html:39 templates/catalog_inline_new.html:38
-#: templates/shopping_cart.html:48
+#: templates/catalog_inline.html:29 templates/catalog_inline_new.html:30
+#: templates/shopping_cart.html:46
 msgid "Categ."
 msgstr "Cat."
 
-#: templates/catalog_inline.html:42 templates/catalog_inline_new.html:41
-#: templates/product.html:99 templates/shopping_cart.html:58
+#: templates/catalog_inline.html:33 templates/catalog_inline_new.html:27
+#: templates/shopping_cart.html:56
+msgid "VAT"
+msgstr "TVA"
+
+#: templates/catalog_inline.html:35 templates/catalog_inline_new.html:33
+#: templates/product.html:100 templates/shopping_cart.html:57
 msgid "Quantity"
 msgstr "Quantité"
 
@@ -484,11 +495,11 @@ msgstr "Quantité"
 msgid "Catalog"
 msgstr "Catalogue"
 
-#: templates/catalog_tree.html:97
+#: templates/catalog_tree.html:41
 msgid "Products"
 msgstr "Produits"
 
-#: templates/catalog_tree.html:99
+#: templates/catalog_tree.html:43
 msgid "Categories"
 msgstr "Catégories"
 
@@ -501,7 +512,7 @@ msgstr "Panier"
 msgid "Delivery Moment"
 msgstr "Date de livraison"
 
-#: templates/delivery_moment.html:21 templates/shopping_cart.html:37
+#: templates/delivery_moment.html:21 templates/shopping_cart.html:38
 msgid "Select Delivery Moment"
 msgstr "Choisir la date de livraison"
 
@@ -531,8 +542,8 @@ msgstr "Heure de Début"
 msgid "Max Time"
 msgstr "Heure de Fin"
 
-#: templates/delivery_moment.html:39 templates/product.html:91
-#: templates/recovery_moment_place.html:39
+#: templates/delivery_moment.html:39 templates/product.html:92
+#: templates/product_popup.html:73 templates/recovery_moment_place.html:39
 msgid "Description"
 msgstr "Description"
 
@@ -598,10 +609,6 @@ msgstr ""
 #: templates/delivery_moment.html:132
 msgid "You are about to completely valid your Shopping Cart."
 msgstr "Vous êtes sur le point de valider votre panier."
-
-#: templates/error.html:8
-msgid "Unexpected Error."
-msgstr "Erreur inattendue."
 
 #: templates/home.html:16
 msgid "eShop not set."
@@ -674,39 +681,39 @@ msgstr "Pas de commandes pour le moment."
 msgid "Recover Password"
 msgstr "Récupérer son mot de passe"
 
-#: templates/product.html:62
+#: templates/product.html:63 templates/product_popup.html:44
 msgid "Price"
 msgstr "Prix"
 
-#: templates/product.html:64
+#: templates/product.html:65 templates/product_popup.html:46
 msgid "Minimum Quantity"
 msgstr "Quantité minimum"
 
-#: templates/product.html:66
+#: templates/product.html:67 templates/product_popup.html:48
 msgid "Rounding Quantity"
 msgstr "Quantité arrondie"
 
-#: templates/product.html:70
+#: templates/product.html:71 templates/product_popup.html:52
 msgid "Country"
 msgstr "Pays"
 
-#: templates/product.html:74
+#: templates/product.html:75 templates/product_popup.html:56
 msgid "Department"
 msgstr "Département"
 
-#: templates/product.html:78
+#: templates/product.html:79 templates/product_popup.html:60
 msgid "Origin Description"
 msgstr "Origine"
 
-#: templates/product.html:82
+#: templates/product.html:83 templates/product_popup.html:64
 msgid "Maker Description"
 msgstr "Producteur"
 
-#: templates/product.html:86
+#: templates/product.html:87 templates/product_popup.html:68
 msgid "Fresh Category"
 msgstr "Catégorie Frais"
 
-#: templates/product.html:106
+#: templates/product.html:107
 msgid "Add to Shopping Cart"
 msgstr "Ajouter au panier"
 
@@ -714,7 +721,7 @@ msgstr "Ajouter au panier"
 msgid "Recovery Moment Place"
 msgstr "Lieu de récupération"
 
-#: templates/recovery_moment_place.html:19 templates/shopping_cart.html:31
+#: templates/recovery_moment_place.html:19 templates/shopping_cart.html:32
 msgid "Select Place and Moment for Recovery"
 msgstr "Choisir le lieu et la date de récupération"
 
@@ -752,23 +759,19 @@ msgstr "Créer"
 msgid "I have already an account, sign in"
 msgstr "J'ai déjà un compte, s'identifier"
 
-#: templates/shopping_cart.html:16
-msgid "Your Shopping Cart "
-msgstr "Votre Panier "
-
-#: templates/shopping_cart.html:24
+#: templates/shopping_cart.html:25
 msgid "Delete Shopping Cart"
 msgstr "Effacer votre Panier"
 
-#: templates/shopping_cart.html:45
+#: templates/shopping_cart.html:43
 msgid "Product"
 msgstr "Produit"
 
-#: templates/shopping_cart.html:61
+#: templates/shopping_cart.html:60
 msgid "Subtotal VAT Incl."
 msgstr "Sous total TTC"
 
-#: templates/shopping_cart.html:63
+#: templates/shopping_cart.html:62
 msgid "Subtotal VAT Excl."
 msgstr "Sous total HT"
 
@@ -800,7 +803,7 @@ msgstr ""
 msgid "Delete"
 msgstr "Supprimer"
 
-#: templates/unavailable_service.html:8
+#: templates/unavailable_service.html:5
 msgid "Unavailable Service"
 msgstr "Service Indisponible"
 
