@@ -29,6 +29,10 @@ from ..models.models import (
     currency,
 )
 
+from ..models.res_company import (
+    get_current_company,
+)
+
 from ..models.sale_order import (
     get_current_sale_order,
 )
@@ -123,8 +127,7 @@ def utility_processor():
         return get_openerp_object(model_name, id)
 
     def current_company():
-        return get_openerp_object(
-            'res.company', int(conf.get('openerp', 'company_id')))
+        return get_current_company()
 
     def current_sale_order():
         return get_current_sale_order()

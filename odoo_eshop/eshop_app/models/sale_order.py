@@ -10,6 +10,7 @@ from flask.ext.babel import gettext as _
 
 # Custom Tools
 from ..tools.erp import openerp
+from .res_company import get_current_company
 # from .models import get_openerp_object
 # from ..tools.config import conf
 
@@ -37,13 +38,13 @@ def sanitize_qty(quantity):
 # ############################################################################
 def get_current_sale_order_id():
     """Return current order id, or False if not Found"""
-    return openerp.SaleOrder.get_current_sale_order_id(
+    return openerp.SaleOrder.eshop_get_current_sale_order_id(
         session.get('partner_id', False))
 
 
 def get_current_sale_order():
     """Return current order, or False if not Found"""
-    current_order_id = get_current_sale_order_id
+    current_order_id = get_current_sale_order_id()
     if current_order_id:
         return openerp.SaleOrder.browse(current_order_id)
     else:
@@ -52,7 +53,7 @@ def get_current_sale_order():
 
 def delete_current_sale_order():
     """Delete current order, if exists."""
-    current_order_id = get_current_sale_order_id
+    current_order_id = get_current_sale_order_id()
     if current_order_id:
         openerp.SaleOrder.unlink([current_order_id])
 
@@ -71,9 +72,25 @@ def change_sale_order_note(note):
 # I/O OpenERP - Sale Order Line
 # ############################################################################
 def set_quantity(product_id, quantity):
+    sanitize = sanitize_qty(quantity)
+    company = get_current_company()
+    if sanitize['state'] != 'success':
+        return sanitize
     res = openerp.SaleOrder.eshop_set_quantity(
-        session.get('partner_id', False), product_id, quantity)
-    # TODO
+        session.get('partner_id', False), product_id, sanitize['quantity'])
+
+    res['state'] = res['changed'] and 'warning' or 'success',
+
+    if company.eshop_vat_included:
+        res['amount_line'] = res['price_subtotal_taxinc']
+        res['amount_total_header'] = res['amount_total']
+        res['minimum_ok'] = (
+            res['amount_total'] >= company.eshop_minimum_price)
+    else:
+        res['amount_line'] = res['price_subtotal']
+        res['amount_total_header'] = res['amount_untaxed']
+        res['minimum_ok'] = (
+            res['amount_untaxed'] >= company.eshop_minimum_price)
     return res
 
 
@@ -94,50 +111,6 @@ def delete_sale_order_line(line_id):
 # def add_quantity(product_id, quantity):
 #    res = openerp.SaleOrder.eshop_add_quantity(
 #        session.get('partner_id', False), product_id, quantity)
-
-
-# def load_sale_order():
-#    if 'partner_id' not in session:
-#        return None
-#    sale_orders = openerp.SaleOrder.browse([
-#        ('partner_id', '=', session['partner_id']),
-#        ('user_id', '=', uid),
-#        ('state', '=', 'draft'),
-#    ])
-#    if not sale_orders:
-#        return None
-#    return sale_orders[0]
-
-
-# def create_sale_order():
-#    partner = openerp.ResPartner.browse(session['partner_id'])
-#    if partner.property_product_pricelist:
-#        pricelist_id = partner.property_product_pricelist.id
-#    else:
-#        company = get_openerp_object(
-#            'res.company', int(conf.get('openerp', 'company_id')))
-#        pricelist_id = company.eshop_pricelist_id.id
-#    sale_order = openerp.SaleOrder.create({
-#        'partner_id': session['partner_id'],
-#        'partner_invoice_id': session['partner_id'],
-#        'partner_shipping_id': session['partner_id'],
-#        'pricelist_id': pricelist_id,
-#    })
-#    return sale_order
-
-
-# def sanitize_qty(quantity):
-#    try:
-#        quantity = float(quantity.replace(',', '.').strip())
-#    except ValueError:
-#        return {
-#            'state': 'danger',
-#            'message': _("'%(qty)s' is not a valid quantity.", qty=quantity)}
-#    return {
-#        'state': 'success',
-#        'quantity': quantity,
-#    }
-
 
 # def compute_quantity_discount(product, quantity):
 #    print "compute_quantity_discount"
@@ -160,18 +133,6 @@ def delete_sale_order_line(line_id):
 #        else:
 #            return round(
 #                math.ceil(division) * product.eshop_rounded_qty, digit), 0
-
-
-# def change_shopping_cart_note(note):
-#    sale_order = load_sale_order()
-#    openerp.SaleOrder.write(
-#        [sale_order.id], {'note': note})
-#    sale_order = load_sale_order()
-#    return {
-#        'state': 'success',
-#        'note': sale_order.note,
-#        'message': _("Your comment has been successfully updated.")}
-
 
 # def change_product_qty(quantity, mode, product_id=None, line_id=None):
 #    """ Mode: can be 'add' or 'set'"""

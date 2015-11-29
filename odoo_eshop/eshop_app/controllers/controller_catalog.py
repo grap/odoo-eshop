@@ -7,12 +7,15 @@ from flask import request, render_template, flash, redirect, url_for, \
 
 # Custom Tools
 from ..application import app
+
 from ..tools.erp import openerp
 from ..tools.auth import requires_auth
+
 from ..models.models import get_openerp_object
-from ..models.obs_sale_order import (
-    get_current_sale_order, get_current_sale_order_id,
-    set_quantity, add_quantity,
+from ..models.sale_order import (
+    get_current_sale_order,
+    get_current_sale_order_id,
+    set_quantity,
 )
 
 
@@ -71,8 +74,9 @@ def catalog_inline_new():
 @app.route('/catalog_inline/')
 @requires_auth
 def catalog_inline():
+    sale_order_id = get_current_sale_order_id()
     catalog_inline = openerp.productProduct.get_current_eshop_product_list(
-        get_current_sale_order_id)
+        sale_order_id)
 
     return render_template(
         'catalog_inline.html',
@@ -82,8 +86,8 @@ def catalog_inline():
 @app.route('/catalog_inline_quantity_update', methods=['POST'])
 def catalog_inline_quantity_update():
     res = set_quantity(
-        request.form['new_quantity'],
-        product_id=int(request.form['product_id']))
+        int(request.form['product_id']),
+        request.form['new_quantity'])
     if request.is_xhr:
         return jsonify(result=res)
     flash(res['message'], res['state'])
@@ -126,7 +130,9 @@ def product_image_popup(product_id):
 @app.route("/product_add_qty/<int:product_id>", methods=['POST'])
 @requires_auth
 def product_add_qty(product_id):
-    res = add_quantity(
-        request.form['quantity'], product_id=product_id)
+    # FIXME
+    res = {}
+#    res = add_quantity(
+#        request.form['quantity'], product_id=product_id)
     flash(res['message'], res['state'])
     return redirect(url_for('product', product_id=product_id))

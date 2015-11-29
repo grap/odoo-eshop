@@ -26,8 +26,11 @@ from .controller_technical import to_date, to_day, to_time
 # Custom Models
 from ..models.models import get_openerp_object
 
-from ..models.obs_res_partner import change_res_partner, \
-    password_check_quality, sanitize_email
+from ..models.res_partner import (
+    change_res_partner,
+    password_check_quality,
+    sanitize_email,
+)
 
 
 # ############################################################################
