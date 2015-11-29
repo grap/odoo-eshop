@@ -87,12 +87,12 @@ def set_quantity(product_id, quantity, allow_null, method):
 
     res['is_surcharged'] = res['discount'] < 0
     if company.eshop_vat_included:
-        res['amount_line'] = res['price_subtotal_taxinc']
+        res['amount_line'] = currency(res['price_subtotal_taxinc'])
         res['amount_total_header'] = currency(res['amount_total'])
         res['minimum_ok'] = (
             res['amount_total'] >= company.eshop_minimum_price)
     else:
-        res['amount_line'] = res['price_subtotal']
+        res['amount_line'] = currency(res['price_subtotal'])
         res['amount_total_header'] = currency(res['amount_untaxed'])
         res['minimum_ok'] = (
             res['amount_untaxed'] >= company.eshop_minimum_price)
@@ -102,8 +102,6 @@ def set_quantity(product_id, quantity, allow_null, method):
 def delete_sale_order_line(line_id):
     sale_order = get_current_sale_order()
     if len(sale_order.order_line) > 1:
-        for order_line in sale_order.order_line:
-            if order_line.id == line_id:
-                order_line.unlink()
+        openerp.SaleOrderLine.unlink([line_id])
     else:
-        openerp.SaleOrder.unlink(sale_order.id)
+        openerp.SaleOrder.unlink([sale_order.id])

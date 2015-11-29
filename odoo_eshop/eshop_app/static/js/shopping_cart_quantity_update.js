@@ -21,17 +21,18 @@
 $('.input-quantity').change(function(e){
     self = this;
     var new_quantity = e.currentTarget.value;
-    var line_id = e.currentTarget.id.split('_')[1];
+    var product_id = e.currentTarget.id.split('_')[1];
     $.ajax({
         url: FLASK_URL_FOR['shopping_cart_quantity_update'],
         type: "POST",
-        data: {new_quantity: new_quantity, line_id: line_id},
+        data: {new_quantity: new_quantity, product_id: product_id},
         timeout: 1000,
     }).done(function(msg){
         if (msg.result.state == 'success' || msg.result.state == 'warning'){
             // Update Sale Order Line infos
-            $('#quantity_' + line_id).val(msg.result.quantity);
-            $('#price_subtotal_' + line_id).attr('placeholder', msg.result.price_subtotal);
+            $('#quantity_' + product_id).val(msg.result.quantity);
+            $('#quantity_' + product_id).toggleClass('input-surcharge', (msg.result.discount < '0'));
+            $('#price_subtotal_' + product_id).attr('placeholder', msg.result.amount_line);
             // Update Sale Order infos
             $('#amount_untaxed').attr('placeholder', msg.result.amount_untaxed);
             $('#amount_tax').attr('placeholder', msg.result.amount_tax);

@@ -51,22 +51,30 @@ def shopping_cart_note_update():
 
 @app.route('/shopping_cart_quantity_update', methods=['POST'])
 def shopping_cart_quantity_update():
-    line_id = int(request.form['line_id'])
-    res = sanitize_qty(request.form['new_quantity'])
-    if res['state'] != 'success':
-        if request.is_xhr:
-            return jsonify(result=res)
-        else:
-            flash(res['message'], res['state'])
-            return redirect(url_for('shopping_cart'))
-
-    res = set_quantity(line_id, res['quantity'])
-
+    res = set_quantity(
+        int(request.form['product_id']), request.form['new_quantity'], False,
+        'set')
     if request.is_xhr:
         return jsonify(result=res)
-    else:
-        flash(res['message'], res['state'])
-        return redirect(url_for('shopping_cart'))
+    flash(res['message'], res['state'])
+    return redirect(url_for('shopping_cart'))
+
+#    line_id = int(request.form['line_id'])
+#    res = sanitize_qty(request.form['new_quantity'])
+#    if res['state'] != 'success':
+#        if request.is_xhr:
+#            return jsonify(result=res)
+#        else:
+#            flash(res['message'], res['state'])
+#            return redirect(url_for('shopping_cart'))
+
+#    res = set_quantity(line_id, res['quantity'])
+
+#    if request.is_xhr:
+#        return jsonify(result=res)
+#    else:
+#        flash(res['message'], res['state'])
+#        return redirect(url_for('shopping_cart'))
 
 
 @app.route("/shopping_cart_delete")
