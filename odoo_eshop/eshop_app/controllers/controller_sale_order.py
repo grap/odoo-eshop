@@ -8,13 +8,15 @@ from flask import (
 from flask.ext.babel import gettext as _
 
 # Custom Tools
-from .controller_technical import compute_currency
-
 from ..application import app
 from ..tools.config import conf
 from ..tools.erp import openerp
 from ..tools.auth import requires_auth
-from ..models.models import get_openerp_object
+from ..models.models import (
+    get_openerp_object,
+    currency,
+)
+
 from ..models.sale_order import (
     change_sale_order_note,
     get_current_sale_order,
@@ -46,6 +48,7 @@ def shopping_cart_note_update():
     return redirect(url_for('shopping_cart.html'))
 
 
+
 @app.route('/shopping_cart_quantity_update', methods=['POST'])
 def shopping_cart_quantity_update():
     line_id = int(request.form['line_id'])
@@ -57,8 +60,8 @@ def shopping_cart_quantity_update():
             flash(res['message'], res['state'])
             return redirect(url_for('shopping_cart'))
 
-    res = set_quantity(
-        line_id, res['quantity'])
+    res = set_quantity(line_id, res['quantity'])
+
     if request.is_xhr:
         return jsonify(result=res)
     else:
@@ -101,7 +104,7 @@ def recovery_moment_place():
             and company.eshop_minimum_price > sale_order.amount_total):
         flash(
             _("You have not reached the ceiling : ") +
-            compute_currency(company.eshop_minimum_price),
+            currency(company.eshop_minimum_price),
             'warning')
         return redirect(url_for('shopping_cart'))
     return render_template(
@@ -154,7 +157,7 @@ def delivery_moment():
             and company.eshop_minimum_price > sale_order.amount_total):
         flash(
             _("You have not reached the ceiling : ") +
-            compute_currency(company.eshop_minimum_price),
+            currency(company.eshop_minimum_price),
             'warning')
         return redirect(url_for('shopping_cart'))
     return render_template(

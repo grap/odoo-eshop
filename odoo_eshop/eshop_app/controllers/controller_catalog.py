@@ -86,8 +86,8 @@ def catalog_inline():
 @app.route('/catalog_inline_quantity_update', methods=['POST'])
 def catalog_inline_quantity_update():
     res = set_quantity(
-        int(request.form['product_id']),
-        request.form['new_quantity'])
+        int(request.form['product_id']), request.form['new_quantity'], True,
+        'set')
     if request.is_xhr:
         return jsonify(result=res)
     flash(res['message'], res['state'])
@@ -130,9 +130,7 @@ def product_image_popup(product_id):
 @app.route("/product_add_qty/<int:product_id>", methods=['POST'])
 @requires_auth
 def product_add_qty(product_id):
-    # FIXME
-    res = {}
-#    res = add_quantity(
-#        request.form['quantity'], product_id=product_id)
+    res = set_quantity(
+        int(product_id), request.form['quantity'], True, 'add')
     flash(res['message'], res['state'])
     return redirect(url_for('product', product_id=product_id))

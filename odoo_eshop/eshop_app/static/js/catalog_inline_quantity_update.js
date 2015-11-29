@@ -26,13 +26,14 @@ $('.input-quantity').change(function(e){
         url: FLASK_URL_FOR['catalog_inline_quantity_update'],
         type: "POST",
         data: {new_quantity: new_quantity, product_id: product_id},
-        timeout: 1000,
+        timeout: AJAX_TIMEOUT,
     }).done(function(msg){
         if (msg.result.state == 'success' || msg.result.state == 'warning'){
             $('#quantity_' + product_id).val(msg.result.quantity);
             $('#quantity_' + product_id).toggleClass('input-not-null-qty', (msg.result.quantity != '0'));
+            $('#quantity_' + product_id).toggleClass('input-surcharge', (msg.result.discount < '0'));
+            update_header(msg.result.order_id, msg.result.amount_total_header, msg.result.minimum_ok);
         }
-        update_header(msg.result.amount_total_header, msg.result.minimum_ok);
         display_message(msg.result.state, msg.result.message, false);
     }).fail(function(xhr, textstatus){
         display_fail_message();

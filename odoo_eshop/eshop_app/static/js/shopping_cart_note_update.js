@@ -24,7 +24,8 @@ $('#shopping_cart_note').change(function(e){
         type: "POST",
         data: {
             note: $('#shopping_cart_note').val(),
-            }, timeout: 1000,
+            },
+        timeout: AJAX_TIMEOUT,
     }).done(function(msg){
         if (msg.result.state == 'success' || msg.result.state == 'warning'){
             $('#shopping_cart_note').val(msg.result.note);

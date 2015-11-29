@@ -17,8 +17,8 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ******************************************************************************/
 
-function update_header(amount_total_header, minimum_ok){
-    if (amount_total_header == '0') {
+function update_header(order_id, amount_total_header, minimum_ok){
+    if (order_id == false) {
         $('#nav_shopping_cart').css('visibility', 'hidden');
     }
     else {
