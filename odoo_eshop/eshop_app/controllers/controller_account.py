@@ -3,127 +3,123 @@
 
 # Standard Lib
 import io
-# import base64
-# from captcha.image import ImageCaptcha
-# from random import randint
 
-# Extra Lib
+# Extra Libs
 from flask import (
-    request, redirect, session, url_for,
-    render_template, flash, abort, send_file,
+    request, render_template, flash, session, url_for, redirect, abort,
+    send_file,
 )
+
 from flask.ext.babel import gettext as _
 
 # Custom Tools
 from ..application import app
 
 from ..tools.config import conf
-from ..tools.auth import logout, requires_auth, requires_connection
 from ..tools.erp import openerp, get_invoice_pdf, get_order_pdf
+from ..tools.auth import logout, requires_connection, requires_auth
 
-from .controller_technical import to_date, to_day, to_time
 
 # Custom Models
 from ..models.models import get_openerp_object
 
 from ..models.res_partner import (
+    partner_domain,
     change_res_partner,
-    password_check_quality,
+    get_current_partner,
     sanitize_email,
+    check_password,
 )
 
 
 # ############################################################################
-# Functions
+# Account Route
 # ############################################################################
-
-def partner_domain(partner_field):
-    if 'partner_id' in session:
-        return (partner_field, '=', session['partner_id'])
-    else:
-        return (partner_field, '=', -1)
-
-
-def check_password(password_1, password_2):
-    # Check Password
-    if password_1 != password_2:
-        # Check consistencies
-        flash(_("The 'Password' Fields do not match."), 'danger')
-        return False
-    else:
-        # Check quality
-        res = password_check_quality(password_1)
-
-        for item in [
-            {'name': 'length_error', 'description': _(
-                'Password must have 6 characters or more.')},
-            {'name': 'digit_error', 'description': _(
-                'Password must have at least one digit.')},
-            {'name': 'uppercase_error', 'description': _(
-                'Password must have at least one uppercase characters.')},
-            {'name': 'lowercase_error', 'description': _(
-                'Password must have at least one lowercase characters.')}]:
-            if res[item['name']]:
-                flash(item['description'], 'danger')
-        return res['password_ok']
-
-
-# ############################################################################
-# Home Route
-# ############################################################################
-@app.route("/")
-@requires_connection
-def home():
-    if session.get('partner_id', False):
-        return redirect(url_for('home_logged'))
-    return render_template('home.html')
-
-
-@app.route("/home_logged.html")
+@app.route("/account", methods=['GET', 'POST'])
 @requires_auth
-def home_logged():
-    company = get_openerp_object(
-        'res.company', int(conf.get('openerp', 'company_id')))
-    if company.manage_recovery_moment\
-            and not company.manage_delivery_moment:
-        pending_moment_groups = openerp.SaleRecoveryMomentGroup.browse(
-            [('state', 'in', 'pending_sale')])
-        if len(pending_moment_groups) == 0:
-            # Not possible to purchase for the time being
-            futur_moment_groups = openerp.SaleRecoveryMomentGroup.browse(
-                [('state', 'in', 'futur')])
-            if len(futur_moment_groups) > 0:
-                min_date = futur_moment_groups[0].min_sale_date
-                for item in futur_moment_groups:
-                    min_date = min(min_date, item.min_sale_date)
-                flash(_(
-                    "It is not possible to buy for the time being,"
-                    " You can buy starting at %(day)s %(date)s %(time)s.",
-                    day=to_day(min_date), date=to_date(min_date),
-                    time=to_time(min_date)), 'warning')
-            else:
-                flash(_(
-                    "It is not possible to buy for the time being,"
-                    " but you can see the catalog in the meantime."),
-                    'warning')
-        elif len(pending_moment_groups) == 1:
-            # Display end Date to order
-            flash(_(
-                "You can buy until %(day)s %(date)s %(time)s.",
-                day=to_day(pending_moment_groups[0].max_sale_date),
-                date=to_date(pending_moment_groups[0].max_sale_date),
-                time=to_time(pending_moment_groups[0].max_sale_date)), 'info')
-    elif company.manage_delivery_moment\
-            and not company.manage_recovery_moment:
-        partner = openerp.ResPartner.browse([session['partner_id']])[0]
-        if not partner.delivery_categ_id:
-            flash(_(
-                "Your account is not correctly set : your delivery group"
-                " is not defined. Please contact your seller to fix the"
-                " problem"), 'danger')
-    else:
-        flash(_('Recovery / Delivery Moment Unset'), 'danger')
-    return render_template('home.html')
+def account():
+    partner = get_current_partner()
+
+    if not len(request.form) == 0:
+        new_password = False
+        if 'checkbox-change-password' in request.form:
+            password_ok = check_password(
+                request.form['password_1'], request.form['password_2'])
+            if password_ok:
+                new_password = request.form['password_1']
+                flash(_("Password changed successfully"), 'success')
+
+        res = change_res_partner(
+            partner.id,
+            request.form['phone'],
+            request.form['mobile'],
+            request.form['street'],
+            request.form['street2'],
+            request.form['zip'],
+            request.form['city'],
+            new_password)
+        flash(res['message'], res['state'])
+
+    return render_template('account.html', partner=partner)
+
+
+# ############################################################################
+# Orders Route
+# ############################################################################
+@app.route("/orders")
+@requires_auth
+def orders():
+    orders = openerp.SaleOrder.browse([
+        partner_domain('partner_id'),
+        ('state', 'not in', ('draft', 'cancel'))])
+    return render_template('orders.html', orders=orders)
+
+
+@app.route('/order/<int:order_id>/download')
+def order_download(order_id):
+    order = openerp.SaleOrder.browse(order_id)
+    partner = get_current_partner()
+    # Manage Access Rules
+    if not order or order.partner_id.id != partner.id:
+        return abort(404)
+
+    content = get_order_pdf(order_id)
+    filename = "%s_%s.pdf" % (_('order'), order.name.replace('/', '_'))
+    return send_file(
+        io.BytesIO(content),
+        as_attachment=True,
+        attachment_filename=filename,
+        mimetype='application/pdf'
+    )
+
+
+# ############################################################################
+# Invoices Route
+# ############################################################################
+@app.route("/invoices")
+@requires_auth
+def invoices():
+    invoices = openerp.AccountInvoice.browse([
+        partner_domain('partner_id'),
+        ('state', 'not in', ('draft', 'proforma', 'proforma2', 'cancel'))])
+    return render_template('invoices.html', invoices=invoices)
+
+
+@app.route('/invoices/<int:invoice_id>/download')
+def invoice_download(invoice_id):
+    invoice = openerp.AccountInvoice.browse(invoice_id)
+    partner = get_current_partner()
+    if not invoice or invoice.partner_id.id != partner.id:
+        return abort(404)
+
+    content = get_invoice_pdf(invoice_id)
+    filename = "%s_%s.pdf" % (_('invoice'), invoice.number.replace('/', '_'))
+    return send_file(
+        io.BytesIO(content),
+        as_attachment=True,
+        attachment_filename=filename,
+        mimetype='application/pdf'
+    )
 
 
 # ############################################################################
@@ -137,9 +133,8 @@ def login_view():
         partner_id = openerp.ResPartner.login(
             request.form['login'], request.form['password'])
         if partner_id:
-            partner = openerp.ResPartner.browse(partner_id)
-            session['partner_id'] = partner.id
-            session['partner_name'] = partner.name
+            session['partner_id'] = partner_id
+            partner = get_current_partner()
             return redirect(url_for('home_logged'))
         else:
             flash(_('Login/password incorrects'), 'danger')
@@ -159,9 +154,9 @@ def register():
     # Check if the operation is possible
     company = get_openerp_object(
         'res.company', int(conf.get('openerp', 'company_id')))
-    if not company.eshop_register_allowed\
-            or session.get('partner_login', False):
+    if not company.eshop_register_allowed or get_current_partner():
         return redirect(url_for('home'))
+
 #    previous_captcha = session.get('captcha', False)
 #    PATH_TTF = conf.get('captcha', 'font_path').split(',')
 #    image = ImageCaptcha(fonts=PATH_TTF)
@@ -276,7 +271,7 @@ def activate_account(id, email):
 @requires_connection
 def password_lost():
     # Check if the operation is possible
-    if session.get('partner_login', False):
+    if get_current_partner():
         return redirect(url_for('home'))
 #    previous_captcha = session.get('captcha', False)
 #    PATH_TTF = conf.get('captcha', 'font_path').split(',')
@@ -322,89 +317,3 @@ def password_lost():
                 return redirect(url_for('home'))
 
     return render_template('password_lost.html', captcha_data=captcha_data)
-
-
-# ############################################################################
-# Account Route
-# ############################################################################
-@app.route("/account", methods=['GET', 'POST'])
-@requires_auth
-def account():
-    partner = openerp.ResPartner.browse(session['partner_id'])
-    if not len(request.form) == 0:
-        new_password = False
-        if 'checkbox-change-password' in request.form:
-            password_ok = check_password(
-                request.form['password_1'], request.form['password_2'])
-            if password_ok:
-                new_password = request.form['password_1']
-                flash(_("Password changed successfully"), 'success')
-
-        res = change_res_partner(
-            partner.id,
-            request.form['phone'],
-            request.form['mobile'],
-            request.form['street'],
-            request.form['street2'],
-            request.form['zip'],
-            request.form['city'],
-            new_password)
-        flash(res['message'], res['state'])
-
-    return render_template('account.html', partner=partner)
-
-
-# ############################################################################
-# Orders Route
-# ############################################################################
-@app.route("/orders")
-@requires_auth
-def orders():
-    orders = openerp.SaleOrder.browse([
-        partner_domain('partner_id'),
-        ('state', 'not in', ('draft', 'cancel'))])
-    return render_template('orders.html', orders=orders)
-
-
-@app.route('/order/<int:order_id>/download')
-def order_download(order_id):
-    order = openerp.SaleOrder.browse(order_id)
-    if not order or order.partner_id.id != session['partner_id']:
-        return abort(404)
-
-    content = get_order_pdf(order_id)
-    filename = "%s_%s.pdf" % (_('order'), order.name.replace('/', '_'))
-    return send_file(
-        io.BytesIO(content),
-        as_attachment=True,
-        attachment_filename=filename,
-        mimetype='application/pdf'
-    )
-
-
-# ############################################################################
-# Invoices Route
-# ############################################################################
-@app.route("/invoices")
-@requires_auth
-def invoices():
-    invoices = openerp.AccountInvoice.browse([
-        partner_domain('partner_id'),
-        ('state', 'not in', ('draft', 'proforma', 'proforma2', 'cancel'))])
-    return render_template('invoices.html', invoices=invoices)
-
-
-@app.route('/invoices/<int:invoice_id>/download')
-def invoice_download(invoice_id):
-    invoice = openerp.AccountInvoice.browse(invoice_id)
-    if not invoice or invoice.partner_id.id != session['partner_id']:
-        return abort(404)
-
-    content = get_invoice_pdf(invoice_id)
-    filename = "%s_%s.pdf" % (_('invoice'), invoice.number.replace('/', '_'))
-    return send_file(
-        io.BytesIO(content),
-        as_attachment=True,
-        attachment_filename=filename,
-        mimetype='application/pdf'
-    )

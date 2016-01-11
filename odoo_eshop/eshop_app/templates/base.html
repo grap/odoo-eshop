@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+{% set partner = current_partner() %} 
 {% set company = current_company() %} 
 {% set sale_order = current_sale_order() %} 
     <head>
@@ -71,7 +72,7 @@
                             class="img-icon-header"/>
                     </a>
 
-{% if session.get('partner_name', False) %}
+{% if partner %}
             <li><a class="btn-default eshop_a_link_header" id="nav_catalog_tree" href="{{ url_for('catalog_tree') }}">
                     <span class="glyphicon glyphicon-th"/> {{ _('Products Catalog') }}
                 </a></li>
@@ -156,7 +157,7 @@
             </a></li>
 {% endif %}
 
-{% if 'partner_name' in session %}
+{% if partner %}
 
             <li class="dropdown">
                 <a href="#" class="btn-default dropdown-toggle eshop_a_link_header" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">

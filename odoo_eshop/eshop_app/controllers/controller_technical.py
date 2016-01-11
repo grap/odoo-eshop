@@ -29,13 +29,67 @@ from ..models.models import (
     currency,
 )
 
-from ..models.res_company import (
-    get_current_company,
-)
+from ..models.res_partner import get_current_partner, get_current_partner_id
+from ..models.res_company import get_current_company
+from ..models.sale_order import get_current_sale_order
 
-from ..models.sale_order import (
-    get_current_sale_order,
-)
+
+# ############################################################################
+# Home Route
+# ############################################################################
+@app.route("/")
+@requires_connection
+def home():
+    if get_current_partner_id():
+        return redirect(url_for('home_logged'))
+    return render_template('home.html')
+
+
+@app.route("/home_logged.html")
+@requires_auth
+def home_logged():
+    company = get_openerp_object(
+        'res.company', int(conf.get('openerp', 'company_id')))
+    if company.manage_recovery_moment\
+            and not company.manage_delivery_moment:
+        pending_moment_groups = openerp.SaleRecoveryMomentGroup.browse(
+            [('state', 'in', 'pending_sale')])
+        if len(pending_moment_groups) == 0:
+            # Not possible to purchase for the time being
+            futur_moment_groups = openerp.SaleRecoveryMomentGroup.browse(
+                [('state', 'in', 'futur')])
+            if len(futur_moment_groups) > 0:
+                min_date = futur_moment_groups[0].min_sale_date
+                for item in futur_moment_groups:
+                    min_date = min(min_date, item.min_sale_date)
+                flash(_(
+                    "It is not possible to buy for the time being,"
+                    " You can buy starting at %(day)s %(date)s %(time)s.",
+                    day=to_day(min_date), date=to_date(min_date),
+                    time=to_time(min_date)), 'warning')
+            else:
+                flash(_(
+                    "It is not possible to buy for the time being,"
+                    " but you can see the catalog in the meantime."),
+                    'warning')
+        elif len(pending_moment_groups) == 1:
+            # Display end Date to order
+            flash(_(
+                "You can buy until %(day)s %(date)s %(time)s.",
+                day=to_day(pending_moment_groups[0].max_sale_date),
+                date=to_date(pending_moment_groups[0].max_sale_date),
+                time=to_time(pending_moment_groups[0].max_sale_date)), 'info')
+    elif company.manage_delivery_moment\
+            and not company.manage_recovery_moment:
+        partner = get_current_partner()
+        if not partner.delivery_categ_id:
+            flash(_(
+                "Your account is not correctly set : your delivery group"
+                " is not defined. Please contact your seller to fix the"
+                " problem"), 'danger')
+    else:
+        flash(_('Recovery / Delivery Moment Unset'), 'danger')
+    return render_template('home.html')
 
 
 # ############################################################################
@@ -52,6 +106,7 @@ def get_image(model, id, field, sha1):
     @param sha1: unused param in the function. Used to force client
         to reload obsolete images.
     """
+    print "get_image %s %s %s %s" % (model, id, field, sha1)
     openerp_model = {
         'product.product': openerp.ProductProduct,
         'eshop.category': openerp.eshopCategory,
@@ -62,6 +117,7 @@ def get_image(model, id, field, sha1):
     if not openerp_model:
         # Incorrect Call
         return render_template('404.html'), 404
+    
     image_data = openerp_model.read(id, field)
     if not image_data:
         # No image found
@@ -126,6 +182,9 @@ def utility_processor():
     def get_object(model_name, id):
         return get_openerp_object(model_name, id)
 
+    def current_partner():
+        return get_current_partner()
+
     def current_company():
         return get_current_company()
 
@@ -133,8 +192,8 @@ def utility_processor():
         return get_current_sale_order()
 
     return dict(
-        current_company=current_company, get_object=get_object,
-        current_sale_order=current_sale_order)
+        get_object=get_object, current_partner=current_partner,
+        current_company=current_company, current_sale_order=current_sale_order)
 
 
 # ############################################################################
@@ -142,12 +201,9 @@ def utility_processor():
 # ############################################################################
 @babel.localeselector
 def locale_selector():
-    if session.get('partner_id', False):
-        try:
-            partner = openerp.ResPartner.browse(session['partner_id'])
-            return partner.lang
-        except:
-            pass
+    partner = get_current_partner()
+    if partner:
+        return partner.lang
     return request.accept_languages.best_match(['fr', 'en'])
 
 

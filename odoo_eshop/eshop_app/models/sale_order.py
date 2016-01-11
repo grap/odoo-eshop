@@ -11,6 +11,7 @@ from flask.ext.babel import gettext as _
 # Custom Tools
 from ..tools.erp import openerp
 from .res_company import get_current_company
+from .res_partner import get_current_partner_id
 from .models import currency
 
 
@@ -37,8 +38,9 @@ def sanitize_qty(quantity, allow_null):
 # ############################################################################
 def get_current_sale_order_id():
     """Return current order id, or False if not Found"""
+
     return openerp.SaleOrder.eshop_get_current_sale_order_id(
-        session.get('partner_id', False))
+        get_current_partner_id())
 
 
 def get_current_sale_order():
@@ -76,7 +78,7 @@ def set_quantity(product_id, quantity, allow_null, method):
     if sanitize['state'] != 'success':
         return sanitize
     res = openerp.SaleOrder.eshop_set_quantity(
-        session.get('partner_id', False), product_id, sanitize['quantity'],
+        get_current_partner_id(), product_id, sanitize['quantity'],
         method)
 
     if res['changed'] or (res['discount'] < 0):

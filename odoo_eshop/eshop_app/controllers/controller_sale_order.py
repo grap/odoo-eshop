@@ -24,7 +24,7 @@ from ..models.sale_order import (
     delete_current_sale_order,
     delete_sale_order_line,
     set_quantity,
-    sanitize_qty,
+    # sanitize_qty,
 )
 
 
@@ -48,7 +48,6 @@ def shopping_cart_note_update():
     return redirect(url_for('shopping_cart.html'))
 
 
-
 @app.route('/shopping_cart_quantity_update', methods=['POST'])
 def shopping_cart_quantity_update():
     res = set_quantity(
@@ -58,23 +57,6 @@ def shopping_cart_quantity_update():
         return jsonify(result=res)
     flash(res['message'], res['state'])
     return redirect(url_for('shopping_cart'))
-
-#    line_id = int(request.form['line_id'])
-#    res = sanitize_qty(request.form['new_quantity'])
-#    if res['state'] != 'success':
-#        if request.is_xhr:
-#            return jsonify(result=res)
-#        else:
-#            flash(res['message'], res['state'])
-#            return redirect(url_for('shopping_cart'))
-
-#    res = set_quantity(line_id, res['quantity'])
-
-#    if request.is_xhr:
-#        return jsonify(result=res)
-#    else:
-#        flash(res['message'], res['state'])
-#        return redirect(url_for('shopping_cart'))
 
 
 @app.route("/shopping_cart_delete")

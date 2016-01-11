@@ -10,11 +10,6 @@ from flask.ext.babel import gettext as _
 from .erp import openerp
 
 
-def login(username, password):
-    session['partner_login'] = username
-    session['partner_password'] = password
-
-
 def logout():
     session.clear()
 

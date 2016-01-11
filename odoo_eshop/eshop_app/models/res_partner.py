@@ -6,10 +6,52 @@ import re
 import phonenumbers
 
 # Extra Lib
+from flask import session, flash
 from flask.ext.babel import gettext as _
 
 # Custom Tools
+from .models import get_openerp_object
 from ..tools.erp import openerp
+
+
+def get_current_partner_id():
+    return session.get('partner_id', False)
+
+
+def get_current_partner():
+    partner_id = get_current_partner_id()
+    if partner_id:
+        return get_openerp_object('res.partner', partner_id)
+    else:
+        return False
+
+
+def partner_domain(partner_field):
+    return (partner_field, '=', session.get('partner_id', -1))
+
+
+def check_password(password_1, password_2):
+    # Check Password
+    if password_1 != password_2:
+        # Check consistencies
+        flash(_("The 'Password' Fields do not match."), 'danger')
+        return False
+    else:
+        # Check quality
+        res = password_check_quality(password_1)
+
+        for item in [
+            {'name': 'length_error', 'description': _(
+                'Password must have 6 characters or more.')},
+            {'name': 'digit_error', 'description': _(
+                'Password must have at least one digit.')},
+            {'name': 'uppercase_error', 'description': _(
+                'Password must have at least one uppercase characters.')},
+            {'name': 'lowercase_error', 'description': _(
+                'Password must have at least one lowercase characters.')}]:
+            if res[item['name']]:
+                flash(item['description'], 'danger')
+        return res['password_ok']
 
 
 def password_check_quality(password):
