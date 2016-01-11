@@ -2,7 +2,9 @@
 <html lang="en">
 {% set partner = current_partner() %} 
 {% set company = current_company() %} 
-{% set sale_order = current_sale_order() %} 
+{% set sale_order = current_sale_order() %}
+{% set is_vat_included = is_vat_included(company, sale_order, partner)%}
+
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -26,6 +28,7 @@
 
     <!-- Custom script -->
         <script src="{{ url_for('static', filename='js/custom_functions.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/global_scripts.js') }}"></script>
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -84,14 +87,14 @@
     {% if sale_order %}
             <li><a class="btn-default eshop_a_link_header" id="nav_shopping_cart" href="{{ url_for('shopping_cart') }}">
                 <span class="glyphicon glyphicon-shopping-cart"/> {{ _('Shopping Cart: ') }}
-        {% if company.eshop_vat_included %}
+        {% if is_vat_included %}
                 <span id="nav_amount_total">{{ sale_order.amount_total|to_currency }}</span>
                              {{_('VAT. Incl.')}}
             {% if sale_order.amount_total >= company.eshop_minimum_price %}
-                <span class="glyphicon glyphicon-ok-circle"/> - 
+                <span class="glyphicon glyphicon-ok-circle"/>
                 <span class="glyphicon glyphicon-warning-sign" style="display:none"/>
             {% else %}
-                <span class="glyphicon glyphicon-warning-sign"/> - 
+                <span class="glyphicon glyphicon-warning-sign"/>
                 <span class="glyphicon glyphicon-ok-circle" style="display:none"/>
             {% endif %}
         {% else %}
@@ -116,7 +119,12 @@
             <li>
                 <a class="btn-default eshop_a_link_header" id="nav_shopping_cart" style="visibility:hidden" href="{{  url_for('shopping_cart') }}">
                     <span class="glyphicon glyphicon-shopping-cart"/> {{ _('Shopping Cart: ') }}
-                    <span id="nav_amount_total">{{ 0|to_currency }}</span>
+                <span id="nav_amount_total">{{ 0|to_currency }}</span>
+        {% if is_vat_included %}
+                             {{_('VAT. Incl.')}}
+        {% else %}
+                             {{_('VAT. Excl.')}}
+        {% endif %}
                     <span class="glyphicon glyphicon-warning-sign" id="nav_shopping_cart_warning"
                             title="{{_('You have not reached the ceiling : ')}} {{company.eshop_minimum_price|to_currency}}"></span>
                     <span class="glyphicon glyphicon-ok-circle" id="nav_shopping_cart_ok" 

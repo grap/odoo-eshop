@@ -11,9 +11,6 @@
 
 <!-- Body                                                                   -->
 
-{% set company = current_company() %}
-{% set partner = current_partner() %}
-
 <table class="table table-condensed table-bordered eshop_table_float_thead">
     <caption style="border:1px #DDD solid;">
     <div class="row">
@@ -51,7 +48,7 @@
                     </th>
             {% endif %}
 
-            {% if company.eshop_vat_included %}
+            {% if is_vat_included %}
             <th>{{ _('U.P. VAT Incl.') }}</th>
             {% else %}
             <th>{{ _('U.P. VAT Excl.') }}</th>
@@ -60,7 +57,7 @@
             <th>{{ _('VAT') }}</th>
             <th>{{ _('Quantity') }}</th>
 
-            {% if company.eshop_vat_included %}
+            {% if is_vat_included %}
             <th>{{ _('Subtotal VAT Incl.') }}</th>
             {% else %}
             <th>{{ _('Subtotal VAT Excl.') }}</th>
@@ -101,7 +98,7 @@
                     <button type="submit" class="btn btn-default hide_if_jquery_enabled">{{ _('Update')}}</button>
                 </form>
             </td>
-            {% if company.eshop_vat_included %}
+            {% if company.is_vat_included %}
             <td class="td-input-text">
                 <input type="text" class="form-control input-amount" id="price_subtotal_{{product.id}}" 
                         placeholder="{{ line.price_subtotal_taxinc|to_currency }}" readonly/>

@@ -31,7 +31,7 @@ from ..models.models import (
 
 from ..models.res_partner import get_current_partner, get_current_partner_id
 from ..models.res_company import get_current_company
-from ..models.sale_order import get_current_sale_order
+from ..models.sale_order import get_current_sale_order, get_is_vat_included
 
 
 # ############################################################################
@@ -191,9 +191,13 @@ def utility_processor():
     def current_sale_order():
         return get_current_sale_order()
 
+    def is_vat_included(company, sale_order, partner):
+        return get_is_vat_included(company, sale_order, partner)
+
     return dict(
         get_object=get_object, current_partner=current_partner,
-        current_company=current_company, current_sale_order=current_sale_order)
+        current_company=current_company, current_sale_order=current_sale_order,
+        is_vat_included=is_vat_included)
 
 
 # ############################################################################

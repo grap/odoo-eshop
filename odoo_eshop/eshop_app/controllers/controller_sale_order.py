@@ -24,7 +24,6 @@ from ..models.sale_order import (
     delete_current_sale_order,
     delete_sale_order_line,
     set_quantity,
-    # sanitize_qty,
 )
 
 

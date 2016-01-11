@@ -36,6 +36,19 @@ def sanitize_qty(quantity, allow_null):
 # ############################################################################
 # I/O OpenERP - Sale Order
 # ############################################################################
+def get_is_vat_included(company, sale_order, partner):
+    if sale_order:
+        # return sale order Settings, if defined
+        if sale_order.simple_tax_type != 'none':
+            return (sale_order.simple_tax_type == 'included')
+    if partner:
+        # return Partner Settings, if defined
+        if partner.simple_tax_type != 'none':
+            return (partner.simple_tax_type == 'included')
+    # otherwise, return company setting
+    return company.eshop_vat_included
+
+
 def get_current_sale_order_id():
     """Return current order id, or False if not Found"""
 
@@ -88,7 +101,7 @@ def set_quantity(product_id, quantity, allow_null, method):
     res['message'] = '<br />'.join(res['messages'])
 
     res['is_surcharged'] = res['discount'] < 0
-    if company.eshop_vat_included:
+    if get_is_vat_included(company, get_current_sale_order(), False):
         res['amount_line'] = currency(res['price_subtotal_taxinc'])
         res['amount_total_header'] = currency(res['amount_total'])
         res['minimum_ok'] = (
