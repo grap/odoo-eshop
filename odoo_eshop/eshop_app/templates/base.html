@@ -125,6 +125,12 @@
 {% endif %}
           </ul>
           <ul class="nav navbar-nav navbar-right">
+{% if company.eshop_instagram_url %}
+            <li><a class="btn-default eshop_a_link_header" href="{{ company.eshop_instagram_url }}" target="_blank">
+                <img class="eshop_img_icon_header" title="{{_('Visit our Instagram Page')}}"
+                        src="{{ url_for('static', filename='images/icon-instagram.png') }}"/>
+            </a></li>
+{% endif %}
 {% if company.eshop_facebook_url %}
             <li><a class="btn-default eshop_a_link_header" href="{{ company.eshop_facebook_url }}" target="_blank">
                 <img class="eshop_img_icon_header" title="{{_('Visit our Facebook Page')}}"
