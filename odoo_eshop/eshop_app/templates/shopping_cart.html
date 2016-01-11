@@ -14,31 +14,34 @@
 {% set company = current_company() %} 
 
 <table class="table table-condensed table-bordered eshop_table_float_thead">
+    <caption style="border:1px #DDD solid;">
+    <div class="row">
+        <div class="col-md-6" style="text-align:center">
+            <a data-href="{{ url_for('shopping_cart_delete') }}"
+            data-toggle="modal"
+            data-target="#confirm-delete"
+            class="btn btn-default" href="#" role="button">
+            <span class="glyphicon glyphicon-trash"/>
+            {{ _('Delete Shopping Cart') }}</a>
+        </div>
+        <div class="col-md-6" style="text-align:center">
+            {% if company.manage_recovery_moment %}
+            <a href="{{ url_for('recovery_moment_place') }}"
+                class="btn btn-default" href="#" role="button">
+                <span class="glyphicon glyphicon-calendar"/>
+                {{ _('Confirm') }}</a>
+            {% endif %}
+            {% if company.manage_delivery_moment %}
+            <a href="{{ url_for('delivery_moment') }}"
+                class="btn btn-default" href="#" role="button">
+                <span class="glyphicon glyphicon-calendar"/>
+                {{ _('Select Delivery Moment') }}</a>
+            {% endif %}
+        </div>
+    </div>
+
+    </caption>
     <thead>
-        <tr>
-            <th>
-                <a data-href="{{ url_for('shopping_cart_delete') }}"
-                    data-toggle="modal"
-                    data-target="#confirm-delete"
-                    class="col-sm-offset-3 btn btn-default" href="#" role="button">
-                    <span class="glyphicon glyphicon-trash"/>
-                    {{ _('Delete Shopping Cart') }}</a>
-            </th>
-            <th colspan="100%">
-                {% if company.manage_recovery_moment %}
-                <a href="{{ url_for('recovery_moment_place') }}"
-                    class="col-sm-offset-3 btn btn-default" href="#" role="button">
-                    <span class="glyphicon glyphicon-calendar"/>
-                    {{ _('Select Place and Moment for Recovery') }}</a>
-                {% endif %}
-                {% if company.manage_delivery_moment %}
-                <a href="{{ url_for('delivery_moment') }}"
-                    class="col-sm-offset-3 btn btn-default" href="#" role="button">
-                    <span class="glyphicon glyphicon-calendar"/>
-                    {{ _('Select Delivery Moment') }}</a>
-                {% endif %}
-            </th>
-        </tr>
         <tr>
             <th>{{ _('Product') }}</th>
             {% if company.manage_delivery_moment %}
