@@ -88,9 +88,9 @@
             <dd>{{ product.fresh_category|fresh_category }}</dd>
     {% endif %}
             <br />
-    {% if product.description != False %}
+    {% if product.eshop_description != False %}
             <dt>{{ _('Description') }}</dt>
-            <dd>{{ product.description }}</dd>
+            <dd>{{ product.eshop_description|safe }}</dd>
     {% endif %}
         </dl>
     </div>

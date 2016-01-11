@@ -97,7 +97,7 @@ def catalog_inline_quantity_update():
 # ############################################################################
 # Product Routes
 # ############################################################################
-@app.route("/product/<int:product_id>")
+@app.route('/product/<int:product_id>')
 @requires_auth
 def product(product_id):
     # Get Products
