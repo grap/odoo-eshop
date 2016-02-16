@@ -33,6 +33,12 @@ $('.input-quantity').change(function(e){
             $('#quantity_' + product_id).toggleClass('input-not-null-qty', (msg.result.quantity != '0'));
             $('#quantity_' + product_id).toggleClass('input-surcharge', (msg.result.discount < '0'));
             update_header(msg.result.order_id, msg.result.amount_total_header, msg.result.minimum_ok);
+            if (msg.result.order_id == false) {
+                $('#catalog_inline_shopping_cart_line').css('visibility', 'hidden');
+            }
+            else {
+                $('#catalog_inline_shopping_cart_line').css('visibility', 'visible');
+            }
         }
         display_message(msg.result.state, msg.result.message, false);
     }).fail(function(xhr, textstatus){

@@ -1,7 +1,8 @@
 {% extends 'base.html' %}
-
-
 {% block container %}
+
+{% set sale_order = current_sale_order() %}
+
 <!-- JQuery -->
 <script>
     $('#nav_catalog_inline').addClass('active');
@@ -111,6 +112,21 @@
         </tr>
     {% endfor %}
     </tbody>
+    <tfooter>
+        <tr id="catalog_inline_shopping_cart_line" 
+
+        {% if not sale_order %}
+            style="visibility: hidden;"
+        {% endif %}
+        >
+            <th colspan="100%">
+                <a href="{{ url_for('shopping_cart') }}"
+                    class="btn btn-default" href="#" role="button">
+                    <span class="glyphicon glyphicon-shopping-cart"/>
+                    {{ _('Go to Shopping Cart to finish your Order') }}</a>
+            </th>
+        </tr>
+    </tfooter>
 </table>
 
 
