@@ -6,7 +6,7 @@ from eshop_app.application import app
 
 # Run Apps
 app.run(
-    processes=10,
+    processes=conf.get('flask', 'processes'),
     host=conf.get('flask', 'host'),
     port=conf.getint('flask', 'port'),
     debug=conf.get('flask', 'debug'))
