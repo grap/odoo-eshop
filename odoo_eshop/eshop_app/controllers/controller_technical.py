@@ -8,8 +8,7 @@ from datetime import datetime  # , timedelta
 import pytz
 
 # Extra Libs
-from flask import request, session, render_template, flash, make_response,\
-    url_for, redirect
+from flask import request, session, render_template, flash, make_response
 
 from flask.ext.babel import gettext as _
 
@@ -18,6 +17,7 @@ from ..application import app
 from ..application import cache
 from ..application import babel
 
+from ..tools.web import redirect_url_for
 from ..tools.config import conf
 from ..tools.auth import requires_connection, requires_auth
 from ..tools.erp import openerp, tz
@@ -41,7 +41,7 @@ from ..models.sale_order import get_current_sale_order, get_is_vat_included
 @requires_connection
 def home():
     if get_current_partner_id():
-        return redirect(url_for('home_logged'))
+        return redirect_url_for('home_logged')
     return render_template('home.html')
 
 
