@@ -8,6 +8,7 @@ from flask import request, render_template, flash, redirect, url_for, \
 # Custom Tools
 from ..application import app
 
+from ..tools.web import redirect_url_for
 from ..tools.erp import openerp
 from ..tools.auth import requires_auth
 
@@ -91,7 +92,7 @@ def catalog_inline_quantity_update():
     if request.is_xhr:
         return jsonify(result=res)
     flash(res['message'], res['state'])
-    return redirect(url_for('catalog_inline'))
+    return redirect_url_for('catalog_inline')
 
 
 # ############################################################################

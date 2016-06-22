@@ -8,7 +8,8 @@ from datetime import datetime  # , timedelta
 import pytz
 
 # Extra Libs
-from flask import request, session, render_template, flash, make_response
+from flask import (
+    request, render_template, flash, make_response, url_for, redirect)
 
 from flask.ext.babel import gettext as _
 
@@ -117,7 +118,7 @@ def get_image(model, id, field, sha1):
     if not openerp_model:
         # Incorrect Call
         return render_template('404.html'), 404
-    
+
     image_data = openerp_model.read(id, field)
     if not image_data:
         # No image found

@@ -5,7 +5,6 @@
 # import math
 
 # Extra Lib
-from flask import session
 from flask.ext.babel import gettext as _
 
 # Custom Tools

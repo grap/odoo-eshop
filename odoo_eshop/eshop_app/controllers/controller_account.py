@@ -5,16 +5,15 @@
 import io
 
 # Extra Libs
-from flask import (
-    request, render_template, flash, session, url_for, redirect, abort,
-    send_file,
-)
+from flask import request, render_template, flash, session, abort, send_file
+
 
 from flask.ext.babel import gettext as _
 
 # Custom Tools
 from ..application import app
 
+from ..tools.web import redirect_url_for
 from ..tools.config import conf
 from ..tools.erp import openerp, get_invoice_pdf, get_order_pdf
 from ..tools.auth import logout, requires_connection, requires_auth
@@ -134,8 +133,7 @@ def login_view():
             request.form['login'], request.form['password'])
         if partner_id:
             session['partner_id'] = partner_id
-            partner = get_current_partner()
-            return redirect(url_for('home_logged'))
+            return redirect_url_for('home_logged')
         else:
             flash(_('Login/password incorrects'), 'danger')
     return render_template('login.html')
@@ -145,7 +143,7 @@ def login_view():
 @requires_connection
 def logout_view():
     logout()
-    return redirect(url_for('home'))
+    return redirect_url_for('home')
 
 
 @app.route("/register.html", methods=['GET', 'POST'])
@@ -155,7 +153,7 @@ def register():
     company = get_openerp_object(
         'res.company', int(conf.get('openerp', 'company_id')))
     if not company.eshop_register_allowed or get_current_partner():
-        return redirect(url_for('home'))
+        return redirect_url_for('home')
 
 #    previous_captcha = session.get('captcha', False)
 #    PATH_TTF = conf.get('captcha', 'font_path').split(',')
@@ -239,7 +237,7 @@ def register():
                 " '%(email)s' and click on the link you received to activate"
                 " your account.",
                 email=request.form['email']), 'success')
-            return redirect(url_for('home'))
+            return redirect_url_for('home')
         else:
             return render_template('register.html')
 
@@ -264,7 +262,7 @@ def activate_account(id, email):
         flash(_(
             "The validation process failed because your account is disabled."
             " Please ask your seller to fix the problem."), 'warning')
-    return redirect(url_for('home'))
+    return redirect_url_for('home')
 
 
 @app.route("/password_lost.html", methods=['GET', 'POST'])
@@ -272,7 +270,7 @@ def activate_account(id, email):
 def password_lost():
     # Check if the operation is possible
     if get_current_partner():
-        return redirect(url_for('home'))
+        return redirect_url_for('home')
 #    previous_captcha = session.get('captcha', False)
 #    PATH_TTF = conf.get('captcha', 'font_path').split(',')
 #    image = ImageCaptcha(fonts=PATH_TTF)
@@ -307,13 +305,13 @@ def password_lost():
                 flash(_(
                     "There is a problem with your account."
                     " Please contact your seller."), 'danger')
-                return redirect(url_for('home'))
+                return redirect_url_for('home')
             else:
                 if len(partner_ids) == 1:
                     openerp.ResPartner.send_credentials(partner_ids)
                 flash(_(
                     " we sent an email to this mailbox, if this email was"
                     " linked to an active account."), 'success')
-                return redirect(url_for('home'))
+                return redirect_url_for('home')
 
     return render_template('password_lost.html', captcha_data=captcha_data)

@@ -2,13 +2,12 @@
 # -*- encoding: utf-8 -*-
 
 # Extra Libs
-from flask import (
-    request, render_template, flash, redirect, url_for, jsonify,
-)
+from flask import request, render_template, flash, jsonify
 from flask.ext.babel import gettext as _
 
 # Custom Tools
 from ..application import app
+from ..tools.web import redirect_url_for
 from ..tools.config import conf
 from ..tools.erp import openerp
 from ..tools.auth import requires_auth
@@ -34,7 +33,7 @@ from ..models.sale_order import (
 @requires_auth
 def shopping_cart():
     if not get_current_sale_order_id():
-        return redirect(url_for('home'))
+        return redirect_url_for('home')
     return render_template('shopping_cart.html')
 
 
@@ -44,7 +43,7 @@ def shopping_cart_note_update():
     if request.is_xhr:
         return jsonify(result=res)
     flash(res['message'], res['state'])
-    return redirect(url_for('shopping_cart.html'))
+    return redirect_url_for('shopping_cart')
 
 
 @app.route('/shopping_cart_quantity_update', methods=['POST'])
@@ -55,7 +54,7 @@ def shopping_cart_quantity_update():
     if request.is_xhr:
         return jsonify(result=res)
     flash(res['message'], res['state'])
-    return redirect(url_for('shopping_cart'))
+    return redirect_url_for('shopping_cart')
 
 
 @app.route("/shopping_cart_delete")
@@ -63,7 +62,7 @@ def shopping_cart_quantity_update():
 def shopping_cart_delete():
     delete_current_sale_order()
     flash(_("Your shopping cart has been successfully deleted."), 'success')
-    return redirect(url_for('home_logged'))
+    return redirect_url_for('home_logged')
 
 
 @app.route("/shopping_cart_delete_line/<int:line_id>")
@@ -95,7 +94,7 @@ def recovery_moment_place():
             _("You have not reached the ceiling : ") +
             currency(company.eshop_minimum_price),
             'warning')
-        return redirect(url_for('shopping_cart'))
+        return redirect_url_for('shopping_cart')
     return render_template(
         'recovery_moment_place.html',
         recovery_moment_groups=recovery_moment_groups)
@@ -121,12 +120,12 @@ def select_recovery_moment(recovery_moment_id):
         openerp.SaleOrder.action_button_confirm([sale_order_id])
         openerp.SaleOrder.send_mail([sale_order_id])
         flash(_("Your Sale Order is now confirmed."), 'success')
-        return redirect(url_for('orders'))
+        return redirect_url_for('orders')
     else:
         flash(_(
             "You have selected an obsolete recovery moment."
             " Please try again."), 'error')
-        return redirect(url_for('shopping_cart'))
+        return redirect_url_for('shopping_cart')
 
 
 # ############################################################################
@@ -148,7 +147,7 @@ def delivery_moment():
             _("You have not reached the ceiling : ") +
             currency(company.eshop_minimum_price),
             'warning')
-        return redirect(url_for('shopping_cart'))
+        return redirect_url_for('shopping_cart')
     return render_template(
         'delivery_moment.html', delivery_moments=delivery_moments)
 
@@ -165,15 +164,15 @@ def select_delivery_moment(delivery_moment_id):
                     "Your Sale Order has been partially confirmed.\n"
                     " A residual shopping Cart has been created with remaning"
                     " Products."), 'warning')
-                return redirect(url_for('shopping_cart'))
+                return redirect_url_for('shopping_cart')
             else:
                 flash(_("Your Sale Order is now confirmed."), 'success')
-                return redirect(url_for('orders'))
+                return redirect_url_for('orders')
         else:
             flash(_(
                 "Something wrong happened."
                 " Please select again your delivery moment."), 'danger')
-            return redirect(url_for('shopping_cart'))
+            return redirect_url_for('shopping_cart')
     else:
         flash(_("Your Shopping Cart has been deleted."), 'danger')
-        return redirect(url_for('home'))
+        return redirect_url_for('home')
