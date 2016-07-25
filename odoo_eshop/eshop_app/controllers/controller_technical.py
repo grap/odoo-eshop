@@ -8,8 +8,7 @@ from datetime import datetime  # , timedelta
 import pytz
 
 # Extra Libs
-from flask import (
-    request, render_template, flash, make_response, url_for, redirect)
+from flask import request, render_template, flash, make_response
 
 from flask.ext.babel import gettext as _
 
@@ -107,7 +106,6 @@ def get_image(model, id, field, sha1):
     @param sha1: unused param in the function. Used to force client
         to reload obsolete images.
     """
-    print "get_image %s %s %s %s" % (model, id, field, sha1)
     openerp_model = {
         'product.product': openerp.ProductProduct,
         'eshop.category': openerp.eshopCategory,
@@ -127,7 +125,7 @@ def get_image(model, id, field, sha1):
             'eshop.category': 'images/eshop_category_without_image.png',
             'res.company': 'images/res_company_without_image.png',
         }[model]
-        return redirect(url_for('static', filename=file_name))
+        return redirect_url_for('static', filename=file_name)
 
     response = make_response(base64.decodestring(image_data))
     # TODO FIXME Ask Arthur how to manage cached dynamic datas

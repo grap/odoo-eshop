@@ -3,11 +3,12 @@
 
 # Extra Lib
 from functools import wraps
-from flask import session, render_template, flash, redirect, url_for
+from flask import session, render_template, flash
 from flask.ext.babel import gettext as _
 
 # Custom Tools
 from .erp import openerp
+from .web import redirect_url_for
 
 
 def logout():
@@ -51,7 +52,7 @@ def requires_auth(f):
             # Check OpenERP Authentication
             if not session.get('partner_id', False):
                 # User no authenticated
-                return redirect(url_for('login_view'))
+                return redirect_url_for('login_view')
             else:
                 return f(*args, **kwargs)
 

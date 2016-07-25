@@ -2,8 +2,7 @@
 # -*- encoding: utf-8 -*-
 
 # Extra Libs
-from flask import request, render_template, flash, redirect, url_for, \
-    jsonify
+from flask import request, render_template, flash, jsonify
 
 # Custom Tools
 from ..application import app
@@ -134,4 +133,4 @@ def product_add_qty(product_id):
     res = set_quantity(
         int(product_id), request.form['quantity'], True, 'add')
     flash(res['message'], res['state'])
-    return redirect(url_for('product', product_id=product_id))
+    return redirect_url_for('product', product_id=product_id)
