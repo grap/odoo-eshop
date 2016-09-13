@@ -1,1 +1,1 @@
-from odoo_eshop.app import app as application
+from odoo_eshop.eshop_app.application import app as application
