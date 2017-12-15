@@ -1,6 +1,8 @@
 #! /usr/bin/env python
 # -*- encoding: utf-8 -*-
 
+import hashlib
+
 # Extra Libs
 from flask import request, render_template, flash, jsonify
 
@@ -78,9 +80,19 @@ def catalog_inline():
     catalog_inline = openerp.productProduct.get_current_eshop_product_list(
         sale_order_id)
 
+    labels = {}
+    for product in catalog_inline:
+        for lid in product['label_ids']:
+            if lid in labels:
+                continue
+            write_date = openerp.productLabel.perm_read(lid)[0]['write_date']
+            labels[lid] = hashlib.sha1(str(write_date)).hexdigest()
+
     return render_template(
         'catalog_inline.html',
-        catalog_inline=catalog_inline)
+        catalog_inline=catalog_inline,
+        labels=labels,
+    )
 
 
 @app.route('/catalog_inline_quantity_update', methods=['POST'])
