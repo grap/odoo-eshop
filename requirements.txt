@@ -3,3 +3,4 @@ flask-babel
 erppeek
 phonenumbers
 Flask-Cache
+redis
