@@ -49,7 +49,6 @@
             </th>
         </tr>
         {% endif %}
-        {% set uom = get_object('product.uom', item['uom_id']) %} 
         {% set current_category = item['category_id']%}
         <tr>
             <td>
@@ -68,7 +67,7 @@
                 {{ item['list_price']|to_currency }}
             </td>
             <td>
-                {{ uom.eshop_description }}
+                {{ item['uom_eshop_description'] }}
             </td>
             <td>
                 {{item['eshop_minimum_qty']|float_to_string}}
