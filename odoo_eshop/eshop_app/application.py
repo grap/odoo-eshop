@@ -28,3 +28,7 @@ cache = Cache(app, config={'CACHE_TYPE': conf.get('cache', 'method')})
 
 # Clear Cache
 cache.clear()
+
+from models.models import prefetch
+
+prefetch()

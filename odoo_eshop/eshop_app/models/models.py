@@ -84,3 +84,19 @@ def _get_openerp_object(model_name, id):
 class _OpenerpModel(object):
     def __init__(self, id):
         self.id = id
+
+def prefetch():
+    # Prefetch eShop Categories
+    categories = openerp.eshopCategory.browse([])
+    for category in categories:
+        _get_openerp_object('eshop.category', category.id)
+
+    # Prefetch Labels
+    labels = openerp.ProductLabel.browse([])
+    for label in labels:
+        _get_openerp_object('product.label', label.id)
+
+    # Prefetch Uom
+    uoms = openerp.ProductUom.browse([('eshop_description', '!=', False)])
+    for uom in uoms:
+        _get_openerp_object('product.uom', uom.id)
