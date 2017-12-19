@@ -39,13 +39,12 @@
 {% set current_category = False %} 
     {% for item in catalog_inline %}
         {% if current_category != item['category_id']%}
-            {% set category = get_object('eshop.category', item['category_id']) %}
         <tr>
             <th colspan="100%">
                 <h2>
                     <img class="thumbnail img-responsive img-medium-eshop-categ"
-                        src="{{ url_for('get_image', model='eshop.category', id=category.id, field='image_medium', sha1=category.sha1) }}"/>
-                {{ category.complete_name }}
+                        src="{{ url_for('get_image', model='eshop.category', id=item['category_id'], field='image_medium', sha1=item['category_sha1']) }}"/>
+                {{ item['category_complete_name'] }}
                 </h2>
             </th>
         </tr>
