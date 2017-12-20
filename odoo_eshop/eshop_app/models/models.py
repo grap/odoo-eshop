@@ -2,6 +2,7 @@
 # -*- encoding: utf-8 -*-
 
 # Standard Libs
+import datetime
 import hashlib
 
 # Custom Tools
@@ -62,12 +63,19 @@ def _get_openerp_models():
     return _eshop_openerp_models
 
 
+_PREFETCH_OBJECTS = {}
+
 @cache.memoize()
 def _get_openerp_object(model_name, id):
     if not id:
         return False
-    myModel = _get_openerp_models()[model_name]
+    myObj = _PREFETCH_OBJECTS.get('%s,%d' % (model_name, id), False)
+    if myObj:
+        print "got in prefetch ! %s %d" % (model_name, id)
+        return myObj
     myObj = _OpenerpModel(id)
+    myModel = _get_openerp_models()[model_name]
+
     data = myModel['proxy'].read(id, myModel['fields'])
     if myModel['manage_write_date']:
         write_date = myModel['proxy'].perm_read(id)[0]['write_date']
@@ -79,6 +87,39 @@ def _get_openerp_object(model_name, id):
             setattr(myObj, key, data[key])
     return myObj
 
+def _prefetch_objects(model_name, domain):
+    global _PREFETCH_OBJECTS
+    print "%s prefetching %s" % (
+        datetime.datetime.now().strftime('%Y-%m-%d - %H:%M:%S'), model_name)
+    myModel = _get_openerp_models()[model_name]
+    ids = myModel['proxy'].search(domain)
+    datas = myModel['proxy'].read(ids, myModel['fields'])
+    if myModel['manage_write_date']:
+        data_dates = myModel['proxy'].perm_read(ids)
+
+    for data in datas:
+        id = data['id']
+        # Creating Object
+        myObj = _OpenerpModel(id)
+        # Adding regular values
+        for key in myModel['fields']:
+            if key[-3:] == '_id' and data[key]:
+                setattr(myObj, key, data[key][0])
+            else:
+                setattr(myObj, key, data[key])
+        # adding write date values
+        if myModel['manage_write_date']:
+            write_date = False
+            for item in data_dates:
+                if item['id'] == id:
+                    write_date = item['write_date']
+                    break
+            setattr(myObj, 'sha1', hashlib.sha1(str(write_date)).hexdigest())
+        _PREFETCH_OBJECTS['%s,%d' % (model_name, id)] = myObj
+
+        # Call for memoize
+        _get_openerp_object(model_name, id)
+    _PREFETCH_OBJECTS = {}
 
 # Private Model
 class _OpenerpModel(object):
@@ -87,16 +128,6 @@ class _OpenerpModel(object):
 
 def prefetch():
     # Prefetch eShop Categories
-    categories = openerp.eshopCategory.browse([])
-    for category in categories:
-        _get_openerp_object('eshop.category', category.id)
-
-    # Prefetch Labels
-    labels = openerp.ProductLabel.browse([])
-    for label in labels:
-        _get_openerp_object('product.label', label.id)
-
-    # Prefetch Uom
-    uoms = openerp.ProductUom.browse([('eshop_description', '!=', False)])
-    for uom in uoms:
-        _get_openerp_object('product.uom', uom.id)
+    _prefetch_objects('eshop.category', [])
+    _prefetch_objects('product.label', [])
+    _prefetch_objects('product.uom', [('eshop_description', '!=', False)])
