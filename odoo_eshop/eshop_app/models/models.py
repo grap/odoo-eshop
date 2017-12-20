@@ -71,7 +71,6 @@ def _get_openerp_object(model_name, id):
         return False
     myObj = _PREFETCH_OBJECTS.get('%s,%d' % (model_name, id), False)
     if myObj:
-        print "got in prefetch ! %s %d" % (model_name, id)
         return myObj
     myObj = _OpenerpModel(id)
     myModel = _get_openerp_models()[model_name]
@@ -89,8 +88,6 @@ def _get_openerp_object(model_name, id):
 
 def _prefetch_objects(model_name, domain):
     global _PREFETCH_OBJECTS
-    print "%s prefetching %s" % (
-        datetime.datetime.now().strftime('%Y-%m-%d - %H:%M:%S'), model_name)
     myModel = _get_openerp_models()[model_name]
     ids = myModel['proxy'].search(domain)
     datas = myModel['proxy'].read(ids, myModel['fields'])
@@ -131,3 +128,4 @@ def prefetch():
     _prefetch_objects('eshop.category', [])
     _prefetch_objects('product.label', [])
     _prefetch_objects('product.uom', [('eshop_description', '!=', False)])
+    _prefetch_objects('product.product', [('eshop_state', '=', 'available')])
