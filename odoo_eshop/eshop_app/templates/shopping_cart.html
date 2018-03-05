@@ -100,7 +100,7 @@
             {% if company.is_vat_included %}
             <td class="td-input-text">
                 <input type="text" class="form-control input-amount" id="price_subtotal_{{product.id}}" 
-                        placeholder="{{ line.price_subtotal_taxinc|to_currency }}" readonly/>
+                        placeholder="{{ line.price_subtotal_gross|to_currency }}" readonly/>
             </td>
             {% else %}
             <td class="td-input-text">

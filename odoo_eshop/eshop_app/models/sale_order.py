@@ -101,7 +101,7 @@ def set_quantity(product_id, quantity, allow_null, method):
 
     res['is_surcharged'] = res['discount'] < 0
     if get_is_vat_included(company, get_current_sale_order(), False):
-        res['amount_line'] = currency(res['price_subtotal_taxinc'])
+        res['amount_line'] = currency(res['price_subtotal_gross'])
         res['amount_total_header'] = currency(res['amount_total'])
         res['minimum_ok'] = (
             res['amount_total'] >= company.eshop_minimum_price)
