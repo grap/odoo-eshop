@@ -27,6 +27,7 @@ from ..models.models import (
     get_openerp_object,
     invalidate_openerp_object,
     currency,
+    get_image_model,
 )
 
 from ..models.res_partner import get_current_partner, get_current_partner_id
@@ -106,24 +107,15 @@ def get_image(model, id, field, sha1):
     @param sha1: unused param in the function. Used to force client
         to reload obsolete images.
     """
-    openerp_model = {
-        'product.product': openerp.ProductProduct,
-        'eshop.category': openerp.eshopCategory,
-        'product.delivery.category': openerp.ProductDeliveryCategory,
-        'product.label': openerp.ProductLabel,
-        'res.company': openerp.ResCompany,
-    }[model]
-    if not openerp_model:
-        # Incorrect Call
-        return render_template('404.html'), 404
-
-    image_data = openerp_model.read(id, field)
+    image_data = get_image_model(model, id, field, sha1)
     if not image_data:
         # No image found
         file_name = {
             'product.product': 'images/product_product_without_image.png',
             'eshop.category': 'images/eshop_category_without_image.png',
             'res.company': 'images/res_company_without_image.png',
+            'product.label': 'images/res_company_without_image.png',
+            'product.delivery.category': 'images/res_company_without_image.png',
         }[model]
         return redirect_url_for('static', filename=file_name)
 

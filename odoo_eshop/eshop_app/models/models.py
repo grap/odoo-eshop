@@ -130,4 +130,26 @@ def prefetch():
     _prefetch_objects('res.country', [])
     _prefetch_objects('res.country.department', [])
     _prefetch_objects('account.tax', [])
-#    _prefetch_objects('product.product', [('eshop_state', '=', 'available')])
+
+@cache.cached(key_prefix='odoo_eshop/%s')
+def get_image_model(model, id, field, sha1):
+    """Return an image depending of
+    @param model: Odoo model. Ex: 'product.product';
+    @param id: Id of the object. Ex: 4235';
+    @param field: Odoo field name. Ex: 'image_medium';
+    @param sha1: unused param in the function. Used to force client
+        to reload obsolete images.
+    """
+    openerp_model = {
+        'product.product': openerp.ProductProduct,
+        'eshop.category': openerp.eshopCategory,
+        'product.delivery.category': openerp.ProductDeliveryCategory,
+        'product.label': openerp.ProductLabel,
+        'res.company': openerp.ResCompany,
+    }[model]
+
+    image_data = openerp_model.read(id, field)
+    if not image_data:
+        return False
+    else:
+        return image_data

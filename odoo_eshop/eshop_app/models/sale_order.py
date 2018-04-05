@@ -50,7 +50,6 @@ def get_is_vat_included(company, sale_order, partner):
 
 def get_current_sale_order_id():
     """Return current order id, or False if not Found"""
-
     return openerp.SaleOrder.eshop_get_current_sale_order_id(
         get_current_partner_id())
 
