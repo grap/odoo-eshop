@@ -34,11 +34,6 @@
             <td>{{ order.recovery_moment_id.min_recovery_date|to_day }}</td>
             <td>{{ order.recovery_moment_id.min_recovery_date|to_date }}</td>
             <td>{{ order.recovery_moment_id.min_recovery_date|to_time }} - {{ order.recovery_moment_id.max_recovery_date|to_time }}</td>
-    {% elif order.delivery_moment_id != False %}
-            <td>{{ order.partner_id.contact_address }}</td>
-            <td>{{ order.delivery_moment_id.min_delivery_date|to_day }}</td>
-            <td>{{ order.delivery_moment_id.min_delivery_date|to_date }}</td>
-            <td>{{ order.delivery_moment_id.min_delivery_date|to_time }} - {{ order.delivery_moment_id.max_delivery_date|to_time }}</td>
     {% else %}
             <td>{{ _('Undefined') }}</td>
             <td>{{ _('Undefined') }}</td>

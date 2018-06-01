@@ -29,24 +29,12 @@
                     <span class="glyphicon glyphicon-calendar"/>
                     {{ _('Confirm') }}</a>
                 {% endif %}
-                {% if company.manage_delivery_moment %}
-                <a href="{{ url_for('delivery_moment') }}"
-                    class="btn btn-default" href="#" role="button">
-                    <span class="glyphicon glyphicon-calendar"/>
-                    {{ _('Select Delivery Moment') }}</a>
-                {% endif %}
             </div>
         </div>
     </caption>
     <thead>
         <tr>
             <th>{{ _('Product') }}</th>
-            {% if company.manage_delivery_moment %}
-                    <th title="{{ _('Delivery Category') }}">
-                        {{ _('Categ.') }}
-                    </th>
-            {% endif %}
-
             {% if is_vat_included %}
             <th>{{ _('U.P. VAT Incl.') }}</th>
             {% else %}
@@ -74,14 +62,6 @@
             {% if not company.eshop_vat_included and product.default_code%}{{ product.default_code}} - {% endif %}
                 {{ product.name }}</a>
             </td>
-    {% if company.manage_delivery_moment %}
-        {% set delivery_category = get_object('product.delivery.category', product.delivery_categ_id) %} 
-            <td>
-        {% if delivery_category %}
-            {{ delivery_category.name }}
-        {% endif %}
-            </td>
-    {% endif %}
             <td>{{ line.price_unit|to_currency }}</td>
             <td>{{ uom.eshop_description }}</td>
             <td>{{ product.eshop_taxes_description }}</td>
@@ -121,15 +101,9 @@
         <tr>
             <th colspan="100%">&nbsp;</th>
         </tr>
-
         <tr>
-            {% if company.manage_delivery_moment %}
-            <td colspan="5" rowspan="3">
-            {% else %}
             <form class="form-inline" role="form" method="POST" action="{{ url_for('shopping_cart_note_update') }}">
                 <td colspan="4" rowspan="3">
-            {% endif %}
-
                     <textarea class="form-control" rows="3" id="shopping_cart_note" name="shopping_cart_note" placeholder="{{_('Extra Comments')}}">{{ sale_order.note|empty_if_null }}</textarea>
                     <button type="submit" class="btn btn-default hide_if_jquery_enabled">{{ _('Update')}}</button>
                 </td>

@@ -35,7 +35,7 @@ def get_invoice_pdf(invoice_id):
     )
     report_datas = openerp.model(model_name).read(model_id)
     report_id = openerp.report(
-        'account.invoice', [invoice_id], report_datas
+        'account.report_invoice', [invoice_id], report_datas
     )
     done = False
     while not done:
@@ -50,7 +50,7 @@ def get_order_pdf(order_id):
     )
     report_datas = openerp.model(model_name).read(model_id)
     report_id = openerp.report(
-        'sale.order', [order_id], report_datas
+        'grap_qweb_report.grap_template_sale_order', [order_id], report_datas
     )
     done = False
     while not done:

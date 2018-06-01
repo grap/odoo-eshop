@@ -115,7 +115,6 @@ def select_recovery_moment(recovery_moment_id):
     if found:
         openerp.SaleOrder.write([sale_order_id], {
             'recovery_moment_id': recovery_moment_id,
-            'reminder_state': 'to_send',
         })
         openerp.SaleOrder.action_button_confirm([sale_order_id])
         openerp.SaleOrder.send_mail([sale_order_id])
@@ -126,53 +125,3 @@ def select_recovery_moment(recovery_moment_id):
             "You have selected an obsolete recovery moment."
             " Please try again."), 'error')
         return redirect_url_for('shopping_cart')
-
-
-# ############################################################################
-# Delivery Moment Place Route
-# ############################################################################
-@app.route("/delivery_moment")
-@requires_auth
-def delivery_moment():
-    company = get_openerp_object(
-        'res.company', int(conf.get('openerp', 'company_id')))
-    sale_order = get_current_sale_order()
-    delivery_moments = openerp.SaleDeliveryMoment.load_delivery_moment_data(
-        sale_order.id, company.eshop_minimum_price,
-        company.eshop_vat_included)
-
-    if (company.eshop_minimum_price != 0
-            and company.eshop_minimum_price > sale_order.amount_total):
-        flash(
-            _("You have not reached the ceiling : ") +
-            currency(company.eshop_minimum_price),
-            'warning')
-        return redirect_url_for('shopping_cart')
-    return render_template(
-        'delivery_moment.html', delivery_moments=delivery_moments)
-
-
-@app.route("/select_delivery_moment/<int:delivery_moment_id>")
-@requires_auth
-def select_delivery_moment(delivery_moment_id):
-    sale_order_id = get_current_sale_order_id()
-    if sale_order_id:
-        if openerp.SaleOrder.select_delivery_moment_id(
-                sale_order_id, delivery_moment_id):
-            if get_current_sale_order_id():
-                flash(_(
-                    "Your Sale Order has been partially confirmed.\n"
-                    " A residual shopping Cart has been created with remaning"
-                    " Products."), 'warning')
-                return redirect_url_for('shopping_cart')
-            else:
-                flash(_("Your Sale Order is now confirmed."), 'success')
-                return redirect_url_for('orders')
-        else:
-            flash(_(
-                "Something wrong happened."
-                " Please select again your delivery moment."), 'danger')
-            return redirect_url_for('shopping_cart')
-    else:
-        flash(_("Your Shopping Cart has been deleted."), 'danger')
-        return redirect_url_for('home')

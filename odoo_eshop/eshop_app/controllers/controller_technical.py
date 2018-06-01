@@ -51,8 +51,7 @@ def home():
 def home_logged():
     company = get_openerp_object(
         'res.company', int(conf.get('openerp', 'company_id')))
-    if company.manage_recovery_moment\
-            and not company.manage_delivery_moment:
+    if company.manage_recovery_moment:
         pending_moment_groups = openerp.SaleRecoveryMomentGroup.browse(
             [('state', 'in', 'pending_sale')])
         if len(pending_moment_groups) == 0:
@@ -80,16 +79,8 @@ def home_logged():
                 day=to_day(pending_moment_groups[0].max_sale_date),
                 date=to_date(pending_moment_groups[0].max_sale_date),
                 time=to_time(pending_moment_groups[0].max_sale_date)), 'info')
-    elif company.manage_delivery_moment\
-            and not company.manage_recovery_moment:
-        partner = get_current_partner()
-        if not partner.delivery_categ_id:
-            flash(_(
-                "Your account is not correctly set : your delivery group"
-                " is not defined. Please contact your seller to fix the"
-                " problem"), 'danger')
     else:
-        flash(_('Recovery / Delivery Moment Unset'), 'danger')
+        flash(_('Recovery Moment Unset'), 'danger')
     return render_template('home.html')
 
 

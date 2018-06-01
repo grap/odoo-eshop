@@ -25,11 +25,6 @@
 {% if company.eshop_manage_unpacking %}
             <th>{{_('Unp.')}}</th>
 {% endif %}
-{% if company.manage_delivery_moment %}
-            <th title="{{ _('Delivery Category') }}">
-                {{ _('Categ.') }}
-            </th>
-{% endif %}
 {% if not company.eshop_vat_included %}
             <th>{{_('VAT')}}</th>
 {% endif %}
