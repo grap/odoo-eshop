@@ -3,7 +3,7 @@
    :alt: License: AGPL-3
 
 ==============
-{module_title}
+Odoo Eshop
 ==============
 
 This app is a Flask Website that communicate with Odoo, to provide
@@ -28,6 +28,7 @@ Technical caracteristics
 
 - Do not host database, datas are requested on the fly to the odoo instance.
 - Cache with Redis, to reduce Odoo call.
+- Use Jinja as a template language (http://jinja.pocoo.org/docs/2.10/)
 
 
 Installation
@@ -45,7 +46,7 @@ apt-get install redis-server
 Odoo Installation
 -----------------
 
-This version is compatible with an Odoo 7.0 with the following modules
+This version is compatible with an Odoo 7.0 and 8.0 with the following modules
 installed :
 
 mandatory modules
@@ -60,14 +61,20 @@ Optional modules
 Note, you should change somes controlers and templates, if you don't want
 to install this modules.
 
+Launch eshop
+-----------------
+```
+python -m odoo_eshop
+```
+
+
 Roadmap / Know Issues
 =====================
 
 * controller_technical.py
-    * l'url d'image renvoie un fichier à télécharger, plutot qu'une image
-      a afficher;
-    * IMPORTANT le code est toujours 200, et devrait être 304 pour alléger la
-      charge serveur + réduire le transfert;
+    * the image url return a file to download, rather than a picture to display
+    * IMPORTANT : it's always a 200 code, but should be 304 to light the 
+    server load + reduce transfert
 
 Credits
 =======
