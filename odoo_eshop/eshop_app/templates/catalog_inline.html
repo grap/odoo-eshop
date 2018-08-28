@@ -77,14 +77,6 @@
                 {% endif %}
             </td>
             {% endif %}
-            {% if company.manage_delivery_moment %}
-            <td>
-                {% if item['delivery_categ_id'] %}
-                    {% set delivery_category = get_object('product.delivery.category', item['delivery_categ_id']) %} 
-                    {{ delivery_category.name }}
-                {% endif %}
-            </td>
-            {% endif %}
             {% if not company.eshop_vat_included %}
             <td>
                 {% for tax_id in item['tax_ids'] %}

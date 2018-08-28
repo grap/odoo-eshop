@@ -106,7 +106,6 @@ def get_image(model, id, field, sha1):
             'eshop.category': 'images/eshop_category_without_image.png',
             'res.company': 'images/res_company_without_image.png',
             'product.label': 'images/res_company_without_image.png',
-            'product.delivery.category': 'images/res_company_without_image.png',
         }[model]
         return redirect_url_for('static', filename=file_name)
 

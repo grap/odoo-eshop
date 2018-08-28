@@ -54,7 +54,6 @@ def _get_openerp_models():
             data['proxy'] = {
                 'product.product': openerp.ProductProduct,
                 'eshop.category': openerp.eshopCategory,
-                'product.delivery.category': openerp.ProductDeliveryCategory,
                 'product.label': openerp.ProductLabel,
                 'res.country': openerp.ResCountry,
                 'res.country.department': openerp.ResCountryDepartment,
@@ -143,7 +142,6 @@ def get_image_model(model, id, field, sha1):
     openerp_model = {
         'product.product': openerp.ProductProduct,
         'eshop.category': openerp.eshopCategory,
-        'product.delivery.category': openerp.ProductDeliveryCategory,
         'product.label': openerp.ProductLabel,
         'res.company': openerp.ResCompany,
     }[model]
