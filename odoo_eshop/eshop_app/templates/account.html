@@ -14,7 +14,7 @@
         <tbody>
             <tr>
                 <th>
-                    <label for="account_name" class="control-label">{{ _('Name') }}</label>
+                    <label for="account_name" class="control-label">{{ _('Name') }} (*)</label>
                 </th>
                 <td colspan="100%">
                     <input type="text" class="form-control account_data" value="{{ partner.name|empty_if_null }}" readonly>
@@ -44,7 +44,7 @@
             </tr>
             <tr>
                 <th>
-                    <label for="account_street" class="control-label">{{ _('Street') }} (*)</label>
+                    <label for="account_street" class="control-label">{{ _('Street') }}</label>
                 </th>
                 <td colspan="100%">
                     <input type="text" class="form-control account_data" name="street" value="{{ partner.street|empty_if_null }}"">
@@ -60,13 +60,13 @@
             </tr>
             <tr>
                 <th>
-                    <label for="account_zip" class="control-label">{{ _('ZIP Code') }} (*)</label>
+                    <label for="account_zip" class="control-label">{{ _('ZIP Code') }}</label>
                 </th>
                 <td>
                     <input type="text" class="form-control account_data" name="zip" value="{{ partner.zip|empty_if_null }}"">
                 </td>
                 <th>
-                    <label for="account_city" class="control-label">{{ _('City') }} (*)</label>
+                    <label for="account_city" class="control-label">{{ _('City') }}</label>
                 </th>
                 <td>
                     <input type="text" class="form-control account_data" name="city" value="{{ partner.city|empty_if_null }}"">

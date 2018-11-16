@@ -1,5 +1,4 @@
-#! /usr/bin/env python
-# -*- encoding: utf-8 -*-
+# encoding: utf-8
 
 # Extra Lib
 from functools import wraps

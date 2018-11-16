@@ -1,5 +1,4 @@
-#! /usr/bin/env python
-# -*- encoding: utf-8 -*-
+# encoding: utf-8
 
 # Standard Lib
 # import math

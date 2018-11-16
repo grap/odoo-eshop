@@ -26,9 +26,8 @@ babel = Babel(app)
 # Manage Cache for the new application
 cache = Cache(app, config={'CACHE_TYPE': conf.get('cache', 'method')})
 
-# Clear Cache
+# Clear Cache and reprefetch data
 cache.clear()
 
 from models.models import prefetch
-
 prefetch()

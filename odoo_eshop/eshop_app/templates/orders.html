@@ -21,6 +21,7 @@
             <th>{{ _('Time') }}</th>
             <th>{{ _('Untaxed Amount') }}</th>
             <th>{{ _('Total') }}</th>
+            <th>{{ _('State') }}</th>
             <th></th>
         <tr>
     </thead>
@@ -42,6 +43,16 @@
     {% endif %}
             <td>{{ order.amount_untaxed|to_currency }}</td>
             <td>{{ order.amount_total|to_currency }}</td>
+            <td>
+                {% if order.state == 'sent' %}
+                {{ _('In Progress') }}
+                {% elif order.state != 'done' %}
+                {{ _('Confirmed') }}
+                {% else %}
+                {{ _('Done') }}
+                {% endif %}
+            </td>
+
             <td><a href="{{ url_for('order_download', order_id=order.id) }}">{{ _('Download') }}</a></td>
         </tr>
 {% endfor %}

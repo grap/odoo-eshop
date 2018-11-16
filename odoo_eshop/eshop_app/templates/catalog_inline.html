@@ -12,9 +12,7 @@
     <thead>
         <tr>
             <th>{{_('Product Name')}}</th>
-            <th>&nbsp;
-<!--            {{_('Labels')}}-->
-            </th>
+            <th>{{_('Labels')}}</th>
 {% if company.eshop_vat_included %}
                 <th>{{_('U.P. VAT Incl.')}}</th>
 {% else %}
@@ -39,9 +37,10 @@
         <tr>
             <th colspan="100%">
                 <h2>
-<!--                    <img class="thumbnail img-responsive img-medium-eshop-categ"-->
-<!--                        src="{{ url_for('get_image', model='eshop.category', id=item['category_id'], field='image_medium', sha1=item['category_sha1']) }}"/>-->
-                {{ item['category_complete_name'] }}
+                    <img class="thumbnail img-responsive img-medium-eshop-categ"
+                        src="{{ url_for('static', filename='odoo_data/eshop_category__image_medium__%d__%s' % (
+item['category_id'], item['category_image_write_date_hash'])) }}"/>
+                    {{ item['category_complete_name'] }}
                 </h2>
             </th>
         </tr>
@@ -56,8 +55,8 @@
             <td class="labels">
             {% for label_id in item['label_ids'] %}
                 {% set label = get_object('product.label', label_id) %} 
-<!--                    <img class="img-small-label" title="{{label.name}}"-->
-<!--                        src="{{ url_for('get_image', model='product.label', id=label.id, field='image_small', sha1=label.sha1) }}"/>-->
+                    <img class="img-small-label" title="{{label.name}}"
+                        src="{{ url_for('static', filename=label.image_small_local_path) }}"/>
             {% endfor %}
             </td>
             <td>

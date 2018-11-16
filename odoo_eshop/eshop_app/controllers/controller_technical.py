@@ -2,19 +2,18 @@
 # -*- encoding: utf-8 -*-
 
 # Standard Libs
-import base64
+# import base64
 import logging
 from datetime import datetime  # , timedelta
 import pytz
 
 # Extra Libs
-from flask import request, render_template, flash, make_response
+from flask import request, render_template, flash
 
 from flask.ext.babel import gettext as _
 
 # Custom Tools
 from ..application import app
-from ..application import cache
 from ..application import babel
 
 from ..tools.web import redirect_url_for
@@ -27,7 +26,6 @@ from ..models.models import (
     get_openerp_object,
     invalidate_openerp_object,
     currency,
-    get_image_model,
 )
 
 from ..models.res_partner import get_current_partner, get_current_partner_id
@@ -51,7 +49,7 @@ def home():
 def home_logged():
     company = get_openerp_object(
         'res.company', int(conf.get('openerp', 'company_id')))
-    if company.manage_recovery_moment:
+    if company.eshop_manage_recovery_moment:
         pending_moment_groups = openerp.SaleRecoveryMomentGroup.browse(
             [('state', 'in', 'pending_sale')])
         if len(pending_moment_groups) == 0:
@@ -85,42 +83,6 @@ def home_logged():
 
 
 # ############################################################################
-# image Routes
-# ############################################################################
-@app.route(
-    "/get_image/<string:model>/<int:id>/<string:field>/<string:sha1>/")
-@cache.cached(key_prefix='odoo_eshop/%s')
-def get_image(model, id, field, sha1):
-    """Return an image depending of
-    @param model: Odoo model. Ex: 'product.product';
-    @param id: Id of the object. Ex: 4235';
-    @param field: Odoo field name. Ex: 'image_medium';
-    @param sha1: unused param in the function. Used to force client
-        to reload obsolete images.
-    """
-    image_data = get_image_model(model, id, field, sha1)
-    if not image_data:
-        # No image found
-        file_name = {
-            'product.product': 'images/product_product_without_image.png',
-            'eshop.category': 'images/eshop_category_without_image.png',
-            'res.company': 'images/res_company_without_image.png',
-            'product.label': 'images/res_company_without_image.png',
-        }[model]
-        return redirect_url_for('static', filename=file_name)
-
-    response = make_response(base64.decodestring(image_data))
-    # TODO FIXME Ask Arthur how to manage cached dynamic datas
-#    expiry_time = datetime.utcnow() + timedelta(days=30)
-#    response.headers["Expires"] = \
-#        expiry_time.strftime("%a, %d %b %Y %H:%M:%S GMT")
-#    response.headers['Last-Modified'] = "Fri, 23 Oct 2015 12:33:52 GMT"
-#    response.headers['Cache-Control'] = 'max-age=300000000'
-    response.headers['Content-Type'] = 'image/jpeg'
-    return response
-
-
-# ############################################################################
 # Technical Routes
 # ############################################################################
 @app.route("/unavailable_service.html")
@@ -131,9 +93,9 @@ def unavailable_service():
 
 @app.route(
     "/invalidation_cache/" +
-    "<string:key>/<string:model>/<int:id>/<string:fields_text>/")
+    "<string:key>/<string:model>/<int:id>/")
 @requires_connection
-def invalidation_cache(key, model, id, fields_text):
+def invalidation_cache(key, model, id):
     if key == conf.get('cache', 'invalidation_key'):
         # Invalidate Object cache
         invalidate_openerp_object(str(model), int(id))
@@ -149,8 +111,8 @@ def page_not_found(e):
 
 @app.errorhandler(Exception)
 def error(e):
-    flash(_(
-        "An unexcepted error occured. Please try again in a while"), 'danger')
+    flash(
+        "An unexcepted error occured. Please try again in a while", 'danger')
     logging.exception('an error occured')
     return render_template('500.html'), 500
 
@@ -186,10 +148,7 @@ def utility_processor():
 # ############################################################################
 @babel.localeselector
 def locale_selector():
-    partner = get_current_partner()
-    if partner:
-        return partner.lang
-    return request.accept_languages.best_match(['fr', 'en'])
+    return request.accept_languages.best_match(['fr'])
 
 
 def get_local_date(str_utc_date, schema):

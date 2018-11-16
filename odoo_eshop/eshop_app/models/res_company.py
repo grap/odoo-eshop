@@ -1,8 +1,5 @@
-#! /usr/bin/env python
-# -*- encoding: utf-8 -*-
+# encoding: utf-8
 
-
-# Custom Tools
 from ..tools.config import conf
 
 from .models import get_openerp_object

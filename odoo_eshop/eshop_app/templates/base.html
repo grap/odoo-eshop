@@ -48,6 +48,8 @@
         </script>
 
         <link href="{{ url_for('static', filename='css/eshop_2.css') }}" rel="stylesheet" />
+        <link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
+
 
     </head>
 
@@ -71,7 +73,7 @@
           <ul class="nav navbar-nav">
                 <li>
                     <a class="btn-default eshop_a_link_header" id="nav_home" href="{{  url_for('home') }}">
-                        <img src="{{ url_for('get_image', model='res.company', id=company.id, field='eshop_image_small', sha1=company.sha1) }}"
+                        <img src="{{ url_for('static', filename=company.eshop_image_small_local_path) }}"
                             class="img-icon-header"/>
                     </a>
 

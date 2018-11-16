@@ -1,5 +1,4 @@
-#! /usr/bin/env python
-# -*- encoding: utf-8 -*-
+# encoding: utf-8
 
 # Standard Lib
 import base64
@@ -20,6 +19,7 @@ def init_openerp(url, login, password, database):
         return openerp, uid, tz
     except:
         return False, False, False
+
 
 openerp, uid, tz = init_openerp(
     conf.get('openerp', 'url'),
