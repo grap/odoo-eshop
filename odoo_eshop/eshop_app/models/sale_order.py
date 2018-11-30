@@ -1,5 +1,4 @@
-#! /usr/bin/env python
-# -*- encoding: utf-8 -*-
+# encoding: utf-8
 
 # Standard Lib
 # import math
@@ -38,7 +37,7 @@ def sanitize_qty(quantity, allow_null):
 def get_is_vat_included(company, sale_order, partner):
     if sale_order:
         # return sale order Settings, if defined
-        if sale_order.simple_tax_type != 'none':
+        if sale_order.partner_id.simple_tax_type != 'none':
             return (sale_order.simple_tax_type == 'included')
     if partner:
         # return Partner Settings, if defined

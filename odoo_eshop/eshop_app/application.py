@@ -11,6 +11,7 @@ from flask.ext.cache import Cache
 
 # Custom Tools
 from tools.config import conf
+from models.models import prefetch
 
 # Create Aplication
 app = Flask(__name__)
@@ -26,9 +27,6 @@ babel = Babel(app)
 # Manage Cache for the new application
 cache = Cache(app, config={'CACHE_TYPE': conf.get('cache', 'method')})
 
-# Clear Cache
+# Clear Cache and reprefetch data
 cache.clear()
-
-from models.models import prefetch
-
 prefetch()

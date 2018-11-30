@@ -1,17 +1,71 @@
-#! /usr/bin/env python
-# -*- encoding: utf-8 -*-
+# encoding: utf-8
 
 # Standard Libs
-import datetime
-import hashlib
+import os
+import base64
 import logging
+import shutil
 
 # Custom Tools
+# from ..tools.config import conf
 from ..tools.erp import openerp
 from ..application import cache, app
 
 
 logger = logging.getLogger('odoo_eshop')
+
+_ODOO_MODELS = {
+    'account.tax': {
+        'proxy': openerp.AccountTax,
+        'prefetch': True,
+    },
+    'eshop.category': {
+        'proxy': openerp.eshopCategory,
+        'prefetch': True,
+        'image_fields': ['image', 'image_medium', 'image_small'],
+    },
+    'product.label': {
+        'proxy': openerp.ProductLabel,
+        'prefetch': True,
+        'image_fields': ['image', 'image_small'],
+    },
+    'product.product': {
+        'proxy': openerp.ProductProduct,
+        'prefetch': True,
+        'image_fields': ['image', 'image_medium', 'image_small'],
+    },
+    'product.uom': {
+        'proxy': openerp.ProductUom,
+        'prefetch': True,
+    },
+    'res.company': {
+        'proxy': openerp.ResCompany,
+        'prefetch': True,
+        'image_fields': ['eshop_image_small']
+    },
+    'res.country': {
+        'proxy': openerp.ResCountry,
+        'prefetch': True,
+    },
+    'res.country.department': {
+        'proxy': openerp.ResCountryDepartment,
+        'prefetch': True,
+    },
+    'res.partner': {
+        'proxy': openerp.ResPartner,
+        'prefetch': False,
+    }
+}
+
+
+# Global var that will be used as cache, after first load of the data
+def get_current_prefetched_object():
+    return CURRENT_PREFETCHED_OBJECT
+
+
+def set_current_prefetched_object(prefetched_object):
+    global CURRENT_PREFETCHED_OBJECT
+    CURRENT_PREFETCHED_OBJECT = prefetched_object
 
 
 # Tools Function
@@ -34,120 +88,100 @@ def get_openerp_object(model_name, id):
 
 
 # Private Section
-def _get_openerp_models():
-    if hasattr(app, '_eshop_openerp_models'):
-        _eshop_openerp_models = getattr(app, '_eshop_openerp_models')
-    else:
-        # Load Model
-        _eshop_openerp_models = openerp.ResCompany.GetEshopModel()
-        for model, data in _eshop_openerp_models.iteritems():
-            manage_write_date = False
-            for field in data['fields']:
-                if 'image' in field:
-                    manage_write_date = True
-                    data['fields'].remove(field)
-                    data['fields'].append('write_date')
-            # allways load 'id' fields
-            data['fields'].append('id')
-            # If there are image, we manage write date
-            data['manage_write_date'] = manage_write_date
-            data['proxy'] = {
-                'product.product': openerp.ProductProduct,
-                'eshop.category': openerp.eshopCategory,
-                'product.label': openerp.ProductLabel,
-                'res.country': openerp.ResCountry,
-                'res.country.department': openerp.ResCountryDepartment,
-                'product.uom': openerp.ProductUom,
-                'res.company': openerp.ResCompany,
-                'res.partner': openerp.ResPartner,
-                'account.tax': openerp.AccountTax,
-            }[model]
-            # we set model
-        setattr(app, '_eshop_openerp_models', _eshop_openerp_models)
-    return _eshop_openerp_models
+# def _get_openerp_models():
+#     if hasattr(app, '_eshop_openerp_models'):
+#         _eshop_openerp_models = getattr(app, '_eshop_openerp_models')
+#     else:
+#         _eshop_openerp_models = {}
+#         for model_name, setting in _ODOO_MODELS.iteritems():
+#             openerp_model = setting['proxy']
+#             # Load Model
+#             data = openerp_model.eshop_get_data()
+#             # we set model
+#             data['proxy'] = openerp_model
+#             _eshop_openerp_models[model_name] = data
+#         # Save value
+#         setattr(app, '_eshop_openerp_models', _eshop_openerp_models)
+#     return _eshop_openerp_models
 
-
-_PREFETCH_OBJECTS = {}
 
 @cache.memoize()
-def _get_openerp_object(model_name, id):
-    if not id:
+def _get_openerp_object(model_name, object_id):
+    if not object_id:
         return False
-    myObj = _PREFETCH_OBJECTS.get('%s,%d' % (model_name, id), False)
-    if myObj:
-        return myObj
-    myObj = _OpenerpModel(id)
-    myModel = _get_openerp_models()[model_name]
+    obj = get_current_prefetched_object()
+    if obj:
+        if obj.id == object_id and obj._name == model_name:
+            return obj
 
-    data = myModel['proxy'].read(id, myModel['fields'])
-    for key in myModel['fields']:
-        if key[-3:] == '_id' and data[key]:
-            setattr(myObj, key, data[key][0])
-        elif key =='write_date':
-            setattr(myObj, 'sha1', hashlib.sha1(str(data[key])).hexdigest())
-        else:
-            setattr(myObj, key, data[key])
-    return myObj
+    # # load the data
+    _prefetch_objects(model_name, [('id', '=', object_id)])
+    return get_current_prefetched_object()
 
-def _prefetch_objects(model_name, domain):
-    print "_prefetch_objects %s" % model_name
-    logger.info("Prefetching %s" % (model_name))
-    global _PREFETCH_OBJECTS
-    myModel = _get_openerp_models()[model_name]
-    ids = myModel['proxy'].search(domain)
-    datas = myModel['proxy'].read(ids, myModel['fields'])
+
+def _prefetch_objects(model_name, domain=False):
+    app.logger.info("Prefetching %s. domain : %s" % (model_name, domain or ''))
+    odooModel = _ODOO_MODELS[model_name]['proxy']
+    datas = odooModel.eshop_load_data(domain)
+
+    if datas:
+        fields = datas[0].keys()
 
     for data in datas:
-        id = data['id']
         # Creating Object
-        myObj = _OpenerpModel(id)
-        # Adding regular values
-        for key in myModel['fields']:
-            if key[-3:] == '_id' and data[key]:
-                setattr(myObj, key, data[key][0])
-            elif key =='write_date':
-                setattr(
-                    myObj, 'sha1', hashlib.sha1(str(data[key])).hexdigest())
+        myObj = _OpenerpModel(model_name, data, fields)
+
+        for image_field in _ODOO_MODELS[model_name].get('image_fields', []):
+
+            local_path = "odoo_data/%s__%s__%d__%s" % (
+                model_name.replace('.', '_'),
+                image_field, myObj.id, myObj.image_write_date_hash)
+            file_path = "./odoo_eshop/eshop_app/static/%s" % (local_path)
+
+            setattr(myObj, "%s_local_path" % image_field, local_path)
+
+            if os.path.isfile(file_path):
+                continue
             else:
-                setattr(myObj, key, data[key])
-        _PREFETCH_OBJECTS['%s,%d' % (model_name, id)] = myObj
+                # Load Data if exist
+                image_data = odooModel.read(
+                    myObj.id, [image_field])[image_field]
+                if image_data:
+                    file_object = open(file_path, "w")
+                    file_object.write(base64.decodestring(image_data))
+                    file_object.close()
+                else:
+                    # TODO copy
+                    default_file_path =\
+                        "./odoo_eshop/eshop_app/static/"\
+                        "images/%s_without_image.png" % (
+                            model_name.replace('.', '_'))
+                    shutil.copy(default_file_path, file_path)
+                    # local_path = 'images/%s_without_image.png' % (
+                    # model_name.replace('.', '_'))
+                    pass
+
+        set_current_prefetched_object(myObj)
 
         # Call for memoize
-        _get_openerp_object(model_name, id)
-    _PREFETCH_OBJECTS = {}
+        _get_openerp_object(model_name, myObj.id)
+
 
 # Private Model
 class _OpenerpModel(object):
-    def __init__(self, id):
-        self.id = id
+
+    def __init__(self, model_name, data, fields):
+        self.id = data['id']
+        self._name = model_name
+        for key in fields:
+            if key[-3:] == '_id' and data[key]:
+                setattr(self, key, data[key][0])
+            else:
+                setattr(self, key, data[key])
+
 
 def prefetch():
     # Prefetch eShop Categories
-    _prefetch_objects('eshop.category', [])
-    _prefetch_objects('product.label', [])
-    _prefetch_objects('product.uom', [('eshop_description', '!=', False)])
-    _prefetch_objects('res.country', [])
-    _prefetch_objects('res.country.department', [])
-    _prefetch_objects('account.tax', [])
-
-@cache.cached(key_prefix='odoo_eshop/%s')
-def get_image_model(model, id, field, sha1):
-    """Return an image depending of
-    @param model: Odoo model. Ex: 'product.product';
-    @param id: Id of the object. Ex: 4235';
-    @param field: Odoo field name. Ex: 'image_medium';
-    @param sha1: unused param in the function. Used to force client
-        to reload obsolete images.
-    """
-    openerp_model = {
-        'product.product': openerp.ProductProduct,
-        'eshop.category': openerp.eshopCategory,
-        'product.label': openerp.ProductLabel,
-        'res.company': openerp.ResCompany,
-    }[model]
-
-    image_data = openerp_model.read(id, field)
-    if not image_data:
-        return False
-    else:
-        return image_data
+    for model_name, setting in _ODOO_MODELS.iteritems():
+        if setting['prefetch']:
+            _prefetch_objects(model_name)

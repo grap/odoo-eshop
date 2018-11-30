@@ -116,8 +116,7 @@ def select_recovery_moment(recovery_moment_id):
         openerp.SaleOrder.write([sale_order_id], {
             'recovery_moment_id': recovery_moment_id,
         })
-        openerp.SaleOrder.action_button_confirm([sale_order_id])
-        openerp.SaleOrder.send_mail([sale_order_id])
+        openerp.SaleOrder.eshop_set_as_sent([sale_order_id])
         flash(_("Your Sale Order is now confirmed."), 'success')
         return redirect_url_for('orders')
     else:

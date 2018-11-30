@@ -1,8 +1,6 @@
 #! /usr/bin/env python
 # -*- encoding: utf-8 -*-
 
-import hashlib
-
 # Extra Libs
 from flask import request, render_template, flash, jsonify
 

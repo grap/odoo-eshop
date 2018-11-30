@@ -2,9 +2,9 @@
    :target: https://www.gnu.org/licenses/agpl
    :alt: License: AGPL-3
 
-==============
+==========
 Odoo Eshop
-==============
+==========
 
 This app is a Flask Website that communicate with Odoo, to provide
 a light eShop.
@@ -46,23 +46,24 @@ apt-get install redis-server
 Odoo Installation
 -----------------
 
-This version is compatible with an Odoo 7.0 and 8.0 with the following modules
-installed :
+This version is compatible with an Odoo  8.0 with the following modules
+installed ``sale_eshop`` available here : https://github.com/grap/odoo-addons-misc
 
-mandatory modules
 
-- sale_eshop (mandatory)
+Initial eShop Settings
+----------------------
 
-Optional modules
+in the config.ini file of the eshop, set the : 
+* ``[openerp] url`` : the url (and the port) of your odoo instance
+* ``[openerp] database`` : the database name you want to connect
+* ``[openerp] company_id`` : the odoo company ID want to connect
 
-- sale_food
-- sale_recovery_moment
-
-Note, you should change somes controlers and templates, if you don't want
-to install this modules.
+* ``[auth] user_login`` : the login of the eshop User
+* ``[auth] user_password`` : the password of the eshop User
 
 Launch eshop
------------------
+------------
+
 ```
 python -m odoo_eshop
 ```
