@@ -88,21 +88,21 @@ def get_openerp_object(model_name, id):
 
 
 # Private Section
-def _get_openerp_models():
-    if hasattr(app, '_eshop_openerp_models'):
-        _eshop_openerp_models = getattr(app, '_eshop_openerp_models')
-    else:
-        _eshop_openerp_models = {}
-        for model_name, setting in _ODOO_MODELS.iteritems():
-            openerp_model = setting['proxy']
-            # Load Model
-            data = openerp_model.eshop_get_data()
-            # we set model
-            data['proxy'] = openerp_model
-            _eshop_openerp_models[model_name] = data
-        # Save value
-        setattr(app, '_eshop_openerp_models', _eshop_openerp_models)
-    return _eshop_openerp_models
+# def _get_openerp_models():
+#     if hasattr(app, '_eshop_openerp_models'):
+#         _eshop_openerp_models = getattr(app, '_eshop_openerp_models')
+#     else:
+#         _eshop_openerp_models = {}
+#         for model_name, setting in _ODOO_MODELS.iteritems():
+#             openerp_model = setting['proxy']
+#             # Load Model
+#             data = openerp_model.eshop_get_data()
+#             # we set model
+#             data['proxy'] = openerp_model
+#             _eshop_openerp_models[model_name] = data
+#         # Save value
+#         setattr(app, '_eshop_openerp_models', _eshop_openerp_models)
+#     return _eshop_openerp_models
 
 
 @cache.memoize()
