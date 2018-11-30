@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2018-11-16 13:01+0100\n"
+"POT-Creation-Date: 2018-11-30 10:23+0100\n"
 "PO-Revision-Date: 2014-10-06 14:07+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -146,7 +146,7 @@ msgstr ""
 "Vous avez sélectionné un lieu de récupération obsolète. Veuillez "
 "réessayer."
 
-#: controllers/controller_technical.py:69
+#: controllers/controller_technical.py:67
 #, python-format
 msgid ""
 "It is not possible to buy for the time being, You can buy starting at "
@@ -155,7 +155,7 @@ msgstr ""
 "Il n'est pas possible de passer commande pour le moment, vous pourrez "
 "passer commande  à partir de %(day)s %(date)s %(time)s"
 
-#: controllers/controller_technical.py:71
+#: controllers/controller_technical.py:69
 msgid ""
 "It is not possible to buy for the time being, but you can see the catalog"
 " in the meantime."
@@ -163,60 +163,56 @@ msgstr ""
 "Il n'est pas possible de passer commande pour le moment, mais vous pouvez"
 " découvrir le catalogue des produits."
 
-#: controllers/controller_technical.py:81
+#: controllers/controller_technical.py:79
 #, python-format
 msgid "You can buy until %(day)s %(date)s %(time)s."
 msgstr "Vous pouvez passer commande jusqu'à %(day)s %(date)s %(time)s."
 
-#: controllers/controller_technical.py:83
+#: controllers/controller_technical.py:81
 msgid "Recovery Moment Unset"
 msgstr "Moment de récupération non défini"
 
-#: controllers/controller_technical.py:152
-msgid "An unexcepted error occured. Please try again in a while"
-msgstr "Une erreur inattendue s'est produite. Veuillez réessayer dans un moment."
-
-#: controllers/controller_technical.py:243
+#: controllers/controller_technical.py:202
 msgid "Sunday"
 msgstr "Dimanche"
 
-#: controllers/controller_technical.py:244
+#: controllers/controller_technical.py:203
 msgid "Monday"
 msgstr "Lundi"
 
-#: controllers/controller_technical.py:245
+#: controllers/controller_technical.py:204
 msgid "Tuesday"
 msgstr "Mardi"
 
-#: controllers/controller_technical.py:246
+#: controllers/controller_technical.py:205
 msgid "Wednesdsay"
 msgstr "Mercredi"
 
-#: controllers/controller_technical.py:247
+#: controllers/controller_technical.py:206
 msgid "Thursday"
 msgstr "Jeudi"
 
-#: controllers/controller_technical.py:248
+#: controllers/controller_technical.py:207
 msgid "Friday"
 msgstr "Vendredi"
 
-#: controllers/controller_technical.py:249
+#: controllers/controller_technical.py:208
 msgid "Saturday"
 msgstr "Samedi"
 
-#: controllers/controller_technical.py:280
+#: controllers/controller_technical.py:239
 msgid "Extra"
 msgstr "Extra"
 
-#: controllers/controller_technical.py:281
+#: controllers/controller_technical.py:240
 msgid "Category I"
 msgstr "Catégorie I"
 
-#: controllers/controller_technical.py:282
+#: controllers/controller_technical.py:241
 msgid "Category II"
 msgstr "Catégorie II"
 
-#: controllers/controller_technical.py:283
+#: controllers/controller_technical.py:242
 msgid "Category III"
 msgstr "Catégorie III"
 
@@ -330,7 +326,7 @@ msgstr "Mot de passe"
 msgid "Password (Check)"
 msgstr "Mot de passe (Vérification)"
 
-#: templates/account.html:108 templates/catalog_inline.html:96
+#: templates/account.html:108 templates/catalog_inline.html:95
 #: templates/shopping_cart.html:77 templates/shopping_cart.html:108
 msgid "Update"
 msgstr "Mettre à jour"
@@ -419,40 +415,40 @@ msgstr "Erreur - Boutique inacessible"
 msgid "Product Name"
 msgstr "Nom du produit"
 
-#: templates/catalog_inline.html:16
+#: templates/catalog_inline.html:15
 msgid "Labels"
 msgstr "Labels"
 
-#: templates/catalog_inline.html:19 templates/shopping_cart.html:39
+#: templates/catalog_inline.html:17 templates/shopping_cart.html:39
 msgid "U.P. VAT Incl."
 msgstr "P.U. TTC"
 
-#: templates/catalog_inline.html:21 templates/shopping_cart.html:41
+#: templates/catalog_inline.html:19 templates/shopping_cart.html:41
 msgid "U.P. VAT Excl."
 msgstr "P.U. HT"
 
-#: templates/catalog_inline.html:23 templates/shopping_cart.html:43
+#: templates/catalog_inline.html:21 templates/shopping_cart.html:43
 msgid "Unit"
 msgstr "Unité"
 
-#: templates/catalog_inline.html:24
+#: templates/catalog_inline.html:22
 msgid "Min."
 msgstr "Min."
 
-#: templates/catalog_inline.html:26
+#: templates/catalog_inline.html:24
 msgid "Unp."
 msgstr "Déc."
 
-#: templates/catalog_inline.html:29 templates/shopping_cart.html:44
+#: templates/catalog_inline.html:27 templates/shopping_cart.html:44
 msgid "VAT"
 msgstr "TVA"
 
-#: templates/catalog_inline.html:31 templates/product.html:100
+#: templates/catalog_inline.html:29 templates/product.html:100
 #: templates/shopping_cart.html:45
 msgid "Quantity"
 msgstr "Quantité"
 
-#: templates/catalog_inline.html:113
+#: templates/catalog_inline.html:112
 msgid "Go to Shopping Cart to finish your Order"
 msgstr "Voir le panier pour terminer la commande"
 
@@ -494,7 +490,7 @@ msgstr "Total HT"
 msgid "Total"
 msgstr "Total TTC"
 
-#: templates/invoices.html:29 templates/orders.html:45
+#: templates/invoices.html:29 templates/orders.html:56
 msgid "Download"
 msgstr "Télécharger"
 
@@ -534,12 +530,28 @@ msgstr "Date"
 msgid "Time"
 msgstr "Heure"
 
-#: templates/orders.html:38 templates/orders.html:39 templates/orders.html:40
-#: templates/orders.html:41
+#: templates/orders.html:24
+msgid "State"
+msgstr "Etat"
+
+#: templates/orders.html:39 templates/orders.html:40 templates/orders.html:41
+#: templates/orders.html:42
 msgid "Undefined"
 msgstr "Non Défini"
 
-#: templates/orders.html:51
+#: templates/orders.html:48
+msgid "In Progress"
+msgstr "En cours de traitement"
+
+#: templates/orders.html:50
+msgid "Confirmed"
+msgstr "Confirmé"
+
+#: templates/orders.html:52
+msgid "Done"
+msgstr "Terminé"
+
+#: templates/orders.html:62
 msgid "No Orders for the time being."
 msgstr "Pas de commandes pour le moment."
 
