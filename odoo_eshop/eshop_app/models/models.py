@@ -53,7 +53,7 @@ _ODOO_MODELS = {
     },
     'res.partner': {
         'proxy': openerp.ResPartner,
-        'prefetch': False,
+        'prefetch': True,
     }
 }
 
@@ -169,7 +169,6 @@ def _prefetch_objects(model_name, domain=False):
 
 # Private Model
 class _OpenerpModel(object):
-
     def __init__(self, model_name, data, fields):
         self.id = data['id']
         self._name = model_name
