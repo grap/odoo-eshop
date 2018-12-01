@@ -26,8 +26,8 @@ babel = Babel(app)
 # Manage Cache for the new application
 cache = Cache(app, config={
     'CACHE_TYPE': conf.get('cache', 'cache_type'),
-    'CACHE_DEFAULT_TIMEOUT': conf.get('cache', 'cache_default_timeout'),
-    'CACHE_THRESHOLD': conf.get('cache', 'cache_threshold'),
+    'CACHE_DEFAULT_TIMEOUT': int(conf.get('cache', 'cache_default_timeout')),
+    'CACHE_THRESHOLD': int(conf.get('cache', 'cache_threshold')),
 })
 
 # Clear Cache and reprefetch data
