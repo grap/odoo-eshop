@@ -11,7 +11,6 @@ from flask.ext.cache import Cache
 
 # Custom Tools
 from tools.config import conf
-from models.models import prefetch
 
 # Create Aplication
 app = Flask(__name__)
@@ -29,4 +28,6 @@ cache = Cache(app, config={'CACHE_TYPE': conf.get('cache', 'method')})
 
 # Clear Cache and reprefetch data
 cache.clear()
+
+from models.models import prefetch  # noqa: E402
 prefetch()
