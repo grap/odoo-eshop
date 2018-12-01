@@ -26,6 +26,7 @@ from ..models.res_partner import (
     partner_domain,
     change_res_partner,
     get_current_partner,
+    get_current_partner_id,
     sanitize_email,
     check_password,
 )
@@ -37,7 +38,6 @@ from ..models.res_partner import (
 @app.route("/account", methods=['GET', 'POST'])
 @requires_auth
 def account():
-    partner = get_current_partner()
 
     if not len(request.form) == 0:
         new_password = False
@@ -49,7 +49,7 @@ def account():
                 flash(_("Password changed successfully"), 'success')
 
         res = change_res_partner(
-            partner.id,
+            get_current_partner_id(),
             request.form['phone'],
             request.form['mobile'],
             request.form['street'],
@@ -59,6 +59,7 @@ def account():
             new_password)
         flash(res['message'], res['state'])
 
+    partner = get_current_partner()
     return render_template('account.html', partner=partner)
 
 
