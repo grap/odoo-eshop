@@ -27,7 +27,6 @@ Technical caracteristics
 ------------------------
 
 - Do not host database, datas are requested on the fly to the odoo instance.
-- Cache with Redis, to reduce Odoo call.
 - Use Jinja as a template language (http://jinja.pocoo.org/docs/2.10/)
 
 
@@ -39,8 +38,6 @@ eshop Installation
 
 ```
 pip install -r requirements.txt
-
-apt-get install redis-server
 ```
 
 Odoo Installation

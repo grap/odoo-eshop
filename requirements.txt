@@ -9,6 +9,5 @@ Jinja2==2.8
 MarkupSafe==1.0
 phonenumbers==7.2.6
 pytz==2017.3
-redis==2.10.5
 speaklater==1.3
 Werkzeug==0.13
