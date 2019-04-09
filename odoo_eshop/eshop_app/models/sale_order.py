@@ -35,15 +35,7 @@ def sanitize_qty(quantity, allow_null):
 # I/O OpenERP - Sale Order
 # ############################################################################
 def get_is_vat_included(company, sale_order, partner):
-    if sale_order:
-        # return sale order Settings, if defined
-        if sale_order.partner_id.simple_tax_type != 'none':
-            return (sale_order.simple_tax_type == 'included')
-    if partner:
-        # return Partner Settings, if defined
-        if partner.simple_tax_type != 'none':
-            return (partner.simple_tax_type == 'included')
-    # otherwise, return company setting
+    # # otherwise, return company setting
     return company.eshop_vat_included
 
 
