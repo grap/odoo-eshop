@@ -9,6 +9,17 @@ Odoo Eshop
 This app is a Flask Website that communicate with Odoo, to provide
 a light eShop.
 
+Installation
+============
+
+```
+git clone https://github.com/grap/odoo-eshop
+cd odoo-eshop
+virtualenv env --python=python2.7
+./env/bin/pip install -r ./requirements.txt
+```
+
+
 Main Features
 -------------
 
@@ -62,8 +73,8 @@ Launch eshop
 ------------
 
 ```
-python -m odoo_eshop
-```
+python -m odoo_eshop`
+``
 
 
 Roadmap / Know Issues
