@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2018-11-30 10:23+0100\n"
+"POT-Creation-Date: 2019-11-08 12:49+0100\n"
 "PO-Revision-Date: 2014-10-06 14:07+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -22,19 +22,19 @@ msgstr ""
 msgid "Password changed successfully"
 msgstr "Le mot de passe a été changé avec succès"
 
-#: controllers/controller_account.py:86
+#: controllers/controller_account.py:87
 msgid "order"
 msgstr "commande"
 
-#: controllers/controller_account.py:115
+#: controllers/controller_account.py:116
 msgid "invoice"
 msgstr "Factures"
 
-#: controllers/controller_account.py:138
+#: controllers/controller_account.py:139
 msgid "Login/password incorrects"
 msgstr "Login et Mot de passe incorrects"
 
-#: controllers/controller_account.py:192
+#: controllers/controller_account.py:193
 #, python-format
 msgid ""
 "The '%(email)s' field is already used.Please ask your seller to fix the "
@@ -43,7 +43,7 @@ msgstr ""
 "L'email '%(email)s' est déjà utilisé. Veuillez demander à votre vendeur "
 "de corriger le problème."
 
-#: controllers/controller_account.py:200
+#: controllers/controller_account.py:201
 #, python-format
 msgid ""
 "The '%(email)s' field is already associated to an active account. Please "
@@ -52,7 +52,7 @@ msgstr ""
 "Le mail '%(email)s' est déjà associé à un compte qui n'est pas actif. "
 "Merci de demander à votre vendeur d'activer votre compte."
 
-#: controllers/controller_account.py:206
+#: controllers/controller_account.py:207
 #, python-format
 msgid ""
 "The '%(email)s' field is already associated to an account. Please finish "
@@ -63,7 +63,7 @@ msgstr ""
 "procédure de création de compte, en cliquant sur le lien que vous avez "
 "reçu par mail."
 
-#: controllers/controller_account.py:212
+#: controllers/controller_account.py:213
 #, python-format
 msgid ""
 "The '%(email)s' field is already associated to an inactive account. "
@@ -72,7 +72,7 @@ msgstr ""
 "Le mail '%(email)s' est déjà associé à un compte qui n'est pas actif. "
 "Merci de demander à votre vendeur d'activer votre compte."
 
-#: controllers/controller_account.py:235
+#: controllers/controller_account.py:236
 #, python-format
 msgid ""
 "The registration is complete. Please check your mail box '%(email)s' and "
@@ -81,15 +81,15 @@ msgstr ""
 "La création du compte est terminé. Veuillez vérifier votre boite mail et "
 "cliquer sur le lien que vous avez reçu pour activer votre compte."
 
-#: controllers/controller_account.py:252
+#: controllers/controller_account.py:253
 msgid "The validation process failed."
 msgstr "Le processus de validation a échoué."
 
-#: controllers/controller_account.py:254
+#: controllers/controller_account.py:255
 msgid "Your account is already enabled."
 msgstr "Votre compte est déjà activé."
 
-#: controllers/controller_account.py:258
+#: controllers/controller_account.py:259
 msgid ""
 "The validation process is over.\n"
 " You can now log in to begin to purchase."
@@ -97,7 +97,7 @@ msgstr ""
 " La validation de votre compte est terminée.\n"
 " Vous pouvez désormais vous identifier pour passer commande."
 
-#: controllers/controller_account.py:262
+#: controllers/controller_account.py:263
 msgid ""
 "The validation process failed because your account is disabled. Please "
 "ask your seller to fix the problem."
@@ -105,15 +105,15 @@ msgstr ""
 "La validation de votre compte a échoué car celui-ci a été désactivé. "
 "Veuillez contacter votre vendeur pour corriger le problème."
 
-#: controllers/controller_account.py:298
+#: controllers/controller_account.py:299
 msgid "'Email' Field is required"
 msgstr "Le champ 'email' est obligatoire."
 
-#: controllers/controller_account.py:305
+#: controllers/controller_account.py:306
 msgid "There is a problem with your account. Please contact your seller."
 msgstr "Il y a un problème avec votre compte. Veuillez contacter votre vendeur."
 
-#: controllers/controller_account.py:312
+#: controllers/controller_account.py:313
 msgid ""
 " we sent an email to this mailbox, if this email was linked to an active "
 "account."
@@ -136,17 +136,15 @@ msgstr "Votre panier a été supprimé avec succès."
 msgid "You have not reached the ceiling : "
 msgstr "Vous n'avez pas atteint le franco : "
 
-#: controllers/controller_sale_order.py:120
+#: controllers/controller_sale_order.py:111
+msgid "The recovery moment is complete. Please try again."
+msgstr "Le moment de récupération est complet. Veuillez réessayer."
+
+#: controllers/controller_sale_order.py:121
 msgid "Your Sale Order is now confirmed."
 msgstr "Votre commande est désormais terminée."
 
-#: controllers/controller_sale_order.py:123
-msgid "You have selected an obsolete recovery moment. Please try again."
-msgstr ""
-"Vous avez sélectionné un lieu de récupération obsolète. Veuillez "
-"réessayer."
-
-#: controllers/controller_technical.py:67
+#: controllers/controller_technical.py:73
 #, python-format
 msgid ""
 "It is not possible to buy for the time being, You can buy starting at "
@@ -155,7 +153,7 @@ msgstr ""
 "Il n'est pas possible de passer commande pour le moment, vous pourrez "
 "passer commande  à partir de %(day)s %(date)s %(time)s"
 
-#: controllers/controller_technical.py:69
+#: controllers/controller_technical.py:75
 msgid ""
 "It is not possible to buy for the time being, but you can see the catalog"
 " in the meantime."
@@ -163,56 +161,56 @@ msgstr ""
 "Il n'est pas possible de passer commande pour le moment, mais vous pouvez"
 " découvrir le catalogue des produits."
 
-#: controllers/controller_technical.py:79
+#: controllers/controller_technical.py:85
 #, python-format
 msgid "You can buy until %(day)s %(date)s %(time)s."
 msgstr "Vous pouvez passer commande jusqu'à %(day)s %(date)s %(time)s."
 
-#: controllers/controller_technical.py:81
+#: controllers/controller_technical.py:87
 msgid "Recovery Moment Unset"
 msgstr "Moment de récupération non défini"
 
-#: controllers/controller_technical.py:202
+#: controllers/controller_technical.py:208
 msgid "Sunday"
 msgstr "Dimanche"
 
-#: controllers/controller_technical.py:203
+#: controllers/controller_technical.py:209
 msgid "Monday"
 msgstr "Lundi"
 
-#: controllers/controller_technical.py:204
+#: controllers/controller_technical.py:210
 msgid "Tuesday"
 msgstr "Mardi"
 
-#: controllers/controller_technical.py:205
+#: controllers/controller_technical.py:211
 msgid "Wednesdsay"
 msgstr "Mercredi"
 
-#: controllers/controller_technical.py:206
+#: controllers/controller_technical.py:212
 msgid "Thursday"
 msgstr "Jeudi"
 
-#: controllers/controller_technical.py:207
+#: controllers/controller_technical.py:213
 msgid "Friday"
 msgstr "Vendredi"
 
-#: controllers/controller_technical.py:208
+#: controllers/controller_technical.py:214
 msgid "Saturday"
 msgstr "Samedi"
 
-#: controllers/controller_technical.py:239
+#: controllers/controller_technical.py:245
 msgid "Extra"
 msgstr "Extra"
 
-#: controllers/controller_technical.py:240
+#: controllers/controller_technical.py:246
 msgid "Category I"
 msgstr "Catégorie I"
 
-#: controllers/controller_technical.py:241
+#: controllers/controller_technical.py:247
 msgid "Category II"
 msgstr "Catégorie II"
 
-#: controllers/controller_technical.py:242
+#: controllers/controller_technical.py:248
 msgid "Category III"
 msgstr "Catégorie III"
 
@@ -261,7 +259,7 @@ msgstr "'%(qty)s' n'est pas une quantité valide."
 msgid "You can not set a null Quantity."
 msgstr "Vous ne pouvez pas mettre une quantité nulle."
 
-#: models/sale_order.py:79
+#: models/sale_order.py:71
 msgid "Your comment has been successfully updated."
 msgstr "Votre commentaire a été modifié avec succès."
 
@@ -514,15 +512,15 @@ msgstr "Vos Commandes"
 msgid "Order Date"
 msgstr "Date de commande"
 
-#: templates/orders.html:18 templates/recovery_moment_place.html:38
+#: templates/orders.html:18 templates/recovery_moment_place.html:37
 msgid "Place"
 msgstr "Lieu"
 
-#: templates/orders.html:19 templates/recovery_moment_place.html:34
+#: templates/orders.html:19 templates/recovery_moment_place.html:33
 msgid "Day"
 msgstr "Jour"
 
-#: templates/orders.html:20 templates/recovery_moment_place.html:35
+#: templates/orders.html:20 templates/recovery_moment_place.html:34
 msgid "Date"
 msgstr "Date"
 
@@ -620,45 +618,49 @@ msgstr ""
 "Désolé. Pour le moment, il n'y a pas la possibilité de choisir une date "
 "pour récupérer votre panier."
 
-#: templates/recovery_moment_place.html:36
+#: templates/recovery_moment_place.html:35
 msgid "Min Time"
 msgstr "Heure de Début"
 
-#: templates/recovery_moment_place.html:37
+#: templates/recovery_moment_place.html:36
 msgid "Max Time"
 msgstr "Heure de Fin"
 
-#: templates/recovery_moment_place.html:58
+#: templates/recovery_moment_place.html:38
+msgid "Extra Cost"
+msgstr "Coût supplémentaire"
+
+#: templates/recovery_moment_place.html:63
 msgid "Complete"
 msgstr "Complet"
 
-#: templates/recovery_moment_place.html:64
+#: templates/recovery_moment_place.html:69
 msgid "Select"
 msgstr "Choisir"
 
-#: templates/recovery_moment_place.html:82
+#: templates/recovery_moment_place.html:86
 msgid "Confirm Order"
 msgstr "Confirmer l'achat"
 
-#: templates/recovery_moment_place.html:85
+#: templates/recovery_moment_place.html:89
 msgid "You are about to valid your Shopping Cart, this procedure is irreversible."
 msgstr ""
 "Vous êtes sur le point de valider votre panier, cette procédure est "
 "définitive."
 
-#: templates/recovery_moment_place.html:86 templates/shopping_cart.html:145
+#: templates/recovery_moment_place.html:90 templates/shopping_cart.html:145
 msgid "Do you want to proceed?"
 msgstr "Voulez vous continuer ?"
 
-#: templates/recovery_moment_place.html:88 templates/shopping_cart.html:148
+#: templates/recovery_moment_place.html:92 templates/shopping_cart.html:148
 msgid "Cancel"
 msgstr "Annuler"
 
-#: templates/recovery_moment_place.html:89 templates/shopping_cart.html:30
+#: templates/recovery_moment_place.html:93 templates/shopping_cart.html:30
 msgid "Confirm"
 msgstr "Confirmer"
 
-#: templates/recovery_moment_place.html:95
+#: templates/recovery_moment_place.html:99
 msgid ""
 "Please wait while your sale is being processed.<br /> This can take a few"
 " seconds."

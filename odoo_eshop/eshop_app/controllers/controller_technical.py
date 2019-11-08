@@ -52,11 +52,17 @@ def home_logged():
     if company.eshop_manage_recovery_moment:
         pending_moment_groups = openerp.SaleRecoveryMomentGroup.browse(
             [('state', 'in', 'pending_sale')])
+        futur_moment_groups = openerp.SaleRecoveryMomentGroup.browse(
+            [('state', 'in', 'futur')])
+        pending_moments = openerp.SaleRecoveryMoment.browse(
+            [('state', 'in', 'pending_sale')])
         if len(pending_moment_groups) == 0:
-            # Not possible to purchase for the time being
-            futur_moment_groups = openerp.SaleRecoveryMomentGroup.browse(
-                [('state', 'in', 'futur')])
-            if len(futur_moment_groups) > 0:
+            if len(pending_moments):
+                # nothing to do, shop is working only with moments, no groups
+                pass
+
+            elif len(futur_moment_groups) > 0:
+                # Not possible to purchase for the time being
                 min_date = futur_moment_groups[0].min_sale_date
                 for item in futur_moment_groups:
                     min_date = min(min_date, item.min_sale_date)

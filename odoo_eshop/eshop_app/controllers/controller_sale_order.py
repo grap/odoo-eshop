@@ -104,16 +104,10 @@ def recovery_moment_place():
 @requires_auth
 def select_recovery_moment(recovery_moment_id):
     sale_order_id = get_current_sale_order_id()
-    recovery_moment = openerp.SaleRecoveryMomentGroup.browse(
+    recovery_moment = openerp.SaleRecoveryMoment.browse(
         recovery_moment_id)
-    # Todo Check if the moment is available
-    if recovery_moment.state != 'pending_sale':
-        flash(_(
-            "You have selected an obsolete recovery moment."
-            " Please try again."), 'error')
-        return redirect_url_for('shopping_cart')
-
-    elif recovery_moment.is_complete:
+    # Todo Check if the moment is complete
+    if recovery_moment.is_complete:
         flash(_(
             "The recovery moment is complete."
             " Please try again."), 'error')
