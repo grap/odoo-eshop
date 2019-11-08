@@ -13,20 +13,19 @@
     $('#nav_shopping_cart').addClass('active');
 </script>
 
-<!-- Recovery Moment Group -->
+<!-- Recovery Moment -->
 <div class="row">
     <div class="col-md-12">
         <h1>{{ _('Select Place and Moment for Recovery') }}</h1>
     </div>
 </div>
 
-    {% if recovery_moment_groups|length == 0 %}
+    {% if recovery_moments|length == 0 %}
     <div class="flashes">
         <p class="text-center bg-warning">{{ _('Sorry. For the time being, there is no possibility to select a date to recovery your Shopping Cart.')}}</p>
     </div>
 
     {% else %}
-        {% for recovery_moment_group in recovery_moment_groups %}
 
 <table class="table table-condensed table-bordered">
     <thead>
@@ -41,7 +40,7 @@
         </tr>
     </thead>
     <tbody>
-            {% for recovery_moment in recovery_moment_group.moment_ids %}
+            {% for recovery_moment in recovery_moments %}
         <tr>
             <td>{{recovery_moment.min_recovery_date|to_day}}</td>
             <td>{{recovery_moment.min_recovery_date|to_date}}</td>
@@ -70,7 +69,6 @@
     </tbody>
 </table>
 
-        {% endfor %}
     {% endif %}
 
 <!-- Validate Shopping Cart PopUp -->

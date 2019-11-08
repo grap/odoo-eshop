@@ -85,8 +85,8 @@ def shopping_cart_delete_line(line_id):
 def recovery_moment_place():
     company = get_openerp_object(
         'res.company', int(conf.get('openerp', 'company_id')))
-    recovery_moment_groups = openerp.SaleRecoveryMomentGroup.browse(
-        [('state', 'in', 'pending_sale')])
+    recovery_moments = openerp.SaleRecoveryMoment.browse(
+        [('state', '=', 'pending_sale')])
     sale_order = get_current_sale_order()
     if (company.eshop_minimum_price != 0
             and company.eshop_minimum_price > sale_order.amount_total):
@@ -97,30 +97,32 @@ def recovery_moment_place():
         return redirect_url_for('shopping_cart')
     return render_template(
         'recovery_moment_place.html',
-        recovery_moment_groups=recovery_moment_groups)
+        recovery_moments=recovery_moments)
 
 
 @app.route("/select_recovery_moment/<int:recovery_moment_id>")
 @requires_auth
 def select_recovery_moment(recovery_moment_id):
-    found = False
-    recovery_moment_groups = openerp.SaleRecoveryMomentGroup.browse(
-        [('state', 'in', 'pending_sale')])
     sale_order_id = get_current_sale_order_id()
-    for recovery_moment_group in recovery_moment_groups:
-        for recovery_moment in recovery_moment_group.moment_ids:
-            if recovery_moment.id == recovery_moment_id:
-                found = True
-                break
-    if found:
+    recovery_moment = openerp.SaleRecoveryMomentGroup.browse(
+        recovery_moment_id)
+    # Todo Check if the moment is available
+    if recovery_moment.state != 'pending_sale':
+        flash(_(
+            "You have selected an obsolete recovery moment."
+            " Please try again."), 'error')
+        return redirect_url_for('shopping_cart')
+
+    elif recovery_moment.is_complete:
+        flash(_(
+            "The recovery moment is complete."
+            " Please try again."), 'error')
+        return redirect_url_for('shopping_cart')
+
+    else:
         openerp.SaleOrder.write([sale_order_id], {
             'recovery_moment_id': recovery_moment_id,
         })
         openerp.SaleOrder.eshop_set_as_sent([sale_order_id])
         flash(_("Your Sale Order is now confirmed."), 'success')
         return redirect_url_for('orders')
-    else:
-        flash(_(
-            "You have selected an obsolete recovery moment."
-            " Please try again."), 'error')
-        return redirect_url_for('shopping_cart')
