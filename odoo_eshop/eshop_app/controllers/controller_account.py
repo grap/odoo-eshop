@@ -309,7 +309,7 @@ def password_lost():
                 return redirect_url_for('home')
             else:
                 if len(partner_ids) == 1:
-                    openerp.ResPartner.send_credentials(partner_ids)
+                    openerp.ResPartner.button_send_credentials(partner_ids)
                 flash(_(
                     " we sent an email to this mailbox, if this email was"
                     " linked to an active account."), 'success')
