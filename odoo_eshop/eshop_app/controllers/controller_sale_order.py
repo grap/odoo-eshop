@@ -86,7 +86,7 @@ def recovery_moment_place():
     company = get_openerp_object(
         'res.company', int(conf.get('openerp', 'company_id')))
     recovery_moments = openerp.SaleRecoveryMoment.browse(
-        [('state', '=', 'pending_sale')])
+        [('state', '=', 'pending_sale')], order="min_recovery_date")
     sale_order = get_current_sale_order()
     if (company.eshop_minimum_price != 0
             and company.eshop_minimum_price > sale_order.amount_total):
