@@ -31,7 +31,7 @@
     </thead>
     <tbody>
 <!-- Categories -->
-{% set current_category = False %} 
+{% set current_category = False %}
     {% for item in catalog_inline %}
         {% if current_category != item['category_id']%}
         <tr>
@@ -54,13 +54,20 @@ item['category_id'], item['category_image_write_date_hash'])) }}"/>
             </td>
             <td class="labels">
             {% for label_id in item['label_ids'] %}
-                {% set label = get_object('product.label', label_id) %} 
+                {% set label = get_object('product.label', label_id) %}
                     <img class="img-small-label" title="{{label.name}}"
                         src="{{ url_for('static', filename=label.image_small_local_path) }}"/>
             {% endfor %}
             </td>
             <td>
+        {% if company.eshop_vat_included %}
+
                 {{ item['list_price']|to_currency }}
+        {% else %}
+                {{ item['list_price_vat_excl']|to_currency }}
+
+        {% endif %}
+
             </td>
             <td>
                 {{ item['uom_eshop_description'] }}
@@ -80,7 +87,7 @@ item['category_id'], item['category_image_write_date_hash'])) }}"/>
             <td>
                 {% for tax_id in item['tax_ids'] %}
                     {% set tax = get_object('account.tax', tax_id) %}
-                    {{ tax.eshop_description }} 
+                    {{ tax.eshop_description }}
                 {% endfor %}
             </td>
             {% endif %}
@@ -99,7 +106,7 @@ item['category_id'], item['category_image_write_date_hash'])) }}"/>
     {% endfor %}
     </tbody>
     <tfooter>
-        <tr id="catalog_inline_shopping_cart_line" 
+        <tr id="catalog_inline_shopping_cart_line"
 
         {% if not sale_order %}
             style="visibility: hidden;"

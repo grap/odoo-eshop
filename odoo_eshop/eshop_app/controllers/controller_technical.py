@@ -252,3 +252,7 @@ def fresh_category(value):
 @app.template_filter('empty_if_null')
 def empty_if_null(value):
     return value if value else ''
+
+@app.template_filter('tax_description_per_line')
+def tax_description_per_line(line):
+    return ', '.join([x.eshop_description for x in line.tax_id])

@@ -24,7 +24,7 @@
 {% if category_ids|length %}
 <div class="row">
     {% for category_id in category_ids %}
-        {% set category = get_object('eshop.category', category_id) %} 
+        {% set category = get_object('eshop.category', category_id) %}
         {% if category.available_product_qty != 0 or category.child_qty != 0  %}
     <div class="col-sm-3 col-md-2 col-xs-6">
         <a class="thumbnail" href="{{ url_for('catalog_tree', category_id=category.id)}}">
@@ -55,8 +55,8 @@
 {% if product_ids|length %}
 <div class="row">
     {% for product_id in product_ids %}
-        {% set product = get_object('product.product', product_id) %} 
-        {% set uom = get_object('product.uom', product.uom_id) %} 
+        {% set product = get_object('product.product', product_id) %}
+        {% set uom = get_object('product.uom', product.uom_id) %}
 
     <div class="col-sm-3 col-md-2 col-xs-6">
         <a class="thumbnail" href="{{ url_for('product', product_id=product.id)}}" title="{{ product.name }}">
@@ -69,7 +69,12 @@
             </div>
             <div class="product-price">
                 <p>
-                {{ product.list_price|to_currency }} / {{ uom.eshop_description }}
+            {% if company.eshop_vat_included %}
+                {{ product.list_price|to_currency }} {{_('VAT. Incl.')}} / {{ uom.eshop_description }}
+            {% else %}
+                {{ product.list_price_vat_excl|to_currency }} {{_('VAT. Excl.')}} / {{ uom.eshop_description }}
+
+            {% endif %}
                 </p>
             </div>
         </a>

@@ -14,9 +14,7 @@ Installation
 
 ```
 git clone https://github.com/grap/odoo-eshop
-cd odoo-eshop
-virtualenv env --python=python2.7
-./env/bin/pip install -r ./requirements.txt
+cd odoo-eshop && install.sh
 ```
 
 
@@ -44,13 +42,6 @@ Technical caracteristics
 Installation
 ============
 
-eshop Installation
-------------------
-
-```
-pip install -r requirements.txt
-```
-
 Odoo Installation
 -----------------
 
@@ -61,7 +52,7 @@ installed ``sale_eshop`` available here : https://github.com/grap/odoo-addons-mi
 Initial eShop Settings
 ----------------------
 
-in the config.ini file of the eshop, set the : 
+in the config.ini file of the eshop, set the :
 * ``[openerp] url`` : the url (and the port) of your odoo instance
 * ``[openerp] database`` : the database name you want to connect
 * ``[openerp] company_id`` : the odoo company ID want to connect
@@ -73,8 +64,8 @@ Launch eshop
 ------------
 
 ```
-python -m odoo_eshop`
-``
+./env/bin/python -m odoo_eshop
+```
 
 
 Roadmap / Know Issues
@@ -82,7 +73,7 @@ Roadmap / Know Issues
 
 * controller_technical.py
     * the image url return a file to download, rather than a picture to display
-    * IMPORTANT : it's always a 200 code, but should be 304 to light the 
+    * IMPORTANT : it's always a 200 code, but should be 304 to light the
     server load + reduce transfert
 
 Credits

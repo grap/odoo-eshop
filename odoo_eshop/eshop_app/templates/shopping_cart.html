@@ -35,15 +35,10 @@
     <thead>
         <tr>
             <th>{{ _('Product') }}</th>
-            {% if is_vat_included %}
-            <th>{{ _('U.P. VAT Incl.') }}</th>
-            {% else %}
-            <th>{{ _('U.P. VAT Excl.') }}</th>
-            {% endif %}
+            <th>{{ _('U.P.') }}</th>
             <th>{{ _('Unit') }}</th>
             <th>{{ _('VAT') }}</th>
             <th>{{ _('Quantity') }}</th>
-
             {% if is_vat_included %}
             <th>{{ _('Subtotal VAT Incl.') }}</th>
             {% else %}
@@ -64,7 +59,7 @@
             </td>
             <td>{{ line.price_unit|to_currency }}</td>
             <td>{{ uom.eshop_description }}</td>
-            <td>{{ product.eshop_taxes_description }}</td>
+            <td>{{ line|tax_description_per_line }}</td>
             <td class="td-input-text">
                 <form class="form-inline" role="form" method="POST" action="{{ url_for('shopping_cart_quantity_update') }}">
                     <div class="form-group">
@@ -79,12 +74,12 @@
             </td>
             {% if company.is_vat_included %}
             <td class="td-input-text">
-                <input type="text" class="form-control input-amount" id="price_subtotal_{{product.id}}" 
+                <input type="text" class="form-control input-amount" id="price_subtotal_{{product.id}}"
                         placeholder="{{ line.price_subtotal_gross|to_currency }}" readonly/>
             </td>
             {% else %}
             <td class="td-input-text">
-                <input type="text" class="form-control input-amount" id="price_subtotal_{{product.id}}" 
+                <input type="text" class="form-control input-amount" id="price_subtotal_{{product.id}}"
                         placeholder="{{ line.price_subtotal|to_currency }}" readonly/>
             </td>
             {% endif %}
@@ -117,7 +112,7 @@
         <tr>
             <th>{{ _('Taxes') }}</th>
             <td class="td-input-text">
-                <input type="text" class="form-control input-amount" id="amount_tax" 
+                <input type="text" class="form-control input-amount" id="amount_tax"
                         placeholder="{{ sale_order.amount_tax|to_currency }}" readonly/></td>
             <td />
         </tr>

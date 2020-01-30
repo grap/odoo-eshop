@@ -2,10 +2,11 @@
 
 {% block container_popup %}
 <!-- Products -->
-{% set product = get_object('product.product', product_id) %} 
-{% set uom = get_object('product.uom', product.uom_id) %} 
+{% set product = get_object('product.product', product_id) %}
+{% set uom = get_object('product.uom', product.uom_id) %}
 {% set country = get_object('res.country', product.country_id)%}
 {% set department = get_object('res.country.department', product.department_id)%}
+{% set company = current_company() %}
 
 <div class="row">
     <div class="col-md-12">
@@ -20,7 +21,7 @@
                 <a href="#" data-featherlight="{{ url_for('product_image_popup', product_id=product['id']) }}">
                     <img src="{{ url_for('static', filename=product.image_local_path) }}"
                         style="width:250px;"
-                        class="img-thumbnail"/> 
+                        class="img-thumbnail"/>
                 </a>
             </div>
             <br />
@@ -31,7 +32,7 @@
             {% set label = get_object('product.label', label_id) %}
                 <img src="{{ url_for('static', filename=label.image_local_path) }}"
                     class="img-thumbnail"
-                    alt="{{ label.name }}" style="width:80px;"/> 
+                    alt="{{ label.name }}" style="width:80px;"/>
         {% endfor %}
             </center>
     {% endif %}
@@ -42,7 +43,11 @@
         <dl class="dl-horizontal">
 
             <dt>{{ _('Price') }}</dt>
-            <dd>{{ product.list_price|to_currency }} / {{ uom.eshop_description }}</dd>
+        {% if company.eshop_vat_included %}
+            <dd>{{ product.list_price|to_currency }} {{_('VAT. Incl.')}} / {{ uom.eshop_description }}</dd>
+        {% else %}
+            <dd>{{ product.list_price_vat_excl|to_currency }} {{_('VAT. Excl.')}} / {{ uom.eshop_description }}</dd>
+        {% endif %}
             <dt>{{ _('Minimum Quantity') }}</dt>
             <dd>{{ product.eshop_minimum_qty}} {{ uom.eshop_description }}</dd>
             <dt>{{ _('Rounding Quantity') }}</dt>
