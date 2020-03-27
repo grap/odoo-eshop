@@ -14,7 +14,7 @@ Installation
 
 ```
 git clone https://github.com/grap/odoo-eshop
-cd odoo-eshop && install.sh
+cd odoo-eshop && ./install.sh
 ```
 
 
