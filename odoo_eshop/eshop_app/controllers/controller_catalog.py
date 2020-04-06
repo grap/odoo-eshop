@@ -8,15 +8,11 @@ from flask import request, render_template, flash, jsonify
 from ..application import app
 
 from ..tools.web import redirect_url_for
-from ..tools.erp import openerp
 from ..tools.auth import requires_auth
 
-from ..models.models import get_openerp_object
-from ..models.sale_order import (
-    get_current_sale_order,
-    get_current_sale_order_id,
-    set_quantity,
-)
+from ..models.models import get_odoo_object, execute_odoo_command
+from ..models.sale_order import set_quantity
+from ..models.res_partner import get_current_partner_id
 
 
 # ############################################################################
@@ -27,21 +23,28 @@ from ..models.sale_order import (
 @requires_auth
 def catalog_tree(category_id):
 
-    # Get Child Categories
-    category_ids = openerp.eshopCategory.search([
-        ('parent_id', '=', category_id)])
+    category_ids = execute_odoo_command(
+        "eshop.category",
+        "search",
+        [('parent_id', '=', category_id)],
+    )
 
     # Get Products
-    product_ids = openerp.ProductProduct.search([
-        ('eshop_state', '=', 'available'),
-        ('eshop_category_id', '=', category_id)], order='name')
+    product_ids = execute_odoo_command(
+        "product.product",
+        "search",
+        [
+            ('eshop_state', '=', 'available'),
+            ('eshop_category_id', '=', category_id)
+        ], order='name'
+    )
 
     parent_categories = []
-    parent = get_openerp_object('eshop.category', category_id)
+    parent = get_odoo_object('eshop.category', category_id)
     # Get Parent Categories
     while parent:
         parent_categories.insert(0, {'id': parent.id, 'name': parent.name})
-        parent = get_openerp_object('eshop.category', parent.parent_id)
+        parent = get_odoo_object('eshop.category', parent.parent_id)
 
     return render_template(
         'catalog_tree.html', parent_categories=parent_categories,
@@ -51,33 +54,14 @@ def catalog_tree(category_id):
 # ############################################################################
 # Catalog (Inline View) Routes
 # ############################################################################
-@app.route('/catalog_inline_new/')
-@requires_auth
-def catalog_inline_new():
-    sale_order = get_current_sale_order()
-
-    category_ids = openerp.eshopCategory.search([
-        ('type', '=', 'normal')])
-
-    product_qty_dict = {}
-    for line in sale_order.order_line:
-        if line.product_id.id in product_qty_dict.keys():
-            product_qty_dict[line.product_id.id] += line.product_uom_qty
-        else:
-            product_qty_dict[line.product_id.id] = line.product_uom_qty
-
-    return render_template(
-        'catalog_inline_new.html', category_ids=category_ids,
-        product_qty_dict=product_qty_dict)
-
-
 @app.route('/catalog_inline/')
 @requires_auth
 def catalog_inline():
-    sale_order_id = get_current_sale_order_id()
-    catalog_inline = openerp.productProduct.get_current_eshop_product_list(
-        sale_order_id)
-
+    catalog_inline = execute_odoo_command(
+        "product.product",
+        "get_current_eshop_product_list",
+        get_current_partner_id()
+    )
     return render_template(
         'catalog_inline.html',
         catalog_inline=catalog_inline,
@@ -102,14 +86,14 @@ def catalog_inline_quantity_update():
 @requires_auth
 def product(product_id):
     # Get Products
-    product = get_openerp_object('product.product', product_id)
+    product = get_odoo_object('product.product', product_id)
 
     # Get Parent Categories
     parent_categories = []
-    parent = get_openerp_object('eshop.category', product.eshop_category_id)
+    parent = get_odoo_object('eshop.category', product.eshop_category_id)
     while parent:
         parent_categories.insert(0, {'id': parent.id, 'name': parent.name})
-        parent = get_openerp_object('eshop.category', parent.parent_id)
+        parent = get_odoo_object('eshop.category', parent.parent_id)
 
     return render_template(
         'product.html', product_id=product_id,

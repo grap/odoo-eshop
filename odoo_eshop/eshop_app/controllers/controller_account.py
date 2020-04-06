@@ -14,22 +14,28 @@ from flask.ext.babel import gettext as _
 from ..application import app
 
 from ..tools.web import redirect_url_for
-from ..tools.config import conf
-from ..tools.erp import openerp, get_invoice_pdf, get_order_pdf
+from ..tools.erp import (
+    get_invoice_pdf,
+    get_order_pdf,
+)
+
 from ..tools.auth import logout, requires_connection, requires_auth
 
-
 # Custom Models
-from ..models.models import get_openerp_object
+from ..models.models import execute_odoo_command
 
 from ..models.res_partner import (
     partner_domain,
-    change_res_partner,
     get_current_partner,
     get_current_partner_id,
-    sanitize_email,
+    check_email,
+    check_first_name,
+    check_last_name,
+    check_phone,
     check_password,
 )
+
+from ..models.res_company import get_current_company
 
 
 # ############################################################################
@@ -39,27 +45,49 @@ from ..models.res_partner import (
 @requires_auth
 def account():
 
+    incorrect_data = False
+    vals = {}
     if not len(request.form) == 0:
-        new_password = False
+        # Check Password
         if 'checkbox-change-password' in request.form:
-            password_ok = check_password(
+            password, error_message = check_password(
                 request.form['password_1'], request.form['password_2'])
-            if password_ok:
-                new_password = request.form['password_1']
-                flash(_("Password changed successfully"), 'success')
+            if error_message:
+                incorrect_data = True
+                flash(error_message, "danger")
+            else:
+                vals.update({"eshop_password": password})
 
-        res = change_res_partner(
-            get_current_partner_id(),
-            request.form['phone'],
-            request.form['mobile'],
-            request.form['street'],
-            request.form['street2'],
-            request.form['zip'],
-            request.form['city'],
-            new_password)
-        flash(res['message'], res['state'])
+        # Check Phone
+        phone, error_message = check_phone(request.form['phone'])
+        if error_message and phone:
+            incorrect_data = True
+            flash(error_message, "danger")
 
-    partner = get_current_partner()
+        # Check Phone
+        mobile, error_message = check_phone(request.form['mobile'])
+        if error_message and mobile:
+            incorrect_data = True
+            flash(error_message, "danger")
+
+        if not incorrect_data:
+            vals.update({
+                    "street": request.form['street'],
+                    "street2": request.form['street2'],
+                    "zip": request.form['zip'],
+                    "city": request.form['city'],
+                    "phone": phone,
+                    "mobile": mobile,
+            })
+            execute_odoo_command(
+                "res.partner", "update_from_eshop",
+                get_current_partner_id(), vals)
+            flash(
+                _("Account Datas updated successfully."),
+                "success",
+            )
+
+    partner = get_current_partner(force_reload=True)
     return render_template('account.html', partner=partner)
 
 
@@ -69,15 +97,18 @@ def account():
 @app.route("/orders")
 @requires_auth
 def orders():
-    orders = openerp.SaleOrder.browse([
-        partner_domain('partner_id'),
-        ('state', 'not in', ('draft', 'cancel'))])
+    orders = execute_odoo_command(
+        "sale.order", "browse", [
+            partner_domain('partner_id'),
+            ('state', 'not in', ('draft', 'cancel')),
+        ]
+    )
     return render_template('orders.html', orders=orders)
 
 
 @app.route('/order/<int:order_id>/download')
 def order_download(order_id):
-    order = openerp.SaleOrder.browse(order_id)
+    order = execute_odoo_command("sale.order", "browse", order_id)
     partner = get_current_partner()
     # Manage Access Rules
     if not order or order.partner_id.id != partner.id:
@@ -99,15 +130,19 @@ def order_download(order_id):
 @app.route("/invoices")
 @requires_auth
 def invoices():
-    invoices = openerp.AccountInvoice.browse([
-        partner_domain('partner_id'),
-        ('state', 'not in', ('draft', 'proforma', 'proforma2', 'cancel'))])
+    invoices = execute_odoo_command(
+        "account.invoice", "browse", [
+            partner_domain('partner_id'),
+            ('state', 'not in', ['draft', 'proforma', 'proforma2', 'cancel']),
+        ]
+    )
     return render_template('invoices.html', invoices=invoices)
 
 
 @app.route('/invoices/<int:invoice_id>/download')
 def invoice_download(invoice_id):
-    invoice = openerp.AccountInvoice.browse(invoice_id)
+    invoice = execute_odoo_command(
+        "account.invoice", "browse", invoice_id)
     partner = get_current_partner()
     if not invoice or invoice.partner_id.id != partner.id:
         return abort(404)
@@ -125,19 +160,22 @@ def invoice_download(invoice_id):
 # ############################################################################
 # Auth Route
 # ############################################################################
-@app.route("/login.html", methods=['GET', 'POST'])
+@app.route('/login.html/', defaults={'email': False}, methods=['GET', 'POST'])
+@app.route("/login.html/<string:email>", methods=['GET', 'POST'])
 @requires_connection
-def login_view():
+def login_view(email=False):
     if request.form.get('login', False):
         # Authentication asked
-        partner_id = openerp.ResPartner.login(
-            request.form['login'], request.form['password'])
+        partner_id = execute_odoo_command(
+            "res.partner", "eshop_login",
+            request.form['login'], request.form['password']
+        )
         if partner_id:
             session['partner_id'] = partner_id
             return redirect_url_for('home_logged')
         else:
-            flash(_('Login/password incorrects'), 'danger')
-    return render_template('login.html')
+            flash(_('Login/password incorrects'), "danger")
+    return render_template('login.html', email=email)
 
 
 @app.route("/logout.html")
@@ -151,118 +189,136 @@ def logout_view():
 @requires_connection
 def register():
     # Check if the operation is possible
-    company = get_openerp_object(
-        'res.company', int(conf.get('openerp', 'company_id')))
+    company = get_current_company()
     if not company.eshop_register_allowed or get_current_partner():
         return redirect_url_for('home')
 
-#    previous_captcha = session.get('captcha', False)
-#    PATH_TTF = conf.get('captcha', 'font_path').split(',')
-#    image = ImageCaptcha(fonts=PATH_TTF)
-
-#    new_captcha = str(randint(0,999999)).replace('1', '3').replace('7', '4')
-#    captcha_data = base64.b64encode(image.generate(new_captcha).getvalue())
-#    session['captcha'] = new_captcha
-
-    captcha_data = False
-
     if len(request.form) == 0:
-        pass
-#        session['captcha_ok'] = False
-    else:
-        # TODO refactor in a extra file or in Odoo
-        complete_data = mail_ok = password_ok = True
-        # Check captcha
-#        if not session.get('captcha_ok', False) and\
-#                request.form.get('captcha', False) != previous_captcha:
-#            flash(
-#                _("The 'captcha' field is not correct. Please try again"),
-#                'danger')
-#            return render_template(
-#                'register.html', captcha_data=captcha_data)
-#        else:
-#            session['captcha_ok'] = True
+        return render_template('register.html')
 
-        email = sanitize_email(request.form.get('email', False))
-        if email:
-            # Check email in Database (inactive account)
-            partner_ids = openerp.ResPartner.search([
-                ('email', '=', email)])
-            if len(partner_ids) > 1:
-                mail_ok = False
-                flash(_(
-                    "The '%(email)s' field is already used."
-                    "Please ask your seller to fix the problem.",
-                    email=email), 'danger')
-            elif len(partner_ids) == 1:
-                mail_ok = False
-                partner = openerp.ResPartner.browse(partner_ids)[0]
-                if partner.eshop_active:
-                    flash(_(
-                        "The '%(email)s' field is already associated to an"
-                        " active account. Please click 'Recover Password',"
-                        " if your forgot your credentials.", email=email),
-                        'danger')
-                elif partner.eshop_state == 'email_to_confirm':
-                    flash(_(
-                        "The '%(email)s' field is already associated to an"
-                        " account. Please finish the process to create an"
-                        " account, by clicking on the link you received "
-                        " by email.", email=email), 'danger')
-                else:
-                    flash(_(
-                        "The '%(email)s' field is already associated to an"
-                        " inactive account. Please ask your seller to activate"
-                        " your account.", email=email), 'danger')
+    incorrect_data = False
+    # Check First Name
+    first_name, error_message = check_first_name(
+        request.form["first_name"])
+    if error_message:
+        incorrect_data = True
+        flash(error_message, "danger")
 
-        if not mail_ok:
-            return render_template('register.html')
+    # Check Last Name
+    last_name, error_message = check_last_name(
+        request.form["last_name"])
+    if error_message:
+        incorrect_data = True
+        flash(error_message, "danger")
 
-        password_ok = check_password(
-            request.form['password_1'], request.form['password_2'])
-
-        if complete_data and mail_ok and password_ok:
-            # Registration is over
-            openerp.ResPartner.create_from_eshop({
-                'first_name': request.form['first_name'],
-                'last_name': request.form['last_name'],
-                'email': request.form['email'],
-                'street': request.form['street'],
-                'street2': request.form['street2'],
-                'zip': request.form['zip'],
-                'city': request.form['city'],
-                'eshop_password': request.form['password_1'],
-            })
+    # Check email
+    email, error_message = check_email(request.form.get('email', False))
+    if error_message:
+        incorrect_data = True
+        flash(error_message, "danger")
+    elif email:
+        partner_ids = execute_odoo_command(
+            "res.partner", "search", [('email', '=', email)])
+        if len(partner_ids) > 1:
+            incorrect_data = True
             flash(_(
-                "The registration is complete. Please check your mail box"
-                " '%(email)s' and click on the link you received to activate"
-                " your account.",
-                email=request.form['email']), 'success')
-            return redirect_url_for('home')
-        else:
-            return render_template('register.html')
+                "The '%(email)s' field is already used."
+                "Please ask your seller to fix the problem.",
+                email=email), "danger")
+        elif len(partner_ids) == 1:
+            incorrect_data = True
+            partner = execute_odoo_command(
+                "res.partner", "browse", partner_ids)[0]
+            if partner.eshop_state == "enabled":
+                flash(_(
+                    "The '%(email)s' field is already associated to an"
+                    " active account. Please click 'Recover Password',"
+                    " if your forgot your credentials.", email=email),
+                    "danger")
+            elif partner.eshop_state == 'email_to_confirm':
+                flash(_(
+                    "The '%(email)s' field is already associated to an"
+                    " account. Please finish the process to create an"
+                    " account, by clicking on the link you received "
+                    " by email.", email=email), "danger")
+            else:
+                flash(_(
+                    "The '%(email)s' field is already associated to an"
+                    " inactive account. Please ask your seller to activate"
+                    " your account.", email=email), "danger")
 
-    return render_template('register.html', captcha_data=captcha_data)
+    # Check Phone
+    phone, error_message = check_phone(request.form['phone'])
+    if error_message and phone:
+        incorrect_data = True
+        flash(error_message, "danger")
+
+    # Check Mobile
+    mobile, error_message = check_phone(request.form['mobile'])
+    if error_message and mobile:
+        incorrect_data = True
+        flash(error_message, "danger")
+
+    # Check password
+    password, error_message = check_password(
+        request.form['password_1'], request.form['password_2'])
+    if error_message:
+        incorrect_data = True
+        flash(error_message, "danger")
+
+    if not incorrect_data:
+        # Registration is over
+        execute_odoo_command(
+            "res.partner", "create_from_eshop", {
+                "first_name": first_name,
+                "last_name": last_name,
+                "email": email,
+                "street": request.form['street'],
+                "street2": request.form['street2'],
+                "zip": request.form['zip'],
+                "city": request.form['city'],
+                "phone": phone,
+                "mobile": mobile,
+                "eshop_password": password,
+            }
+        )
+        flash(_(
+            "The registration is complete. Please check your mail box"
+            " '%(email)s' and click on the link you received to activate"
+            " your account.", email=email),
+            "success")
+        return render_template('home.html')
+    else:
+        return render_template('register.html')
 
 
 @app.route("/activate_account/<int:id>/<string:email>", methods=['GET'])
 @requires_connection
 def activate_account(id, email):
-    partner = openerp.ResPartner.browse([id])[0]
-    if not partner or partner.email != email:
-        flash(_("The validation process failed."), 'danger')
-    elif partner.eshop_state in ['first_purchase', 'enabled']:
+    result = execute_odoo_command(
+        "res.partner", "eshop_email_confirm", id, email)
+    if result == "partner_not_found":
+        flash(_("The validation process failed."), "danger")
+        return redirect_url_for('home')
+
+    if result == "bad_email":
+        flash(_("Your email was not found."), "danger")
+        return redirect_url_for('home')
+
+    if result == "still_confirmed":
         flash(_("Your account is already enabled."), 'warning')
-    elif partner.eshop_state in ['email_to_confirm']:
-        openerp.ResPartner.write([partner.id], {
-            'eshop_state': 'first_purchase'})
+        return redirect_url_for('login_view')
+
+    if result == "enabled":
         flash(_(
             "The validation process is over.\n"
             " You can now log in to begin to purchase."), 'success')
-    else:
-        flash(_(
-            "The validation process failed because your account is disabled."
-            " Please ask your seller to fix the problem."), 'warning')
+        return redirect_url_for('login_view')
+
+    flash(_(
+        "The validation process failed because your account"
+        " is disabled. Please ask your seller to fix"
+        " the problem."), 'danger')
     return redirect_url_for('home')
 
 
@@ -272,47 +328,24 @@ def password_lost():
     # Check if the operation is possible
     if get_current_partner():
         return redirect_url_for('home')
-#    previous_captcha = session.get('captcha', False)
-#    PATH_TTF = conf.get('captcha', 'font_path').split(',')
-#    image = ImageCaptcha(fonts=PATH_TTF)
-
-#    new_captcha = str(randint(0,999999)).replace('1', '3').replace('7', '4')
-#    captcha_data = base64.b64encode(image.generate(new_captcha).getvalue())
-#    session['captcha'] = new_captcha
-
-    captcha_data = False
 
     if len(request.form) == 0:
-        pass
-#        session['captcha_ok'] = False
-    else:
-        # Check captcha
-        # if request.form.get('captcha', False) != previous_captcha:
-        #    flash(
-        #        _("The 'captcha' field is not correct. Please try again"),
-        #        'danger')
-        #    return render_template(
-        #        'password_lost.html', captcha_data=captcha_data)
+        return render_template('password_lost.html')
 
-        email = sanitize_email(request.form.get('login', False))
-        if not email:
-                flash(_("'Email' Field is required"), 'danger')
-                return render_template(
-                    'password_lost.html')
-        else:
-            partner_ids = openerp.ResPartner.search([
-                ('email', '=', email)])
-            if len(partner_ids) > 1:
-                flash(_(
-                    "There is a problem with your account."
-                    " Please contact your seller."), 'danger')
-                return redirect_url_for('home')
-            else:
-                if len(partner_ids) == 1:
-                    openerp.ResPartner.button_send_credentials(partner_ids)
-                flash(_(
-                    " we sent an email to this mailbox, if this email was"
-                    " linked to an active account."), 'success')
-                return redirect_url_for('home')
+    email = request.form.get('login', False)
+    if not email:
+        flash(_("'Email' Field is required"), "danger")
+        return render_template('password_lost.html')
 
-    return render_template('password_lost.html', captcha_data=captcha_data)
+    result = execute_odoo_command(
+        "res.partner", "eshop_password_lost", email)
+
+    if result == "too_many_email":
+        flash(_(
+            "There is a problem with your account."
+            " Please contact your seller."), "danger")
+    elif result == "credential_maybe_sent":
+        flash(_(
+            " we sent an email to this mailbox, if this email was"
+            " linked to an active account."), 'success')
+    return redirect_url_for('login_view', email=email)

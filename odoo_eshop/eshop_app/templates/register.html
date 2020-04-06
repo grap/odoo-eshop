@@ -17,13 +17,13 @@
                     <label for="account_name" class="control-label">{{ _('First Name') }} (*)</label>
                 </th>
                 <td>
-                    <input type="text" class="form-control account_data" name="first_name" value="{{ request.form['first_name']}}">
+                    <input type="text" class="form-control input-required account_data" name="first_name" value="{{ request.form['first_name']}}">
                 </td>
                 <th>
                     <label for="account_name" class="control-label">{{ _('Last Name') }} (*)</label>
                 </th>
                 <td>
-                    <input type="text" class="form-control account_data" name="last_name" value="{{ request.form['last_name']}}">
+                    <input type="text" class="form-control input-required account_data" name="last_name" value="{{ request.form['last_name']}}">
                 </td>
             </tr>
             <tr>
@@ -31,14 +31,14 @@
                     <label for="account_email" class="control-label">{{ _('Email') }} (*)</label>
                 </th>
                 <td>
-                    <input type="email" class="form-control account_data" name="email" value="{{ request.form['email']}}">
+                    <input type="email" class="form-control input-required account_data" name="email" value="{{ request.form['email']}}">
                 </td>
                 <th>
                     <label for="password_1" class="control-label">{{ _('Password') }} (*)</label>
                 </th>
-            
+
                 <td>
-                    <input type="password" class="form-control account_data" name="password_1" value="{{ request.form['password_1']}}">
+                    <input type="password" class="form-control input-required account_data" name="password_1" value="{{ request.form['password_1']}}">
                 </td>
             </tr>
             <tr>
@@ -47,7 +47,7 @@
                     <label for="password_2" class="control-label">{{ _('Password (Check)') }} (*)</label>
                 </th>
                 <td>
-                    <input type="password" class="form-control account_data" name="password_2" value="{{ request.form['password_2']}}">
+                    <input type="password" class="form-control input-required account_data" name="password_2" value="{{ request.form['password_2']}}">
                 </td>
             </tr>
             <tr>
@@ -66,7 +66,7 @@
             </tr>
             <tr>
                 <th>
-                    <label for="account_street" class="control-label">{{ _('Street') }} (*)</label>
+                    <label for="account_street" class="control-label">{{ _('Street') }}</label>
                 </th>
                 <td colspan="100%">
                     <input type="text" class="form-control account_data" name="street" value="{{ request.form['street']}}">
@@ -82,13 +82,13 @@
             </tr>
             <tr>
                 <th>
-                    <label for="account_zip" class="control-label">{{ _('ZIP Code') }} (*)</label>
+                    <label for="account_zip" class="control-label">{{ _('ZIP Code') }}</label>
                 </th>
                 <td>
                     <input type="text" class="form-control account_data" name="zip" value="{{ request.form['zip']}}">
                 </td>
                 <th>
-                    <label for="account_city" class="control-label">{{ _('City') }} (*)</label>
+                    <label for="account_city" class="control-label">{{ _('City') }}</label>
                 </th>
                 <td>
                     <input type="text" class="form-control account_data" name="city" value="{{ request.form['city']}}">

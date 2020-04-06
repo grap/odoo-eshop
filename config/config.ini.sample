@@ -12,8 +12,8 @@ database = odoo_test_eshop
 company_id = 1
 
 [auth]
-user_login = admin
-user_password = admin
+user_login = eshop_user
+user_password = demo
 session_minute = 120
 
 [localization]
@@ -23,7 +23,7 @@ locale = fr
 font_path = ./static/ttf/Ubuntu-B.ttf,./static/ttf/Ubuntu-L.ttf
 
 [cache]
-cache_type = simple
-cache_default_timeout = 3600
-cache_threshold = 10000
-invalidation_key = replace_me
+cache_type = redis
+cache_default_timeout = 86400
+cache_key_prefix = odoo_test_eshop
+invalidation_key = INVALIDATION_KEY

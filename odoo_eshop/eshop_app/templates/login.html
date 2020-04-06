@@ -9,30 +9,30 @@
         <tbody>
             <tr>
                 <th>
-                    <label for="login" class="control-label">{{ _('Email') }}</label>
+                    <label for="login" class="control-label">{{ _('Email') }} (*)</label>
                 </th>
                 <td>
-                    <input type="email" name="login" class="form-control" value="{{request.form['login']}}"/>
+                    <input type="email" name="login" class="form-control input-required" value="{{request.form['login'] or email or ""}}"/>
                 </td>
             </tr>
             <tr>
                 <th>
-                    <label for="password" class="control-label">{{ _('Password') }}</label>
+                    <label for="password" class="control-label">{{ _('Password') }} (*)</label>
                 </th>
                 <td>
-                    <input type="password" name="password" class="form-control" />
+                    <input type="password" name="password" class="form-control input-required"/>
                 </td>
             </tr>
         </tbody>
         <tfoot>
             <tr>
                 <td class="td-action" colspan="100%">
-                    <input type="submit" class="btn btn-default" />
+                    <button type="submit" class="btn btn-default">{{ _('Log In')}}</button>
                 </th>
             </tr>
             <tr>
                 <td class="td-action" colspan="100%">
-    {% if session.get('eshop_register_allowed', False) %}
+    {% if company.eshop_register_allowed %}
                     <a href="{{ url_for('register') }}">
                         {{ _("I don't have an account yet, register")}}
                     </a>

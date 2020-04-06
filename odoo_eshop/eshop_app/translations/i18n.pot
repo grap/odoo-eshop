@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-01-30 10:52+0100\n"
+"POT-Creation-Date: 2020-04-06 15:01+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -383,7 +383,7 @@ msgstr ""
 msgid "Register"
 msgstr ""
 
-#: templates/base.html:200 templates/login.html:5
+#: templates/base.html:200 templates/login.html:5 templates/login.html:30
 msgid "Log In"
 msgstr ""
 

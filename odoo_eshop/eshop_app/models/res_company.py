@@ -2,9 +2,11 @@
 
 from ..tools.config import conf
 
-from .models import get_openerp_object
+from .models import get_odoo_object
 
 
-def get_current_company():
-    company_id = int(conf.get('openerp', 'company_id'))
-    return get_openerp_object('res.company', company_id)
+def get_current_company(force_reload=False):
+    return get_odoo_object(
+        "res.company",
+        int(conf.get('openerp', 'company_id')),
+        force_reload=force_reload)

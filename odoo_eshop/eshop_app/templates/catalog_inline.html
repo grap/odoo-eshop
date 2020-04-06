@@ -20,9 +20,6 @@
 {% endif %}
             <th>{{_('Unit')}}</th>
             <th>{{_('Min.')}}</th>
-{% if company.eshop_manage_unpacking %}
-            <th>{{_('Unp.')}}</th>
-{% endif %}
 {% if not company.eshop_vat_included %}
             <th>{{_('VAT')}}</th>
 {% endif %}
@@ -75,14 +72,6 @@ item['category_id'], item['category_image_write_date_hash'])) }}"/>
             <td>
                 {{item['eshop_minimum_qty']|float_to_string}}
             </td>
-            {% if company.eshop_manage_unpacking %}
-            <td>
-                {% if item['eshop_unpack_qty'] %}
-                    {{item['eshop_unpack_qty']|float_to_string}}
-                    {{item['eshop_unpack_surcharge']|surcharge_to_string}}
-                {% endif %}
-            </td>
-            {% endif %}
             {% if not company.eshop_vat_included %}
             <td>
                 {% for tax_id in item['tax_ids'] %}
