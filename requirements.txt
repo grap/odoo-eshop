@@ -10,5 +10,5 @@ MarkupSafe==1.0
 phonenumbers==7.2.6
 pytz==2017.3
 speaklater==1.3
-Werkzeug==0.13
+Werkzeug==0.15.3
 redis
