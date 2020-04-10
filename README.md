@@ -76,6 +76,34 @@ Roadmap / Know Issues
     * IMPORTANT : it's always a 200 code, but should be 304 to light the
     server load + reduce transfert
 
+* the server generate a lot of errors IOError
+
+```
+127.0.0.1 - - [06/Apr/2020 14:21:41] "GET /static/css/eshop_2.css HTTP/1.1" 200 -
+Error on request:
+Traceback (most recent call last):
+  File "/home/sylvain/grap_dev/odoo-eshop-8.0/env/lib/python2.7/site-packages/werkzeug/serving.py", line 267, in run_wsgi
+    execute(self.server.app)
+  File "/home/sylvain/grap_dev/odoo-eshop-8.0/env/lib/python2.7/site-packages/werkzeug/serving.py", line 258, in execute
+    write(data)
+  File "/home/sylvain/grap_dev/odoo-eshop-8.0/env/lib/python2.7/site-packages/werkzeug/serving.py", line 226, in write
+    self.send_header(key, value)
+  File "/usr/lib/python2.7/BaseHTTPServer.py", line 412, in send_header
+    self.wfile.write("%s: %s\r\n" % (keyword, value))
+IOError: [Errno 32] Broken pipe
+```
+Todo : Investigate. Maybe a problem with werkzeug.
+
+https://stackoverflow.com/questions/37962925/flask-app-get-ioerror-errno-32-broken-pipe
+
+* Finish account part
+
+* Check if we delete unpack feature
+
+* Recheck all
+
+* Deploy on erp-test and check with PZI
+
 Credits
 =======
 

@@ -1,10 +1,8 @@
 #! /usr/bin/env python
-# -*- encoding: utf-8 -*-
 
 # Standard Libs
-# import base64
 import logging
-from datetime import datetime  # , timedelta
+from datetime import datetime
 import pytz
 
 # Extra Libs
@@ -13,24 +11,27 @@ from flask import request, render_template, flash
 from flask.ext.babel import gettext as _
 
 # Custom Tools
-from ..application import app
-from ..application import babel
+from ..application import (
+    app,
+    babel,
+)
 
 from ..tools.web import redirect_url_for
 from ..tools.config import conf
 from ..tools.auth import requires_connection, requires_auth
-from ..tools.erp import openerp, tz
+from ..tools.erp import tz
 
 # Custom Models
-from ..models.models import (
-    get_openerp_object,
-    invalidate_openerp_object,
-    currency,
-)
+from ..models.models import get_odoo_object, execute_odoo_command
+from ..models.tools import currency
 
-from ..models.res_partner import get_current_partner, get_current_partner_id
+from ..models.res_partner import (
+    get_current_partner,
+    get_current_partner_id
+)
 from ..models.res_company import get_current_company
-from ..models.sale_order import get_current_sale_order, get_is_vat_included
+
+from ..models.sale_order import get_current_sale_order
 
 
 # ############################################################################
@@ -47,15 +48,23 @@ def home():
 @app.route("/home_logged.html")
 @requires_auth
 def home_logged():
-    company = get_openerp_object(
-        'res.company', int(conf.get('openerp', 'company_id')))
+    company = get_current_company()
     if company.eshop_manage_recovery_moment:
-        pending_moment_groups = openerp.SaleRecoveryMomentGroup.browse(
-            [('state', 'in', 'pending_sale')])
-        futur_moment_groups = openerp.SaleRecoveryMomentGroup.browse(
-            [('state', 'in', 'futur')])
-        pending_moments = openerp.SaleRecoveryMoment.browse(
-            [('state', 'in', 'pending_sale')])
+        pending_moment_groups = execute_odoo_command(
+            "sale.recovery.moment.group",
+            "browse",
+            [('state', 'in', 'pending_sale')]
+        )
+        futur_moment_groups = execute_odoo_command(
+            "sale.recovery.moment.group",
+            "browse",
+            [('state', 'in', 'futur')]
+        )
+        pending_moments = execute_odoo_command(
+            "sale.recovery.moment",
+            "browse",
+            [('state', 'in', 'pending_sale')]
+        )
         if len(pending_moment_groups) == 0:
             if len(pending_moments):
                 # nothing to do, shop is working only with moments, no groups
@@ -104,7 +113,7 @@ def unavailable_service():
 def invalidation_cache(key, model, id):
     if key == conf.get('cache', 'invalidation_key'):
         # Invalidate Object cache
-        invalidate_openerp_object(str(model), int(id))
+        get_odoo_object(str(model), int(id), force_reload=True)
         return render_template('200.html'), 200
     else:
         return render_template('404.html'), 404
@@ -129,7 +138,7 @@ def error(e):
 @app.context_processor
 def utility_processor():
     def get_object(model_name, id):
-        return get_openerp_object(model_name, id)
+        return get_odoo_object(model_name, id)
 
     def current_partner():
         return get_current_partner()
@@ -140,8 +149,8 @@ def utility_processor():
     def current_sale_order():
         return get_current_sale_order()
 
-    def is_vat_included(company, sale_order, partner):
-        return get_is_vat_included(company, sale_order, partner)
+    def is_vat_included():
+        return get_current_company().eshop_vat_included
 
     return dict(
         get_object=get_object, current_partner=current_partner,
@@ -253,6 +262,8 @@ def fresh_category(value):
 def empty_if_null(value):
     return value if value else ''
 
+
 @app.template_filter('tax_description_per_line')
 def tax_description_per_line(line):
-    return ', '.join([x.eshop_description for x in line.tax_id])
+    taxes = [get_odoo_object("account.tax", x) for x in line.tax_ids]
+    return ', '.join([x.eshop_description for x in taxes])

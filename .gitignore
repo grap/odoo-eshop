@@ -1,3 +1,4 @@
+config/config.ini
 odoo_eshop/eshop_app/static/odoo_data/*
 
 # Byte-compiled / optimized / DLL files

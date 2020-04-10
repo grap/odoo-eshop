@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-01-30 10:52+0100\n"
+"POT-Creation-Date: 2020-04-06 15:01+0200\n"
 "PO-Revision-Date: 2014-10-06 14:07+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -244,7 +244,7 @@ msgstr ""
 #: models/res_partner.py:117
 #, python-format
 msgid "'%(phone)s' is not a valid phone number."
-msgstr "'%(phone)s' n'est pas une quantité valide."
+msgstr "'%(phone)s' n'est pas un valide."
 
 #: models/res_partner.py:148
 msgid "Account Datas updated successfully."
@@ -405,7 +405,7 @@ msgstr "Se déconnecter"
 msgid "Register"
 msgstr "S'enregistrer"
 
-#: templates/base.html:200 templates/login.html:5
+#: templates/base.html:200 templates/login.html:5 templates/login.html:30
 msgid "Log In"
 msgstr "Se connecter"
 

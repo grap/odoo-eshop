@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html>
-{% set partner = current_partner() %} 
-{% set company = current_company() %} 
+{% set partner = current_partner() %}
+{% set company = current_company() %}
 {% set sale_order = current_sale_order() %}
-{% set is_vat_included = is_vat_included(company, sale_order, partner)%}
+{% set is_vat_included = is_vat_included()%}
 
     <head>
         <meta charset="utf-8">
@@ -78,9 +78,12 @@
                     </a>
 
 {% if partner %}
+
+    {% if company.eshop_tree_view_enabled %}
             <li><a class="btn-default eshop_a_link_header" id="nav_catalog_tree" href="{{ url_for('catalog_tree') }}">
                     <span class="glyphicon glyphicon-th"/> {{ _('Products Catalog') }}
                 </a></li>
+    {% endif %}
     {% if company.eshop_list_view_enabled %}
             <li><a class="btn-default eshop_a_link_header" id="nav_catalog_inline" href="{{ url_for('catalog_inline') }}">
                     <span class="glyphicon glyphicon-th-list"/> {{ _('Quick Purchase') }}
@@ -129,7 +132,7 @@
         {% endif %}
                     <span class="glyphicon glyphicon-warning-sign" id="nav_shopping_cart_warning"
                             title="{{_('You have not reached the ceiling : ')}} {{company.eshop_minimum_price|to_currency}}"></span>
-                    <span class="glyphicon glyphicon-ok-circle" id="nav_shopping_cart_ok" 
+                    <span class="glyphicon glyphicon-ok-circle" id="nav_shopping_cart_ok"
                             style="display:none"></span>
                 </a></li>
     {% endif %}

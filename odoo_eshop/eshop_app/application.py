@@ -25,13 +25,13 @@ babel = Babel(app)
 
 # Manage Cache for the new application
 cache = Cache(app, config={
-    'CACHE_TYPE': conf.get('cache', 'cache_type'),
+    "CACHE_TYPE": conf.get("cache", "cache_type"),
     'CACHE_DEFAULT_TIMEOUT': int(conf.get('cache', 'cache_default_timeout')),
-    'CACHE_THRESHOLD': int(conf.get('cache', 'cache_threshold')),
+    "CACHE_KEY_PREFIX": conf.get("cache", "cache_key_prefix")
 })
 
-# Clear Cache and reprefetch data
-cache.clear()
+# Clear Cache and reprefetch data (For test purpose)
+# cache.clear()
 
-from models.models import prefetch  # noqa: E402
-prefetch()
+from models.models import prefetch_all  # noqa: E402
+prefetch_all()
