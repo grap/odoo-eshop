@@ -22,7 +22,6 @@
             <th>{{ _('Untaxed Amount') }}</th>
             <th>{{ _('Total') }}</th>
             <th>{{ _('State') }}</th>
-            <th></th>
         <tr>
     </thead>
     <tbody>
@@ -52,8 +51,6 @@
                 {{ _('Done') }}
                 {% endif %}
             </td>
-
-            <td><a href="{{ url_for('order_download', order_id=order.id) }}">{{ _('Download') }}</a></td>
         </tr>
 {% endfor %}
     </tbody>

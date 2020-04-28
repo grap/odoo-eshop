@@ -16,7 +16,6 @@
             <th>{{ _('Invoice Date') }}</th>
             <th>{{ _('Untaxed Amount') }}</th>
             <th>{{ _('Total') }}</th>
-            <th></th>
         <tr>
     </thead>
     <tbody>
@@ -26,7 +25,6 @@
             <td>{{ invoice.date_invoice }}</td>
             <td>{{ invoice.amount_untaxed|to_currency }}</td>
             <td>{{ invoice.amount_total|to_currency }}</td>
-            <td><a href="{{ url_for('invoice_download', invoice_id=invoice.id) }}">{{ _('Download') }}</a></td>
         </tr>
 {% endfor %}
     </tbody>
