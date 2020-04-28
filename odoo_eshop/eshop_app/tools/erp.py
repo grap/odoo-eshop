@@ -17,7 +17,7 @@ def init_openerp(url, login, password, database):
         user = openerp.ResUsers.browse(uid)
         tz = user.tz
         return openerp, uid, tz
-    except:
+    except Exception:
         return False, False, False
 
 

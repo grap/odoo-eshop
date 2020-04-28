@@ -122,6 +122,9 @@ _ODOO_MODELS = {
     },
     "sale.recovery.moment": {
         "proxy": openerp.SaleRecoveryMoment,
+    },
+    "account.invoice": {
+        "proxy": openerp.AccountInvoice,
     }
 }
 
