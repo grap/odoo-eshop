@@ -22,7 +22,7 @@
 
 <!-- Products -->
 {% set product = get_object('product.product', product_id) %}
-{% set uom = get_object('product.uom', product.uom_id) %}
+{% set uom = get_object('uom.uom', product.uom_id) %}
 {% set country = get_object('res.country', product.country_id)%}
 {% set department = get_object('res.country.department', product.department_id)%}
 
@@ -87,10 +87,6 @@
     {% if product.maker_description != False %}
             <dt>{{ _('Maker Description') }}</dt>
             <dd>{{ product.maker_description }}</dd>
-    {% endif %}
-    {% if product.fresh_category != False %}
-            <dt>{{ _('Fresh Category') }}</dt>
-            <dd>{{ product.fresh_category|fresh_category }}</dd>
     {% endif %}
             <br />
     {% if product.eshop_description != False %}

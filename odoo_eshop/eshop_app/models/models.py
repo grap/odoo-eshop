@@ -1,13 +1,9 @@
-# encoding: utf-8
-
-# Standard Libs
 import os
 import base64
 import logging
 import shutil
 
-# Custom Tools
-from ..tools.erp import openerp
+from ..tools.erp import odoo
 from ..application import cache
 
 
@@ -29,7 +25,7 @@ def get_odoo_uncached_object(model_name, *args):
 
     for data in datas:
         # Creating Object
-        myObj = _OpenerpModel(model_name, data, fields)
+        myObj = _OdooModel(model_name, data, fields)
         result.append(myObj)
     return result
 
@@ -49,7 +45,7 @@ def get_odoo_object(model_name, object_id, force_reload=False):
 
 def prefetch_all():
     """Prefetch all data from Odoo"""
-    for model_name, setting in _ODOO_MODELS.iteritems():
+    for model_name, setting in _ODOO_MODELS.items():
         if setting.get("prefetch", False):
             objs = _load_from_odoo(model_name)
             for obj in objs:
@@ -72,65 +68,65 @@ def execute_odoo_command_proxy(proxy, function, *_args, **_kwargs):
 # ###########################
 _ODOO_MODELS = {
     'account.tax': {
-        'proxy': openerp.AccountTax,
+        'proxy': odoo.AccountTax,
         'prefetch': True,
     },
     'eshop.category': {
-        'proxy': openerp.eshopCategory,
+        'proxy': odoo.eshopCategory,
         'prefetch': True,
         'image_fields': ['image', 'image_medium', 'image_small'],
     },
     'product.label': {
-        'proxy': openerp.ProductLabel,
-        'prefetch': True,
-        'image_fields': ['image', 'image_small'],
-    },
-    'product.product': {
-        'proxy': openerp.ProductProduct,
+        'proxy': odoo.ProductLabel,
         'prefetch': True,
         'image_fields': ['image', 'image_medium', 'image_small'],
     },
-    'product.uom': {
-        'proxy': openerp.ProductUom,
+    'product.product': {
+        'proxy': odoo.ProductProduct,
+        'prefetch': True,
+        'image_fields': ['image', 'image_medium', 'image_small'],
+    },
+    'uom.uom': {
+        'proxy': odoo.UomUom,
         'prefetch': True,
     },
     'res.company': {
-        'proxy': openerp.ResCompany,
+        'proxy': odoo.ResCompany,
         'prefetch': True,
         'image_fields': ['eshop_image_small']
     },
     'res.country': {
-        'proxy': openerp.ResCountry,
+        'proxy': odoo.ResCountry,
         'prefetch': True,
     },
     'res.country.department': {
-        'proxy': openerp.ResCountryDepartment,
+        'proxy': odoo.ResCountryDepartment,
         'prefetch': True,
     },
     'res.partner': {
-        'proxy': openerp.ResPartner,
+        'proxy': odoo.ResPartner,
         'prefetch': True,
     },
     "sale.order": {
-        "proxy": openerp.SaleOrder,
+        "proxy": odoo.SaleOrder,
     },
     "sale.order.line": {
-        "proxy": openerp.SaleOrderLine,
+        "proxy": odoo.SaleOrderLine,
     },
     "sale.recovery.moment.group": {
-        "proxy": openerp.SaleRecoveryMomentGroup,
+        "proxy": odoo.SaleRecoveryMomentGroup,
     },
     "sale.recovery.moment": {
-        "proxy": openerp.SaleRecoveryMoment,
+        "proxy": odoo.SaleRecoveryMoment,
     },
     "account.invoice": {
-        "proxy": openerp.AccountInvoice,
+        "proxy": odoo.AccountInvoice,
     }
 }
 
 
 # Private Model
-class _OpenerpModel(object):
+class _OdooModel(object):
     def __init__(self, model_name, data, fields):
         self.id = data['id']
         self._name = model_name
@@ -180,10 +176,9 @@ def _load_from_odoo(model_name, domain=False):
 
     for data in datas:
         # Creating Object
-        myObj = _OpenerpModel(model_name, data, fields)
+        myObj = _OdooModel(model_name, data, fields)
 
         for image_field in _ODOO_MODELS[model_name].get('image_fields', []):
-
             local_path = "odoo_data/%s__%s__%d__%s" % (
                 model_name.replace('.', '_'),
                 image_field, myObj.id, myObj.image_write_date_hash)
@@ -199,8 +194,8 @@ def _load_from_odoo(model_name, domain=False):
                     odooModel, "read", myObj.id, [image_field]
                 )[image_field]
                 if image_data:
-                    file_object = open(file_path, "w")
-                    file_object.write(base64.decodestring(image_data))
+                    file_object = open(file_path, "wb")
+                    file_object.write(base64.b64decode(image_data))
                     file_object.close()
                 else:
                     # TODO copy

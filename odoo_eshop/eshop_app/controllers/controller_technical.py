@@ -1,36 +1,26 @@
-#! /usr/bin/env python
-
-# Standard Libs
 import logging
 from datetime import datetime
 import pytz
 
-# Extra Libs
 from flask import request, render_template, flash
 
-from flask.ext.babel import gettext as _
+from flask_babel import gettext as _
 
-# Custom Tools
 from ..application import (
     app,
     babel,
 )
-
 from ..tools.web import redirect_url_for
 from ..tools.config import conf
 from ..tools.auth import requires_connection, requires_auth
 from ..tools.erp import tz
-
-# Custom Models
 from ..models.models import get_odoo_object, execute_odoo_command
 from ..models.tools import currency
-
 from ..models.res_partner import (
     get_current_partner,
     get_current_partner_id
 )
 from ..models.res_company import get_current_company
-
 from ..models.sale_order import get_current_sale_order
 
 
@@ -247,17 +237,6 @@ def to_time(arg):
     return get_local_date(arg, '%Y-%m-%d %H:%M:%S').strftime('%Hh%M')
 
 
-# TODO FIXME: Problem with erpeek. Text of field selection unavaible
-@app.template_filter('fresh_category')
-def fresh_category(value):
-    return {
-        'extra': _('Extra'),
-        '1': _('Category I'),
-        '2': _('Category II'),
-        '3': _('Category III'),
-    }[value]
-
-
 @app.template_filter('empty_if_null')
 def empty_if_null(value):
     return value if value else ''
@@ -266,4 +245,4 @@ def empty_if_null(value):
 @app.template_filter('tax_description_per_line')
 def tax_description_per_line(line):
     taxes = [get_odoo_object("account.tax", x) for x in line.tax_ids]
-    return ', '.join([x.eshop_description for x in taxes])
+    return ', '.join([x.description for x in taxes])

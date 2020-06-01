@@ -1,29 +1,16 @@
-#! /usr/bin/env python
-# -*- encoding: utf-8 -*-
-
-# Standard Lib
 import io
 
-# Extra Libs
 from flask import request, render_template, flash, session, abort, send_file
+from flask_babel import gettext as _
 
-
-from flask.ext.babel import gettext as _
-
-# Custom Tools
 from ..application import app
-
 from ..tools.web import redirect_url_for
 from ..tools.erp import (
     get_invoice_pdf,
     get_order_pdf,
 )
-
 from ..tools.auth import logout, requires_connection, requires_auth
-
-# Custom Models
 from ..models.models import execute_odoo_command
-
 from ..models.res_partner import (
     partner_domain,
     get_current_partner,
@@ -34,7 +21,6 @@ from ..models.res_partner import (
     check_phone,
     check_password,
 )
-
 from ..models.res_company import get_current_company
 
 

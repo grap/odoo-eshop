@@ -76,13 +76,13 @@
                 <th colspan="100%">
                     <div class="checkbox">
                       <label>
-                        <input type="checkbox" id="checkbox-change-password" name="checkbox-change-password" {{ request.form.has_key('checkbox-change-password') and 'checked' or ''}}>
+                        <input type="checkbox" id="checkbox-change-password" name="checkbox-change-password" {{ request.form['checkbox-change-password'] and 'checked' or ''}}>
                         {{ _('Check this box if you want to change your password') }}
                       </label>
                     </div>
                 </th>
             </tr>
-            {% if request.form.has_key('checkbox-change-password') %}
+            {% if request['checkbox-change-password'] %}
             <tr>
             {% else %}
             <tr class="hide_if_jquery_enabled">

@@ -1,6 +1,3 @@
-#! /usr/bin/env python
-# -*- encoding: utf-8 -*-
-
 from . import models
 from . import tools
 from . import sale_order

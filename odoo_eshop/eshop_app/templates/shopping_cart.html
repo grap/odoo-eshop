@@ -50,7 +50,7 @@
     <tbody>
 {% for line in sale_order_lines %}
     {% set product = get_object('product.product', line.product_id) %}
-    {% set uom = get_object('product.uom', line.product_uom_id) %}
+    {% set uom = get_object('uom.uom', line.product_uom_id) %}
         <tr>
             <td>
                 <a href="#" data-featherlight="{{ url_for('product_popup', product_id=product.id) }}">
@@ -75,7 +75,7 @@
             {% if is_vat_included %}
             <td class="td-input-text">
                 <input type="text" class="form-control input-amount" id="price_subtotal_{{product.id}}"
-                        placeholder="{{ line.price_subtotal_gross|to_currency }}" readonly/>
+                        placeholder="{{ line.price_total|to_currency }}" readonly/>
             </td>
             {% else %}
             <td class="td-input-text">

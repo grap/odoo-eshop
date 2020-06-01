@@ -1,12 +1,8 @@
-# encoding: utf-8
-
-# Extra Lib
 from functools import wraps
 from flask import session, render_template, flash
-from flask.ext.babel import gettext as _
+from flask_babel import gettext as _
 
-# Custom Tools
-from .erp import openerp
+from .erp import odoo
 from .web import redirect_url_for
 
 
@@ -19,7 +15,7 @@ def requires_connection(f):
     @wraps(f)
     def decorated(*args, **kwargs):
         # Check OpenERP Connexion
-        if not openerp:
+        if not odoo:
             # Connexion Failed, redirect to unavailable service page
             flash(_(
                 "Distant Service Unavailable. If you had a pending purchase,"
@@ -39,7 +35,7 @@ def requires_auth(f):
     @wraps(f)
     def decorated(*args, **kwargs):
         # Check OpenERP Connexion
-        if not openerp:
+        if not odoo:
             # Connexion Failed, redirect to unavailable service page
             flash(_(
                 "Distant Service Unavailable. If you had a pending purchase,"

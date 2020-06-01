@@ -1,14 +1,9 @@
-# encoding: utf-8
-
-# Standard Lib
 import re
 import phonenumbers
 
-# Extra Lib
 from flask import session
-from flask.ext.babel import gettext as _
+from flask_babel import gettext as _
 
-# Custom Tools
 from .models import get_odoo_object
 
 # https://stackoverflow.com/questions/8022530/

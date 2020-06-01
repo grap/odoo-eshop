@@ -1,10 +1,6 @@
-# encoding: utf-8
-
-# Standard Lib
 from os.path import dirname, isfile, expanduser, realpath
 
-# Extra Lib
-from ConfigParser import ConfigParser
+from configparser import ConfigParser
 
 
 def read_config():

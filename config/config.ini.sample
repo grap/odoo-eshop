@@ -3,11 +3,10 @@ url = http://127.0.0.1:8080
 host = 127.0.0.1
 port = 8080
 debug = True
-processes = 10
 secret_key = replace_me
 
-[openerp]
-url = http://127.0.0.1:8008
+[odoo]
+url = http://127.0.0.1:8012
 database = odoo_test_eshop
 company_id = 1
 

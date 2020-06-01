@@ -1,23 +1,16 @@
-#! /usr/bin/env python
-# -*- encoding: utf-8 -*-
-
-# Extra Libs
 from flask import request, render_template, flash, jsonify
-from flask.ext.babel import gettext as _
+from flask_babel import gettext as _
 
-# Custom Tools
 from ..application import app
 from ..tools.web import redirect_url_for
 from ..tools.auth import requires_auth
 from ..models.tools import currency
 from ..models.models import execute_odoo_command
-
 from ..models.sale_order import (
     get_current_sale_order_lines,
     get_current_sale_order,
     set_quantity,
 )
-
 from ..models.res_partner import get_current_partner_id
 from ..models.res_company import get_current_company
 
@@ -49,7 +42,7 @@ def shopping_cart_note_update():
         'state': 'success',
         'note': note,
         'message': _("Your comment has been successfully updated.")}
-    if request.is_xhr:
+    if True:  # request.is_xhr:
         return jsonify(result=result)
     flash(result['message'], result['state'])
     return redirect_url_for('shopping_cart')
@@ -60,7 +53,7 @@ def shopping_cart_quantity_update():
     res = set_quantity(
         int(request.form['product_id']), request.form['new_quantity'], False,
         'set')
-    if request.is_xhr:
+    if True:  # request.is_xhr:
         return jsonify(result=res)
     flash(res['message'], res['state'])
     return redirect_url_for('shopping_cart')

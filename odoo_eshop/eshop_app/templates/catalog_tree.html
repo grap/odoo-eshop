@@ -56,7 +56,7 @@
 <div class="row">
     {% for product_id in product_ids %}
         {% set product = get_object('product.product', product_id) %}
-        {% set uom = get_object('product.uom', product.uom_id) %}
+        {% set uom = get_object('uom.uom', product.uom_id) %}
 
     <div class="col-sm-3 col-md-2 col-xs-6">
         <a class="thumbnail" href="{{ url_for('product', product_id=product.id)}}" title="{{ product.name }}">
