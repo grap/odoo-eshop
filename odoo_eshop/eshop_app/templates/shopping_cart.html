@@ -24,14 +24,10 @@
             </div>
             <div class="col-md-6" style="text-align:center">
                 {% if company.eshop_manage_recovery_moment %}
-                <a href="{{ url_for('recovery_moment_place') }}"
-                    class="btn btn-default" href="#" role="button">
-                    <span class="glyphicon glyphicon-calendar"/>
-                    {{ _('Confirm') }}</a>
                 <button class="btn btn-default"
-                    onclick="GoToThePage('recovery_moment_place')">
+                    onclick="GoToThePage(this)" page_url="{{url_for('recovery_moment_place')}}">
                     <span class="glyphicon glyphicon-calendar"/>
-                    {{ _('Confirm (2)')}}</button>
+                    {{ _('Confirm')}}</button>
                 {% endif %}
             </div>
         </div>

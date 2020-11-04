@@ -81,14 +81,10 @@ item['category_id'], item['category_image_write_date_hash'])) }}"/>
             </td>
             {% endif %}
             <td class="td-input-text">
-                <form class="form-inline" role="form" method="POST" action="{{ url_for('catalog_inline_quantity_update') }}">
-                    <div class="form-group">
-                        <input type="hidden" name="product_id" value="{{ item['id'] }}"/>
-                        <input type="text" class="form-control input-quantity {{ item['qty'] and 'input-not-null-qty' or ''}} {{ item['discount'] < 0 and 'input-surcharge' or ''}}"
-                            id="quantity_{{item['id']}}"
-                            name="new_quantity" value="{{ item['qty'] }}">
-                    </div>
-                </form>
+                <input type="hidden" name="product_id" value="{{ item['id'] }}"/>
+                <input type="text" class="form-control input-quantity {{ item['qty'] and 'input-not-null-qty' or ''}} {{ item['discount'] < 0 and 'input-surcharge' or ''}}"
+                        id="quantity_{{item['id']}}"
+                        name="new_quantity" value="{{ item['qty'] }}"/>
             </td>
         </tr>
     {% endfor %}

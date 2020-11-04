@@ -27,7 +27,7 @@
     <tbody>
 {% for order in orders %}
         <tr>
-            <td>{{ order.date_order|to_date }}</td>
+            <td>{{ order.date_order|to_date }} - {{ order.date_order|to_time }}</td>
             <td>{{ order.name }}</td>
     {% if order.recovery_moment_id != False %}
             <td>{{ order.recovery_moment_id.place_id.name }}</td>

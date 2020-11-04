@@ -83,9 +83,9 @@
                 </th>
             </tr>
             {% if request['checkbox-change-password'] %}
-            <tr>
+            <tr class="password-form">
             {% else %}
-            <tr class="hide_if_jquery_enabled">
+            <tr style="visibility: hidden;" class="password-form">
             {% endif %}
                 <th>
                     <label for="password_1" class="control-label">{{ _('Password') }} (*)</label>
@@ -116,15 +116,22 @@
 
 <script>
 $(document).ready(function() {
-    $('#checkbox-change-password').change(function() {
-        if ($(this).is(':checked')){
-            $('.hide_if_jquery_enabled').show();
+    function display_or_not(){
+        if ($('#checkbox-change-password').is(':checked')){
+            $('.password-form').css('visibility', 'visible');
         }
         else{
-            $('.hide_if_jquery_enabled').hide();
+            $('.password-form').css('visibility', 'hidden');
         }
+    }
+
+    $('#checkbox-change-password').change(function() {
+        display_or_not();
     });
+    display_or_not();
 });
 </script>
 
 {% endblock %}
+
+

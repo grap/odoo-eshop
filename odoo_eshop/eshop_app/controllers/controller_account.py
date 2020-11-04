@@ -1,14 +1,9 @@
-import io
-
-from flask import request, render_template, flash, session, abort, send_file
+from flask import request, render_template, flash, session
 from flask_babel import gettext as _
 
 from ..application import app
 from ..tools.web import redirect_url_for
-from ..tools.erp import (
-    get_invoice_pdf,
-    get_order_pdf,
-)
+
 from ..tools.auth import logout, requires_connection, requires_auth
 from ..models.models import execute_odoo_command
 from ..models.res_partner import (
@@ -92,24 +87,6 @@ def orders():
     return render_template('orders.html', orders=orders)
 
 
-@app.route('/order/<int:order_id>/download')
-def order_download(order_id):
-    order = execute_odoo_command("sale.order", "browse_by_search", order_id)
-    partner = get_current_partner()
-    # Manage Access Rules
-    if not order or order.partner_id.id != partner.id:
-        return abort(404)
-
-    content = get_order_pdf(order_id)
-    filename = "%s_%s.pdf" % (_('order'), order.name.replace('/', '_'))
-    return send_file(
-        io.BytesIO(content),
-        as_attachment=True,
-        attachment_filename=filename,
-        mimetype='application/pdf'
-    )
-
-
 # ############################################################################
 # Invoices Route
 # ############################################################################
@@ -123,24 +100,6 @@ def invoices():
         ]
     )
     return render_template('invoices.html', invoices=invoices)
-
-
-@app.route('/invoices/<int:invoice_id>/download')
-def invoice_download(invoice_id):
-    invoice = execute_odoo_command(
-        "account.invoice", "browse_by_search", invoice_id)
-    partner = get_current_partner()
-    if not invoice or invoice.partner_id.id != partner.id:
-        return abort(404)
-
-    content = get_invoice_pdf(invoice_id)
-    filename = "%s_%s.pdf" % (_('invoice'), invoice.number.replace('/', '_'))
-    return send_file(
-        io.BytesIO(content),
-        as_attachment=True,
-        attachment_filename=filename,
-        mimetype='application/pdf'
-    )
 
 
 # ############################################################################

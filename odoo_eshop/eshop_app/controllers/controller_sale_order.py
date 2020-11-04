@@ -129,4 +129,5 @@ def select_recovery_moment(recovery_moment_id):
         return redirect_url_for('shopping_cart')
     else:
         flash(_("Your Sale Order is now confirmed."), 'success')
-        return redirect_url_for('orders')
+        get_current_sale_order()
+        return redirect_url_for('home')

@@ -199,19 +199,15 @@ def function_to_eval(arg):
 
 @app.template_filter('to_day')
 def to_day(arg):
-    if ' ' in arg:
-        int_day = get_local_date(arg, '%Y-%m-%d %H:%M:%S').strftime('%w')
-    else:
-        int_day = get_local_date(arg, '%Y-%m-%d').strftime('%w')
     return {
-        '0': _('Sunday'),
-        '1': _('Monday'),
-        '2': _('Tuesday'),
-        '3': _('Wednesdsay'),
-        '4': _('Thursday'),
-        '5': _('Friday'),
-        '6': _('Saturday'),
-    }[int_day]
+        0: _('Monday'),
+        1: _('Tuesday'),
+        2: _('Wednesdsay'),
+        3: _('Thursday'),
+        4: _('Friday'),
+        5: _('Saturday'),
+        6: _('Sunday'),
+    }[pytz.timezone(tz).fromutc(arg).weekday()]
 
 
 @app.template_filter('to_ids')
@@ -221,20 +217,12 @@ def to_ids(arg):
 
 @app.template_filter('to_date')
 def to_date(arg):
-    if ' ' in arg:
-        return get_local_date(arg, '%Y-%m-%d %H:%M:%S').strftime('%d/%m/%Y')
-    else:
-        return get_local_date(arg, '%Y-%m-%d').strftime('%d/%m/%Y')
-
-
-@app.template_filter('to_datetime')
-def to_datetime(arg):
-    return get_local_date(arg, '%Y-%m-%d %H:%M:%S').strftime('%d/%m/%Y %Hh%M')
+    return pytz.timezone(tz).fromutc(arg).strftime('%d/%m/%Y')
 
 
 @app.template_filter('to_time')
 def to_time(arg):
-    return get_local_date(arg, '%Y-%m-%d %H:%M:%S').strftime('%Hh%M')
+    return pytz.timezone(tz).fromutc(arg).strftime('%Hh%M')
 
 
 @app.template_filter('empty_if_null')
