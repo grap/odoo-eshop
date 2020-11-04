@@ -42,17 +42,17 @@ def home_logged():
     if company.eshop_manage_recovery_moment:
         pending_moment_groups = execute_odoo_command(
             "sale.recovery.moment.group",
-            "browse",
+            "browse_by_search",
             [('state', 'in', 'pending_sale')]
         )
         futur_moment_groups = execute_odoo_command(
             "sale.recovery.moment.group",
-            "browse",
+            "browse_by_search",
             [('state', 'in', 'futur')]
         )
         pending_moments = execute_odoo_command(
             "sale.recovery.moment",
-            "browse",
+            "browse_by_search",
             [('state', 'in', 'pending_sale')]
         )
         if len(pending_moment_groups) == 0:

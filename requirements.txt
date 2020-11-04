@@ -1,4 +1,4 @@
-ERPpeek
+odoorpc
 Flask
 Flask-Babel
 Flask-Caching

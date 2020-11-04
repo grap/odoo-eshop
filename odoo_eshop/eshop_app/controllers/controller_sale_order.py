@@ -96,7 +96,7 @@ def shopping_cart_delete_line(line_id):
 def recovery_moment_place():
     company = get_current_company()
     recovery_moments = execute_odoo_command(
-        "sale.recovery.moment", "browse",
+        "sale.recovery.moment", "browse_by_search",
         [('state', '=', 'pending_sale')],
         order="min_recovery_date"
     )

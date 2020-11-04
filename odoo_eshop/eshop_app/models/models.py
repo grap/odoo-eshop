@@ -54,9 +54,18 @@ def prefetch_all():
 
 def execute_odoo_command(model_name, function, *_args, **_kwargs):
     odoo_proxy = _ODOO_MODELS[model_name]["proxy"]
-    return execute_odoo_command_proxy(
-        odoo_proxy, function, *_args, **_kwargs
-    )
+    if function != "browse_by_search":
+        return execute_odoo_command_proxy(
+            odoo_proxy, function, *_args, **_kwargs
+        )
+    ids = execute_odoo_command_proxy(
+            odoo_proxy, "search", *_args, **_kwargs
+        )
+    if ids:
+        return execute_odoo_command_proxy(
+            odoo_proxy, "browse", ids
+        )
+    return []
 
 
 def execute_odoo_command_proxy(proxy, function, *_args, **_kwargs):
@@ -68,59 +77,59 @@ def execute_odoo_command_proxy(proxy, function, *_args, **_kwargs):
 # ###########################
 _ODOO_MODELS = {
     'account.tax': {
-        'proxy': odoo.AccountTax,
+        'proxy': odoo.env['account.tax'],
         'prefetch': True,
     },
     'eshop.category': {
-        'proxy': odoo.eshopCategory,
+        'proxy': odoo.env['eshop.category'],
         'prefetch': True,
         'image_fields': ['image', 'image_medium', 'image_small'],
     },
     'product.label': {
-        'proxy': odoo.ProductLabel,
+        'proxy': odoo.env['product.label'],
         'prefetch': True,
         'image_fields': ['image', 'image_medium', 'image_small'],
     },
     'product.product': {
-        'proxy': odoo.ProductProduct,
+        'proxy': odoo.env['product.product'],
         'prefetch': True,
         'image_fields': ['image', 'image_medium', 'image_small'],
     },
     'uom.uom': {
-        'proxy': odoo.UomUom,
+        'proxy': odoo.env['uom.uom'],
         'prefetch': True,
     },
     'res.company': {
-        'proxy': odoo.ResCompany,
+        'proxy': odoo.env['res.company'],
         'prefetch': True,
         'image_fields': ['eshop_image_small']
     },
     'res.country': {
-        'proxy': odoo.ResCountry,
+        'proxy': odoo.env['res.country'],
         'prefetch': True,
     },
     'res.country.department': {
-        'proxy': odoo.ResCountryDepartment,
+        'proxy': odoo.env['res.country.department'],
         'prefetch': True,
     },
     'res.partner': {
-        'proxy': odoo.ResPartner,
+        'proxy': odoo.env['res.partner'],
         'prefetch': True,
     },
     "sale.order": {
-        "proxy": odoo.SaleOrder,
+        "proxy": odoo.env['sale.order'],
     },
     "sale.order.line": {
-        "proxy": odoo.SaleOrderLine,
+        "proxy": odoo.env['sale.order.line'],
     },
     "sale.recovery.moment.group": {
-        "proxy": odoo.SaleRecoveryMomentGroup,
+        "proxy": odoo.env['sale.recovery.moment.group'],
     },
     "sale.recovery.moment": {
-        "proxy": odoo.SaleRecoveryMoment,
+        "proxy": odoo.env['sale.recovery.moment'],
     },
     "account.invoice": {
-        "proxy": odoo.AccountInvoice,
+        "proxy": odoo.env['account.invoice'],
     }
 }
 
@@ -192,7 +201,7 @@ def _load_from_odoo(model_name, domain=False):
                 # Load Data if exist
                 image_data = execute_odoo_command_proxy(
                     odooModel, "read", myObj.id, [image_field]
-                )[image_field]
+                )[0][image_field]
                 if image_data:
                     file_object = open(file_path, "wb")
                     file_object.write(base64.b64decode(image_data))
@@ -204,8 +213,6 @@ def _load_from_odoo(model_name, domain=False):
                         "images/%s_without_image.png" % (
                             model_name.replace('.', '_'))
                     shutil.copy(default_file_path, file_path)
-                    # local_path = 'images/%s_without_image.png' % (
-                    # model_name.replace('.', '_'))
                     pass
         result.append(myObj)
     return result

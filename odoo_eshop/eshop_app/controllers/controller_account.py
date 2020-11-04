@@ -84,7 +84,7 @@ def account():
 @requires_auth
 def orders():
     orders = execute_odoo_command(
-        "sale.order", "browse", [
+        "sale.order", "browse_by_search", [
             partner_domain('partner_id'),
             ('state', 'not in', ('draft', 'cancel')),
         ]
@@ -94,7 +94,7 @@ def orders():
 
 @app.route('/order/<int:order_id>/download')
 def order_download(order_id):
-    order = execute_odoo_command("sale.order", "browse", order_id)
+    order = execute_odoo_command("sale.order", "browse_by_search", order_id)
     partner = get_current_partner()
     # Manage Access Rules
     if not order or order.partner_id.id != partner.id:
@@ -117,7 +117,7 @@ def order_download(order_id):
 @requires_auth
 def invoices():
     invoices = execute_odoo_command(
-        "account.invoice", "browse", [
+        "account.invoice", "browse_by_search", [
             partner_domain('partner_id'),
             ('state', 'not in', ['draft', 'proforma', 'proforma2', 'cancel']),
         ]
@@ -128,7 +128,7 @@ def invoices():
 @app.route('/invoices/<int:invoice_id>/download')
 def invoice_download(invoice_id):
     invoice = execute_odoo_command(
-        "account.invoice", "browse", invoice_id)
+        "account.invoice", "browse_by_search", invoice_id)
     partner = get_current_partner()
     if not invoice or invoice.partner_id.id != partner.id:
         return abort(404)
@@ -214,7 +214,7 @@ def register():
         elif len(partner_ids) == 1:
             incorrect_data = True
             partner = execute_odoo_command(
-                "res.partner", "browse", partner_ids)[0]
+                "res.partner", "browse_by_search", partner_ids)[0]
             if partner.eshop_state == "enabled":
                 flash(_(
                     "The '%(email)s' field is already associated to an"
