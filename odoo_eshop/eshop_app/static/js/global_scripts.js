@@ -20,3 +20,22 @@
 $(document).ready(function() {
     $("input:text").focus(function() { $(this).select(); } );
 });
+
+var currentAjaxCall = false;
+
+function GoToThePage(html_link) {
+    var path = html_link.attributes.page_url.nodeValue;
+    console.log("I'm going to go to " + path);
+    if (currentAjaxCall) {
+        // Wait for it
+        console.log("WAITING")
+        currentAjaxCall.then(function(){
+            console.log("... OK!");
+            window.location.href = path;
+        });
+    }
+    else {
+        console.log("DIRECTLY")
+        window.location.href = path;
+    }
+};

@@ -19,7 +19,9 @@
 
 $('#shopping_cart_note').change(function(e){
     self = this;
-    $.ajax({
+    console.log("calling AJAX");
+    console.log(currentAjaxCall);
+    currentAjaxCall = $.ajax({
         url: FLASK_URL_FOR['shopping_cart_note_update'],
         type: "POST",
         data: {
@@ -27,11 +29,15 @@ $('#shopping_cart_note').change(function(e){
             },
         timeout: AJAX_TIMEOUT,
     }).done(function(msg){
+        currentAjaxCall = false;
+        console.log("HAVE THE ANSWER. OK");
         if (msg.result.state == 'success' || msg.result.state == 'warning'){
             $('#shopping_cart_note').val(msg.result.note);
         }
         display_message(msg.result.state, msg.result.message, true);
     }).fail(function(xhr, textstatus){
+        currentAjaxCall = false;
+        console.log("HAVE THE ANSWER. KO");
         display_fail_message();
     });
 });

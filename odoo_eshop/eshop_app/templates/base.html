@@ -72,7 +72,8 @@
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
                 <li>
-                    <a class="btn-default eshop_a_link_header" id="nav_home" href="{{  url_for('home') }}">
+                    <a class="btn-default eshop_a_link_header" id="nav_home"
+                            onclick="GoToThePage(this)" page_url="{{url_for('home')}}">
                         <img src="{{ url_for('static', filename=company.eshop_image_small_local_path) }}"
                             class="img-icon-header"/>
                     </a>
@@ -80,34 +81,42 @@
 {% if partner %}
 
     {% if company.eshop_tree_view_enabled %}
-            <li><a class="btn-default eshop_a_link_header" id="nav_catalog_tree" href="{{ url_for('catalog_tree') }}">
+            <li>
+                <a class="btn-default eshop_a_link_header" id="nav_catalog_tree"
+                    onclick="GoToThePage(this)" page_url="{{url_for('catalog_tree')}}">
                     <span class="glyphicon glyphicon-th"/> {{ _('Products Catalog') }}
-                </a></li>
+                </a>
+            </li>
     {% endif %}
     {% if company.eshop_list_view_enabled %}
-            <li><a class="btn-default eshop_a_link_header" id="nav_catalog_inline" href="{{ url_for('catalog_inline') }}">
+            <li>
+                <a class="btn-default eshop_a_link_header" id="nav_catalog_inline"
+                    onclick="GoToThePage(this)" page_url="{{url_for('catalog_inline')}}">
                     <span class="glyphicon glyphicon-th-list"/> {{ _('Quick Purchase') }}
-                </a></li>
+                </a>
+            </li>
     {% endif %}
     {% if sale_order %}
-            <li><a class="btn-default eshop_a_link_header" id="nav_shopping_cart" href="{{ url_for('shopping_cart') }}">
-                <span class="glyphicon glyphicon-shopping-cart"/> {{ _('Shopping Cart: ') }}
+            <li>
+                <a class="btn-default eshop_a_link_header" id="nav_shopping_cart"
+                onclick="GoToThePage(this)" page_url="{{url_for('shopping_cart')}}">
+                    <span class="glyphicon glyphicon-shopping-cart"/> {{ _('Shopping Cart: ') }}
         {% if is_vat_included %}
-                <span id="nav_amount_total">{{ sale_order.amount_total|to_currency }}</span>
+                    <span id="nav_amount_total">{{ sale_order.amount_total|to_currency }}</span>
                              {{_('VAT. Incl.')}}
             {% if sale_order.amount_total >= company.eshop_minimum_price %}
-                <span class="glyphicon glyphicon-ok-circle"/>
-                <span class="glyphicon glyphicon-warning-sign" style="display:none"/>
+                    <span class="glyphicon glyphicon-ok-circle"/>
+                    <span class="glyphicon glyphicon-warning-sign" style="display:none"/>
             {% else %}
-                <span class="glyphicon glyphicon-warning-sign"/>
-                <span class="glyphicon glyphicon-ok-circle" style="display:none"/>
+                    <span class="glyphicon glyphicon-warning-sign"/>
+                    <span class="glyphicon glyphicon-ok-circle" style="display:none"/>
             {% endif %}
         {% else %}
-                <span id="nav_amount_total">{{ sale_order.amount_untaxed|to_currency }}</span>
+                    <span id="nav_amount_total">{{ sale_order.amount_untaxed|to_currency }}</span>
                              {{_('VAT. Excl.')}}
             {% if sale_order.amount_untaxed >= company.eshop_minimum_price %}
-                <span class="glyphicon glyphicon-ok-circle" id="nav_shopping_cart_ok" ></span>
-                <span class="glyphicon glyphicon-warning-sign" id="nav_shopping_cart_warning"
+                    <span class="glyphicon glyphicon-ok-circle" id="nav_shopping_cart_ok" ></span>
+                    <span class="glyphicon glyphicon-warning-sign" id="nav_shopping_cart_warning"
                         style="display:none"
                         title="{{_('You have not reached the ceiling : ')}} {{company.eshop_minimum_price|to_currency}}"></span>
             {% else %}
@@ -119,10 +128,12 @@
             {% endif %}
         {% endif %}
 
-                </a></li>
+                </a>
+            </li>
     {% else %}
             <li>
-                <a class="btn-default eshop_a_link_header" id="nav_shopping_cart" style="visibility:hidden" href="{{  url_for('shopping_cart') }}">
+                <a class="btn-default eshop_a_link_header" id="nav_shopping_cart" style="visibility:hidden"
+                    onclick="GoToThePage(this)" page_url="{{url_for('shopping_cart')}}">
                     <span class="glyphicon glyphicon-shopping-cart"/> {{ _('Shopping Cart: ') }}
                 <span id="nav_amount_total">{{ 0|to_currency }}</span>
         {% if is_vat_included %}
@@ -140,34 +151,44 @@
           </ul>
           <ul class="nav navbar-nav navbar-right">
 {% if company.eshop_instagram_url %}
-            <li><a class="btn-default eshop_a_link_header" href="{{ company.eshop_instagram_url }}" target="_blank">
-                <img class="eshop_img_icon_header" title="{{_('Visit our Instagram Page')}}"
+            <li>
+                <a class="btn-default eshop_a_link_header" href="{{ company.eshop_instagram_url }}" target="_blank">
+                    <img class="eshop_img_icon_header" title="{{_('Visit our Instagram Page')}}"
                         src="{{ url_for('static', filename='images/icon-instagram.png') }}"/>
-            </a></li>
+                </a>
+            </li>
 {% endif %}
 {% if company.eshop_facebook_url %}
-            <li><a class="btn-default eshop_a_link_header" href="{{ company.eshop_facebook_url }}" target="_blank">
-                <img class="eshop_img_icon_header" title="{{_('Visit our Facebook Page')}}"
+            <li>
+                <a class="btn-default eshop_a_link_header" href="{{ company.eshop_facebook_url }}" target="_blank">
+                    <img class="eshop_img_icon_header" title="{{_('Visit our Facebook Page')}}"
                         src="{{ url_for('static', filename='images/icon-facebook.png') }}"/>
-            </a></li>
+                </a>
+            </li>
 {% endif %}
 {% if company.eshop_google_plus_url %}
-            <li><a class="btn-default eshop_a_link_header" href="{{ company.eshop_google_plus_url }}" target="_blank">
-                <img class="eshop_img_icon_header" title="{{_('Visit our Google + Page')}}"
+            <li>
+                <a class="btn-default eshop_a_link_header" href="{{ company.eshop_google_plus_url }}" target="_blank">
+                    <img class="eshop_img_icon_header" title="{{_('Visit our Google + Page')}}"
                         src="{{ url_for('static', filename='images/icon-google-plus.png') }}"/>
-            </a></li>
+                </a>
+            </li>
 {% endif %}
 {% if company.eshop_twitter_url %}
-            <li><a class="btn-default eshop_a_link_header" href="{{ company.eshop_twitter_url }}" target="_blank">
-                <img class="eshop_img_icon_header" title="{{_('Visit our Twitter Page')}}"
+            <li>
+                <a class="btn-default eshop_a_link_header" href="{{ company.eshop_twitter_url }}" target="_blank">
+                    <img class="eshop_img_icon_header" title="{{_('Visit our Twitter Page')}}"
                         src="{{ url_for('static', filename='images/icon-twitter.png') }}"/>
-            </a></li>
+                </a>
+            </li>
 {% endif %}
 {% if company.name %}
-            <li><a class="btn-default eshop_a_link_header" title="{{_('Visit our Website')}}" target="_blank"
-                    href="{{ company.website }}">
+            <li>
+                <a class="btn-default eshop_a_link_header" target="_blank" href="{{ company.website }}"
+                    title="{{_('Visit our Website')}}">
                 {{_('Web Site')}}
-            </a></li>
+                </a>
+            </li>
 {% endif %}
 
 {% if partner %}
@@ -177,19 +198,31 @@
                     <span class="glyphicon glyphicon-user"/> {{ _('Your Account') }}
                     <span class="caret" /></a>
                 <ul class="dropdown-menu">
-                    <li><a class="btn-default eshop_a_link_header" href="{{ url_for('account')}}">
+                    <li>
+                        <a class="btn-default eshop_a_link_header"
+                            onclick="GoToThePage(this)" page_url="{{url_for('account')}}">
                         {{ _('Personnal Datas') }}
-                    </a></li>
-                    <li><a class="btn-default eshop_a_link_header" href="{{ url_for('orders')}}">
+                        </a>
+                    </li>
+                    <li>
+                        <a class="btn-default eshop_a_link_header"
+                            onclick="GoToThePage(this)" page_url="{{url_for('orders')}}">
                         {{ _('Orders History') }}
-                    </a></li>
-                    <li><a class="btn-default eshop_a_link_header" href="{{ url_for('invoices')}}">
+                        </a>
+                    </li>
+                    <li>
+                        <a class="btn-default eshop_a_link_header"
+                            onclick="GoToThePage(this)" page_url="{{url_for('invoices')}}">
                         {{ _('Invoices History') }}
-                    </a></li>
+                        </a>
+                    </li>
                     <li role="separator" class="divider"></li>
-                    <li><a class="btn-default eshop_a_link_header" href="{{ url_for('logout_view') }}">
+                    <li>
+                        <a class="btn-default eshop_a_link_header"
+                            onclick="GoToThePage(this)" page_url="{{url_for('logout_view')}}">
                             <span class="glyphicon glyphicon-log-out"/> {{ _('Log Out') }}
-                    </a></li>
+                        </a>
+                    </li>
                 </ul>
             </li>
 {% else %}
