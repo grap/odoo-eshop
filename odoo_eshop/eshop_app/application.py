@@ -22,7 +22,7 @@ cache = Cache(app, config={
 })
 
 # Clear Cache and reprefetch data (For test purpose)
-# cache.clear()
+cache.clear()
 
 from .models.models import prefetch_all  # noqa: E402
 prefetch_all()

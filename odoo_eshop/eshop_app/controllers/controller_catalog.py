@@ -55,7 +55,6 @@ def catalog_inline():
         "get_current_eshop_product_list",
         get_current_partner_id()
     )
-    print(catalog_inline)
     return render_template(
         'catalog_inline.html',
         catalog_inline=catalog_inline,
