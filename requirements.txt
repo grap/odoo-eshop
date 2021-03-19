@@ -5,7 +5,7 @@ Flask==0.10.1
 Flask-Babel==0.9
 Flask-Cache==0.13.1
 itsdangerous==0.24
-Jinja2==2.8
+Jinja2==2.11.3
 MarkupSafe==1.0
 phonenumbers==7.2.6
 pytz==2017.3
