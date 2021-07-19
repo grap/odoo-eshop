@@ -43,7 +43,7 @@ def check_first_name(txt_name):
     error_message = False
     txt_name = txt_name.strip()
     if not txt_name:
-        error_message = _("'%s' is not a valid First Name" % txt_name)
+        error_message = _("'%s' is not a valid First Name." % txt_name)
     return txt_name, error_message
 
 
@@ -51,7 +51,7 @@ def check_last_name(txt_name):
     error_message = False
     txt_name = txt_name.strip()
     if not txt_name:
-        error_message = _("'%s' is not a valid Last Name" % txt_name)
+        error_message = _("'%s' is not a valid Last Name." % txt_name)
     return txt_name, error_message
 
 

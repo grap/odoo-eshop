@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-07-19 16:16+0200\n"
+"POT-Creation-Date: 2021-07-19 16:17+0200\n"
 "PO-Revision-Date: 2014-10-06 14:07+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -212,18 +212,18 @@ msgstr ""
 
 #: models/res_partner.py:46
 #, python-format
-msgid "'%s' is not a valid First Name"
-msgstr "'%s' n'est pas un prénom valide"
+msgid "'%s' is not a valid First Name."
+msgstr "'%s' n'est pas un prénom valide."
 
 #: models/res_partner.py:54
 #, python-format
-msgid "'%s' is not a valid Last Name"
-msgstr "'%s' n'est pas un nom valide"
+msgid "'%s' is not a valid Last Name."
+msgstr "'%s' n'est pas un nom."
 
 #: models/res_partner.py:62
 #, python-format
 msgid "'%s' is not a valid email."
-msgstr "'%s' n'est pas un email valide"
+msgstr "'%s' n'est pas un email valide."
 
 #: models/res_partner.py:70
 #, python-format
@@ -723,4 +723,3 @@ msgstr ""
 "Service distant indisponible. Si vous aviez une commande en cours, votre "
 "panier a été sauvegardé. Merci de vous connecter de nouveau dans un "
 "moment."
-
