@@ -108,6 +108,10 @@ _ODOO_MODELS = {
         'proxy': odoo.env['res.country'],
         'prefetch': True,
     },
+    'res.country.state': {
+        'proxy': odoo.env['res.country.state'],
+        'prefetch': True,
+    },
     'res.country.department': {
         'proxy': odoo.env['res.country.department'],
         'prefetch': True,

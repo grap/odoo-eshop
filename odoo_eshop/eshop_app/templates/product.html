@@ -24,6 +24,7 @@
 {% set product = get_object('product.product', product_id) %}
 {% set uom = get_object('uom.uom', product.uom_id) %}
 {% set country = get_object('res.country', product.country_id)%}
+{% set state = get_object('res.country.state', product.state_id)%}
 {% set department = get_object('res.country.department', product.department_id)%}
 
 <div class="row">
@@ -75,6 +76,10 @@
     {% if country != False %}
             <dt>{{ _('Country') }}</dt>
             <dd>{{ country.name }}</dd>
+    {% endif %}
+    {% if state != False %}
+            <dt>{{ _('State') }}</dt>
+            <dd>{{ state.name }}</dd>
     {% endif %}
     {% if department != False %}
             <dt>{{ _('Department') }}</dt>
