@@ -1,15 +1,8 @@
-#! /usr/bin/env python
-# -*- encoding: utf-8 -*-
-
-# Extra Libs
 from flask import request, render_template, flash, jsonify
 
-# Custom Tools
 from ..application import app
-
 from ..tools.web import redirect_url_for
 from ..tools.auth import requires_auth
-
 from ..models.models import get_odoo_object, execute_odoo_command
 from ..models.sale_order import set_quantity
 from ..models.res_partner import get_current_partner_id
@@ -73,8 +66,10 @@ def catalog_inline_quantity_update():
     res = set_quantity(
         int(request.form['product_id']), request.form['new_quantity'], True,
         'set')
-    if request.is_xhr:
+    if True:  # request.is_xhr:
         return jsonify(result=res)
+    # TODO, fix me, the website is not working anymore if javascript is
+    # disabled
     flash(res['message'], res['state'])
     return redirect_url_for('catalog_inline')
 

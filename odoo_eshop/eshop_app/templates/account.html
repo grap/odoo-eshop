@@ -76,16 +76,16 @@
                 <th colspan="100%">
                     <div class="checkbox">
                       <label>
-                        <input type="checkbox" id="checkbox-change-password" name="checkbox-change-password" {{ request.form.has_key('checkbox-change-password') and 'checked' or ''}}>
+                        <input type="checkbox" id="checkbox-change-password" name="checkbox-change-password" {{ request.form['checkbox-change-password'] and 'checked' or ''}}>
                         {{ _('Check this box if you want to change your password') }}
                       </label>
                     </div>
                 </th>
             </tr>
-            {% if request.form.has_key('checkbox-change-password') %}
-            <tr>
+            {% if request['checkbox-change-password'] %}
+            <tr class="password-form">
             {% else %}
-            <tr class="hide_if_jquery_enabled">
+            <tr style="visibility: hidden;" class="password-form">
             {% endif %}
                 <th>
                     <label for="password_1" class="control-label">{{ _('Password') }} (*)</label>
@@ -113,19 +113,25 @@
 </form>
 
 <!-- JQuery -->
-<script src="{{ url_for('static', filename='js/hide_if_jquery_enabled.js') }}"></script>
 
 <script>
 $(document).ready(function() {
-    $('#checkbox-change-password').change(function() {
-        if ($(this).is(':checked')){
-            $('.hide_if_jquery_enabled').show();
+    function display_or_not(){
+        if ($('#checkbox-change-password').is(':checked')){
+            $('.password-form').css('visibility', 'visible');
         }
         else{
-            $('.hide_if_jquery_enabled').hide();
+            $('.password-form').css('visibility', 'hidden');
         }
+    }
+
+    $('#checkbox-change-password').change(function() {
+        display_or_not();
     });
+    display_or_not();
 });
 </script>
 
 {% endblock %}
+
+

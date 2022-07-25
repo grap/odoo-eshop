@@ -1,14 +1,9 @@
-# encoding: utf-8
-
-# Standard Lib
 import re
 import phonenumbers
 
-# Extra Lib
 from flask import session
-from flask.ext.babel import gettext as _
+from flask_babel import gettext as _
 
-# Custom Tools
 from .models import get_odoo_object
 
 # https://stackoverflow.com/questions/8022530/
@@ -48,7 +43,7 @@ def check_first_name(txt_name):
     error_message = False
     txt_name = txt_name.strip()
     if not txt_name:
-        error_message = _("'%s' is not a valid First Name" % txt_name)
+        error_message = _("'%s' is not a valid First Name." % txt_name)
     return txt_name, error_message
 
 
@@ -56,7 +51,7 @@ def check_last_name(txt_name):
     error_message = False
     txt_name = txt_name.strip()
     if not txt_name:
-        error_message = _("'%s' is not a valid Last Name" % txt_name)
+        error_message = _("'%s' is not a valid Last Name." % txt_name)
     return txt_name, error_message
 
 

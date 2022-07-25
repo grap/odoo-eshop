@@ -1,29 +1,11 @@
-#! /usr/bin/env python
-# -*- encoding: utf-8 -*-
+from flask import request, render_template, flash, session
+from flask_babel import gettext as _
 
-# Standard Lib
-import io
-
-# Extra Libs
-from flask import request, render_template, flash, session, abort, send_file
-
-
-from flask.ext.babel import gettext as _
-
-# Custom Tools
 from ..application import app
-
 from ..tools.web import redirect_url_for
-from ..tools.erp import (
-    get_invoice_pdf,
-    get_order_pdf,
-)
 
 from ..tools.auth import logout, requires_connection, requires_auth
-
-# Custom Models
 from ..models.models import execute_odoo_command
-
 from ..models.res_partner import (
     partner_domain,
     get_current_partner,
@@ -34,7 +16,6 @@ from ..models.res_partner import (
     check_phone,
     check_password,
 )
-
 from ..models.res_company import get_current_company
 
 
@@ -98,30 +79,12 @@ def account():
 @requires_auth
 def orders():
     orders = execute_odoo_command(
-        "sale.order", "browse", [
+        "sale.order", "browse_by_search", [
             partner_domain('partner_id'),
             ('state', 'not in', ('draft', 'cancel')),
         ]
     )
     return render_template('orders.html', orders=orders)
-
-
-@app.route('/order/<int:order_id>/download')
-def order_download(order_id):
-    order = execute_odoo_command("sale.order", "browse", order_id)
-    partner = get_current_partner()
-    # Manage Access Rules
-    if not order or order.partner_id.id != partner.id:
-        return abort(404)
-
-    content = get_order_pdf(order_id)
-    filename = "%s_%s.pdf" % (_('order'), order.name.replace('/', '_'))
-    return send_file(
-        io.BytesIO(content),
-        as_attachment=True,
-        attachment_filename=filename,
-        mimetype='application/pdf'
-    )
 
 
 # ############################################################################
@@ -131,30 +94,12 @@ def order_download(order_id):
 @requires_auth
 def invoices():
     invoices = execute_odoo_command(
-        "account.invoice", "browse", [
+        "account.invoice", "browse_by_search", [
             partner_domain('partner_id'),
             ('state', 'not in', ['draft', 'proforma', 'proforma2', 'cancel']),
         ]
     )
     return render_template('invoices.html', invoices=invoices)
-
-
-@app.route('/invoices/<int:invoice_id>/download')
-def invoice_download(invoice_id):
-    invoice = execute_odoo_command(
-        "account.invoice", "browse", invoice_id)
-    partner = get_current_partner()
-    if not invoice or invoice.partner_id.id != partner.id:
-        return abort(404)
-
-    content = get_invoice_pdf(invoice_id)
-    filename = "%s_%s.pdf" % (_('invoice'), invoice.number.replace('/', '_'))
-    return send_file(
-        io.BytesIO(content),
-        as_attachment=True,
-        attachment_filename=filename,
-        mimetype='application/pdf'
-    )
 
 
 # ############################################################################
@@ -228,7 +173,7 @@ def register():
         elif len(partner_ids) == 1:
             incorrect_data = True
             partner = execute_odoo_command(
-                "res.partner", "browse", partner_ids)[0]
+                "res.partner", "browse_by_search", partner_ids)[0]
             if partner.eshop_state == "enabled":
                 flash(_(
                     "The '%(email)s' field is already associated to an"

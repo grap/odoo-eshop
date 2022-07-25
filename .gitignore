@@ -1,5 +1,6 @@
 config/config.ini
 odoo_eshop/eshop_app/static/odoo_data/*
+odoo_eshop.systemctl.sh
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

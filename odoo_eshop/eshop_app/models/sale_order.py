@@ -1,9 +1,5 @@
-# encoding: utf-8
+from flask_babel import gettext as _
 
-# Extra Lib
-from flask.ext.babel import gettext as _
-
-# Custom Tools
 from ..models.models import execute_odoo_command, get_odoo_uncached_object
 from .res_company import get_current_company
 from .res_partner import get_current_partner_id
@@ -72,9 +68,8 @@ def set_quantity(product_id, quantity, allow_null, method):
         res['state'] = 'success'
     res['message'] = '<br />'.join(res['messages'])
 
-    res['is_surcharged'] = res['discount'] < 0
     if company.eshop_vat_included:
-        res['amount_line'] = currency(res['price_subtotal_gross'])
+        res['amount_line'] = currency(res['price_total'])
         res['amount_total_header'] = currency(res['amount_total'])
         res['minimum_ok'] = (
             res['amount_total'] >= company.eshop_minimum_price)

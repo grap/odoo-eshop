@@ -3,8 +3,9 @@
 {% block container_popup %}
 <!-- Products -->
 {% set product = get_object('product.product', product_id) %}
-{% set uom = get_object('product.uom', product.uom_id) %}
+{% set uom = get_object('uom.uom', product.uom_id) %}
 {% set country = get_object('res.country', product.country_id)%}
+{% set state = get_object('res.country.state', product.state_id)%}
 {% set department = get_object('res.country.department', product.department_id)%}
 {% set company = current_company() %}
 
@@ -57,6 +58,10 @@
             <dt>{{ _('Country') }}</dt>
             <dd>{{ country.name }}</dd>
     {% endif %}
+    {% if state != False %}
+            <dt>{{ _('State') }}</dt>
+            <dd>{{ state.name }}</dd>
+    {% endif %}
     {% if department != False %}
             <dt>{{ _('Department') }}</dt>
             <dd>{{ department.name }}</dd>
@@ -68,10 +73,6 @@
     {% if product.maker_description != False %}
             <dt>{{ _('Maker Description') }}</dt>
             <dd>{{ product.maker_description }}</dd>
-    {% endif %}
-    {% if product.fresh_category != False %}
-            <dt>{{ _('Fresh Category') }}</dt>
-            <dd>{{ product.fresh_category|fresh_category }}</dd>
     {% endif %}
             <br />
     {% if product.eshop_description != False %}

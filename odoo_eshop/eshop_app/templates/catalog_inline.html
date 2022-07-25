@@ -28,21 +28,21 @@
     </thead>
     <tbody>
 <!-- Categories -->
-{% set current_category = False %}
+    {% set ns = namespace(current_category=False) %}
     {% for item in catalog_inline %}
-        {% if current_category != item['category_id']%}
+        {% if ns.current_category != item['category_id']%}
         <tr>
             <th colspan="100%">
                 <h2>
                     <img class="thumbnail img-responsive img-medium-eshop-categ"
                         src="{{ url_for('static', filename='odoo_data/eshop_category__image_medium__%d__%s' % (
 item['category_id'], item['category_image_write_date_hash'])) }}"/>
-                    {{ item['category_complete_name'] }}
+                    {{ item['category_complete_name'] }}<br />
                 </h2>
             </th>
         </tr>
         {% endif %}
-        {% set current_category = item['category_id']%}
+        {% set ns.current_category = item['category_id']%}
         <tr>
             <td>
                 <a href="#" data-featherlight="{{ url_for('product_popup', product_id=item['id']) }}">
@@ -76,20 +76,15 @@ item['category_id'], item['category_image_write_date_hash'])) }}"/>
             <td>
                 {% for tax_id in item['tax_ids'] %}
                     {% set tax = get_object('account.tax', tax_id) %}
-                    {{ tax.eshop_description }}
+                    {{ tax.description }}
                 {% endfor %}
             </td>
             {% endif %}
             <td class="td-input-text">
-                <form class="form-inline" role="form" method="POST" action="{{ url_for('catalog_inline_quantity_update') }}">
-                    <div class="form-group">
-                        <input type="hidden" name="product_id" value="{{ item['id'] }}"/>
-                        <input type="text" class="form-control input-quantity {{ item['qty'] and 'input-not-null-qty' or ''}} {{ item['discount'] < 0 and 'input-surcharge' or ''}}"
-                            id="quantity_{{item['id']}}"
-                            name="new_quantity" value="{{ item['qty'] }}">
-                    </div>
-                    <button type="submit" class="btn btn-default hide_if_jquery_enabled">{{ _('Update')}}</button>
-                </form>
+                <input type="hidden" name="product_id" value="{{ item['id'] }}"/>
+                <input type="text" class="form-control input-quantity {{ item['qty'] and 'input-not-null-qty' or ''}} {{ item['discount'] < 0 and 'input-surcharge' or ''}}"
+                        id="quantity_{{item['id']}}"
+                        name="new_quantity" value="{{ item['qty'] }}"/>
             </td>
         </tr>
     {% endfor %}
@@ -102,7 +97,7 @@ item['category_id'], item['category_image_write_date_hash'])) }}"/>
         {% endif %}
         >
             <th colspan="100%">
-                <a href="{{ url_for('shopping_cart') }}"
+                <a onclick="GoToThePage(this)" page_url="{{url_for('shopping_cart')}}"
                     class="btn btn-default" href="#" role="button">
                     <span class="glyphicon glyphicon-shopping-cart"/>
                     {{ _('Go to Shopping Cart to finish your Order') }}</a>
@@ -113,7 +108,6 @@ item['category_id'], item['category_image_write_date_hash'])) }}"/>
 
 
 <!-- JQuery -->
-<script src="{{ url_for('static', filename='js/hide_if_jquery_enabled.js') }}"></script>
 <script src="{{ url_for('static', filename='js/catalog_inline_quantity_update.js') }}"></script>
 <script src="{{ url_for('static', filename='js/set_table_float_thead.js') }}"></script>
 {% endblock %}

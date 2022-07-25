@@ -60,8 +60,7 @@
             </td>
             <td>
                 {% if recovery_moment.is_complete|function_to_eval %}
-                {{ _('Complete')}} 
-                
+                    {{ _('Complete')}}
                 {% else %}
                 <a data-href="{{ url_for('select_recovery_moment', recovery_moment_id=recovery_moment.id) }}"
                         data-toggle="modal" data-target="#confirm-valid"
