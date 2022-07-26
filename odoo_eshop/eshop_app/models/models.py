@@ -73,7 +73,7 @@ def execute_odoo_command_proxy(proxy, function, *_args, **_kwargs):
 
 
 # ###########################
-# Private Sectioon
+# Private Section
 # ###########################
 _ODOO_MODELS = {
     'account.tax': {
