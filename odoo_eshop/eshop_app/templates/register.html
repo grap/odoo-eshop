@@ -93,6 +93,12 @@
                 <td>
                     <input type="text" class="form-control account_data" name="city" value="{{ request.form['city']}}">
                 </td>
+                <th style="display:none">
+                  <label for="is_human" class="control-label">{{ _('Is human') }}</label>
+                </th>
+                <td style="display:none">
+                  <input type="checkbox" class="form-control account_data" name="is_human" value="{{ request.form.get('is_human')}}">
+                </td>
             </tr>
         </tbody>
         <tfoot>
