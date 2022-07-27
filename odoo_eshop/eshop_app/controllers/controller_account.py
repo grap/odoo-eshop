@@ -212,8 +212,8 @@ def register():
         flash(error_message, "danger")
 
     # Check if user is human
-    # (Works as a lure, because checkbox is hidden,
-    # only bots can check it)
+    # Field and variable names are voluntarily misleading 
+    # Works as a lure, because only bots can see the checkbox
     is_human = request.form.get('is_human')
     if is_human:
         incorrect_data = True
