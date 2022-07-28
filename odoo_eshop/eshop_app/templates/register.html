@@ -110,7 +110,11 @@
                   <label for="is_human" class="control-label">{{ _('Is human') }}</label>
                 </th>
                 <td class="nope">
-                  <input type="checkbox" class="form-control account_data" name="is_human" value="{{ request.form.get('is_human')}}">
+                  {% if request.form['is_human'] %}
+                      <input type="checkbox" class="form-control account_data" name="is_human" value="no" checked>
+                  {% else %}
+                      <input type="checkbox" class="form-control account_data" name="is_human" value="yes">
+                  {% endif %}
                 </td>
             </tr>
 

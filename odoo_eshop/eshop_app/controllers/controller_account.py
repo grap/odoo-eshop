@@ -212,7 +212,7 @@ def register():
         flash(error_message, "danger")
 
     # Check if user is human
-    # Field and variable names are voluntarily misleading 
+    # Field and variable names are voluntarily misleading
     # Works as a lure, because only bots can see the checkbox
     is_human = request.form.get('is_human')
     if is_human:
@@ -241,6 +241,9 @@ def register():
             "success")
         return render_template('home.html')
     elif is_human:
+        execute_odoo_command(
+            "eshop.fake.account", "eshop_log_fake_account", {"form_data": request.form}
+        )
         return render_template('home.html')
     else:
         return render_template('register.html')

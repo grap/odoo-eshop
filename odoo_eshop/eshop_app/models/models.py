@@ -85,6 +85,9 @@ _ODOO_MODELS = {
         'prefetch': True,
         'image_fields': ['image', 'image_medium', 'image_small'],
     },
+    'eshop.fake.account': {
+        'proxy': odoo.env['eshop.fake.account'],
+    },
     'product.label': {
         'proxy': odoo.env['product.label'],
         'prefetch': True,
