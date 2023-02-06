@@ -173,7 +173,7 @@ def register():
         elif len(partner_ids) == 1:
             incorrect_data = True
             partner = execute_odoo_command(
-                "res.partner", "browse_by_search", partner_ids)[0]
+                "res.partner", "browse", partner_ids)[0]
             if partner.eshop_state == "enabled":
                 flash(_(
                     "The '%(email)s' field is already associated to an"
