@@ -6,6 +6,19 @@
     $('#nav_register').addClass('active');
 </script>
 
+<!-- Renders the lure checkbox invisible -->
+<style>
+  .nope{
+      opacity: 0;
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 0;
+      width: 0;
+      z-index:-1;
+  }
+</style>
+
 <!-- Account Data -->
 <h1>{{ _('Create a new account') }}</h1>
 
@@ -93,7 +106,18 @@
                 <td>
                     <input type="text" class="form-control account_data" name="city" value="{{ request.form['city']}}">
                 </td>
+                <th class="nope">
+                  <label for="is_human" class="control-label">{{ _('Is human') }}</label>
+                </th>
+                <td class="nope">
+                  {% if request.form['is_human'] %}
+                      <input type="checkbox" class="form-control account_data" name="is_human" value="no" checked>
+                  {% else %}
+                      <input type="checkbox" class="form-control account_data" name="is_human" value="yes">
+                  {% endif %}
+                </td>
             </tr>
+
         </tbody>
         <tfoot>
             <tr>

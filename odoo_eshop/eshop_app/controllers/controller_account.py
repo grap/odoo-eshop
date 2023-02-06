@@ -25,7 +25,6 @@ from ..models.res_company import get_current_company
 @app.route("/account", methods=['GET', 'POST'])
 @requires_auth
 def account():
-
     incorrect_data = False
     vals = {}
     if not len(request.form) == 0:
@@ -67,6 +66,7 @@ def account():
                 _("Account Datas updated successfully."),
                 "success",
             )
+
 
     partner = get_current_partner(force_reload=True)
     return render_template('account.html', partner=partner)
@@ -211,6 +211,13 @@ def register():
         incorrect_data = True
         flash(error_message, "danger")
 
+    # Check if user is human
+    # Field and variable names are voluntarily misleading
+    # Works as a lure, because only bots can see the checkbox
+    is_human = request.form.get('is_human')
+    if is_human:
+        incorrect_data = True
+
     if not incorrect_data:
         # Registration is over
         execute_odoo_command(
@@ -232,6 +239,11 @@ def register():
             " '%(email)s' and click on the link you received to activate"
             " your account.", email=email),
             "success")
+        return render_template('home.html')
+    elif is_human:
+        execute_odoo_command(
+            "eshop.fake.account", "eshop_log_fake_account", {"form_data": request.form}
+        )
         return render_template('home.html')
     else:
         return render_template('register.html')

@@ -73,7 +73,7 @@ def execute_odoo_command_proxy(proxy, function, *_args, **_kwargs):
 
 
 # ###########################
-# Private Sectioon
+# Private Section
 # ###########################
 _ODOO_MODELS = {
     'account.tax': {
@@ -84,6 +84,9 @@ _ODOO_MODELS = {
         'proxy': odoo.env['eshop.category'],
         'prefetch': True,
         'image_fields': ['image', 'image_medium', 'image_small'],
+    },
+    'eshop.fake.account': {
+        'proxy': odoo.env['eshop.fake.account'],
     },
     'product.label': {
         'proxy': odoo.env['product.label'],
