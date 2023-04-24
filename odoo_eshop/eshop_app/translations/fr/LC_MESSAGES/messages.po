@@ -7,18 +7,18 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-07-19 16:17+0200\n"
+"POT-Creation-Date: 2023-04-24 15:16+0200\n"
 "PO-Revision-Date: 2014-10-06 14:07+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
 "Language-Team: fr <LL@li.org>\n"
-"Plural-Forms: nplurals=2; plural=(n > 1)\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.8.0\n"
+"Generated-By: Babel 2.10.3\n"
 
-#: controllers/controller_account.py:67
+#: controllers/controller_account.py:66
 msgid "Account Datas updated successfully."
 msgstr "Données personnelles mise à jour."
 
@@ -64,7 +64,7 @@ msgstr ""
 "Le mail '%(email)s' est déjà associé à un compte qui n'est pas actif. "
 "Merci de demander à votre vendeur d'activer votre compte."
 
-#: controllers/controller_account.py:230
+#: controllers/controller_account.py:237
 #, python-format
 msgid ""
 "The registration is complete. Please check your mail box '%(email)s' and "
@@ -73,19 +73,19 @@ msgstr ""
 "La création du compte est terminé. Veuillez vérifier votre boite mail et "
 "cliquer sur le lien que vous avez reçu pour activer votre compte."
 
-#: controllers/controller_account.py:246
+#: controllers/controller_account.py:258
 msgid "The validation process failed."
 msgstr "Le processus de validation a échoué."
 
-#: controllers/controller_account.py:250
+#: controllers/controller_account.py:262
 msgid "Your email was not found."
 msgstr "Votre email n'a pas été trouvé"
 
-#: controllers/controller_account.py:254
+#: controllers/controller_account.py:266
 msgid "Your account is already enabled."
 msgstr "Votre compte est déjà activé."
 
-#: controllers/controller_account.py:258
+#: controllers/controller_account.py:270
 msgid ""
 "The validation process is over.\n"
 " You can now log in to begin to purchase."
@@ -93,7 +93,7 @@ msgstr ""
 " La validation de votre compte est terminée.\n"
 " Vous pouvez désormais vous identifier pour passer commande."
 
-#: controllers/controller_account.py:263
+#: controllers/controller_account.py:275
 msgid ""
 "The validation process failed because your account is disabled. Please "
 "ask your seller to fix the problem."
@@ -101,15 +101,15 @@ msgstr ""
 "La validation de votre compte a échoué car celui-ci a été désactivé. "
 "Veuillez contacter votre vendeur pour corriger le problème."
 
-#: controllers/controller_account.py:282
+#: controllers/controller_account.py:294
 msgid "'Email' Field is required"
 msgstr "Le champ 'email' est obligatoire."
 
-#: controllers/controller_account.py:289
+#: controllers/controller_account.py:301
 msgid "There is a problem with your account. Please contact your seller."
 msgstr "Il y a un problème avec votre compte. Veuillez contacter votre vendeur."
 
-#: controllers/controller_account.py:293
+#: controllers/controller_account.py:305
 msgid ""
 " we sent an email to this mailbox, if this email was linked to an active "
 "account."
@@ -258,7 +258,7 @@ msgstr "Page non trouvée"
 msgid "Unexpected Error."
 msgstr "Erreur inattendue."
 
-#: templates/account.html:10 templates/base.html:198
+#: templates/account.html:10 templates/base.html:182
 msgid "Your Account"
 msgstr "Votre Compte"
 
@@ -267,31 +267,31 @@ msgid "Name"
 msgstr "Nom Complet"
 
 #: templates/account.html:25 templates/login.html:12
-#: templates/password_lost.html:13 templates/register.html:31
+#: templates/password_lost.html:13 templates/register.html:44
 msgid "Email"
 msgstr "Email"
 
-#: templates/account.html:33 templates/register.html:55
+#: templates/account.html:33 templates/register.html:68
 msgid "Cell Phone"
 msgstr "Téléphone Portable"
 
-#: templates/account.html:39 templates/register.html:61
+#: templates/account.html:39 templates/register.html:74
 msgid "Other Phone"
 msgstr "Autre téléphone"
 
-#: templates/account.html:47 templates/register.html:69
+#: templates/account.html:47 templates/register.html:82
 msgid "Street"
 msgstr "Adresse"
 
-#: templates/account.html:55 templates/register.html:77
+#: templates/account.html:55 templates/register.html:90
 msgid "Street (Extra Info)"
 msgstr "Adresse (information complémentaire)"
 
-#: templates/account.html:63 templates/register.html:85
+#: templates/account.html:63 templates/register.html:98
 msgid "ZIP Code"
 msgstr "Code Postal"
 
-#: templates/account.html:69 templates/register.html:91
+#: templates/account.html:69 templates/register.html:104
 msgid "City"
 msgstr "Ville"
 
@@ -299,11 +299,11 @@ msgstr "Ville"
 msgid "Check this box if you want to change your password"
 msgstr "Cochez cette case si vous voulez changer votre mot de passe"
 
-#: templates/account.html:91 templates/login.html:20 templates/register.html:37
+#: templates/account.html:91 templates/login.html:20 templates/register.html:50
 msgid "Password"
 msgstr "Mot de passe"
 
-#: templates/account.html:97 templates/register.html:47
+#: templates/account.html:97 templates/register.html:60
 msgid "Password (Check)"
 msgstr "Mot de passe (Vérification)"
 
@@ -352,42 +352,34 @@ msgid "Visit our Facebook Page"
 msgstr "Visiter notre page Facebook"
 
 #: templates/base.html:172
-msgid "Visit our Google + Page"
-msgstr "Visiter notre page Google +"
-
-#: templates/base.html:180
-msgid "Visit our Twitter Page"
-msgstr "Visiter notre page Twitter"
-
-#: templates/base.html:188
 msgid "Visit our Website"
 msgstr "Visiter notre site web"
 
-#: templates/base.html:189
+#: templates/base.html:173
 msgid "Web Site"
 msgstr "Site Web"
 
-#: templates/base.html:204
+#: templates/base.html:188
 msgid "Personnal Datas"
 msgstr "Données Personnelles"
 
-#: templates/base.html:210
+#: templates/base.html:194
 msgid "Orders History"
 msgstr "Historique des Commandes"
 
-#: templates/base.html:216
+#: templates/base.html:200
 msgid "Invoices History"
 msgstr "Historique des Factures"
 
-#: templates/base.html:223
+#: templates/base.html:207
 msgid "Log Out"
 msgstr "Se déconnecter"
 
-#: templates/base.html:232
+#: templates/base.html:216
 msgid "Register"
 msgstr "S'enregistrer"
 
-#: templates/base.html:236 templates/login.html:5 templates/login.html:30
+#: templates/base.html:220 templates/login.html:5 templates/login.html:30
 msgid "Log In"
 msgstr "Se connecter"
 
@@ -643,23 +635,27 @@ msgstr ""
 "Merci de patienter : votre vente est en train d'être traitée.<br /> Cela "
 "peut prendre quelques secondes."
 
-#: templates/register.html:10
+#: templates/register.html:23
 msgid "Create a new account"
 msgstr "Créer un nouveau compte"
 
-#: templates/register.html:17
+#: templates/register.html:30
 msgid "First Name"
 msgstr "Prénom"
 
-#: templates/register.html:23
+#: templates/register.html:36
 msgid "Last Name"
 msgstr "Nom"
 
-#: templates/register.html:101
+#: templates/register.html:110
+msgid "Is human"
+msgstr ""
+
+#: templates/register.html:125
 msgid "Create"
 msgstr "Créer"
 
-#: templates/register.html:107
+#: templates/register.html:131
 msgid "I have already an account, sign in"
 msgstr "J'ai déjà un compte, s'identifier"
 
