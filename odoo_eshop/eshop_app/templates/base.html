@@ -150,35 +150,19 @@
 {% endif %}
           </ul>
           <ul class="nav navbar-nav navbar-right">
-{% if company.eshop_instagram_url %}
+{% if company.social_instagram %}
             <li>
-                <a class="btn-default eshop_a_link_header" href="{{ company.eshop_instagram_url }}" target="_blank">
+                <a class="btn-default eshop_a_link_header" href="{{ company.social_instagram }}" target="_blank">
                     <img class="eshop_img_icon_header" title="{{_('Visit our Instagram Page')}}"
                         src="{{ url_for('static', filename='images/icon-instagram.png') }}"/>
                 </a>
             </li>
 {% endif %}
-{% if company.eshop_facebook_url %}
+{% if company.social_facebook %}
             <li>
-                <a class="btn-default eshop_a_link_header" href="{{ company.eshop_facebook_url }}" target="_blank">
+                <a class="btn-default eshop_a_link_header" href="{{ company.social_facebook }}" target="_blank">
                     <img class="eshop_img_icon_header" title="{{_('Visit our Facebook Page')}}"
                         src="{{ url_for('static', filename='images/icon-facebook.png') }}"/>
-                </a>
-            </li>
-{% endif %}
-{% if company.eshop_google_plus_url %}
-            <li>
-                <a class="btn-default eshop_a_link_header" href="{{ company.eshop_google_plus_url }}" target="_blank">
-                    <img class="eshop_img_icon_header" title="{{_('Visit our Google + Page')}}"
-                        src="{{ url_for('static', filename='images/icon-google-plus.png') }}"/>
-                </a>
-            </li>
-{% endif %}
-{% if company.eshop_twitter_url %}
-            <li>
-                <a class="btn-default eshop_a_link_header" href="{{ company.eshop_twitter_url }}" target="_blank">
-                    <img class="eshop_img_icon_header" title="{{_('Visit our Twitter Page')}}"
-                        src="{{ url_for('static', filename='images/icon-twitter.png') }}"/>
                 </a>
             </li>
 {% endif %}
