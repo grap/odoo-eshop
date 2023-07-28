@@ -151,11 +151,6 @@ def utility_processor():
 # ############################################################################
 # Babel Local Selector
 # ############################################################################
-@babel.localeselector
-def locale_selector():
-    return request.accept_languages.best_match(['fr'])
-
-
 def get_local_date(str_utc_date, schema):
     """From UTC string Datetime, return local datetime"""
     mytz = pytz.timezone(tz)
