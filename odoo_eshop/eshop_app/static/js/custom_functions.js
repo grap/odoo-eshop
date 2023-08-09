@@ -56,4 +56,3 @@ function set_table_float_thead(){
         top: 50,
     });
 }
-

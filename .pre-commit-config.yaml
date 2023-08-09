@@ -1,0 +1,29 @@
+
+exclude: |
+  ^odoo_eshop/eshop_app/static/lib/|
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v3.4.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+        exclude: exclude
+      - id: debug-statements
+      - id: mixed-line-ending
+      - id: name-tests-test
+      - id: check-yaml
+      - id: check-json
+      - id: check-toml
+      - id: check-added-large-files
+        args: ['--maxkb=2048']
+      - id: check-docstring-first
+      - id: check-merge-conflict
+      - id: check-symlinks
+  - repo: https://github.com/psf/black
+    rev: 23.7.0
+    hooks:
+      - id: black
+  - repo: https://github.com/PyCQA/flake8
+    rev: 6.1.0
+    hooks:
+      - id: flake8
