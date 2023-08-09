@@ -1,23 +1,22 @@
-import os
 import base64
 import logging
+import os
 import shutil
 
-from ..tools.erp import odoo
 from ..application import cache
+from ..tools.erp import odoo
 
-
-logger = logging.getLogger('odoo_eshop')
+logger = logging.getLogger("odoo_eshop")
 
 
 # ###########################
 # Public Sectioon
 # ###########################
 
+
 def get_odoo_uncached_object(model_name, *args):
-    odooModel = _ODOO_MODELS[model_name]['proxy']
-    datas = execute_odoo_command_proxy(
-        odooModel, "eshop_custom_load_data", *args)
+    odooModel = _ODOO_MODELS[model_name]["proxy"]
+    datas = execute_odoo_command_proxy(odooModel, "eshop_custom_load_data", *args)
     if datas:
         fields = datas[0].keys()
 
@@ -55,16 +54,10 @@ def prefetch_all():
 def execute_odoo_command(model_name, function, *_args, **_kwargs):
     odoo_proxy = _ODOO_MODELS[model_name]["proxy"]
     if function != "browse_by_search":
-        return execute_odoo_command_proxy(
-            odoo_proxy, function, *_args, **_kwargs
-        )
-    ids = execute_odoo_command_proxy(
-            odoo_proxy, "search", *_args, **_kwargs
-        )
+        return execute_odoo_command_proxy(odoo_proxy, function, *_args, **_kwargs)
+    ids = execute_odoo_command_proxy(odoo_proxy, "search", *_args, **_kwargs)
     if ids:
-        return execute_odoo_command_proxy(
-            odoo_proxy, "browse", ids
-        )
+        return execute_odoo_command_proxy(odoo_proxy, "browse", ids)
     return []
 
 
@@ -76,85 +69,84 @@ def execute_odoo_command_proxy(proxy, function, *_args, **_kwargs):
 # Private Section
 # ###########################
 _ODOO_MODELS = {
-    'account.tax': {
-        'proxy': odoo.env['account.tax'],
-        'prefetch': True,
+    "account.tax": {
+        "proxy": odoo.env["account.tax"],
+        "prefetch": True,
     },
-    'eshop.category': {
-        'proxy': odoo.env['eshop.category'],
-        'prefetch': True,
-        'image_fields': ['image', 'image_medium', 'image_small'],
+    "eshop.category": {
+        "proxy": odoo.env["eshop.category"],
+        "prefetch": True,
+        "image_fields": ["image", "image_medium", "image_small"],
     },
-    'eshop.fake.account': {
-        'proxy': odoo.env['eshop.fake.account'],
+    "eshop.fake.account": {
+        "proxy": odoo.env["eshop.fake.account"],
     },
-    'product.label': {
-        'proxy': odoo.env['product.label'],
-        'prefetch': True,
-        'image_fields': ['image', 'image_medium', 'image_small'],
+    "product.label": {
+        "proxy": odoo.env["product.label"],
+        "prefetch": True,
+        "image_fields": ["image", "image_medium", "image_small"],
     },
-    'product.product': {
-        'proxy': odoo.env['product.product'],
-        'prefetch': True,
-        'image_fields': ['image', 'image_medium', 'image_small'],
+    "product.product": {
+        "proxy": odoo.env["product.product"],
+        "prefetch": True,
+        "image_fields": ["image", "image_medium", "image_small"],
     },
-    'uom.uom': {
-        'proxy': odoo.env['uom.uom'],
-        'prefetch': True,
+    "uom.uom": {
+        "proxy": odoo.env["uom.uom"],
+        "prefetch": True,
     },
-    'res.company': {
-        'proxy': odoo.env['res.company'],
-        'prefetch': True,
-        'image_fields': ['eshop_image_small']
+    "res.company": {
+        "proxy": odoo.env["res.company"],
+        "prefetch": True,
+        "image_fields": ["eshop_image_small"],
     },
-    'res.country': {
-        'proxy': odoo.env['res.country'],
-        'prefetch': True,
+    "res.country": {
+        "proxy": odoo.env["res.country"],
+        "prefetch": True,
     },
-    'res.country.state': {
-        'proxy': odoo.env['res.country.state'],
-        'prefetch': True,
+    "res.country.state": {
+        "proxy": odoo.env["res.country.state"],
+        "prefetch": True,
     },
-    'res.country.department': {
-        'proxy': odoo.env['res.country.department'],
-        'prefetch': True,
+    "res.country.department": {
+        "proxy": odoo.env["res.country.department"],
+        "prefetch": True,
     },
-    'res.partner': {
-        'proxy': odoo.env['res.partner'],
-        'prefetch': True,
+    "res.partner": {
+        "proxy": odoo.env["res.partner"],
+        "prefetch": True,
     },
     "sale.order": {
-        "proxy": odoo.env['sale.order'],
+        "proxy": odoo.env["sale.order"],
     },
     "sale.order.line": {
-        "proxy": odoo.env['sale.order.line'],
+        "proxy": odoo.env["sale.order.line"],
     },
     "sale.recovery.moment.group": {
-        "proxy": odoo.env['sale.recovery.moment.group'],
+        "proxy": odoo.env["sale.recovery.moment.group"],
     },
     "sale.recovery.moment": {
-        "proxy": odoo.env['sale.recovery.moment'],
+        "proxy": odoo.env["sale.recovery.moment"],
     },
     "account.invoice": {
-        "proxy": odoo.env['account.invoice'],
-    }
+        "proxy": odoo.env["account.invoice"],
+    },
 }
 
 
 # Private Model
 class _OdooModel(object):
     def __init__(self, model_name, data, fields):
-        self.id = data['id']
+        self.id = data["id"]
         self._name = model_name
         for key in fields:
-            if key[-3:] == '_id' and data[key]:
+            if key[-3:] == "_id" and data[key]:
                 setattr(self, key, data[key][0])
             else:
                 setattr(self, key, data[key])
 
 
 class _Memoize:
-
     def __init__(self, f):
         self.f = f
 
@@ -181,9 +173,8 @@ def _get_odoo_object(model_name, object_id):
 
 
 def _load_from_odoo(model_name, domain=False):
-    odooModel = _ODOO_MODELS[model_name]['proxy']
-    datas = execute_odoo_command_proxy(
-        odooModel, "eshop_load_data", domain)
+    odooModel = _ODOO_MODELS[model_name]["proxy"]
+    datas = execute_odoo_command_proxy(odooModel, "eshop_load_data", domain)
 
     if datas:
         fields = datas[0].keys()
@@ -194,10 +185,13 @@ def _load_from_odoo(model_name, domain=False):
         # Creating Object
         myObj = _OdooModel(model_name, data, fields)
 
-        for image_field in _ODOO_MODELS[model_name].get('image_fields', []):
+        for image_field in _ODOO_MODELS[model_name].get("image_fields", []):
             local_path = "odoo_data/%s__%s__%d__%s" % (
-                model_name.replace('.', '_'),
-                image_field, myObj.id, myObj.image_write_date_hash)
+                model_name.replace(".", "_"),
+                image_field,
+                myObj.id,
+                myObj.image_write_date_hash,
+            )
             file_path = "./odoo_eshop/eshop_app/static/%s" % (local_path)
 
             setattr(myObj, "%s_local_path" % image_field, local_path)
@@ -215,10 +209,10 @@ def _load_from_odoo(model_name, domain=False):
                     file_object.close()
                 else:
                     # TODO copy
-                    default_file_path =\
-                        "./odoo_eshop/eshop_app/static/"\
-                        "images/%s_without_image.png" % (
-                            model_name.replace('.', '_'))
+                    default_file_path = (
+                        "./odoo_eshop/eshop_app/static/"
+                        "images/%s_without_image.png" % (model_name.replace(".", "_"))
+                    )
                     shutil.copy(default_file_path, file_path)
                     pass
         result.append(myObj)

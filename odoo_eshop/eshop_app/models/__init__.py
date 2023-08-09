@@ -1,5 +1,1 @@
-from . import models
-from . import tools
-from . import sale_order
-from . import res_partner
-from . import res_company
+from . import models, res_company, res_partner, sale_order, tools
