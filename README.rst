@@ -9,7 +9,7 @@ Odoo Eshop
 |badge1|
 
 This app is a Flask Website that communicate with Odoo, to provide
-a light eShop.
+a light eShop...
 
 Installation
 ============
