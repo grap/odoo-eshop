@@ -28,6 +28,19 @@ Odoo Installation
 This version is compatible with an Odoo 12.0 with the following module
 installed ``sale_eshop`` available here : https://github.com/grap/grap-odoo-business
 
+Once your odoo instance is running, and available on http://localhost:8069, you can
+run the eshop.
+
+Launch eshop (debug)
+--------------------
+
+``./env/bin/python -m odoo_eshop``
+
+Launch eshop (for production)
+-----------------------------
+
+``./env/bin/uwsgi --http 127.0.0.1:8080 --master --enable-threads --processes 4 --module uwsgi:app``
+
 
 Configuration
 =============
@@ -63,14 +76,6 @@ Technical caracteristics
 - Do not host database, datas are requested on the fly to the odoo instance.
 - Use Jinja as a template language (http://jinja.pocoo.org/docs/2.10/)
 
-Initial eShop Settings
-----------------------
-
-
-Launch eshop
-------------
-
-``./env/bin/python -m odoo_eshop``
 
 Credits
 =======
