@@ -35,7 +35,7 @@
             <th colspan="100%">
                 <h2>
                     <img class="thumbnail img-responsive img-medium-eshop-categ"
-                        src="{{ url_for('static', filename='odoo_data/eshop_category__image_medium__%d__%s' % (
+                        src="{{ url_for('static', filename='odoo_data/eshop_category__image_512__%d__%s' % (
 item['category_id'], item['category_image_write_date_hash'])) }}"/>
                     {{ item['category_complete_name'] }}<br />
                 </h2>
@@ -53,7 +53,7 @@ item['category_id'], item['category_image_write_date_hash'])) }}"/>
             {% for label_id in item['label_ids'] %}
                 {% set label = get_object('product.label', label_id) %}
                     <img class="img-small-label" title="{{label.name}}"
-                        src="{{ url_for('static', filename=label.image_small_local_path) }}"/>
+                        src="{{ url_for('static', filename=label.image_128_local_path) }}"/>
             {% endfor %}
             </td>
             <td>

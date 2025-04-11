@@ -97,7 +97,7 @@ def orders():
 @requires_auth
 def invoices():
     invoices = execute_odoo_command(
-        "account.invoice",
+        "account.move",
         "browse_by_search",
         [
             partner_domain("partner_id"),

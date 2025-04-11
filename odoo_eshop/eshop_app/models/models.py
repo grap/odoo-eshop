@@ -76,7 +76,7 @@ _ODOO_MODELS = {
     "eshop.category": {
         "proxy": odoo.env["eshop.category"],
         "prefetch": True,
-        "image_fields": ["image", "image_medium", "image_small"],
+        "image_fields": ["image_1920", "image_512", "image_128"],
     },
     "eshop.fake.account": {
         "proxy": odoo.env["eshop.fake.account"],
@@ -84,12 +84,12 @@ _ODOO_MODELS = {
     "product.label": {
         "proxy": odoo.env["product.label"],
         "prefetch": True,
-        "image_fields": ["image", "image_medium", "image_small"],
+        "image_fields": ["image_1920", "image_512", "image_128"],
     },
     "product.product": {
         "proxy": odoo.env["product.product"],
         "prefetch": True,
-        "image_fields": ["image", "image_medium", "image_small"],
+        "image_fields": ["image_1920", "image_512", "image_128"],
     },
     "uom.uom": {
         "proxy": odoo.env["uom.uom"],
@@ -98,7 +98,7 @@ _ODOO_MODELS = {
     "res.company": {
         "proxy": odoo.env["res.company"],
         "prefetch": True,
-        "image_fields": ["eshop_image_small"],
+        "image_fields": ["eshop_image_128"],
     },
     "res.country": {
         "proxy": odoo.env["res.country"],
@@ -128,8 +128,8 @@ _ODOO_MODELS = {
     "sale.recovery.moment": {
         "proxy": odoo.env["sale.recovery.moment"],
     },
-    "account.invoice": {
-        "proxy": odoo.env["account.invoice"],
+    "account.move": {
+        "proxy": odoo.env["account.move"],
     },
 }
 
