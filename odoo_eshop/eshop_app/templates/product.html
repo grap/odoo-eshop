@@ -26,6 +26,7 @@
 {% set state = get_object('res.country.state', product.state_id)%}
 {% set department = get_object('res.country.department', product.department_id)%}
 
+<<<<<<< HEAD
 <!-- Fields for next and previous product -->
 {% set current_category = get_object('eshop.category', product.eshop_category_id) %}
 {% set siblings = current_category.product_ids if current_category.product_ids|length else [] %}
@@ -85,16 +86,59 @@
         <form method="POST" action="{{ url_for('product_add_qty', product_id=product.id) }}">
             <div class="container form-add-product">
                 <div class="row row-cols-auto align-items-center">
+=======
+<div class="row my-4">
+    <div class="col-md-5">
+        <div class="product-image shadow rounded p-3 bg-white">
+            <a href="#" data-featherlight="{{ url_for('product_image_popup', product_id=product['id']) }}">
+                <img src="{{ url_for('static', filename=product.image_1920_local_path) }}"
+                    class="img-fluid rounded" alt="{{ product.name }}"/>
+            </a>
+        </div>
+        {% if product.label_ids|length %}
+        <div class="d-flex justify-content-center flex-wrap mt-3">
+            {% for label_id in product.label_ids %}
+                {% set label = get_object('product.label', label_id) %}
+                <img src="{{ url_for('static', filename=label.image_1920_local_path) }}"
+                    class="img-thumbnail mx-1 my-1" style="height:auto;" alt="{{ label.name }}"/>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="col-md-7">
+        <h1 class="md-3">{{ product.name }}</h1>
+        <div class="product-pricing md-4">
+            {% if company.eshop_vat_included %}
+            <h4>{{ product.list_price|to_currency }} {{_('VAT. Incl.')}} / {{ uom.eshop_description }}</h4>
+            {% else %}
+            <h4>{{ product.list_price_vat_excl|to_currency }} {{_('VAT. Excl.')}} / {{ uom.eshop_description }}</h4>
+            {% endif %}
+        </div>
+
+
+        <form method="POST" action="{{ url_for('product_add_qty', product_id=product.id) }}">
+            <div class="container text-center form-add-product">
+                <div class="row row-cols-auto align-items-center gy-2 gx-3">
+                    
+                    <div class="col d-flex justify-content-center">
+                        <div class="form-label m-0">{{ _('Quantity in ') }}<span class="product_uom_description">{{ uom.eshop_description }}</span></div>
+                    </div>
+>>>>>>> 1b905c0 ([IMP] Global style [IMP] Navbar top responsive and bottom, Login screen, Catalog tree view)
 
                     <div class="col">
                         <div class="quantity-selector">
                             <button type="button" onclick="adjustQty(-1)">−</button>
                             <input type="text" name="quantity" id="quantityInput" value="{{ product.eshop_minimum_qty or 1 }}" />
+<<<<<<< HEAD
                             <span class="product_uom_description">{{ uom.eshop_description }}</span>
+=======
+>>>>>>> 1b905c0 ([IMP] Global style [IMP] Navbar top responsive and bottom, Login screen, Catalog tree view)
                             <button type="button" onclick="adjustQty(1)">+</button>
                         </div>
                     </div>
 
+<<<<<<< HEAD
                     {% if partner %}
                         <button type="submit" class="btn btn-primary btn-buy">
                             <span class="d-none d-md-block"><i class="bi bi-basket2"></i> {{ _('Add to Shopping Cart') }}</span>
@@ -106,11 +150,20 @@
                             <i class="bi bi-info-circle"></i> {{ _('Create an account or Log In') }}
                         </span>
                     {% endif %}
+=======
+                    <div class="col">
+                        <button type="submit" class="btn btn-buy">{{ _('Add to Shopping Cart') }}</button>
+                    </div>
+>>>>>>> 1b905c0 ([IMP] Global style [IMP] Navbar top responsive and bottom, Login screen, Catalog tree view)
                 </div>
             </div>
         </form>
 
+<<<<<<< HEAD
         <div class="product-informations col-md-7 mt-4 mb-5">
+=======
+        <div class="col-md-7 mt-3 mb-5">
+>>>>>>> 1b905c0 ([IMP] Global style [IMP] Navbar top responsive and bottom, Login screen, Catalog tree view)
 
             <div class="row">
                 <div class="col-6 fw-semibold text-muted">{{ _('Minimum Quantity') }}</div>
@@ -122,6 +175,7 @@
                 <div class="col-6">{{ product.eshop_rounded_qty }} {{ uom.eshop_description }}</div>
             </div>
 
+<<<<<<< HEAD
             {% if country or state or department%}
             <div id="product-origin">
                 <h4 class="my-3 product-subtitle">{{ _('Product origin') }}</h4>
@@ -166,6 +220,55 @@
             </div>
             {% endif %}
         </div>
+=======
+            {% if country %}
+            <div class="row">
+                <div class="col-6 fw-semibold text-muted">{{ _('Country') }}</div>
+                <div class="col-6">{{ country.name }}</div>
+            </div>
+            {% endif %}
+
+            {% if state %}
+            <div class="row">
+                <div class="col-6 fw-semibold text-muted">{{ _('State') }}</div>
+                <div class="col-6">{{ state.name }}</div>
+            </div>
+            {% endif %}
+            
+            {% if department %}
+            <div class="row">
+                <div class="col-6 fw-semibold text-muted">{{ _('Department') }}</div>
+                <div class="col-6">{{ department.name }}</div>
+            </div>
+            {% endif %}
+        </div>  
+    </div>
+
+
+        <ul class="nav nav-underline bg-body-tertiary" id="myTab" role="tablist">
+                {% if product.eshop_description %}
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact-tab-pane" type="button" role="tab" aria-controls="contact-tab-pane" aria-selected="false">{{ _('Description') }}</button>
+                </li>
+                {% endif %}
+                {% if product.origin_description %}
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">{{ _('Origin Description') }}</button>
+                </li>
+                {% endif %}
+                {% if product.maker_description %}
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">{{ _('Maker Description') }}</button>
+                </li>
+                {% endif %}
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">{{ product.eshop_description|safe }}</div>
+            <div class="tab-pane fade" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">{{ product.origin_description }}</div>
+            <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">{{ product.maker_description }}</div>
+        </div>
+
+>>>>>>> 1b905c0 ([IMP] Global style [IMP] Navbar top responsive and bottom, Login screen, Catalog tree view)
     </div>
 
     <!-- Product informations bottom page with tabs -->
@@ -224,7 +327,6 @@
   </div>
   {% endif %}
 </div>
-
 {% endblock %}
 
 <!-- Activate Tootltips -->

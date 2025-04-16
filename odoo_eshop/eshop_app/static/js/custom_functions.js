@@ -63,4 +63,8 @@ function adjustQty(delta) {
     let val = parseFloat(input.value) || 0;
     val = Math.max(val + delta, 0);
     input.value = val;
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 1b905c0 ([IMP] Global style [IMP] Navbar top responsive and bottom, Login screen, Catalog tree view)

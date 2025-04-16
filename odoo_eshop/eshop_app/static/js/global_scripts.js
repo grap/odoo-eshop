@@ -20,6 +20,13 @@
 $(document).ready(function() {
     $("input:text").focus(function() { $(this).select(); } );
 
+<<<<<<< HEAD
+=======
+    /*Bootstrap Tooltip has to be activated*/
+/*    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+    const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+*/
+>>>>>>> 1b905c0 ([IMP] Global style [IMP] Navbar top responsive and bottom, Login screen, Catalog tree view)
 });
 
 var currentAjaxCall = false;

@@ -1,0 +1,27 @@
+        <nav id="navbar-product-other-field" class="navbar bg-body-tertiary px-3 mb-3">
+          <ul class="nav nav-pills">
+            {% if product.origin_description %}
+            <li class="nav-item">
+              <a class="nav-link" href="#product-origin-description">{{ _('Origin Description') }}</a>
+            </li>
+            {% endif %}
+            {% if product.maker_description %}
+            <li class="nav-item">
+              <a class="nav-link" href="#product-maker-description">{{ _('Maker Description') }}</a>
+            </li>
+            {% endif %}
+            {% if product.eshop_description %}
+            <li class="nav-item">
+              <a class="nav-link" href="#product-description">{{ _('Description') }}</a>
+            </li>
+            {% endif %}
+          </ul>
+        </nav>
+        <div data-bs-spy="scroll" data-bs-target="#navbar-example2" data-bs-root-margin="0px 0px -40%" data-bs-smooth-scroll="true" class="scrollspy-example bg-body-tertiary p-3 rounded-2" tabindex="0">
+          <h4 id="product-origin-description">{{ _('Origin Description') }}</h4>
+          {{ product.origin_description }}
+          <h4 id="product-maker-description">{{ _('Maker Description') }}</h4>
+          {{ product.maker_description }}
+          <h4 id="product-description">{{ _('Description') }}</h4>
+          {{ product.eshop_description }}
+        </div>

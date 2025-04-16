@@ -1,0 +1,137 @@
+/* Base */
+body {
+    background-color: #fdfdfc;
+    color: #2f4858;
+    font-family: "Segoe UI", "Helvetica Neue", sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+/* Navbar */
+.navbar {
+    background-color: #ffffff !important;
+    border-bottom: 1px solid #e2e2df;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+}
+
+.navbar .navbar-brand {
+    font-weight: bold;
+    color: #2f4858;
+    font-size: 1.1rem;
+}
+
+.navbar .navbar-brand img {
+    margin-right: 0.5rem;
+}
+
+.navbar-nav .nav-link {
+    color: #2f4858;
+    padding: 0.5rem 0.8rem;
+    transition: all 0.2s ease-in-out;
+}
+
+.navbar-nav .nav-link:hover,
+.navbar-nav .nav-link.active {
+    color: #84a59d;
+    text-decoration: underline;
+}
+
+.navbar-nav .dropdown-menu {
+    background-color: #fdfdfc;
+    border: 1px solid #e2e2df;
+}
+
+.navbar-nav .dropdown-item {
+    color: #2f4858;
+}
+
+.navbar-nav .dropdown-item:hover {
+    background-color: #e2e2df;
+}
+
+/* Breadcrumb */
+.breadcrumb {
+    background-color: transparent;
+    font-size: 0.9rem;
+    padding: 0.75rem 0 0.5rem 0;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid #e2e2df;
+}
+
+.breadcrumb-item a {
+    text-decoration: none;
+    color: #2f4858;
+}
+
+.breadcrumb-item.active {
+    color: #84a59d;
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+    color: #84a59d;
+}
+
+/* Cards */
+.card {
+    border: 1px solid #e2e2df;
+    border-radius: 12px;
+    overflow: hidden;
+    background-color: #ffffff;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    transition: transform 0.2s ease-in-out;
+    margin-bottom: 1.5rem;
+}
+
+.card:hover {
+    transform: scale(1.01);
+}
+
+.card-header {
+    background-color: #fdfdfc;
+    color: #2f4858;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.card-img-top {
+    height: 180px;
+    object-fit: cover;
+}
+
+.card-body .card-text {
+    display: block;
+    color: #2f4858;
+    font-weight: 500;
+    text-align: center;
+    padding: 0.5rem 0;
+}
+
+/* Bottom navbar (footer social) */
+.navbar.fixed-bottom {
+    background-color: #ffffff;
+    border-top: 1px solid #e2e2df;
+    font-size: 0.95rem;
+}
+
+.navbar.fixed-bottom .nav-link {
+    color: #2f4858;
+}
+
+.navbar.fixed-bottom .nav-link:hover {
+    color: #84a59d;
+    text-decoration: underline;
+}
+
+/* Icônes (Bootstrap icons) */
+i.bi {
+    margin-right: 0.35rem;
+    font-size: 1.1em;
+    vertical-align: middle;
+}
+
+/* Responsive fix */
+@media (max-width: 576px) {
+    .card {
+        width: 100% !important;
+    }
+}

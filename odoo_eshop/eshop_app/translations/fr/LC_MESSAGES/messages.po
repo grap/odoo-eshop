@@ -752,7 +752,17 @@ msgstr "Date"
 msgid "Time"
 msgstr "Heure"
 
+<<<<<<< HEAD
 #: templates/orders.html:45
+=======
+#: templates/orders.html:24 templates/product.html:81
+#: templates/product_popup.html:62
+msgid "State"
+msgstr "Région"
+
+#: templates/orders.html:38 templates/orders.html:39 templates/orders.html:40
+#: templates/orders.html:41
+>>>>>>> 1b905c0 ([IMP] Global style [IMP] Navbar top responsive and bottom, Login screen, Catalog tree view)
 msgid "Undefined"
 msgstr "Non Défini"
 

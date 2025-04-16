@@ -11,7 +11,11 @@
 body {
     background-color: var(--bg-color);
     color: var(--text-color);
+<<<<<<< HEAD
     font-family: Luciole;
+=======
+    font-family: 'Segoe UI', 'Roboto', sans-serif;
+>>>>>>> 1b905c0 ([IMP] Global style [IMP] Navbar top responsive and bottom, Login screen, Catalog tree view)
     font-size: 1rem;
     line-height: 1.6;
 }
@@ -27,6 +31,7 @@ body {
     border-color: #744b24;
 }
 
+<<<<<<< HEAD
 .btn:disabled {
     background-color: #8b5c2c;
     border-color: #8b5c2c;
@@ -122,12 +127,91 @@ body {
     font-size: 0.9rem;
 }
 
+=======
+
+/* ======== NAVBAR ======== */
+.navbar {
+    background-color: var(--secondary-color) !important;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.navbar-brand {
+    font-weight: bold;
+    color: var(--main-color) !important;
+    display: flex;
+    align-items: center;
+}
+
+.navbar-brand img {
+    margin-right: 0.5rem;
+    border-radius: 0.25rem;
+}
+
+.navbar .nav-link {
+    color: var(--main-color);
+    font-weight: 500;
+    position: relative;
+    padding: 0.5rem 0.75rem;
+    border: none;
+    background: none;
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.navbar .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0.75rem;
+    right: 0.75rem;
+    height: 2px;
+    background-color: transparent;
+    transition: background-color 0.3s;
+}
+
+.navbar .nav-link:hover::after,
+.navbar .nav-link.active::after {
+    background-color: var(--main-color);
+    color: #907257;
+}
+
+/* Dropdown */
+.navbar .dropdown-toggle {
+    border: none;
+    background: none;
+    padding: 0.5rem 0.75rem;
+}
+
+.navbar .dropdown-menu {
+    border-radius: 0.5rem;
+    border: 1px solid #e0c4a8;
+}
+
+.navbar .dropdown-item {
+    font-weight: 500;
+    color: var(--main-color);
+    transition: background-color 0.2s;
+}
+
+.navbar .dropdown-item:hover {
+    background-color: var(--hover-color);
+    color: #000;
+}
+
+/* ======== FOOTER ======== */
+.navbar.fixed-bottom {
+    background-color: var(--secondary-color);
+    font-size: 0.9rem;
+}
+
+>>>>>>> 1b905c0 ([IMP] Global style [IMP] Navbar top responsive and bottom, Login screen, Catalog tree view)
 /* ======== BREADCRUMB ======== */
 .breadcrumb {
     background-color: transparent;
     padding: 1.5rem 0 1.5rem 0;
     margin-bottom: 1rem;
     font-size: 0.95rem;
+<<<<<<< HEAD
 }
 
 .breadcrumb-item a {
@@ -592,4 +676,149 @@ input.form-control.pe-5 {
 /* ======== Legal notices ======== */
 .legal_notice_title {
     color: var(--main-color);
+=======
 }
+
+.breadcrumb-item a {
+    color: var(--main-color);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s ease;
+}
+
+.breadcrumb-item a:hover {
+    color: #000;
+    text-decoration: underline;
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+    color: #aaa;
+    padding: 0 0.5rem;
+    font-size: 0.9rem;
+}
+
+/* ======== CARTES ======== */
+.card {
+    width: 12em;
+    border: none;
+    border-radius: var(--card-radius);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    background-color: #fff;
+    margin-bottom: 1rem;
+}
+
+.card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+}
+
+.card-header {
+    max-height: 6em;
+    font-size: 1rem;
+    font-weight: bold;
+    background-color: var(--secondary-color);
+    color: var(--main-color);
+    border-bottom: none;
+    padding: 1rem;
+    border-top-left-radius: var(--card-radius);
+    border-top-right-radius: var(--card-radius);
+}
+
+.card-img-top {
+    object-fit: cover;
+    height: 130px;
+    border-radius: 0;
+}
+
+.card-body {
+    padding: 1rem;
+}
+
+.card-text {
+    font-size: 1rem;
+    color: var(--main-color);
+    text-decoration: none;
+    display: block;
+    transition: color 0.2s ease;
+}
+
+.card-text:hover {
+    color: #000;
+    text-decoration: underline;
+}
+
+/* ======== ICÔNES DU PANIER ======== */
+#nav_shopping_cart_ok {
+    color: green;
+}
+
+#nav_shopping_cart_warning {
+    color: red;
+}
+
+/* ======== RESPONSIVE ======== */
+@media (max-width: 576px) {
+    .card-img-top {
+        height: 150px;
+    }
+}
+
+
+/* ======== FORM BUTTONS ======== */
+.form-label {
+    font-weight: bold;
+    font-size: 1rem;
+    white-space: nowrap;
+}
+
+.quantity-selector {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    overflow: hidden;
+    background: white;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.quantity-selector button {
+    background-color: #f7f7f7;
+    border: none;
+    padding: 0.5rem 1rem;
+    font-weight: bold;
+    font-size: 1.2rem;
+    color: #333;
+    transition: background 0.2s ease;
+    cursor: pointer;
+}
+
+.quantity-selector button:hover {
+    background-color: #e0e0e0;
+}
+
+.quantity-selector input {
+    width: 60px;
+    text-align: center;
+    border: none;
+    padding: 0.5rem;
+    font-size: 1rem;
+    outline: none;
+}
+
+.btn-buy {
+    background-color: #8b5c2c;
+    color: white;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    font-weight: bold;
+    border-radius: 6px;
+    transition: background 0.2s ease;
+    white-space: nowrap;
+>>>>>>> 1b905c0 ([IMP] Global style [IMP] Navbar top responsive and bottom, Login screen, Catalog tree view)
+}
+
+.btn-buy:hover {
+    background-color: #744b24;
+}
+
