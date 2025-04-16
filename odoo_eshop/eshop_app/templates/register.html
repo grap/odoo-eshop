@@ -8,7 +8,10 @@
     $('#nav_register').addClass('active');
 </script>
 
+<<<<<<< HEAD
 <!-- Javascript -->
+=======
+>>>>>>> 050fc27 ([IMP] Register form, remove password 2)
 <script>
 function togglePassword() {
     const input = document.getElementById("password_1");
@@ -18,6 +21,7 @@ function togglePassword() {
     input.type = isVisible ? "password" : "text";
     icon.className = isVisible ? "bi bi-eye" : "bi bi-eye-slash";
 }
+<<<<<<< HEAD
 
 document.addEventListener("DOMContentLoaded", function () {
     const requiredInputs = document.querySelectorAll("input[required]");
@@ -43,6 +47,13 @@ document.addEventListener("DOMContentLoaded", function () {
 </script>
 
 
+=======
+</script>
+
+
+
+<!-- Renders the lure checkbox invisible -->
+>>>>>>> 050fc27 ([IMP] Register form, remove password 2)
 <style>
   .nope{
       opacity: 0;
@@ -59,10 +70,12 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 </style>
 
+
 <!-- Account Data -->
 <div class="container mt-5">
     <h1>{{ _('Create a new account') }}</h1>
 
+<<<<<<< HEAD
     <form class="needs-validation" novalidate role="form" method="POST" action="{{ url_for('register') }}">
         <div class="row g-3">
 
@@ -126,6 +139,67 @@ document.addEventListener("DOMContentLoaded", function () {
             <div class="col-md-6 form-floating">
                 <input type="tel" class="form-control account_data" id="phone" name="phone" value="{{ request.form['phone']}}">
                 <label for="phone">{{ _('Other Phone') }}</label>
+=======
+    <form role="form" method="POST" action="{{ url_for('register') }}">
+        <div class="row g-3">
+
+            <div class="col-md-6">
+                <label for="account_name" class="control-label">{{ _('First Name') }} <span class="text-danger">*</span></label>
+                <input type="text" class="form-control input-required account_data" name="first_name" value="{{ request.form['first_name']}}" placeholder="{{ _('Set your first name...') }}">
+            </div>
+            
+            <div class="col-md-6">
+                <label for="account_name" class="control-label">{{ _('Last Name') }} <span class="text-danger">*</span></label>
+                <input type="text" class="form-control input-required account_data" name="last_name" value="{{ request.form['last_name']}}" placeholder="{{ _('Set your last name...') }}">
+            </div>
+        
+            <div class="col-md-6">
+                <label for="account_email" class="control-label">{{ _('Email') }} <span class="text-danger">*</span></label>
+                <input type="email" class="form-control input-required account_data" name="email" value="{{ request.form['email']}}" placeholder="{{ _('Set your email...') }}">
+            </div>
+            
+            <div class="col-md-6">
+              <label for="password_1" class="control-label">{{ _('Password') }} <span class="text-danger">*</span></label>
+              <div class="input-group">
+                <input type="password" class="form-control input-required account_data" name="password_1" id="password_1" value="{{ request.form['password_1']}}" placeholder="{{ _('Set your password...') }}">
+                <span class="input-group-text" onclick="togglePassword()" style="cursor:pointer;">
+                    <i class="bi bi-eye" id="toggleIcon"></i>
+                </span>
+              </div>
+            </div>
+
+            <h4 class="mt-6">{{ _('Your adress') }}</h4>
+    
+            <div class="col-md-6">
+                <label for="account_street" class="control-label">{{ _('Street') }}</label>
+                <input type="text" class="form-control account_data" name="street" value="{{ request.form['street']}}" placeholder="{{ _('Set your street...') }}">
+            </div>
+        
+            <div class="col-md-6">
+                <label for="account_street2" class="control-label">{{ _('Street (Extra Info)') }}</label>
+                <input type="text" class="form-control account_data" name="street2" value="{{ request.form['street2']}}" placeholder="{{ _('Set your street extra information...') }}">
+            </div>
+
+            <div class="col-md-6">
+                <label for="account_zip" class="control-label">{{ _('ZIP Code') }}</label>
+                <input type="text" class="form-control account_data" name="zip" value="{{ request.form['zip']}}" placeholder="{{ _('Set your ZIP code...') }}">
+            </div>
+                    
+            <div class="col-md-6">
+                <label for="account_city" class="control-label">{{ _('City') }}</label>
+                <input type="text" class="form-control account_data" name="city" value="{{ request.form['city']}}" placeholder="{{ _('Set your city...') }}">
+            </div>
+        
+            <div class="col-md-6">
+                <label for="account_mobile" class="control-label">{{ _('Cell Phone') }}</label>
+                <input type="tel" class="form-control account_data" name="mobile" value="{{ request.form['mobile']}}" placeholder="{{ _('Set your Cell phone...') }}">
+            </div>
+            
+            
+            <div class="col-md-6">
+                <label for="account_phone" class="control-label">{{ _('Other Phone') }}</label>
+                <input type="tel" class="form-control account_data" name="phone" value="{{ request.form['phone']}}" placeholder="{{ _('Set your other phone number...') }}">
+>>>>>>> 050fc27 ([IMP] Register form, remove password 2)
             </div>
 
             <div class="nope">
@@ -136,9 +210,15 @@ document.addEventListener("DOMContentLoaded", function () {
                   <input type="checkbox" class="form-control account_data" name="is_human" value="yes">
               {% endif %}
             </div>
+<<<<<<< HEAD
 
             <div class="d-grid gap-2 mb-3">
                 <button type="submit" class="btn btn-primary" disabled>{{ _('Create')}}</button>
+=======
+        
+            <div class="d-grid gap-2 mb-3">
+                <button type="submit" class="btn btn-primary">{{ _('Create')}}</button>
+>>>>>>> 050fc27 ([IMP] Register form, remove password 2)
             </div>
 
             <div class="text-center small">
@@ -147,7 +227,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 </a>
             </div>
 
+<<<<<<< HEAD
         </div>
+=======
+
+>>>>>>> 050fc27 ([IMP] Register form, remove password 2)
     </form>
 </div>
 

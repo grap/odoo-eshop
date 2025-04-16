@@ -27,6 +27,20 @@ def account():
     incorrect_data = False
     vals = {}
     if not len(request.form) == 0:
+<<<<<<< HEAD
+=======
+        # Check Password
+        if "checkbox-change-password" in request.form:
+            password, error_message = check_password(
+                request.form["password_1"]
+            )
+            if error_message:
+                incorrect_data = True
+                flash(error_message, "danger")
+            else:
+                vals.update({"eshop_password": password})
+
+>>>>>>> 050fc27 ([IMP] Register form, remove password 2)
         # Check Phone
         phone, error_message = check_phone(request.form["phone"])
         if error_message and phone:
@@ -266,7 +280,13 @@ def register():  # noqa: C901
         flash(error_message, "danger")
 
     # Check password
+<<<<<<< HEAD
     password, error_message = check_password(request.form["password_1"])
+=======
+    password, error_message = check_password(
+        request.form["password_1"]
+    )
+>>>>>>> 050fc27 ([IMP] Register form, remove password 2)
     if error_message:
         incorrect_data = True
         flash(error_message, "danger")

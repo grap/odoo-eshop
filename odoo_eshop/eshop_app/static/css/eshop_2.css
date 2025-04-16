@@ -822,3 +822,11 @@ input.form-control.pe-5 {
     background-color: #744b24;
 }
 
+.control-label {
+    font-size: 0.8em;
+}
+
+.form-control::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: var(--main-color);
+    opacity: 0.5; /* Firefox */
+}
