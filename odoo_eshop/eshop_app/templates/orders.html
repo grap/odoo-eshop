@@ -1,61 +1,149 @@
 {% extends 'base.html' %}
 
 {% block container %}
-<!-- JQuery -->
 <script>
     $('#nav_account').addClass('active');
 </script>
 
-<!-- Orders List -->
-<h1>{{ _('Your Orders') }}</h1>
+<div class="container py-4">
+    <div class="text-center mb-4">
+        <h1 class="display-5">
+            <i class="bi bi-basket2 me-2"></i>{{ _('Your Orders') }}
+        </h1>
+        <p class="text-muted">{{ _('Here are your most recent orders.') }}</p>
+    </div>
 
-{% if orders %}
-<table class="table table-condensed table-bordered">
-    <thead>
-        <tr>
-            <th>{{ _('Order Date') }}</th>
-            <th>{{ _('Number') }}</th>
-            <th>{{ _('Place') }}</th>
-            <th>{{ _('Day') }}</th>
-            <th>{{ _('Date') }}</th>
-            <th>{{ _('Time') }}</th>
-            <th>{{ _('Untaxed Amount') }}</th>
-            <th>{{ _('Total') }}</th>
-            <th>{{ _('State') }}</th>
-        <tr>
-    </thead>
-    <tbody>
-{% for order in orders %}
-        <tr>
-            <td>{{ order.date_order|to_date }} - {{ order.date_order|to_time }}</td>
-            <td>{{ order.name }}</td>
-    {% if order.recovery_moment_id != False %}
-            <td>{{ order.recovery_moment_id.place_id.name }}</td>
-            <td>{{ order.recovery_moment_id.min_recovery_date|to_day }}</td>
-            <td>{{ order.recovery_moment_id.min_recovery_date|to_date }}</td>
-            <td>{{ order.recovery_moment_id.min_recovery_date|to_time }} - {{ order.recovery_moment_id.max_recovery_date|to_time }}</td>
-    {% else %}
-            <td>{{ _('Undefined') }}</td>
-            <td>{{ _('Undefined') }}</td>
-            <td>{{ _('Undefined') }}</td>
-            <td>{{ _('Undefined') }}</td>
+    {% if orders %}
+
+    <!-- TABLE VIEW (desktop) -->
+    <div class="table-responsive d-none d-md-block">
+        <table class="catalog-table table table-striped shadow-sm eshop_table_float_thead">
+            <thead class="catalog-thead table-light">
+                <tr>
+                    <th>{{ _('Order Date') }}</th>
+                    <th>{{ _('Number') }}</th>
+                    <th>{{ _('Place') }}</th>
+                    <th>{{ _('Day') }}</th>
+                    <th>{{ _('Date') }}</th>
+                    <th>{{ _('Time') }}</th>
+                    <th>{{ _('Untaxed') }}</th>
+                    <th>{{ _('Total') }}</th>
+                    <th>{{ _('State') }}</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for order in orders %}
+                <tr class="order-row {% if loop.index > 5 %} d-none all-orders {% endif %}">
+                    <td>{{ order.date_order|to_date }}<br><small class="text-muted">{{ order.date_order|to_time }}</small></td>
+                    <td><strong>{{ order.name }}</strong></td>
+                    {% if order.recovery_moment_id %}
+                        <td>{{ order.recovery_moment_id.place_id.name }}</td>
+                        <td>{{ order.recovery_moment_id.min_recovery_date|to_day }}</td>
+                        <td>{{ order.recovery_moment_id.min_recovery_date|to_date }}</td>
+                        <td>{{ order.recovery_moment_id.min_recovery_date|to_time }} – {{ order.recovery_moment_id.max_recovery_date|to_time }}</td>
+                    {% else %}
+                        <td colspan="4" class="text-muted">{{ _('Undefined') }}</td>
+                    {% endif %}
+                    <td>{{ order.amount_untaxed|to_currency }}</td>
+                    <td>{{ order.amount_total|to_currency }}</td>
+                    <td>
+                        {% if company.eshop_wallet_enabled %}
+                            {% if order.invoice_status == 'invoiced' %}
+                                <span class="badge bg-success">{{ _('Paid and validated') }}</span>
+                            {% else %}
+                                <span class="badge bg-warning text-dark">{{ _('To pay') }}</span>
+                            {% endif %}
+                        {% else %}
+                            {% if order.state == 'sent' %}
+                                <span class="badge bg-warning text-dark">{{ _('In Progress') }}</span>
+                            {% elif order.state != 'done' %}
+                                <span class="badge bg-primary">{{ _('Confirmed') }}</span>
+                            {% else %}
+                                <span class="badge bg-success">{{ _('Done') }}</span>
+                            {% endif %}
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- CARD VIEW (mobile) -->
+    <div class="d-md-none">
+        {% for order in orders %}
+        <div class="card w-100 mb-3 border border-secondary order-row {% if loop.index > 5 %} d-none all-orders {% endif %}">
+            <div class="card-header rounded-3">
+                <span>
+                    <span class="orders-name">
+                    {{ order.name }}
+                    {% if company.eshop_wallet_enabled %}
+                        {% if order.invoice_status == 'invoiced' %}
+                            <span class="badge bg-success badge-b2px">{{ _('Paid and validated') }}</span>
+                        {% else %}
+                            <span class="badge bg-warning text-dark badge-b2px">{{ _('To pay') }}</span>
+                        {% endif %}
+                    {% else %}
+                        {% if order.state == 'sent' %}
+                            <span class="badge bg-warning text-dark badge-b2px">{{ _('In Progress') }}</span>
+                        {% elif order.state != 'done' %}
+                            <span class="badge bg-primary badge-b2px">{{ _('Confirmed') }}</span>
+                        {% else %}
+                            <span class="badge bg-success badge-b2px">{{ _('Done') }}</span>
+                        {% endif %}
+                    {% endif %}
+                    </span>
+                </span>
+                <hr class="my-2">
+                {{_('Order on')}} {{ order.date_order|to_date }} - {{ order.date_order|to_time }}
+            </div>
+            <div class="card-body">
+                <p>
+                    </i>{% if order.recovery_moment_id %}
+                        <i class="bi bi-shop-window"></i> {{ order.recovery_moment_id.place_id.name }}<br>
+                        <i class="bi bi-calendar2-range"></i> {{ order.recovery_moment_id.min_recovery_date|to_day }} {{ order.recovery_moment_id.min_recovery_date|to_date }}
+                        {{_('between')}} {{ order.recovery_moment_id.min_recovery_date|to_time }} {{_('and')}} {{ order.recovery_moment_id.max_recovery_date|to_time }}
+                    {% else %}
+                        <em>{{ _('Undefined recovery info') }}</em><br>
+                    {% endif %}
+                </p>
+            </div>
+            <div class="card-footer">
+                <strong>{{ _('Untaxed') }}:</strong> {{ order.amount_untaxed|to_currency }}<br>
+                <strong>{{ _('Total') }}:</strong> {{ order.amount_total|to_currency }}<br>
+            </div>            
+        </div>
+        {% endfor %}
+    </div>
+
+    {% if orders|length > 5 %}
+    <div class="text-center mt-3">
+        <button id="showMoreBtn" class="btn btn-primary">
+            {{ _('Show All Orders') }}
+        </button>
+    </div>
     {% endif %}
-            <td>{{ order.amount_untaxed|to_currency }}</td>
-            <td>{{ order.amount_total|to_currency }}</td>
-            <td>
-                {% if order.state == 'sent' %}
-                {{ _('In Progress') }}
-                {% elif order.state != 'done' %}
-                {{ _('Confirmed') }}
-                {% else %}
-                {{ _('Done') }}
-                {% endif %}
-            </td>
-        </tr>
-{% endfor %}
-    </tbody>
-</table>
-{% else %}
-<p>{{_('No Orders for the time being.')}}</p>
-{% endif %}
+
+    {% else %}
+    <div class="alert alert-info" role="alert">
+        {{ _('No Orders for the time being.') }}
+    </div>
+    {% endif %}
+</div>
+
+<script src="{{ url_for('static', filename='js/set_table_float_thead.js') }}"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const showMoreBtn = document.getElementById("showMoreBtn");
+        if (showMoreBtn) {
+            showMoreBtn.addEventListener("click", function () {
+                document.querySelectorAll(".order-row.d-none").forEach(row => {
+                    row.classList.remove("d-none");
+                });
+                showMoreBtn.style.display = "none";
+            });
+        }
+    });
+</script>
 {% endblock %}

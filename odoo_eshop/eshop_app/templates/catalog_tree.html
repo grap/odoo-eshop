@@ -1,24 +1,24 @@
 {% extends 'base.html' %}
 
 {% block breadcrumb %}
-<ol class="breadcrumb">
-    <li class="active">
-        <a href="{{ url_for('catalog_tree')}}">{{ _('Catalog') }}</a>
-    </li>
-    {% for parent_category in parent_categories %}
-    <li class="active">
-        <a href="{{ url_for('catalog_tree', category_id=parent_category['id'])}}">{{ parent_category['name'] }}</a>
-    </li>
-    {% endfor %}
-</ol>
+<nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="{{ url_for('catalog_tree')}}">{{ _('Catalog') }}</a>
+        </li>
+        {% for parent_category in parent_categories %}
+        <li class="breadcrumb-item">
+            <a href="{{ url_for('catalog_tree', category_id=parent_category['id'])}}">{{ parent_category['name'] }}</a>
+        </li>
+        {% endfor %}
+    </ol>
+</nav>
 {% endblock %}
 
 {% block container %}
-<!-- JQuery -->
 <script>
     $('#nav_catalog_tree').addClass('active');
 </script>
-
 
 <!-- Categories -->
 {% if category_ids|length %}
@@ -26,28 +26,24 @@
     {% for category_id in category_ids %}
         {% set category = get_object('eshop.category', category_id) %}
         {% if category.available_product_qty != 0 or category.child_qty != 0  %}
-    <div class="col-sm-3 col-md-2 col-xs-6">
-        <a class="thumbnail" href="{{ url_for('catalog_tree', category_id=category.id)}}">
-            <div style="text-align:center;min-height:120px;">
-                <img src="{{ url_for('static', filename=category.image_512_local_path) }}"
-                    style="max-width:120px;"/>
+        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-2">
+            <div class="card">
+                <h5 class="card-header">{{ category.name }}</h5>
+                <img src="{{ url_for('static', filename=category.image_512_local_path) }}" class="card-img-top" alt="..."/>
+                <div class="card-body">
+                    <a class="card-text stretched-link" href="{{ url_for('catalog_tree', category_id=category.id)}}">
+                        {% if category.type == 'normal' %}
+                        {{category.available_product_qty}} {{_('Products')}}
+                        {% else %}
+                        <span class="sub-categories">{{ category.child_qty }} {{_('Categories')}}
+                        </span>
+                        {% endif %}
+                    </a>
+                </div>
             </div>
-            <div class="ellipsis">
-                <p>{{ category.name }}</p>
-            </div>
-            <div class="product-price">
-                <p>
-                {% if category.type == 'normal' %}
-                {{category.available_product_qty}} {{_('Products')}}
-                {% else %}
-                ({{ category.child_qty }} {{_('Categories')}})
-                {% endif %}
-                </p>
-            </div>
-        </a>
-    </div>
+        </div>
         {% endif %}
-    {% endfor %}
+    {% endfor %}    
 </div>
 {% endif %}
 
@@ -58,26 +54,23 @@
         {% set product = get_object('product.product', product_id) %}
         {% set uom = get_object('uom.uom', product.uom_id) %}
 
-    <div class="col-sm-3 col-md-2 col-xs-6">
-        <a class="thumbnail" href="{{ url_for('product', product_id=product.id)}}" title="{{ product.name }}">
-            <div style="text-align:center;min-height:120px;">
-                <img src="{{ url_for('static', filename=product.image_512_local_path) }}"
-                    style="max-width:120px;"/>
-            </div>
-            <div class="ellipsis">
-                <p>{{ product.name }}</p>
-            </div>
-            <div class="product-price">
+    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-2">
+        <div class="card">
+            <h5 class="card-header">{{ product.name }}</h5>
+            <img src="{{ url_for('static', filename=product.image_512_local_path) }}" class="card-img-top" alt="..."/>
+            <div class="card-body">
+                <a class="card-text stretched-link" href="{{ url_for('product', product_id=product.id)}}">
                 <p>
-            {% if company.eshop_vat_included %}
-                {{ product.list_price|to_currency }} {{_('VAT. Incl.')}} / {{ uom.eshop_description }}
-            {% else %}
-                {{ product.list_price_vat_excl|to_currency }} {{_('VAT. Excl.')}} / {{ uom.eshop_description }}
+                    {% if company.eshop_vat_included %}
+                        {{ product.list_price|to_currency }} {{_('VAT. Incl.')}} / {{ uom.eshop_description }}
+                    {% else %}
+                        {{ product.list_price_vat_excl|to_currency }} {{_('VAT. Excl.')}} / {{ uom.eshop_description }}
 
-            {% endif %}
+                    {% endif %}
                 </p>
+                </a>
             </div>
-        </a>
+        </div>
     </div>
     {% endfor %}
 </div>

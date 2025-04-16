@@ -1,36 +1,105 @@
 {% extends 'base.html' %}
 
 {% block container %}
-<!-- JQuery -->
 <script>
     $('#nav_account').addClass('active');
 </script>
 
-<!-- Invoices List -->
-<h1>{{ _('Your Invoices') }}</h1>
-{% if invoices %}
-<table class="table table-hover">
-    <thead>
-        <tr>
-            <th>{{ _('Number') }}</th>
-            <th>{{ _('Invoice Date') }}</th>
-            <th>{{ _('Untaxed Amount') }}</th>
-            <th>{{ _('Total') }}</th>
-        <tr>
-    </thead>
-    <tbody>
-{% for invoice in invoices %}
-        <tr>
-            <td>{{ invoice.number }}</td>
-            <td>{{ invoice.date_invoice }}</td>
-            <td>{{ invoice.amount_untaxed|to_currency }}</td>
-            <td>{{ invoice.amount_total|to_currency }}</td>
-        </tr>
-{% endfor %}
-    </tbody>
-</table>
-{% else %}
-<p>{{_('No Invoices for the time being.')}}</p>
-{% endif %}
+<div class="container my-5">
+    <div class="text-center mb-4">
+        <h1 class="display-5">
+            <i class="bi bi-receipt me-2"></i>{{ _('Your Invoices') }}
+        </h1>
+        <p class="text-muted">{{ _('Here are your most recent invoices.') }}</p>
+    </div>
 
+    {% if invoices %}
+    <!-- TABLE VIEW (desktop) -->
+    <div class="table-responsive d-none d-md-block">
+        <table class="table table-striped align-middle shadow-sm eshop_table_float_thead" id="invoiceTable">
+            <thead class="table-light">
+                <tr>
+                    <th scope="col">{{ _('Number') }}</th>
+                    <th scope="col">{{ _('Invoice Date') }}</th>
+                    <th scope="col">{{ _('Untaxed Amount') }}</th>
+                    <th scope="col">{{ _('Total') }}</th>
+                    <th scope="col">{{ _('State') }}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for invoice in invoices %}
+                <tr class="invoice-row {% if loop.index > 5 %}d-none{% endif %}">
+                    <td>{{ invoice.display_name }}</td>
+                    <td>{{ invoice.invoice_date }}</td>
+                    <td>{{ invoice.amount_untaxed|to_currency }}</td>
+                    <td>{{ invoice.amount_total|to_currency }}</td>
+                    <td>
+                    {% if invoice.state == 'posted' %}
+                        <span class="badge bg-success text-end">{{ _('Paid') }}</span>
+                    {% else %}
+                        <span class="badge bg-warning text-dark text-end">{{ _('To pay') }}</span>
+                    {% endif %} 
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- CARD VIEW (mobile) -->
+    <div class="d-md-none">
+        {% for invoice in invoices %}
+        <div class="card w-100 mb-3 border border-secondary order-row {% if loop.index > 5 %} d-none all-orders {% endif %}">
+            <div class="card-header rounded-3">
+                <span>
+                    <span class="orders-name">
+                    <i class="bi bi-receipt"></i> {{ invoice.display_name }}
+                    {% if invoice.state == 'posted' %}
+                        <span class="badge bg-success text-end">{{ _('Paid') }}</span>
+                    {% else %}
+                        <span class="badge bg-warning text-dark text-end">{{ _('To pay') }}</span>
+                    {% endif %} 
+                    </span>
+                </span>
+                <hr class="my-2">
+                <i class="bi bi-calendar-date"></i> {{ invoice.invoice_date }}
+            </div>
+            <div class="card-footer">
+                <strong>{{ _('Untaxed') }}:</strong> {{ invoice.amount_untaxed|to_currency  }}<br>
+                <strong>{{ _('Total') }}:</strong> {{ invoice.amount_total|to_currency }}<br>
+            </div>            
+        </div>
+        {% endfor %}
+    </div>
+
+
+        {% if invoices|length > 5 %}
+        <div class="text-center mt-3">
+            <button class="btn btn-primary" id="showMoreBtn">{{ _('Show all invoices') }}</button>
+        </div>
+        {% endif %}
+
+    {% else %}
+    <div class="alert alert-info text-center" role="alert">
+        {{ _('No Invoices for the time being.') }}
+    </div>
+    {% endif %}
+</div>
+
+<script src="{{ url_for('static', filename='js/set_table_float_thead.js') }}"></script>
+
+<!-- Handle button "Show All invoices" -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const showMoreBtn = document.getElementById("showMoreBtn");
+        if (showMoreBtn) {
+            showMoreBtn.addEventListener("click", function () {
+                document.querySelectorAll(".invoice-row.d-none").forEach(row => {
+                    row.classList.remove("d-none");
+                });
+                showMoreBtn.style.display = "none";
+            });
+        }
+    });
+</script>
 {% endblock %}

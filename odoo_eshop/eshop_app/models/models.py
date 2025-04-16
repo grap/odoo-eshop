@@ -50,7 +50,6 @@ def prefetch_all():
             for obj in objs:
                 _Memoize._set_cache(model_name, obj.id, obj)
 
-
 def execute_odoo_command(model_name, function, *_args, **_kwargs):
     odoo_proxy = _ODOO_MODELS[model_name]["proxy"]
     if function != "browse_by_search":
@@ -59,7 +58,6 @@ def execute_odoo_command(model_name, function, *_args, **_kwargs):
     if ids:
         return execute_odoo_command_proxy(odoo_proxy, "browse", ids)
     return []
-
 
 def execute_odoo_command_proxy(proxy, function, *_args, **_kwargs):
     return getattr(proxy, function)(*_args, **_kwargs)
@@ -115,6 +113,9 @@ _ODOO_MODELS = {
     "res.partner": {
         "proxy": odoo.env["res.partner"],
         "prefetch": True,
+    },
+    "res.partner.bank": {
+        "proxy": odoo.env["res.partner.bank"],
     },
     "sale.order": {
         "proxy": odoo.env["sale.order"],

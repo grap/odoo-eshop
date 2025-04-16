@@ -89,6 +89,10 @@ def home_logged():
         flash(_("Recovery Moment Unset"), "danger")
     return render_template("home.html")
 
+@app.route("/legal_notices")
+@requires_connection
+def legal_notices():
+    return render_template("legal_notices.html")
 
 # ############################################################################
 # Technical Routes
@@ -96,7 +100,7 @@ def home_logged():
 @app.route("/unavailable_service.html")
 @requires_auth
 def unavailable_service():
-    return render_template("unavailable_service.html")
+    return render_template("503.html"), 503
 
 
 @app.route("/invalidation_cache/" + "<string:key>/<string:model>/<int:id>/")
@@ -117,8 +121,7 @@ def page_not_found(e):
 
 @app.errorhandler(Exception)
 def error(e):
-    flash("An unexcepted error occured. Please try again in a while", "danger")
-    logging.exception("an error occured")
+    logging.exception("Error 500 - an error occured")
     return render_template("500.html"), 500
 
 
@@ -133,6 +136,14 @@ def utility_processor():
     def current_partner():
         return get_current_partner()
 
+    # Force uncache to get actualised wallet balance
+    def current_partner_wallet():
+        partner = get_current_partner(True)
+        if partner:
+            return partner.customer_wallet_balance
+        else:
+            return False
+
     def current_company():
         return get_current_company()
 
@@ -145,6 +156,7 @@ def utility_processor():
     return dict(
         get_object=get_object,
         current_partner=current_partner,
+        current_partner_wallet=current_partner_wallet,
         current_company=current_company,
         current_sale_order=current_sale_order,
         is_vat_included=is_vat_included,
@@ -195,7 +207,6 @@ def surcharge_to_string(value):
 def function_to_eval(arg):
     return arg
 
-
 @app.template_filter("to_day")
 def to_day(arg):
     return {
@@ -233,3 +244,14 @@ def empty_if_null(value):
 def tax_description_per_line(line):
     taxes = [get_odoo_object("account.tax", x) for x in line.tax_ids]
     return ", ".join([x.description for x in taxes])
+
+
+@app.template_filter("html_fix_image_url")
+def html_fix_image_url(html):
+    odoo_base_url = str('http://' + conf.get("odoo", "host") + ':' + conf.get("odoo", "port"))
+    return html.replace('src="/web/image/', f'src="{odoo_base_url}/web/image/')
+
+
+@app.template_filter("safe_email")
+def safe_email(email):
+    return email.replace('@', '(arobase)')

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-04-24 15:16+0200\n"
+"POT-Creation-Date: 2025-06-03 15:47+0200\n"
 "PO-Revision-Date: 2014-10-06 14:07+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -16,17 +16,22 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.10.3\n"
+"Generated-By: Babel 2.14.0\n"
 
-#: controllers/controller_account.py:66
+#: controllers/controller_account.py:58
 msgid "Account Datas updated successfully."
 msgstr "Données personnelles mise à jour."
 
-#: controllers/controller_account.py:122
+#: controllers/controller_account.py:86
+#, fuzzy
+msgid "Password updated successfully."
+msgstr "Données personnelles mise à jour."
+
+#: controllers/controller_account.py:156
 msgid "Login/password incorrects"
 msgstr "Login et Mot de passe incorrects"
 
-#: controllers/controller_account.py:169
+#: controllers/controller_account.py:203
 #, python-format
 msgid ""
 "The '%(email)s' field is already used.Please ask your seller to fix the "
@@ -35,7 +40,7 @@ msgstr ""
 "L'email '%(email)s' est déjà utilisé. Veuillez demander à votre vendeur "
 "de corriger le problème."
 
-#: controllers/controller_account.py:178
+#: controllers/controller_account.py:215
 #, python-format
 msgid ""
 "The '%(email)s' field is already associated to an active account. Please "
@@ -44,7 +49,7 @@ msgstr ""
 "Le mail '%(email)s' est déjà associé à un compte qui n'est pas actif. "
 "Merci de demander à votre vendeur d'activer votre compte."
 
-#: controllers/controller_account.py:184
+#: controllers/controller_account.py:225
 #, python-format
 msgid ""
 "The '%(email)s' field is already associated to an account. Please finish "
@@ -55,7 +60,7 @@ msgstr ""
 "procédure de création de compte, en cliquant sur le lien que vous avez "
 "reçu par mail."
 
-#: controllers/controller_account.py:190
+#: controllers/controller_account.py:236
 #, python-format
 msgid ""
 "The '%(email)s' field is already associated to an inactive account. "
@@ -64,7 +69,7 @@ msgstr ""
 "Le mail '%(email)s' est déjà associé à un compte qui n'est pas actif. "
 "Merci de demander à votre vendeur d'activer votre compte."
 
-#: controllers/controller_account.py:237
+#: controllers/controller_account.py:291
 #, python-format
 msgid ""
 "The registration is complete. Please check your mail box '%(email)s' and "
@@ -73,19 +78,19 @@ msgstr ""
 "La création du compte est terminé. Veuillez vérifier votre boite mail et "
 "cliquer sur le lien que vous avez reçu pour activer votre compte."
 
-#: controllers/controller_account.py:258
+#: controllers/controller_account.py:314
 msgid "The validation process failed."
 msgstr "Le processus de validation a échoué."
 
-#: controllers/controller_account.py:262
+#: controllers/controller_account.py:318
 msgid "Your email was not found."
 msgstr "Votre email n'a pas été trouvé"
 
-#: controllers/controller_account.py:266
+#: controllers/controller_account.py:322
 msgid "Your account is already enabled."
 msgstr "Votre compte est déjà activé."
 
-#: controllers/controller_account.py:270
+#: controllers/controller_account.py:327
 msgid ""
 "The validation process is over.\n"
 " You can now log in to begin to purchase."
@@ -93,7 +98,7 @@ msgstr ""
 " La validation de votre compte est terminée.\n"
 " Vous pouvez désormais vous identifier pour passer commande."
 
-#: controllers/controller_account.py:275
+#: controllers/controller_account.py:336
 msgid ""
 "The validation process failed because your account is disabled. Please "
 "ask your seller to fix the problem."
@@ -101,50 +106,57 @@ msgstr ""
 "La validation de votre compte a échoué car celui-ci a été désactivé. "
 "Veuillez contacter votre vendeur pour corriger le problème."
 
-#: controllers/controller_account.py:294
+#: controllers/controller_account.py:358
 msgid "'Email' Field is required"
 msgstr "Le champ 'email' est obligatoire."
 
-#: controllers/controller_account.py:301
+#: controllers/controller_account.py:365
 msgid "There is a problem with your account. Please contact your seller."
 msgstr "Il y a un problème avec votre compte. Veuillez contacter votre vendeur."
 
-#: controllers/controller_account.py:305
+#: controllers/controller_account.py:370
 msgid ""
 " we sent an email to this mailbox, if this email was linked to an active "
 "account."
 msgstr "Nous vous avons envoyé un email, si l'email fourni était lié à un compte."
 
-#: controllers/controller_sale_order.py:44
+#: controllers/controller_payment.py:42
+msgid "Error while confirming your sale order."
+msgstr "Erreur au moment de la confirmation de votre panier."
+
+#: controllers/controller_payment.py:53
+msgid "Error while confirming your payment."
+msgstr "Erreur au moment de la confirmation de votre paiement."
+
+#: controllers/controller_sale_order.py:42
 msgid "Your comment has been successfully updated."
 msgstr "Votre commentaire a été modifié avec succès."
 
-#: controllers/controller_sale_order.py:70
+#: controllers/controller_sale_order.py:69
 msgid "Your shopping cart has been successfully deleted."
 msgstr "Votre panier a été supprimé avec succès."
 
-#: controllers/controller_sale_order.py:84
+#: controllers/controller_sale_order.py:83
 msgid "The Line has been successfully deleted."
 msgstr "La ligne de votre panier a été supprimée avec succès."
 
-#: controllers/controller_sale_order.py:87
+#: controllers/controller_sale_order.py:86
 msgid "Your shopping cart has been deleted."
 msgstr "Votre panier a été supprimé avec succès."
 
-#: controllers/controller_sale_order.py:107 templates/base.html:121
-#: templates/base.html:126 templates/base.html:145
+#: controllers/controller_sale_order.py:109 templates/base.html:128
 msgid "You have not reached the ceiling : "
 msgstr "Vous n'avez pas atteint le franco : "
 
-#: controllers/controller_sale_order.py:126
+#: controllers/controller_sale_order.py:130
 msgid "The recovery moment is complete. Please try again."
 msgstr "Le moment de récupération est complet. Veuillez réessayer."
 
-#: controllers/controller_sale_order.py:131
+#: controllers/controller_sale_order.py:143
 msgid "Your Sale Order is now confirmed."
 msgstr "Votre commande est désormais terminée."
 
-#: controllers/controller_technical.py:72
+#: controllers/controller_technical.py:65
 #, python-format
 msgid ""
 "It is not possible to buy for the time being, You can buy starting at "
@@ -153,7 +165,7 @@ msgstr ""
 "Il n'est pas possible de passer commande pour le moment, vous pourrez "
 "passer commande  à partir de %(day)s %(date)s %(time)s"
 
-#: controllers/controller_technical.py:74
+#: controllers/controller_technical.py:71
 msgid ""
 "It is not possible to buy for the time being, but you can see the catalog"
 " in the meantime."
@@ -166,43 +178,39 @@ msgstr ""
 msgid "You can buy until %(day)s %(date)s %(time)s."
 msgstr "Vous pouvez passer commande jusqu'à %(day)s %(date)s %(time)s."
 
-#: controllers/controller_technical.py:86
+#: controllers/controller_technical.py:89
 msgid "Recovery Moment Unset"
 msgstr "Moment de récupération non défini"
 
-#: controllers/controller_technical.py:203
+#: controllers/controller_technical.py:213
 msgid "Monday"
 msgstr "Lundi"
 
-#: controllers/controller_technical.py:204
+#: controllers/controller_technical.py:214
 msgid "Tuesday"
 msgstr "Mardi"
 
-#: controllers/controller_technical.py:205
+#: controllers/controller_technical.py:215
 msgid "Wednesdsay"
 msgstr "Mercredi"
 
-#: controllers/controller_technical.py:206
+#: controllers/controller_technical.py:216
 msgid "Thursday"
 msgstr "Jeudi"
 
-#: controllers/controller_technical.py:207
+#: controllers/controller_technical.py:217
 msgid "Friday"
 msgstr "Vendredi"
 
-#: controllers/controller_technical.py:208
+#: controllers/controller_technical.py:218
 msgid "Saturday"
 msgstr "Samedi"
 
-#: controllers/controller_technical.py:209
+#: controllers/controller_technical.py:219
 msgid "Sunday"
 msgstr "Dimanche"
 
-#: models/res_partner.py:34
-msgid "The 'Password' Fields do not match."
-msgstr "Les champs 'mots de passe' ne correspondent pas."
-
-#: models/res_partner.py:36
+#: models/res_partner.py:33
 msgid ""
 "The password should have 6 characters or more, and should contain at "
 "least one digits."
@@ -210,29 +218,29 @@ msgstr ""
 "Le mot de passe devrait avoir au moins 6 caractères, et devrait contenir "
 "au moins un chiffre."
 
-#: models/res_partner.py:46
+#: models/res_partner.py:44
 #, python-format
 msgid "'%s' is not a valid First Name."
 msgstr "'%s' n'est pas un prénom valide."
 
-#: models/res_partner.py:54
+#: models/res_partner.py:52
 #, python-format
 msgid "'%s' is not a valid Last Name."
 msgstr "'%s' n'est pas un nom."
 
-#: models/res_partner.py:62
+#: models/res_partner.py:60
 #, python-format
 msgid "'%s' is not a valid email."
 msgstr "'%s' n'est pas un email valide."
 
-#: models/res_partner.py:70
+#: models/res_partner.py:68
 #, python-format
 msgid "'%(phone)s' is not a valid phone number.It contains caracters."
 msgstr ""
 "'%(phone)s' n'est pas un numéro de téléphone valide. Il contient des "
 "caractères."
 
-#: models/res_partner.py:81
+#: models/res_partner.py:80
 #, python-format
 msgid "'%(phone)s' is not a valid phone number."
 msgstr "'%(phone)s' n'est pas un numéro de téléphone valide."
@@ -242,7 +250,7 @@ msgstr "'%(phone)s' n'est pas un numéro de téléphone valide."
 msgid "'%(qty)s' is not a valid quantity."
 msgstr "'%(qty)s' n'est pas une quantité valide."
 
-#: models/sale_order.py:20
+#: models/sale_order.py:19
 msgid "You can not set a null Quantity."
 msgstr "Vous ne pouvez pas mettre une quantité nulle."
 
@@ -250,189 +258,279 @@ msgstr "Vous ne pouvez pas mettre une quantité nulle."
 msgid "Request fulfilled."
 msgstr "Requête exécutée."
 
-#: templates/404.html:5
-msgid "Page not found."
-msgstr "Page non trouvée"
+#: templates/404.html:13
+msgid ""
+"Roby the robot can't find the page you're looking for, which makes him "
+"very sad."
+msgstr ""
+"Robin le robot ne peut trouver la page demandée, ce qui le rend très triste."
 
-#: templates/500.html:5
-msgid "Unexpected Error."
-msgstr "Erreur inattendue."
+#: templates/404.html:14
+msgid "It might have been moved or deleted."
+msgstr "Elle a pu être déplacée ou supprimée."
 
-#: templates/account.html:10 templates/base.html:182
-msgid "Your Account"
-msgstr "Votre Compte"
+#: templates/404.html:16 templates/500.html:16 templates/503.html:16
+msgid "Back to Home"
+msgstr "Retour à l'accueil"
+
+#: templates/404.html:20 templates/500.html:20 templates/503.html:20
+msgid "Picture of"
+msgstr "Image de"
+
+#: templates/500.html:13
+msgid "An unexpected error is causing this deer to lose all understanding."
+msgstr "Une erreur inattendue provoque incompréhension chez ce cervidé."
+
+#: templates/500.html:14
+msgid "If it's not the first time, contact us to put him out of his misery."
+msgstr "Si ce n'est pas la première fois, contactez-nous afin de le sortir de ces questionnements"
+
+#: templates/503.html:13
+#, fuzzy
+msgid "'Unavailable Service"
+msgstr "Service Indisponible"
+
+#: templates/503.html:14
+msgid "Try to reload the page later."
+msgstr "Essayer de recharger la page dans quelques temps."
+
+#: templates/account.html:12 templates/base.html:159
+msgid "Personnal Datas"
+msgstr "Données Personnelles"
 
 #: templates/account.html:17
 msgid "Name"
 msgstr "Nom Complet"
 
-#: templates/account.html:25 templates/login.html:12
-#: templates/password_lost.html:13 templates/register.html:44
+#: templates/account.html:21 templates/login.html:28
+#: templates/password_lost.html:18 templates/password_lost.html:22
+#: templates/register.html:81
 msgid "Email"
 msgstr "Email"
 
-#: templates/account.html:33 templates/register.html:68
+#: templates/account.html:25 templates/register.html:119
+#: templates/register.html:122
 msgid "Cell Phone"
 msgstr "Téléphone Portable"
 
-#: templates/account.html:39 templates/register.html:74
+#: templates/account.html:29 templates/register.html:128
 msgid "Other Phone"
 msgstr "Autre téléphone"
 
-#: templates/account.html:47 templates/register.html:82
+#: templates/account.html:33 templates/register.html:98
 msgid "Street"
 msgstr "Adresse"
 
-#: templates/account.html:55 templates/register.html:90
+#: templates/account.html:37 templates/register.html:103
 msgid "Street (Extra Info)"
 msgstr "Adresse (information complémentaire)"
 
-#: templates/account.html:63 templates/register.html:98
+#: templates/account.html:41 templates/register.html:108
 msgid "ZIP Code"
 msgstr "Code Postal"
 
-#: templates/account.html:69 templates/register.html:104
+#: templates/account.html:45 templates/register.html:113
 msgid "City"
 msgstr "Ville"
 
-#: templates/account.html:80
-msgid "Check this box if you want to change your password"
-msgstr "Cochez cette case si vous voulez changer votre mot de passe"
+#: templates/account.html:50
+msgid "Update datas"
+msgstr "Mettre à jour"
 
-#: templates/account.html:91 templates/login.html:20 templates/register.html:50
+#: templates/account.html:57 templates/account.html:62 templates/login.html:33
+#: templates/register.html:87
 msgid "Password"
 msgstr "Mot de passe"
 
-#: templates/account.html:97 templates/register.html:60
-msgid "Password (Check)"
-msgstr "Mot de passe (Vérification)"
+#: templates/account.html:71
+msgid "Update password"
+msgstr "Mettre à jour votre mot de passe"
 
-#: templates/account.html:108
-msgid "Update"
-msgstr "Mettre à jour"
+#: templates/account_wallet.html:12
+msgid "My Wallet"
+msgstr "Mon porte-monnaie"
 
-#: templates/base.html:47
+#: templates/account_wallet.html:24
+msgid "Current Balance"
+msgstr "Compte actuel"
+
+#: templates/account_wallet.html:34
+msgid "Recharge Instructions"
+msgstr "Instructions de recharge"
+
+#: templates/account_wallet.html:40
+msgid "By Bank Transfer"
+msgstr "Par virement bancaire"
+
+#: templates/account_wallet.html:41
+msgid "You can recharge your wallet by bank transfer using the following RIB:"
+msgstr "Vous pouvez recharger votre compte par virement bancaire en utilisant ce RIB :"
+
+#: templates/account_wallet.html:48
+msgid "Beneficiary"
+msgstr "Bénéficiaire"
+
+#: templates/account_wallet.html:57
+msgid ""
+"Don’t forget to include your full name or customer number in the transfer"
+" label."
+msgstr ""
+"N'oubliez pas d'inclure votre nom complet dans le commentaire du virement."
+
+#: templates/account_wallet.html:60
+msgid ""
+"Your wallet account will be updated after a <b>manual verification</b> "
+"that the transfer has been received."
+msgstr ""
+"Votre compte client sera mis à jour <b>manuellement</b> après vérification."
+
+#: templates/account_wallet.html:68
+msgid "In-Store Payment"
+msgstr "Paiement sur place"
+
+#: templates/account_wallet.html:70
+msgid ""
+"You can recharge your wallet directly in our store by paying with your "
+"credit card or cash at the counter."
+msgstr ""
+"Vous pouvez recharger votre compte directement sur place avec votre carte bancaire ou du cash."
+
+#: templates/base.html:49
 msgid "Something wrong occured, please refresh the page."
 msgstr "Quelque chose s'est mal déroulé, merci de rafraichir la page."
 
-#: templates/base.html:65 templates/base_error.html:47
-msgid "Toggle navigation"
-msgstr "Changer de navigation"
-
-#: templates/base.html:87
+#: templates/base.html:81 templates/base.html:83
 msgid "Products Catalog"
 msgstr "Catalogue produits"
 
-#: templates/base.html:95
+#: templates/base.html:91 templates/base.html:93
 msgid "Quick Purchase"
 msgstr "Achat rapide"
 
-#: templates/base.html:103 templates/base.html:137
+#: templates/base.html:106 templates/base.html:155
+msgid "Wallet: "
+msgstr "Compte client·e :"
+
+#: templates/base.html:113
 msgid "Shopping Cart: "
 msgstr "Panier : "
 
-#: templates/base.html:106 templates/base.html:140
-#: templates/catalog_tree.html:73 templates/product.html:67
-#: templates/product_popup.html:48
+#: templates/base.html:119 templates/catalog_tree.html:65
+#: templates/product.html:77
 msgid "VAT. Incl."
 msgstr "TTC"
 
-#: templates/base.html:116 templates/base.html:142
-#: templates/catalog_tree.html:75 templates/product.html:69
-#: templates/product_popup.html:50
+#: templates/base.html:119 templates/catalog_inline.html:66
+#: templates/catalog_tree.html:67 templates/product.html:79
 msgid "VAT. Excl."
 msgstr "HT"
 
-#: templates/base.html:156
-msgid "Visit our Instagram Page"
-msgstr "Visiter notre page Instagram"
+#: templates/base.html:121
+msgid "0.00$"
+msgstr "0.00 €"
 
-#: templates/base.html:164
-msgid "Visit our Facebook Page"
-msgstr "Visiter notre page Facebook"
+#: templates/base.html:127
+msgid "Minimum amount reached"
+msgstr "Minimum d'achat atteint"
 
-#: templates/base.html:172
-msgid "Visit our Website"
-msgstr "Visiter notre site web"
+#: templates/base.html:149 templates/base.html:151
+msgid "Your Account"
+msgstr "Votre Compte"
 
-#: templates/base.html:173
-msgid "Web Site"
-msgstr "Site Web"
-
-#: templates/base.html:188
-msgid "Personnal Datas"
-msgstr "Données Personnelles"
-
-#: templates/base.html:194
+#: templates/base.html:160
 msgid "Orders History"
 msgstr "Historique des Commandes"
 
-#: templates/base.html:200
+#: templates/base.html:161
 msgid "Invoices History"
 msgstr "Historique des Factures"
 
-#: templates/base.html:207
+#: templates/base.html:163
 msgid "Log Out"
 msgstr "Se déconnecter"
 
-#: templates/base.html:216
+#: templates/base.html:173 templates/base.html:174
 msgid "Register"
 msgstr "S'enregistrer"
 
-#: templates/base.html:220 templates/login.html:5 templates/login.html:30
+#: templates/base.html:179 templates/base.html:180 templates/login.html:24
+#: templates/login.html:40
 msgid "Log In"
 msgstr "Se connecter"
 
-#: templates/base_error.html:8
-msgid "Error - Unavailable eShop"
-msgstr "Erreur - Boutique inacessible"
+#: templates/base.html:226
+msgid "Visit our Website"
+msgstr "Visiter notre site web"
 
-#: templates/catalog_inline.html:14
+#: templates/base.html:227
+msgid "Web Site"
+msgstr "Site Web"
+
+#: templates/base.html:233
+msgid "Legal Notices"
+msgstr "Mentions légales"
+
+#: templates/base.html:241
+msgid ""
+"We use <a href=\"https://luciole-vision.com/\" target=\"_blank\">Luciole "
+": a Free font</a> designed to be accessible to the visually impaired."
+msgstr ""
+"Ce site utilise la police d'écriture Libre <a href=\"https://luciole-vision.com/\" target=\"_blank\">Luciole</a> adaptée aux personnes malvoyantes."
+
+#: templates/catalog_inline.html:11
+msgid "Search products..."
+msgstr "Rechercher dans les produits"
+
+#: templates/catalog_inline.html:23
 msgid "Product Name"
 msgstr "Nom du produit"
 
-#: templates/catalog_inline.html:15
+#: templates/catalog_inline.html:24
 msgid "Labels"
 msgstr "Labels"
 
-#: templates/catalog_inline.html:17
-msgid "U.P. VAT Incl."
-msgstr "P.U. TTC"
-
-#: templates/catalog_inline.html:19
-msgid "U.P. VAT Excl."
-msgstr "P.U. HT"
-
-#: templates/catalog_inline.html:21 templates/shopping_cart.html:39
-msgid "Unit"
-msgstr "Unité"
-
-#: templates/catalog_inline.html:22
-msgid "Min."
-msgstr "Min."
-
-#: templates/catalog_inline.html:24 templates/shopping_cart.html:40
+#: templates/catalog_inline.html:26 templates/shopping_cart.html:16
 msgid "VAT"
 msgstr "TVA"
 
-#: templates/catalog_inline.html:26 templates/product.html:106
-#: templates/shopping_cart.html:41
+#: templates/catalog_inline.html:28 templates/shopping_cart.html:17
 msgid "Quantity"
 msgstr "Quantité"
 
-#: templates/catalog_inline.html:103
-msgid "Go to Shopping Cart to finish your Order"
-msgstr "Voir le panier pour terminer la commande"
+#: templates/catalog_inline.html:62 templates/shopping_cart.html:51
+#: templates/shopping_cart.html:119
+msgid "Unit price:"
+msgstr "Prix unitaire:"
 
-#: templates/catalog_tree.html:6 templates/product.html:6
+#: templates/catalog_inline.html:100
+msgid "Min: "
+msgstr "Min."
+
+#: templates/catalog_inline.html:145
+msgid "Quantity to order: "
+msgstr "Quantité"
+
+#: templates/catalog_inline.html:156
+msgid "Unit Price"
+msgstr "Prix Unitaire"
+
+#: templates/catalog_inline.html:159
+msgid "Minimal Quantity"
+msgstr "Quantité minimum"
+
+#: templates/catalog_inline.html:173
+msgid "Finish Order"
+msgstr "Confirmer l'achat"
+
+#: templates/catalog_tree.html:7 templates/product.html:7
 msgid "Catalog"
 msgstr "Catalogue"
 
-#: templates/catalog_tree.html:41
+#: templates/catalog_tree.html:36
 msgid "Products"
 msgstr "Produits"
 
-#: templates/catalog_tree.html:43
+#: templates/catalog_tree.html:38
 msgid "Categories"
 msgstr "Catégories"
 
@@ -440,262 +538,534 @@ msgstr "Catégories"
 msgid "eShop not set."
 msgstr "eBoutique non paramétrée."
 
-#: templates/invoices.html:10
+#: templates/invoices.html:11
 msgid "Your Invoices"
 msgstr "Vos Factures"
 
-#: templates/invoices.html:15 templates/orders.html:17
+#: templates/invoices.html:13
+msgid "Here are your most recent invoices."
+msgstr "Voici vos factures les plus récentes."
+
+#: templates/invoices.html:22 templates/orders.html:24
 msgid "Number"
 msgstr "Numéro"
 
-#: templates/invoices.html:16
+#: templates/invoices.html:23
 msgid "Invoice Date"
 msgstr "Date de facture"
 
-#: templates/invoices.html:17 templates/orders.html:22
-#: templates/shopping_cart.html:104
+#: templates/invoices.html:24 templates/shopping_cart.html:169
 msgid "Untaxed Amount"
 msgstr "Total HT"
 
-#: templates/invoices.html:18 templates/orders.html:23
-#: templates/shopping_cart.html:118
+#: templates/invoices.html:25 templates/invoices.html:69
+#: templates/orders.html:30 templates/orders.html:113
+#: templates/shopping_cart.html:177
 msgid "Total"
 msgstr "Total TTC"
 
-#: templates/invoices.html:33
+#: templates/invoices.html:26 templates/orders.html:31
+#: templates/product.html:138
+msgid "State"
+msgstr "Région"
+
+#: templates/invoices.html:38 templates/invoices.html:58
+msgid "Paid"
+msgstr "Payée"
+
+#: templates/invoices.html:40 templates/invoices.html:60
+#: templates/orders.html:54 templates/orders.html:84
+msgid "To pay"
+msgstr "À payer"
+
+#: templates/invoices.html:68 templates/orders.html:29
+#: templates/orders.html:112
+#, fuzzy
+msgid "Untaxed"
+msgstr "Total HT"
+
+#: templates/invoices.html:78
+#, fuzzy
+msgid "Show all invoices"
+msgstr "Vos Factures"
+
+#: templates/invoices.html:84
 msgid "No Invoices for the time being."
 msgstr "Pas de factures pour le moment."
 
-#: templates/login.html:37
+#: templates/legal_notices.html:12
+msgid "Legal notices"
+msgstr "Mentions légales"
+
+#: templates/legal_notices.html:13
+msgid ""
+"Even if we like them with chocolate, we don't need cookie here : no data "
+"leek !"
+msgstr ""
+"Même si on les aime avec du chocolat, on n'utilise pas de cookie ici : vos données sont préservées !"
+
+#: templates/legal_notices.html:18
+msgid "About us"
+msgstr "À propos"
+
+#: templates/legal_notices.html:21
+msgid "Registered capital: "
+msgstr "Capital social : "
+
+#: templates/legal_notices.html:22
+msgid "Registration number: "
+msgstr "Numéro d'enregistrement : "
+
+#: templates/legal_notices.html:23
+msgid "VAT: "
+msgstr "TVA"
+
+#: templates/legal_notices.html:28
+msgid "Details"
+msgstr "Détails"
+
+#: templates/legal_notices.html:36
+msgid "Terms and conditions of sale"
+msgstr "Termes et conditions de vente"
+
+#: templates/legal_notices.html:41
+msgid "Website hosting"
+msgstr "Hébergement du site web"
+
+#: templates/legal_notices.html:46
+msgid "Intellectual property"
+msgstr "Propriété intellectuelle"
+
+#: templates/legal_notices.html:48
+msgid ""
+"Products pictures, logo and other images related to our activity are "
+"protected : ask us for using them."
+msgstr ""
+"Les photos des produits, le logo et les autres images liées à notre activité sont"
+" protégées : demandez-nous de les utiliser."
+
+#: templates/legal_notices.html:49
+msgid ""
+"Other pictures used for page 404 etc are free pictures and copyright "
+"informations are never very far from the picture"
+msgstr ""
+"Les autres images utilisées pour la page 404 etc. sont des images libres de droit. " "Leurs informations légales ne sont jamais très loin de l'image"
+
+#: templates/legal_notices.html:50
+msgid ""
+"This website is a Free Software and is part of Odoo. You can find, use, "
+"modify and participate to our code here: <a target=\"_blank\" "
+"href=\"https://github.com/grap/odoo-eshop/\">https://github.com/grap"
+"/odoo-eshop</a>."
+msgstr ""
+"Ce site est un Logiciel Libre faisant partie du projet Odoo. Vous pouvez lire, modifier, utiliser et dupliquer notre code trouvable ici <a target=\"_blank\" "
+"href=\"https://github.com/grap/odoo-eshop/\">https://github.com/grap"
+"/odoo-eshop</a>."
+
+#: templates/legal_notices.html:57
+msgid "Data protection"
+msgstr "Protection des données"
+
+#: templates/legal_notices.html:59
+msgid ""
+"In accordance with the RGPD, you can request access, rectification or "
+"deletion of your data at the following address:"
+msgstr ""
+"En cohérence avec le RGPD, vous pouvez demander l'accès, la modification ou suppression de vos données personnelles avec cette adresse : "
+
+#: templates/legal_notices.html:64
+msgid "Mediation"
+msgstr "Médiation"
+
+#: templates/legal_notices.html:74
+msgid "Credits & thanks"
+msgstr "Crédits & remerciements"
+
+#: templates/legal_notices.html:76
+msgid ""
+"This website was developed by the IT team of <a target=\"_blank\" "
+"href=\"https://www.grap.coop/\">our democratic cooperative Grap</a>"
+msgstr ""
+"Ce site a été développé par l'équipe informatique de <a target=\"_blank\" "
+"href=\"https://www.grap.coop/\">notre cooperative Grap</a>"
+
+#: templates/legal_notices.html:77
+msgid ""
+"Thanks to our fabulous colleagues from <a target=\"_blank\" "
+"href=\"https://labellebrulerie.fr/\">Label(le) Brûlerie</a> and their "
+"delicious coffee ☕💛"
+msgstr ""
+"Merci à nos fabuleux·ses collègues de <a target=\"_blank\" "
+"href=\"https://labellebrulerie.fr/\">Label(le) Brûlerie</a> et de leur "
+"délicieux café ☕💛"
+
+#: templates/legal_notices.html:78
+msgid ""
+"Thanks to all the Free Software communities of Flask, Jinja2, Bootstrap, "
+"Jquery and Odoo Community Association of course ✊"
+msgstr ""
+"Merci à toutes les communautées des Logicies Libres Flask, Jinja2, Bootstrap,"
+"Jquery et à l'OCA Odoo Community Association bien sûr ✊"
+
+#: templates/login.html:27
+msgid "Set your email..."
+msgstr "Paramétrez votre email..."
+
+#: templates/login.html:32
+#, fuzzy
+msgid "Set your password..."
+msgstr "Récupérer son mot de passe"
+
+#: templates/login.html:45
 msgid "I don't have an account yet, register"
 msgstr "Je n'ai pas encore de compte, s'enregistrer"
 
-#: templates/login.html:42
+#: templates/login.html:48
 msgid "I forgot my password"
 msgstr "J'ai oublié mon mot de passe"
 
-#: templates/orders.html:10
+#: templates/orders.html:11
 msgid "Your Orders"
 msgstr "Vos Commandes"
 
-#: templates/orders.html:16
+#: templates/orders.html:13
+msgid "Here are your most recent orders."
+msgstr "Voici vos commandes les plus récentes."
+
+#: templates/orders.html:23
 msgid "Order Date"
 msgstr "Date de commande"
 
-#: templates/orders.html:18 templates/recovery_moment_place.html:37
+#: templates/orders.html:25
 msgid "Place"
 msgstr "Lieu"
 
-#: templates/orders.html:19 templates/recovery_moment_place.html:33
+#: templates/orders.html:26
 msgid "Day"
 msgstr "Jour"
 
-#: templates/orders.html:20 templates/recovery_moment_place.html:34
+#: templates/orders.html:27
 msgid "Date"
 msgstr "Date"
 
-#: templates/orders.html:21
+#: templates/orders.html:28
 msgid "Time"
 msgstr "Heure"
 
-#: templates/orders.html:24 templates/product.html:81
-#: templates/product_popup.html:62
-msgid "State"
-msgstr "Etat"
-
-#: templates/orders.html:38 templates/orders.html:39 templates/orders.html:40
-#: templates/orders.html:41
+#: templates/orders.html:45
 msgid "Undefined"
 msgstr "Non Défini"
 
-#: templates/orders.html:47
+#: templates/orders.html:52 templates/orders.html:82
+msgid "Paid and validated"
+msgstr "Payé et validé"
+
+#: templates/orders.html:58 templates/orders.html:88
 msgid "In Progress"
 msgstr "En cours de traitement"
 
-#: templates/orders.html:49
+#: templates/orders.html:60 templates/orders.html:90
 msgid "Confirmed"
 msgstr "Confirmé"
 
-#: templates/orders.html:51
+#: templates/orders.html:62 templates/orders.html:92
 msgid "Done"
 msgstr "Terminé"
 
-#: templates/orders.html:59
+#: templates/orders.html:98
+#, fuzzy
+msgid "Order on"
+msgstr "Date de commande"
+
+#: templates/orders.html:105
+msgid "between"
+msgstr "entre"
+
+#: templates/orders.html:105
+msgid "and"
+msgstr "et"
+
+#: templates/orders.html:107
+msgid "Undefined recovery info"
+msgstr ""
+
+#: templates/orders.html:122
+#, fuzzy
+msgid "Show All Orders"
+msgstr "Montrer toutes vos Commandes"
+
+#: templates/orders.html:129
 msgid "No Orders for the time being."
 msgstr "Pas de commandes pour le moment."
 
-#: templates/password_lost.html:6
+#: templates/password_lost.html:8
 msgid "Recover Password"
 msgstr "Récupérer son mot de passe"
 
-#: templates/product.html:64 templates/product_popup.html:46
-msgid "Price"
-msgstr "Prix"
+#: templates/password_lost.html:27
+msgid "Send Reset Link"
+msgstr "Envoyer le lien de réinitialisation"
 
-#: templates/product.html:71 templates/product_popup.html:52
-msgid "Minimum Quantity"
-msgstr "Quantité minimum"
-
-#: templates/product.html:73 templates/product_popup.html:54
-msgid "Rounding Quantity"
-msgstr "Quantité arrondie"
-
-#: templates/product.html:77 templates/product_popup.html:58
-msgid "Country"
-msgstr "Pays"
-
-#: templates/product.html:85 templates/product_popup.html:66
-msgid "Department"
-msgstr "Département"
-
-#: templates/product.html:89 templates/product_popup.html:70
-msgid "Origin Description"
-msgstr "Origine"
-
-#: templates/product.html:93 templates/product_popup.html:74
-msgid "Maker Description"
-msgstr "Producteur"
-
-#: templates/product.html:98 templates/product_popup.html:79
-#: templates/recovery_moment_place.html:39
-msgid "Description"
-msgstr "Description"
-
-#: templates/product.html:113
-msgid "Add to Shopping Cart"
-msgstr "Ajouter au panier"
-
-#: templates/recovery_moment_place.html:5 templates/shopping_cart.html:6
+#: templates/payment.html:6 templates/recovery_moment_place.html:6
 msgid "Shopping Cart"
 msgstr "Panier"
 
-#: templates/recovery_moment_place.html:6
+#: templates/payment.html:7 templates/recovery_moment_place.html:7
 msgid "Recovery Moment Place"
 msgstr "Lieu de récupération"
 
-#: templates/recovery_moment_place.html:19
+#: templates/payment.html:8
+#, fuzzy
+msgid "Payment"
+msgstr "Département"
+
+#: templates/payment.html:16
+msgid "Pay with wallet"
+msgstr "Payer avec son compte client·e"
+
+#: templates/payment.html:19
+msgid "Amount to pay"
+msgstr "Montant à payer"
+
+#: templates/payment.html:20
+msgid "Money in your wallet"
+msgstr "Montant dans votre compte client·e"
+
+#: templates/payment.html:23
+msgid "Balance after payment :"
+msgstr "Solde après paiement :"
+
+#: templates/payment.html:34
+#, fuzzy
+msgid "Confirm payment"
+msgstr "Confirmer la suppression"
+
+#: templates/payment.html:37
+msgid "You don't have enough money in your wallet to validate this order."
+msgstr "Vous n'avez pas assez d'argent dans votre compte client·e pour valider ce panier."
+
+#: templates/product.html:100 templates/product.html:105
+msgid "Add to Shopping Cart"
+msgstr "Ajouter au panier"
+
+#: templates/product.html:101
+msgid "Add"
+msgstr "Ajouter"
+
+#: templates/product.html:106
+msgid "Create an account or Log In"
+msgstr "Créer un compte ou connectez vous"
+
+#: templates/product.html:116
+msgid "Minimum Quantity"
+msgstr "Quantité minimum"
+
+#: templates/product.html:121
+msgid "Rounding Quantity"
+msgstr "Quantité arrondie"
+
+#: templates/product.html:127
+msgid "Product origin"
+msgstr "Nom du produit"
+
+#: templates/product.html:131
+msgid "Country"
+msgstr "Pays"
+
+#: templates/product.html:145
+msgid "Department"
+msgstr "Département"
+
+#: templates/product.html:156
+msgid "Origin Description"
+msgstr "Origine"
+
+#: templates/product.html:162
+msgid "Maker Description"
+msgstr "Producteur·rice"
+
+#: templates/product.html:177
+msgid "Description"
+msgstr "Description"
+
+#: templates/product.html:201
+msgid "Previous Product"
+msgstr "Produit précedent"
+
+#: templates/product.html:219
+msgid "Next Product"
+msgstr "Produit suivant"
+
+#: templates/recovery_moment_place.html:21
 msgid "Select Place and Moment for Recovery"
 msgstr "Choisir le lieu et la date de récupération"
 
 #: templates/recovery_moment_place.html:25
 msgid ""
 "Sorry. For the time being, there is no possibility to select a date to "
-"recovery your Shopping Cart."
+"recover your Shopping Cart."
 msgstr ""
 "Désolé. Pour le moment, il n'y a pas la possibilité de choisir une date "
 "pour récupérer votre panier."
 
-#: templates/recovery_moment_place.html:35
-msgid "Min Time"
-msgstr "Heure de Début"
-
-#: templates/recovery_moment_place.html:36
-msgid "Max Time"
-msgstr "Heure de Fin"
-
-#: templates/recovery_moment_place.html:38
-msgid "Extra Cost"
-msgstr "Coût supplémentaire"
-
-#: templates/recovery_moment_place.html:63
+#: templates/recovery_moment_place.html:55
 msgid "Complete"
 msgstr "Complet"
 
-#: templates/recovery_moment_place.html:68
+#: templates/recovery_moment_place.html:61
+msgid "Select and go to payment"
+msgstr "Choisir et aller au paiement"
+
+#: templates/recovery_moment_place.html:67
 msgid "Select"
 msgstr "Choisir"
 
-#: templates/recovery_moment_place.html:85
+#: templates/recovery_moment_place.html:74
+msgid "Extra Cost"
+msgstr "Coût supplémentaire"
+
+#: templates/recovery_moment_place.html:93
 msgid "Confirm Order"
 msgstr "Confirmer l'achat"
 
-#: templates/recovery_moment_place.html:88
-msgid "You are about to valid your Shopping Cart, this procedure is irreversible."
+#: templates/recovery_moment_place.html:97
+msgid ""
+"You are about to validate your Shopping Cart, this procedure is "
+"irreversible."
 msgstr ""
 "Vous êtes sur le point de valider votre panier, cette procédure est "
 "définitive."
 
-#: templates/recovery_moment_place.html:89 templates/shopping_cart.html:138
+#: templates/recovery_moment_place.html:98 templates/shopping_cart.html:219
 msgid "Do you want to proceed?"
 msgstr "Voulez vous continuer ?"
 
-#: templates/recovery_moment_place.html:91 templates/shopping_cart.html:141
+#: templates/recovery_moment_place.html:101 templates/shopping_cart.html:222
 msgid "Cancel"
 msgstr "Annuler"
 
-#: templates/recovery_moment_place.html:92 templates/shopping_cart.html:30
+#: templates/recovery_moment_place.html:102
 msgid "Confirm"
 msgstr "Confirmer"
 
-#: templates/recovery_moment_place.html:98
+#: templates/recovery_moment_place.html:106
 msgid ""
-"Please wait while your sale is being processed.<br /> This can take a few"
-" seconds."
+"Please wait while your sale is being processed. This can take a few "
+"seconds."
 msgstr ""
 "Merci de patienter : votre vente est en train d'être traitée.<br /> Cela "
 "peut prendre quelques secondes."
 
-#: templates/register.html:23
+#: templates/register.html:64
 msgid "Create a new account"
 msgstr "Créer un nouveau compte"
 
-#: templates/register.html:30
+#: templates/register.html:71
 msgid "First Name"
 msgstr "Prénom"
 
-#: templates/register.html:36
+#: templates/register.html:76
 msgid "Last Name"
 msgstr "Nom"
 
-#: templates/register.html:110
+#: templates/register.html:94
+msgid "Your adress"
+msgstr "Infos personnelles"
+
+#: templates/register.html:132
 msgid "Is human"
 msgstr ""
 
-#: templates/register.html:125
+#: templates/register.html:141
 msgid "Create"
 msgstr "Créer"
 
-#: templates/register.html:131
+#: templates/register.html:146
 msgid "I have already an account, sign in"
 msgstr "J'ai déjà un compte, s'identifier"
 
-#: templates/shopping_cart.html:23
-msgid "Delete Shopping Cart"
-msgstr "Effacer votre Panier"
+#: templates/sale_confirmed.html:11
+msgid "Order and payment validated"
+msgstr "Commande et paiement validé"
 
-#: templates/shopping_cart.html:37
+#: templates/sale_confirmed.html:13
+msgid "Thank you for your order!"
+msgstr "Merci pour votre commande"
+
+#: templates/sale_confirmed.html:16
+msgid ""
+"All that's left to do is pick up your order at your chosen collection "
+"point :"
+msgstr ""
+"Il ne vous reste plus qu'à venir chercher votre commande au point de collecte de votre choix."
+
+#: templates/sale_confirmed.html:20
+msgid "You should have receive an email with all the details."
+msgstr "Vous avez du recevoir un mail avec les détails de la commande."
+
+#: templates/sale_confirmed.html:24
+msgid "Don't forget your money to pay your order."
+msgstr "N'oubliez pas votre argent pour payer la commande."
+
+#: templates/sale_confirmed.html:29
+msgid "Return to Home"
+msgstr "Retour à l'accueil"
+
+#: templates/sale_confirmed.html:32
+msgid "View My Orders"
+msgstr "Vos Commandes"
+
+#: templates/shopping_cart.html:6
+msgid "Validate your cart and choose a moment to recover it"
+msgstr "Valider le panier et choisir le moment de récupération"
+
+#: templates/shopping_cart.html:15
 msgid "Product"
 msgstr "Produit"
 
-#: templates/shopping_cart.html:38
-msgid "U.P."
-msgstr "P.U."
-
-#: templates/shopping_cart.html:43
+#: templates/shopping_cart.html:19
 msgid "Subtotal VAT Incl."
 msgstr "Sous total TTC"
 
-#: templates/shopping_cart.html:45
+#: templates/shopping_cart.html:21
 msgid "Subtotal VAT Excl."
 msgstr "Sous total HT"
 
-#: templates/shopping_cart.html:88
+#: templates/shopping_cart.html:83 templates/shopping_cart.html:141
 msgid "Remove"
 msgstr "Retirer"
 
-#: templates/shopping_cart.html:101
-msgid "Extra Comments"
-msgstr "Commentaire facultatif"
+#: templates/shopping_cart.html:115
+#, fuzzy
+msgid "VAT:"
+msgstr "TVA"
 
-#: templates/shopping_cart.html:111
+#: templates/shopping_cart.html:122
+#, fuzzy
+msgid "Subtotal:"
+msgstr "Sous-total: "
+
+#: templates/shopping_cart.html:155
+msgid "You can leave a comment here"
+msgstr "Vous pouvez laisser un commentaire ici"
+
+#: templates/shopping_cart.html:159
+msgid "Write a comment..."
+msgstr "Écrire un commentaire..."
+
+#: templates/shopping_cart.html:173
 msgid "Taxes"
 msgstr "TVA"
 
-#: templates/shopping_cart.html:134
+#: templates/shopping_cart.html:201
+msgid "Confirm and go pick your recovery place"
+msgstr "Confirmer et choisir le moment de récupération"
+
+#: templates/shopping_cart.html:214
 msgid "Confirm Delete"
 msgstr "Confirmer la suppression"
 
-#: templates/shopping_cart.html:137
+#: templates/shopping_cart.html:218
 msgid ""
 "You are about to delete your Shopping Cart, this procedure is "
 "irreversible."
@@ -703,15 +1073,11 @@ msgstr ""
 "Vous êtes sur le point de supprimer votre panier, cette procédure ne peut"
 " être annulée"
 
-#: templates/shopping_cart.html:142
+#: templates/shopping_cart.html:223
 msgid "Delete"
 msgstr "Supprimer"
 
-#: templates/unavailable_service.html:5
-msgid "Unavailable Service"
-msgstr "Service Indisponible"
-
-#: tools/auth.py:20 tools/auth.py:40
+#: tools/auth.py:22 tools/auth.py:45
 msgid ""
 "Distant Service Unavailable. If you had a pending purchase, you have not "
 "lost your Shopping Cart. Thank you connect again in a while."

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 {% set partner = current_partner() %}
+{% set wallet = current_partner_wallet() %}
 {% set company = current_company() %}
 {% set sale_order = current_sale_order() %}
 {% set is_vat_included = is_vat_included()%}
@@ -12,230 +13,240 @@
         <meta http-equiv="X-UA-Compatible" content="IE=10; IE=9; IE=8; IE=7; IE=EDGE" />
         <title>{{ company.eshop_title }}</title>
 
-    <!-- from : http://code.jquery.com/jquery-2.1.4.min.js -->
-        <script src="{{ url_for('static', filename='lib/js/jquery-2.1.4.min.js') }}"></script>
-
-    <!-- from : http://mkoryak.github.io/floatThead/#download -->
+        <script src="{{ url_for('static', filename='lib/js/jquery-3.7.1.min.js') }}"></script>
         <script src="{{ url_for('static', filename='lib/js/jquery.floatThead.min.js') }}"></script>
 
-    <!-- from : https://github.com/twbs/bootstrap/releases/download/v3.3.5/bootstrap-3.3.5-dist.zip -->
-        <script src="{{ url_for('static', filename='lib/js/bootstrap.min.js') }}"></script>
+    <!-- ONLINE Bootstrap by official CDN -->
+<!--     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script> -->
+
+        <!-- OFFLINE Bootsrap 5.3.5 from https://getbootstrap.com/ -->
+        <script src="{{ url_for('static', filename='lib/js/bootstrap.bundle.min.js') }}"></script>
+<!--         <script src="{{ url_for('static', filename='lib/js/bootstrap.esm.min.js') }}"></script>
+         <script src="{{ url_for('static', filename='lib/js/bootstrap.min.js') }}"></script>-->
         <link href="{{ url_for('static', filename='lib/css/bootstrap.min.css') }}" rel="stylesheet" />
+        <link href="{{ url_for('static', filename='lib/css/bootstrap-icons-1.11.3/font/bootstrap-icons.min.css') }}" rel="stylesheet" />
 
-    <!-- from : http://cdn.rawgit.com/noelboss/featherlight/1.3.4/ -->
-        <script src="{{ url_for('static', filename='lib/js/featherlight.min.js') }}"></script>
-        <link href="{{ url_for('static', filename='lib/css/featherlight.min.css') }}" rel="stylesheet" />
-
-    <!-- Custom script -->
+        <!-- Custom script -->
         <script src="{{ url_for('static', filename='js/custom_functions.js') }}"></script>
         <script src="{{ url_for('static', filename='js/global_scripts.js') }}"></script>
 
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+          <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+          <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
 
         <script>
             FLASK_URL_FOR = {
                 'catalog_inline_quantity_update': "{{ url_for('catalog_inline_quantity_update') }}",
                 'shopping_cart_quantity_update': "{{ url_for('shopping_cart_quantity_update') }}",
-                'shopping_cart_note_update': "{{ url_for('shopping_cart_note_update') }}",
+                'shopping_cart_eshop_note_update': "{{ url_for('shopping_cart_eshop_note_update') }}",
             };
             AJAX_TIMEOUT = 3000;
             AJAX_MESSAGE_ERROR = "{{ _('Something wrong occured, please refresh the page.')}}";
         </script>
 
-        <link href="{{ url_for('static', filename='css/eshop_2.css') }}" rel="stylesheet" />
+        <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='css/font.css') }}" />
+        <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='css/eshop_2.css') }}" />
         <link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
-
-
     </head>
-
 
     <body>
 
-    <!-- Fixed navbar -->
-    <nav class="navbar navbar-default navbar-fixed-top eshop_navbar_default">
-      <div class="container eshop_head_container">
+    <!-- TOP FIXED NAVBAR FOR MOBILE-->
+    <nav class="navbar sticky-top navbar-expand bg-body-tertiary" data-bs-theme="light">
+      <div class="container-fluid">
 
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">{{ _('Toggle navigation')}}</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
+        <!-- Logo -->
+        <a class="navbar-brand" href="/">
+          <img src="{{ url_for('static', filename=company.eshop_image_128_local_path) }}" alt="Logo" width="30" height="30">
+          <span class="d-none d-md-inline">{{ company.eshop_title }}</span>
+        </a>
+
+        <!-- Collapse toggle on mobile -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mobileNavbar"
+          aria-controls="mobileNavbar" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse d-flex justify-content-between">
+        
+            <!-- LEFT BLOCK -->
+            <ul class="navbar-nav flex-row align-items-center gap-2 mb-0">
+                {% if company.eshop_catalog_view_enabled %}
+                <li class="nav-item">
+                  <a class="nav-link" title="{{ _('Products Catalog') }}" onclick="GoToThePage(this)" page_url="{{url_for('catalog_tree')}}">
+                    <i class="bi bi-collection"></i>
+                    <span class="d-none d-sm-inline">{{ _('Products Catalog') }}</span>
+                  </a>
+                </li>
+                {% endif %}
+
+                <!-- If connected -->
+                {% if company.eshop_list_view_enabled and partner %}
+                <li class="nav-item">
+                  <a class="nav-link" title="{{ _('Quick Purchase') }}" onclick="GoToThePage(this)" page_url="{{url_for('catalog_inline')}}">
+                    <i class="bi bi-list-ul"></i>
+                    <span class="d-none d-sm-inline">{{ _('Quick Purchase') }}</span>
+                  </a>
+                </li>
+                {% endif %}
+            </ul>
+
+            <!-- RIGHT BLOCK -->
+            <ul class="navbar-nav flex-row align-items-center gap-2 mb-0 ms-auto">
+                <!-- Shopping Cart -->
+                {% if partner %}
+                <li class="nav-item d-none d-sm-block">
+                    <a class="nav-link" onclick="GoToThePage(this)" page_url="{{ url_for('account_wallet') }}">
+                        <i class="bi bi-wallet2"></i>
+                        <span class="d-none d-sm-inline">{{ _('Wallet: ') }}</span>
+                        <span id="nav_wallet_balance">{{ current_partner().customer_wallet_balance|to_currency }}</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" onclick="GoToThePage(this)" page_url="{{ url_for('shopping_cart') }}">
+                    <i class="bi bi-basket2"></i>
+                    <span class="d-none d-sm-inline">{{ _('Shopping Cart: ') }}</span>
+
+                    <span id="nav_amount_total">
+                      {% if sale_order %}
+                        {% set amount = sale_order.amount_total if is_vat_included else sale_order.amount_untaxed %}
+                        {{ amount|to_currency }}
+                        {{ _('VAT. Incl.') if is_vat_included else _('VAT. Excl.') }}
+                      {% else %}
+                        {{ _('0.00$') }}
+                      {% endif %}
+                    </span>
+
+                    {% if sale_order %}
+                        {% set min_reached = amount >= company.eshop_minimum_price %}
+                        {% set tooltip_ok = _('Minimum amount reached') %}
+                        {% set tooltip_ko = _('You have not reached the ceiling : ') ~ company.eshop_minimum_price|to_currency %}
+
+                        <i class="bi bi-check-circle"
+                           id="nav_shopping_cart_ok"
+                           {% if not min_reached %}style="display:none"{% endif %}
+                           data-bs-toggle="tooltip"
+                           title="{{ tooltip_ok }}"></i>
+
+                        <i class="bi bi-exclamation-diamond"
+                           id="nav_shopping_cart_warning"
+                           {% if min_reached %}style="display:none"{% endif %}
+                           data-bs-toggle="tooltip"
+                           title="{{ tooltip_ko }}"></i>
+                    {% endif %}
+
+                  </a>
+                </li>
+                {% endif %}
+                {% if partner %}
+                <!-- Account -->
+                <li class="nav-item dropdown position-relative">
+                  <button class="nav-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" title="{{ _('Your Account') }}">
+                    <i class="bi bi-person-circle"></i>
+                    <span class="d-none d-sm-inline">{{ _('Your Account') }}</span>
+                  </button>
+                  <ul class="dropdown-menu dropdown-menu-end">
+                    <span class="d-sm-none">
+                        <li><a class="dropdown-item" onclick="GoToThePage(this)" page_url="{{url_for('account_wallet')}}"><i class="bi bi-wallet2"></i> {{ _('Wallet: ') }}<span id="nav_wallet_balance">{{ current_partner().customer_wallet_balance|to_currency }}</span></a></li>
+                        <li><hr class="dropdown-divider"></li>
+                    </span>
+
+                    <li><a class="dropdown-item" onclick="GoToThePage(this)" page_url="{{url_for('account')}}">{{ _('Personnal Datas') }}</a></li>
+                    <li><a class="dropdown-item" onclick="GoToThePage(this)" page_url="{{url_for('orders')}}">{{ _('Orders History') }}</a></li>
+                    <li><a class="dropdown-item" onclick="GoToThePage(this)" page_url="{{url_for('invoices')}}">{{ _('Invoices History') }}</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" onclick="GoToThePage(this)" page_url="{{url_for('logout_view')}}"><i class="bi bi-box-arrow-right"></i> {{ _('Log Out') }}</a></li>
+                </li>
+                {% endif %}
+            </ul>
+
+        <!-- IF NOT CONNECTED : REGISTER & LOG IN -->
+        {% if not partner %}
+            <ul class="nav navbar-nav nav-underline flex-row align-items-center gap-2 mb-0 ms-auto">
+                {% if company.eshop_register_allowed %}
+                <li class="nav-item">
+                    <a class="nav-link" id="nav_register" title="{{ _('Register') }}" href="{{ url_for('register') }}">
+                        <i class="bi bi-pencil"></i><span class="d-none d-sm-inline"> {{ _('Register') }}</span>
+                    </a>
+                </li>
+                {% endif %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('login_view') }}" title="{{ _('Log In') }}">
+                    <i class="bi bi-door-open"></i><span class="d-none d-sm-inline" > {{ _('Log In') }}</span>
+                    </a>
+                </li>
+            </ul>
+        {% endif %}
         </div>
 
-        <div id="navbar" class="navbar-collapse collapse">
-          <ul class="nav navbar-nav">
-                <li>
-                    <a class="btn-default eshop_a_link_header" id="nav_home"
-                            onclick="GoToThePage(this)" page_url="{{url_for('home')}}">
-                        <img src="{{ url_for('static', filename=company.eshop_image_128_local_path) }}"
-                            class="img-icon-header"/>
-                    </a>
+      </div>
+    </nav>
 
-{% if partner %}
 
-    {% if company.eshop_tree_view_enabled %}
-            <li>
-                <a class="btn-default eshop_a_link_header" id="nav_catalog_tree"
-                    onclick="GoToThePage(this)" page_url="{{url_for('catalog_tree')}}">
-                    <span class="glyphicon glyphicon-th"/> {{ _('Products Catalog') }}
-                </a>
-            </li>
-    {% endif %}
-    {% if company.eshop_list_view_enabled %}
-            <li>
-                <a class="btn-default eshop_a_link_header" id="nav_catalog_inline"
-                    onclick="GoToThePage(this)" page_url="{{url_for('catalog_inline')}}">
-                    <span class="glyphicon glyphicon-th-list"/> {{ _('Quick Purchase') }}
-                </a>
-            </li>
-    {% endif %}
-    {% if sale_order %}
-            <li>
-                <a class="btn-default eshop_a_link_header" id="nav_shopping_cart"
-                onclick="GoToThePage(this)" page_url="{{url_for('shopping_cart')}}">
-                    <span class="glyphicon glyphicon-shopping-cart"/> {{ _('Shopping Cart: ') }}
-        {% if is_vat_included %}
-                    <span id="nav_amount_total">{{ sale_order.amount_total|to_currency }}</span>
-                             {{_('VAT. Incl.')}}
-            {% if sale_order.amount_total >= company.eshop_minimum_price %}
-                    <span class="glyphicon glyphicon-ok-circle"/>
-                    <span class="glyphicon glyphicon-warning-sign" style="display:none"/>
-            {% else %}
-                    <span class="glyphicon glyphicon-warning-sign"/>
-                    <span class="glyphicon glyphicon-ok-circle" style="display:none"/>
-            {% endif %}
-        {% else %}
-                    <span id="nav_amount_total">{{ sale_order.amount_untaxed|to_currency }}</span>
-                             {{_('VAT. Excl.')}}
-            {% if sale_order.amount_untaxed >= company.eshop_minimum_price %}
-                    <span class="glyphicon glyphicon-ok-circle" id="nav_shopping_cart_ok" ></span>
-                    <span class="glyphicon glyphicon-warning-sign" id="nav_shopping_cart_warning"
-                        style="display:none"
-                        title="{{_('You have not reached the ceiling : ')}} {{company.eshop_minimum_price|to_currency}}"></span>
-            {% else %}
-                    <span class="glyphicon glyphicon-ok-circle" id="nav_shopping_cart_ok"
-                            style="display:none"></span>
-                    <span class="glyphicon glyphicon-warning-sign" id="nav_shopping_cart_warning"
-                                title="{{_('You have not reached the ceiling : ')}} {{company.eshop_minimum_price|to_currency}}"></span>
-
-            {% endif %}
+    <!-- FLASHED MESSAGES -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                {% if message|length %}
+    <div class="mt-4 container alert alert-{{ category }} alert-dismissible fade show" role="alert">
+        <i class="bi bi-exclamation-diamond"></i> {{ message }}
+    </div>
+                {% endif %}
+            {% endfor %}
         {% endif %}
+    {% endwith %}
 
+    <!-- BOTTOM Fixed navbar -->
+    <nav class="navbar fixed-bottom bg-body-tertiary">
+      <div class="container">
+
+          <ul class="nav justify-content-center">
+    {% if company.social_instagram %}
+            <li class="nav-item">
+                <a class="nav-link" href="{{ company.social_instagram }}" target="_blank">
+                    <i class="bi bi-instagram"></i>
                 </a>
             </li>
-    {% else %}
-            <li>
-                <a class="btn-default eshop_a_link_header" id="nav_shopping_cart" style="visibility:hidden"
-                    onclick="GoToThePage(this)" page_url="{{url_for('shopping_cart')}}">
-                    <span class="glyphicon glyphicon-shopping-cart"/> {{ _('Shopping Cart: ') }}
-                <span id="nav_amount_total">{{ 0|to_currency }}</span>
-        {% if is_vat_included %}
-                             {{_('VAT. Incl.')}}
-        {% else %}
-                             {{_('VAT. Excl.')}}
-        {% endif %}
-                    <span class="glyphicon glyphicon-warning-sign" id="nav_shopping_cart_warning"
-                            title="{{_('You have not reached the ceiling : ')}} {{company.eshop_minimum_price|to_currency}}"></span>
-                    <span class="glyphicon glyphicon-ok-circle" id="nav_shopping_cart_ok"
-                            style="display:none"></span>
-                </a></li>
     {% endif %}
-{% endif %}
-          </ul>
-          <ul class="nav navbar-nav navbar-right">
-{% if company.social_instagram %}
-            <li>
-                <a class="btn-default eshop_a_link_header" href="{{ company.social_instagram }}" target="_blank">
-                    <img class="eshop_img_icon_header" title="{{_('Visit our Instagram Page')}}"
-                        src="{{ url_for('static', filename='images/icon-instagram.png') }}"/>
+    {% if company.social_facebook %}
+            <li class="nav-item">
+                <a class="nav-link" href="{{ company.social_facebook }}" target="_blank">
+                    <i class="bi bi-facebook"></i>
                 </a>
             </li>
-{% endif %}
-{% if company.social_facebook %}
-            <li>
-                <a class="btn-default eshop_a_link_header" href="{{ company.social_facebook }}" target="_blank">
-                    <img class="eshop_img_icon_header" title="{{_('Visit our Facebook Page')}}"
-                        src="{{ url_for('static', filename='images/icon-facebook.png') }}"/>
-                </a>
-            </li>
-{% endif %}
-{% if company.name %}
-            <li>
-                <a class="btn-default eshop_a_link_header" target="_blank" href="{{ company.website }}"
+    {% endif %}
+    {% if company.website %}
+            <li class="nav-item">
+                <a class="nav-link" target="_blank" href="{{ company.website }}"
                     title="{{_('Visit our Website')}}">
                 {{_('Web Site')}}
                 </a>
             </li>
-{% endif %}
-
-{% if partner %}
-
-            <li class="dropdown">
-                <a href="#" class="btn-default dropdown-toggle eshop_a_link_header" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                    <span class="glyphicon glyphicon-user"/> {{ _('Your Account') }}
-                    <span class="caret" /></a>
-                <ul class="dropdown-menu">
-                    <li>
-                        <a class="btn-default eshop_a_link_header"
-                            onclick="GoToThePage(this)" page_url="{{url_for('account')}}">
-                        {{ _('Personnal Datas') }}
-                        </a>
-                    </li>
-                    <li>
-                        <a class="btn-default eshop_a_link_header"
-                            onclick="GoToThePage(this)" page_url="{{url_for('orders')}}">
-                        {{ _('Orders History') }}
-                        </a>
-                    </li>
-                    <li>
-                        <a class="btn-default eshop_a_link_header"
-                            onclick="GoToThePage(this)" page_url="{{url_for('invoices')}}">
-                        {{ _('Invoices History') }}
-                        </a>
-                    </li>
-                    <li role="separator" class="divider"></li>
-                    <li>
-                        <a class="btn-default eshop_a_link_header"
-                            onclick="GoToThePage(this)" page_url="{{url_for('logout_view')}}">
-                            <span class="glyphicon glyphicon-log-out"/> {{ _('Log Out') }}
-                        </a>
-                    </li>
-                </ul>
-            </li>
-{% else %}
-
-    {% if company.eshop_register_allowed %}
-            <li><a class="btn-default eshop_a_link_header" id="nav_register" href="{{ url_for('register') }}">
-                <span class="glyphicon glyphicon glyphicon-pencil"/> {{ _('Register') }}
-            </a></li>
     {% endif %}
-            <li><a class="btn-default eshop_a_link_header" href="{{ url_for('login_view') }}">
-                <span class="glyphicon glyphicon-log-in"/> {{ _('Log In') }}
-            </a></li>
-{% endif %}
+            <li class="nav-item">
+                <a class="nav-link" id="nav_legal_notices" onclick="GoToThePage(this)" page_url="{{url_for('legal_notices')}}">
+                {{_('Legal Notices')}}
+                </a>
+            </li>
 
           </ul>
+
+        <div class="justify-content-end d-none d-md-block">
+            <span class="nav-item">
+                {{_('We use <a href="https://luciole-vision.com/" target="_blank">Luciole : a Free font</a> designed to be accessible to the visually impaired.')}}
+            </span>
         </div>
+
       </div>
-      <div class="container eshop_flash_container flashes">
-{% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
-        {% for category, message in messages %}
-            <p class="text-center bg-{{ category }}">{{ message }}</p>
-        {% endfor %}
-    {% endif %}
-{% endwith %}
-      </div>
+    
     </nav>
 
-    <div class="container">
+    <div id="base-container" class="container">
 {% block breadcrumb %}{% endblock %}
 
 {% block container %}{% endblock %}
@@ -243,3 +254,14 @@
 
     </body>
 </html>
+
+<!-- Activate Tootltips -->
+<script type="text/javascript">
+document.addEventListener('DOMContentLoaded', function () {
+  const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+  tooltipTriggerList.map(function (tooltipTriggerEl) {
+    return new bootstrap.Tooltip(tooltipTriggerEl);
+  });
+});
+
+</script>

@@ -1,51 +1,53 @@
-
 {% extends 'base.html' %}
 
 {% block container %}
-<h1>{{ _('Log In') }}</h1>
+<script>
+function togglePassword() {
+    const input = document.getElementById("password");
+    const icon = document.getElementById("toggleIcon");
+    const isVisible = input.type === "text";
 
-<form class="form-horizontal" role="form" method="POST" action="{{ url_for('login_view') }}">
-    <table class="table table-condensed table-bordered">
-        <tbody>
-            <tr>
-                <th>
-                    <label for="login" class="control-label">{{ _('Email') }} (*)</label>
-                </th>
-                <td>
-                    <input type="email" name="login" class="form-control input-required" value="{{request.form['login'] or email or ""}}"/>
-                </td>
-            </tr>
-            <tr>
-                <th>
-                    <label for="password" class="control-label">{{ _('Password') }} (*)</label>
-                </th>
-                <td>
-                    <input type="password" name="password" class="form-control input-required"/>
-                </td>
-            </tr>
-        </tbody>
-        <tfoot>
-            <tr>
-                <td class="td-action" colspan="100%">
-                    <button type="submit" class="btn btn-default">{{ _('Log In')}}</button>
-                </th>
-            </tr>
-            <tr>
-                <td class="td-action" colspan="100%">
-    {% if company.eshop_register_allowed %}
-                    <a href="{{ url_for('register') }}">
-                        {{ _("I don't have an account yet, register")}}
-                    </a>
-                    <br />
-    {% endif %}
-                    <a href="{{ url_for('password_lost') }}">
-                        {{ _("I forgot my password")}}
-                    </a>
-                </th>
-            </tr>
-        </tfoot>
-    </table>
+    input.type = isVisible ? "password" : "text";
+    icon.className = isVisible ? "bi bi-eye" : "bi bi-eye-slash";
+}
+</script>
 
+<style>
+  label.required::after {
+    content: " *";
+    color: red;
+  }
+</style>
+
+<form class="needs-validation" novalidate method="POST" action="/login.html/">
+    <div class="container col-md-5">
+        <h1 class="mt-4">{{ _('Log In') }}</h1>
+
+        <div class="form-floating mb-3">
+            <input type="email" name="login" id="login" class="form-control input-required" placeholder="{{ _('Set your email...') }}" value="{{ request.form.get('login', '') }}" required>
+            <label for="login" class="required">{{ _('Email') }}</label>
+        </div>
+
+        <div class="form-floating mb-3 position-relative">
+            <input type="password" name="password" id="password" class="form-control input-required" placeholder="{{ _('Set your password...') }}" required>
+            <label for="password" class="required">{{ _('Password') }}</label>
+            <span class="position-absolute top-50 end-0 translate-middle-y pe-3" onclick="togglePassword()" style="cursor:pointer;">
+                <i class="bi bi-eye" id="toggleIcon"></i>
+            </span>
+        </div>
+
+        <div class="d-grid gap-2 mb-3">
+            <button type="submit" class="btn btn-primary">{{ _('Log In')}}</button>
+        </div>
+
+        <div class="text-center small">
+            {% if company.eshop_register_allowed %}
+            <a href="/register.html" class="d-block mb-1">{{ _("I don't have an account yet, register")}}</a>
+            {% endif %}
+
+            <a href="/password_lost.html">{{ _("I forgot my password")}}</a>
+        </div>
+    </div>
 </form>
 
 {% endblock %}

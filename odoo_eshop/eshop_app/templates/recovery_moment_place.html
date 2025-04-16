@@ -1,105 +1,110 @@
 {% extends 'base.html' %}
 
 {% block breadcrumb %}
-<ol class="breadcrumb">
-    <li><a href="{{ url_for('shopping_cart')}}">{{ _('Shopping Cart') }}</a></li>
-    <li class="active">{{ _('Recovery Moment Place') }}</li>
-</ol>
+<nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{ url_for('shopping_cart')}}">{{ _('Shopping Cart') }}</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{{ _('Recovery Moment Place') }}</li>
+    </ol>
+</nav>
 {% endblock %}
 
 {% block container %}
-<!-- JQuery -->
+{% set company = current_company() %}
+
 <script>
     $('#nav_shopping_cart').addClass('active');
 </script>
 
-<!-- Recovery Moment -->
-<div class="row">
-    <div class="col-md-12">
-        <h1>{{ _('Select Place and Moment for Recovery') }}</h1>
-    </div>
-</div>
+<div class="container my-4">
+
+    <h1 class="mb-4"><i class="bi bi-shop-window"></i> {{ _('Select Place and Moment for Recovery') }}</h1>
 
     {% if recovery_moments|length == 0 %}
-    <div class="flashes">
-        <p class="text-center bg-warning">{{ _('Sorry. For the time being, there is no possibility to select a date to recovery your Shopping Cart.')}}</p>
+    <div class="alert alert-warning text-center">
+        {{ _('Sorry. For the time being, there is no possibility to select a date to recover your Shopping Cart.') }}
     </div>
-
     {% else %}
 
-<table class="table table-condensed table-bordered">
-    <thead>
-        <tr>
-            <th>{{ _('Day') }}</th>
-            <th>{{ _('Date') }}</th>
-            <th>{{ _('Min Time') }}</th>
-            <th>{{ _('Max Time') }}</th>
-            <th>{{ _('Place') }}</th>
-            <th>{{ _('Extra Cost') }}</th>
-            <th>{{ _('Description') }}</th>
-            <th />
-        </tr>
-    </thead>
-    <tbody>
-            {% for recovery_moment in recovery_moments %}
-        <tr>
-            <td>{{recovery_moment.min_recovery_date|to_day}}</td>
-            <td>{{recovery_moment.min_recovery_date|to_date}}</td>
-            <td>{{recovery_moment.min_recovery_date|to_time}}</td>
-            <td>{{recovery_moment.max_recovery_date|to_time}}</td>
-            <td>{{recovery_moment.place_id.complete_name}}</td>
-            <td>
-                {% if recovery_moment.place_id.shipping_product_id %}
-                {{recovery_moment.place_id.shipping_product_id.list_price|to_currency}}
-                {% endif %}
-            </td>
-            <td>
+
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-5">
+      {% for recovery_moment in recovery_moments %}
+      <div class="col">
+        <div class="card w-100 border border-secondary">
+
+            <div class="card-header rounded-3">
+                <div class="card-header-date">
+                    <strong><i class="bi bi-calendar-date"></i>  {{ recovery_moment.min_recovery_date|to_day }}</strong>
+                    {{ recovery_moment.min_recovery_date|to_date }}
+                </div>
+                <hr class="my-2">
+                <div class="card-header-time">
+                    <i class="bi bi-clock"></i>
+                    {{ recovery_moment.min_recovery_date|to_time }} - {{ recovery_moment.max_recovery_date|to_time }}
+                </div>
+            </div>
+
+            <div class="card-body py-3 px-3">
+                <span><i class="bi bi-shop-window"></i> {{ recovery_moment.place_id.complete_name }}</span>
+
                 {% if recovery_moment.description %}
-                {{recovery_moment.description}}
+                <p class="text-muted small">{{ recovery_moment.description }}</p>
                 {% endif %}
-            </td>
-            <td>
+
                 {% if recovery_moment.is_complete|function_to_eval %}
-                    {{ _('Complete')}}
+                  <span class="badge bg-secondary">{{ _('Complete') }}</span>
                 {% else %}
-                <a data-href="{{ url_for('select_recovery_moment', recovery_moment_id=recovery_moment.id) }}"
-                        data-toggle="modal" data-target="#confirm-valid"
-                        class="btn btn-default" role="button">
-                    <span class="glyphicon glyphicon-ok-circle"/> {{ _('Select')}}</a>
-                </a>
+                    {% if company.eshop_wallet_enabled %}
+                      <a href="#" class="btn btn-primary btn-sm w-100 mt-3"
+                         onclick="GoToThePage(this)" 
+                         page_url="{{ url_for('select_recovery_moment', recovery_moment_id=recovery_moment.id) }}">
+                        <i class="bi bi-check-circle me-1"></i>{{ _('Select and go to payment') }}
+                      </a>
+                    {% else %}
+                      <a href="#" class="btn btn-primary btn-sm w-100 mt-3"
+                         data-href="{{ url_for('select_recovery_moment', recovery_moment_id=recovery_moment.id) }}"
+                         data-bs-toggle="modal" data-bs-target="#confirm-valid">
+                        <i class="bi bi-check-circle me-1"></i>{{ _('Select') }}
+                      </a>
+                    {% endif %}
                 {% endif %}
-            </td>
-        </tr>
-            {% endfor %}
-    </tbody>
-</table>
+            </div>
+            {% if recovery_moment.place_id.shipping_product_id %}
+            <div class="card-footer text-center">
+                {{ _('Extra Cost') }}: {{ recovery_moment.place_id.shipping_product_id.list_price|to_currency }}
+            </div>
+            
+            {% endif %}
+
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
 
     {% endif %}
+</div>
 
-<!-- Validate Shopping Cart PopUp -->
-<div class="modal fade" id="confirm-valid" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<!-- Confirm Order Modal -->
+<div class="modal fade" id="confirm-valid" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="myModalLabel">{{ _('Confirm Order') }}</h4>
+                <h5 class="modal-title" id="modalLabel">{{ _('Confirm Order') }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body" id="confirm-part">
-                <p>{{ _('You are about to valid your Shopping Cart, this procedure is irreversible.') }}</p>
+                <p>{{ _('You are about to validate your Shopping Cart, this procedure is irreversible.') }}</p>
                 <p>{{ _('Do you want to proceed?') }}</p>
+            </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">{{ _('Cancel') }}</button>
-                <a href="#" class="btn btn-info info" id="btn-confirm">{{ _('Confirm') }}</a>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ _('Cancel') }}</button>
+                <a href="#" class="btn btn-primary" id="btn-confirm">{{ _('Confirm') }}</a>
             </div>
+            <div class="modal-body text-center d-none" id="loading-part">
+                <img src="{{ url_for('static', filename='images/loading.gif') }}" alt="Loading..." style="width:30px;height:30px" class="mb-2" />
+                <p>{{ _('Please wait while your sale is being processed. This can take a few seconds.') }}</p>
             </div>
-            <div class="modal-body loading" id="loading-part">
-                <div style="text-align: center">
-                    <img src="{{ url_for('static', filename='images/loading.gif') }}" style="width:30px;height=30px" />
-                    <p>{{ _('Please wait while your sale is being processed.<br /> This can take a few seconds.') }}</p>
-                </div>
-
-            </div>
-
         </div>
     </div>
 </div>
@@ -107,12 +112,11 @@
 <script>
     $('#loading-part').hide();
     $('#btn-confirm').on('click', function(e) {
-        $('#loading-part').show();
+        $('#loading-part').removeClass('d-none');
         $('#confirm-part').hide();
     });
     $('#confirm-valid').on('show.bs.modal', function(e) {
-        $(this).find('.info').attr('href', $(e.relatedTarget).data('href'));
+        $(this).find('#btn-confirm').attr('href', $(e.relatedTarget).data('href'));
     });
 </script>
-
 {% endblock %}

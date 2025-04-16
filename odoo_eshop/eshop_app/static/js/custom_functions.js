@@ -36,6 +36,7 @@ function update_header(order_id, amount_total_header, minimum_ok){
         }
     }
 }
+
 function display_message(state, message, always){
     if (state != 'success' || always) {
         $('.flashes').replaceWith("<div class='flashes'><p class='text-center bg-" + state + "'>" + message  + "</p></div>");
@@ -53,6 +54,13 @@ function set_table_float_thead(){
     var $table = $("table.eshop_table_float_thead");
     $table.floatThead({
         scrollContainer: function($table){return $table.closest('.wrapper');},
-        top: 50,
+        top: 55,
     });
+}
+
+function adjustQty(delta) {
+    const input = document.getElementById('quantityInput');
+    let val = parseFloat(input.value) || 0;
+    val = Math.max(val + delta, 0);
+    input.value = val;
 }

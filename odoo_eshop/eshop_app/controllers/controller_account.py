@@ -27,16 +27,6 @@ def account():
     incorrect_data = False
     vals = {}
     if not len(request.form) == 0:
-        # Check Password
-        if "checkbox-change-password" in request.form:
-            password, error_message = check_password(
-                request.form["password_1"], request.form["password_2"]
-            )
-            if error_message:
-                incorrect_data = True
-                flash(error_message, "danger")
-            else:
-                vals.update({"eshop_password": password})
 
         # Check Phone
         phone, error_message = check_phone(request.form["phone"])
@@ -72,6 +62,41 @@ def account():
     partner = get_current_partner(force_reload=True)
     return render_template("account.html", partner=partner)
 
+@app.route("/account_password", methods=["GET", "POST"])
+@requires_auth
+def account_password():
+    incorrect_data = False
+    vals = {}
+    if not len(request.form) == 0:
+        # Check Password
+        password, error_message = check_password(
+            request.form["password_1"]
+        )
+        if error_message:
+            incorrect_data = True
+            flash(error_message, "danger")
+        else:
+            vals.update({"eshop_password": password})
+
+        if not incorrect_data:
+            execute_odoo_command(
+                "res.partner", "update_from_eshop", get_current_partner_id(), vals
+            )
+            flash(
+                _("Password updated successfully."),
+                "success",
+            )
+
+    partner = get_current_partner(force_reload=True)
+    return render_template("account.html", partner=partner)
+
+@app.route("/account_wallet")
+@requires_auth
+def account_wallet():
+    partner = get_current_partner()
+    res_partner_bank = execute_odoo_command("res.partner.bank","browse_by_search",[("partner_id", "=", partner.id),])
+    return render_template("account_wallet.html", res_partner_bank=res_partner_bank)
+
 
 # ############################################################################
 # Orders Route
@@ -96,14 +121,16 @@ def orders():
 @app.route("/invoices")
 @requires_auth
 def invoices():
-    invoices = execute_odoo_command(
-        "account.move",
-        "browse_by_search",
+    # browse was buggy with account.move so we used search_read
+    # https://github.com/odoo/odoo/issues/109938
+    invoices = execute_odoo_command("account.move","search_read",
         [
             partner_domain("partner_id"),
-            ("state", "not in", ["draft", "proforma", "proforma2", "cancel"]),
+            ("state", "not in", ("draft", "cancel")),
+            ("invoice_user_id", "!=", False,)
         ],
     )
+    # invoice_user_id not False to get only eshop invoice
     return render_template("invoices.html", invoices=invoices)
 
 
@@ -229,7 +256,7 @@ def register():  # noqa: C901
 
     # Check password
     password, error_message = check_password(
-        request.form["password_1"], request.form["password_2"]
+        request.form["password_1"]
     )
     if error_message:
         incorrect_data = True

@@ -19,6 +19,7 @@
 
 $(document).ready(function() {
     $("input:text").focus(function() { $(this).select(); } );
+
 });
 
 var currentAjaxCall = false;

@@ -1,135 +1,89 @@
 {% extends 'base.html' %}
 
 {% block container %}
-<!-- JQuery -->
 <script>
     $('#nav_account').addClass('active');
 </script>
 
-<!-- Account Data -->
-<h1>{{ _('Your Account') }}</h1>
+<div class="container account">
 
-<form class="form-horizontal" role="form" method="POST" action="{{ url_for('account') }}">
-    <table class="table table-condensed table-bordered">
-        <tbody>
-            <tr>
-                <th>
-                    <label for="account_name" class="control-label">{{ _('Name') }} (*)</label>
-                </th>
-                <td colspan="100%">
-                    <input type="text" class="form-control account_data" value="{{ partner.name|empty_if_null }}" readonly>
-                </td>
-            </tr>
-            <tr>
-                <th>
-                    <label for="account_email" class="control-label">{{ _('Email') }} (*)</label>
-                </th>
-                <td colspan="100%">
-                    <input type="email" class="form-control account_data" name="email" value="{{ partner.email|empty_if_null }}" readonly>
-                </td>
-            </tr>
-            <tr>
-                <th>
-                    <label for="account_mobile" class="control-label">{{ _('Cell Phone') }}</label>
-                </th>
-                <td>
-                    <input type="tel" class="form-control account_data" name="mobile" value="{{ partner.mobile|empty_if_null }}"">
-                </td>
-                <th>
-                    <label for="account_phone" class="control-label">{{ _('Other Phone') }}</label>
-                </th>
-                <td>
-                    <input type="tel" class="form-control account_data" name="phone" value="{{ partner.phone|empty_if_null }}"" >
-                </td>
-            </tr>
-            <tr>
-                <th>
-                    <label for="account_street" class="control-label">{{ _('Street') }}</label>
-                </th>
-                <td colspan="100%">
-                    <input type="text" class="form-control account_data" name="street" value="{{ partner.street|empty_if_null }}"">
-                </td>
-            </tr>
-            <tr>
-                <th>
-                    <label for="account_street2" class="control-label">{{ _('Street (Extra Info)') }}</label>
-                </th>
-                <td colspan="100%">
-                    <input type="text" class="form-control account_data" name="street2" value="{{ partner.street2|empty_if_null }}"">
-                </td>
-            </tr>
-            <tr>
-                <th>
-                    <label for="account_zip" class="control-label">{{ _('ZIP Code') }}</label>
-                </th>
-                <td>
-                    <input type="text" class="form-control account_data" name="zip" value="{{ partner.zip|empty_if_null }}"">
-                </td>
-                <th>
-                    <label for="account_city" class="control-label">{{ _('City') }}</label>
-                </th>
-                <td>
-                    <input type="text" class="form-control account_data" name="city" value="{{ partner.city|empty_if_null }}"">
-                </td>
-            </tr>
-            <tr>
-                <th colspan="100%">
-                    <div class="checkbox">
-                      <label>
-                        <input type="checkbox" id="checkbox-change-password" name="checkbox-change-password" {{ request.form['checkbox-change-password'] and 'checked' or ''}}>
-                        {{ _('Check this box if you want to change your password') }}
-                      </label>
-                    </div>
-                </th>
-            </tr>
-            {% if request['checkbox-change-password'] %}
-            <tr class="password-form">
-            {% else %}
-            <tr style="visibility: hidden;" class="password-form">
-            {% endif %}
-                <th>
-                    <label for="password_1" class="control-label">{{ _('Password') }} (*)</label>
-                </th>
-                <td>
-                    <input type="password" class="form-control account_data" name="password_1">
-                </td>
-                <th>
-                    <label for="password_1" class="control-label">{{ _('Password (Check)') }} (*)</label>
-                </th>
-                <td>
-                    <input type="password" class="form-control account_data" name="password_2">
-                </td>
-            </tr>
+    <form class="needs-validation" method="POST" action="{{ url_for('account') }}">
 
-        </tbody>
-        <tfoot>
-            <tr>
-                <td class="td-action" colspan="100%">
-                    <button type="submit" class="btn btn-default">{{ _('Update')}}</button>
-                </td>
-            </tr>
-        </tfoot>
-    </table>
-</form>
+        <h1>{{ _('Personnal Datas') }}</h1>
 
-<!-- JQuery -->
+        <div class="row g-3">
+            <div class="col-md-6 form-floating">
+                <input type="text" class="form-control" id="account_name" value="{{ partner.name|empty_if_null }}" readonly>
+                <label for="account_name">{{ _('Name') }}</label>
+            </div>
+            <div class="col-md-6 form-floating">
+                <input type="email" class="form-control" id="account_email" name="email" value="{{ partner.email|empty_if_null }}" readonly>
+                <label for="account_email">{{ _('Email') }}</label>
+            </div>
+            <div class="col-md-6 form-floating">
+                <input type="tel" class="form-control" id="account_mobile" name="mobile" value="{{ partner.mobile|empty_if_null }}">
+                <label for="account_mobile">{{ _('Cell Phone') }}</label>
+            </div>
+            <div class="col-md-6 form-floating">
+                <input type="tel" class="form-control" id="account_phone" name="phone" value="{{ partner.phone|empty_if_null }}">
+                <label for="account_phone">{{ _('Other Phone') }}</label>
+            </div>
+            <div class="col-12 form-floating">
+                <input type="text" class="form-control" id="account_street" name="street" value="{{ partner.street|empty_if_null }}">
+                <label for="account_street">{{ _('Street') }}</label>
+            </div>
+            <div class="col-12 form-floating">
+                <input type="text" class="form-control" id="account_street2" name="street2" value="{{ partner.street2|empty_if_null }}">
+                <label for="account_street2">{{ _('Street (Extra Info)') }}</label>
+            </div>
+            <div class="col-md-6 form-floating">
+                <input type="text" class="form-control" id="account_zip" name="zip" value="{{ partner.zip|empty_if_null }}">
+                <label for="account_zip">{{ _('ZIP Code') }}</label>
+            </div>
+            <div class="col-md-6 form-floating">
+                <input type="text" class="form-control" id="account_city" name="city" value="{{ partner.city|empty_if_null }}">
+                <label for="account_city">{{ _('City') }}</label>
+            </div>
+        </div>
+        <div class="mt-4">
+            <button type="submit" class="btn btn-primary">
+                {{ _('Update datas') }}
+            </button>
+        </div>
+    </form>
+
+    <form class="needs-validation" method="POST" action="{{ url_for('account_password') }}">
+
+        <h1 id="password_change" class="mt-5">{{ _('Password') }}</h1>
+
+        <div class="col-md-6">
+            <div class="form-floating position-relative">
+                <input type="password" class="form-control input-required account_data" id="password_1" name="password_1" value="{{ request.form['password_1']}}" required>
+                <label for="password_1" class="required">{{ _('Password') }}</label>
+                <span class="position-absolute top-50 end-0 translate-middle-y pe-3" onclick="togglePassword()" style="cursor:pointer;">
+                    <i class="bi bi-eye" id="toggleIcon"></i>
+                </span>
+            </div>
+        </div>
+
+        <div class="mt-4">
+            <button type="submit" class="btn btn-primary">
+                {{ _('Update password') }}
+            </button>
+        </div>
+    </form>
+
+</div>
 
 <script>
-$(document).ready(function() {
-    function display_or_not(){
-        if ($('#checkbox-change-password').is(':checked')){
-            $('.password-form').css('visibility', 'visible');
-        }
-        else{
-            $('.password-form').css('visibility', 'hidden');
-        }
-    }
+function togglePassword() {
+    const input = document.getElementById("password_1");
+    const icon = document.getElementById("toggleIcon");
+    const isVisible = input.type === "text";
 
-    $('#checkbox-change-password').change(function() {
-        display_or_not();
-    });
-    display_or_not();
-});
+    input.type = isVisible ? "password" : "text";
+    icon.className = isVisible ? "bi bi-eye" : "bi bi-eye-slash";
+}
 </script>
 
 {% endblock %}
