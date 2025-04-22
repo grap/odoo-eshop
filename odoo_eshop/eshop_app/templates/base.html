@@ -222,7 +222,7 @@
           <span class="navbar-toggler-icon"></span>
         </button>
 
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
 
         <!-- IF CONNECTED -->
         {% if partner %}
@@ -253,7 +253,7 @@
                 <li class="nav-item">
                     <a class="nav-link" id="nav_shopping_cart"
                     onclick="GoToThePage(this)" page_url="{{url_for('shopping_cart')}}">
-                        <i class="bi bi-basket2"></i> {{ _('Shopping Cart: ') }}
+                        <i class="bi bi-basket2" id="navbar-cart-icon"></i> {{ _('Shopping Cart: ') }}
                     {% if is_vat_included %}
                         <span id="nav_amount_total">{{ sale_order.amount_total|to_currency }}</span>
                                  {{_('VAT. Incl.')}}
@@ -280,6 +280,7 @@
                         {% endif %}
                     {% endif %}
                     </a>
+
                 </li>
                 {% endif %}
             </ul>
@@ -351,6 +352,7 @@
         {% if messages %}
             {% for category, message in messages %}
 <<<<<<< HEAD
+<<<<<<< HEAD
                 {% if message|length %}
     <div class="mt-4 container alert alert-{{ category }} alert-dismissible fade show" role="alert">
         <i class="bi bi-exclamation-diamond"></i> {{ message }}
@@ -361,6 +363,13 @@
         <i class="bi bi-exclamation-diamond"></i> {{ message }}
     </div>
 >>>>>>> 1b905c0 ([IMP] Global style [IMP] Navbar top responsive and bottom, Login screen, Catalog tree view)
+=======
+                {% if message|length %}
+    <div class="mt-4 container alert alert-{{ category }} alert-dismissible fade show" role="alert">
+        <i class="bi bi-exclamation-diamond"></i> {{ message }}
+    </div>
+                {% endif %}
+>>>>>>> 754dd75 ([REM] glyphicon [ADD] eshop_note beside note [IMP] Shopping Carte, register, login, catalog tree..)
             {% endfor %}
         {% endif %}
     {% endwith %}
@@ -415,10 +424,20 @@
 
 =======
 
-
           </ul>
+
+        <div class="justify-content-end d-none d-md-block">
+            <span class="nav-item">
+                {{_('We use <a href="https://luciole-vision.com/" target="_blank">Luciole : a Free font</a> designed to be accessible to the visually impaired.')}}
+            </span>
+        </div>
+
       </div>
+<<<<<<< HEAD
 >>>>>>> 1b905c0 ([IMP] Global style [IMP] Navbar top responsive and bottom, Login screen, Catalog tree view)
+=======
+    
+>>>>>>> 754dd75 ([REM] glyphicon [ADD] eshop_note beside note [IMP] Shopping Carte, register, login, catalog tree..)
     </nav>
 
     <div id="base-container" class="container">

@@ -6,9 +6,14 @@
     <h4><i class="bi bi-basket2"></i> {{ _('Validate your cart and choose a moment to recover it') }}</h4>
 </div>
 
+<<<<<<< HEAD
 <!-- Shopping Cart Table for large screen -->
 <div class="shopping-cart table-responsive d-none d-md-block">
     <table class="table table-hover align-middle eshop_table_float_thead">
+=======
+<div class="table-responsive d-none d-md-block">
+    <table class="table table-hover align-middle">
+>>>>>>> 754dd75 ([REM] glyphicon [ADD] eshop_note beside note [IMP] Shopping Carte, register, login, catalog tree..)
         <thead class="table-light">
             <tr>
                 <th class="table-head-image"><!-- Product image --></th>
@@ -37,17 +42,30 @@
             <tr>
                 <!-- Image -->
                 <td class="td-product-image">
+<<<<<<< HEAD
                     <a href="{{ url_for('product', product_id=product.id)}}">
                         <img src="{{ url_for('static', filename=product.image_128_local_path) }}"
                         class="img-thumbnail img-cart" alt="{{ product.name }}" loading="lazy"/>
+=======
+                    <a onclick="GoToThePage(this)" href="{{ url_for('product', product_id=product.id)}}">
+                        <img src="{{ url_for('static', filename=product.image_128_local_path) }}"
+                        class="img-thumbnail rounded" alt="{{ product.name }}" loading="lazy"/>
+>>>>>>> 754dd75 ([REM] glyphicon [ADD] eshop_note beside note [IMP] Shopping Carte, register, login, catalog tree..)
                     </a>
                 </td>
 
                 <!-- Product name and description -->
+<<<<<<< HEAD
                 <td class="shopping-cart-product">
                     <a onclick="GoToThePage(this)" href="#" page_url="{{ url_for('product', product_id=product.id)}}">
                         {% if not company.eshop_vat_included and product.default_code %}{{ product.default_code }} - {% endif %}{{ product.name }}
                     </a>
+=======
+                <td>
+                    <a onclick="GoToThePage(this)" href="{{ url_for('product', product_id=product.id)}}">
+                        {% if not company.eshop_vat_included and product.default_code %}{{ product.default_code }} - {% endif %}{{ product.name }}
+                    </a> 
+>>>>>>> 754dd75 ([REM] glyphicon [ADD] eshop_note beside note [IMP] Shopping Carte, register, login, catalog tree..)
                     <span class="cart-unit-price"><br/>{{ _('Unit price:') }} {{ line.price_unit|to_currency }} / {{ uom.eshop_description }}</span>
                 </td>
 
@@ -91,7 +109,11 @@
 </div>
 
 
+<<<<<<< HEAD
 <!-- Shopping Carte Table for small screen (smartphone) using Bootstrap cards -->
+=======
+<!-- Table for mobile : using Bootstrap cards -->
+>>>>>>> 754dd75 ([REM] glyphicon [ADD] eshop_note beside note [IMP] Shopping Carte, register, login, catalog tree..)
 <div class="container d-block d-md-none">
     {% for line in sale_order_lines %}
         {% set product = get_object('product.product', line.product_id) %}
@@ -100,6 +122,7 @@
             <div class="card-body d-flex flex-column gap-2">
                 <div class="d-flex align-items-start gap-3">
                     <img src="{{ url_for('static', filename=product.image_128_local_path) }}"
+<<<<<<< HEAD
                          class="img-thumbnail image-cart-sm"
                          alt="{{ product.name }}">
 
@@ -110,6 +133,16 @@
                                 <div class="text-muted small">{{ product.default_code }}</div>
                             {% endif %}
                         </a>
+=======
+                         class="img-thumbnail table-head-image-mobile"
+                         alt="{{ product.name }}">
+                    
+                    <div class="flex-grow-1">
+                        <h6 class="fw-bold mb-1">{{ product.name }}</h6>
+                        {% if not company.eshop_vat_included and product.default_code %}
+                            <div class="text-muted small">{{ product.default_code }}</div>
+                        {% endif %}
+>>>>>>> 754dd75 ([REM] glyphicon [ADD] eshop_note beside note [IMP] Shopping Carte, register, login, catalog tree..)
                         {% if line|tax_description_per_line %}
                         <div class="small text-muted">
                             {{ _('VAT:') }} {{ line|tax_description_per_line }}
@@ -151,7 +184,11 @@
 <div class="container mt-4 g-3">
     <div class="row">
         <!-- Extra Comment -->
+<<<<<<< HEAD
         <div class="col-md-7 col-lg-7 mb-2">
+=======
+        <div class="col-md-7 col-lg-7">
+>>>>>>> 754dd75 ([REM] glyphicon [ADD] eshop_note beside note [IMP] Shopping Carte, register, login, catalog tree..)
             <h6><i class="bi bi-chat-right-dots"></i> {{ _('You can leave a comment here') }}</h6>
             <form method="POST" action="{{ url_for('shopping_cart_eshop_note_update') }}">
                 <div class="card w-100 shadow-sm rounded-3">
@@ -197,7 +234,11 @@
         <div class="row justify-content-center">
             <div class="col-md-8 col-lg-6 col-xl-4">
                 <button id="cart-btn-confirm" class="btn btn-primary btn-lg w-100 d-flex align-items-center justify-content-center"
+<<<<<<< HEAD
                     onclick="GoToThePage(this)" href="#" page_url="{{url_for('recovery_moment_place')}}">
+=======
+                    onclick="GoToThePage(this)" page_url="{{url_for('recovery_moment_place')}}">
+>>>>>>> 754dd75 ([REM] glyphicon [ADD] eshop_note beside note [IMP] Shopping Carte, register, login, catalog tree..)
                     <i class="bi bi-check-circle me-2"></i>{{ _('Confirm and go pick your recovery place') }}
                 </button>
             </div>

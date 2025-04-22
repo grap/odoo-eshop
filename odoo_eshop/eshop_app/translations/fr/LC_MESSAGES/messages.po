@@ -816,7 +816,44 @@ msgstr "Récupérer son mot de passe"
 msgid "Send Reset Link"
 msgstr "Envoyer le lien de réinitialisation"
 
+<<<<<<< HEAD
 #: templates/payment.html:6 templates/recovery_moment_place.html:6
+=======
+#: templates/product.html:71 templates/product_popup.html:52
+msgid "Minimum Quantity"
+msgstr "Quantité minimum"
+
+#: templates/product.html:73 templates/product_popup.html:54
+msgid "Rounding Quantity"
+msgstr "Quantité arrondie"
+
+#: templates/product.html:77 templates/product_popup.html:58
+msgid "Country"
+msgstr "Pays"
+
+#: templates/product.html:85 templates/product_popup.html:66
+msgid "Department"
+msgstr "Département"
+
+#: templates/product.html:89 templates/product_popup.html:70
+msgid "Origin Description"
+msgstr "Origine"
+
+#: templates/product.html:93 templates/product_popup.html:74
+msgid "Maker Description"
+msgstr "Producteur·rice"
+
+#: templates/product.html:98 templates/product_popup.html:79
+#: templates/recovery_moment_place.html:39
+msgid "Description"
+msgstr "Description"
+
+#: templates/product.html:113
+msgid "Add to Shopping Cart"
+msgstr "Ajouter au panier"
+
+#: templates/recovery_moment_place.html:5 templates/shopping_cart.html:6
+>>>>>>> 754dd75 ([REM] glyphicon [ADD] eshop_note beside note [IMP] Shopping Carte, register, login, catalog tree..)
 msgid "Shopping Cart"
 msgstr "Panier"
 

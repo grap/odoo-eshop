@@ -12,10 +12,14 @@ body {
     background-color: var(--bg-color);
     color: var(--text-color);
 <<<<<<< HEAD
+<<<<<<< HEAD
     font-family: Luciole;
 =======
     font-family: 'Segoe UI', 'Roboto', sans-serif;
 >>>>>>> 1b905c0 ([IMP] Global style [IMP] Navbar top responsive and bottom, Login screen, Catalog tree view)
+=======
+    font-family: Luciole;
+>>>>>>> 754dd75 ([REM] glyphicon [ADD] eshop_note beside note [IMP] Shopping Carte, register, login, catalog tree..)
     font-size: 1rem;
     line-height: 1.6;
 }
@@ -130,6 +134,7 @@ body {
 =======
 
 /* ======== NAVBAR ======== */
+
 .navbar {
     background-color: var(--secondary-color) !important;
     box-shadow: 0 2px 4px rgba(0,0,0,0.05);
@@ -145,6 +150,10 @@ body {
 .navbar-brand img {
     margin-right: 0.5rem;
     border-radius: 0.25rem;
+}
+
+.navbar a {
+    color: var(--main-color);
 }
 
 .navbar .nav-link {
@@ -197,6 +206,7 @@ body {
     background-color: var(--hover-color);
     color: #000;
 }
+
 
 /* ======== FOOTER ======== */
 .navbar.fixed-bottom {
@@ -699,13 +709,11 @@ input.form-control.pe-5 {
 
 /* ======== CARTES ======== */
 .card {
-    width: 12em;
     border: none;
     border-radius: var(--card-radius);
     box-shadow: 0 2px 6px rgba(0,0,0,0.05);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     background-color: #fff;
-    margin-bottom: 1rem;
 }
 
 .card:hover {
@@ -746,6 +754,88 @@ input.form-control.pe-5 {
 .card-text:hover {
     color: #000;
     text-decoration: underline;
+}
+
+/* ======== PRODUCT ======== */
+.product-pricing {
+    margin-top: 2em;
+    margin-bottom: 2em;
+}
+
+.product-image {
+    position: relative;
+    overflow: hidden;
+}
+
+.product-labels {
+    bottom: 10px;
+    right: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 6px 8px;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    animation: fadeInLabels 0.5s ease-in-out;
+}
+
+.product-labels img {
+    height: 60px;
+    width: auto;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+.product-labels img:hover {
+    transform: scale(1.1) rotate(-2deg);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* animation d’apparition fluide */
+@keyframes fadeInLabels {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.nav-underline .nav-link {
+    color: var(--main-color);
+    font-weight: 500;
+    position: relative;
+    padding: 0.5rem 0.75rem;
+    border: none;
+    background: none;
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.nav-underline .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0.75rem;
+    right: 0.75rem;
+    height: 2px;
+    background-color: transparent;
+    transition: background-color 0.3s;
+}
+
+.nav-underline .nav-link:hover::after,
+.nav-underline .nav-link.active::after {
+    background-color: var(--main-color);
+    color: #907257;
+}
+
+#product-origin {
+    margin-top: 4em;
 }
 
 /* ======== ICÔNES DU PANIER ======== */
@@ -829,4 +919,73 @@ input.form-control.pe-5 {
 .form-control::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
     color: var(--main-color);
     opacity: 0.5; /* Firefox */
+}
+
+
+/* ======== SHOPPING CART ======== */
+.cart-unit-price {
+    font-size: 0.8rem;
+}
+
+#cart-btn-confirm {
+    font-size:1.1rem;
+}
+
+.card-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+#cart-btn-confirm {
+    transition: all 0.2s ease-in-out;
+}
+#cart-btn-confirm:hover {
+    transform: scale(1.02);
+}
+
+.table-head-image {
+    width: 5%;
+}
+
+.table-head-image-mobile {
+    width: 25%;
+}
+
+
+/* -------------------------------------------------------------------------- */
+/* CSS originel                                                              */
+/* -------------------------------------------------------------------------- */
+/* -------------------------------------------------------------------------- */
+/* Catalog Style                                                              */
+/* -------------------------------------------------------------------------- */
+.input-quantity{
+    width:150px !important;
+    text-align:right;
+}
+
+.input-amount{
+    width:120px !important;
+    text-align:right;
+}
+
+.img-small-label{
+    margin: 0px;
+    padding: 0px;
+    border: 0px;
+    height: 23px;
+    display: inline;
+}
+
+.img-medium-eshop-categ{
+    height:50px;width:50px;
+    display:inline;
+}
+
+.input-not-null-qty{
+    background-color:#DDFFFF;
+    font-weight:bold;
+}
+.input-surcharge{
+    background-color:#EEE8AA;
+    font-weight:bold;
 }

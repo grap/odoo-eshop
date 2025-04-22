@@ -10,15 +10,26 @@
 {% endblock %}
 
 {% block container %}
+<<<<<<< HEAD
 {% set company = current_company() %}
 
+=======
+>>>>>>> 754dd75 ([REM] glyphicon [ADD] eshop_note beside note [IMP] Shopping Carte, register, login, catalog tree..)
 <script>
     $('#nav_shopping_cart').addClass('active');
 </script>
 
 <div class="container my-4">
+<<<<<<< HEAD
 
     <h1 class="mb-4"><i class="bi bi-shop-window"></i> {{ _('Select Place and Moment for Recovery') }}</h1>
+=======
+    <div class="row mb-4">
+        <div class="col">
+            <h2 class="fw-bold">{{ _('Select Place and Moment for Recovery') }}</h2>
+        </div>
+    </div>
+>>>>>>> 754dd75 ([REM] glyphicon [ADD] eshop_note beside note [IMP] Shopping Carte, register, login, catalog tree..)
 
     {% if recovery_moments|length == 0 %}
     <div class="alert alert-warning text-center">
@@ -33,6 +44,7 @@
         <div class="card w-100 border border-secondary">
 
             <div class="card-header rounded-3">
+<<<<<<< HEAD
                 <div class="card-header-date">
                     <strong><i class="bi bi-calendar-date"></i>  {{ recovery_moment.min_recovery_date|to_day }}</strong>
                     {{ recovery_moment.min_recovery_date|to_date }}
@@ -46,6 +58,15 @@
 
             <div class="card-body py-3 px-3">
                 <span><i class="bi bi-shop-window"></i> {{ recovery_moment.place_id.complete_name }}</span>
+=======
+              <strong>{{ recovery_moment.min_recovery_date|to_day }}</strong>
+              {{ recovery_moment.min_recovery_date|to_date }}<br>
+              {{ recovery_moment.min_recovery_date|to_time }} - {{ recovery_moment.max_recovery_date|to_time }}
+            </div>
+
+            <div class="card-body py-3 px-3">
+                <h5 class="card-title">{{ recovery_moment.place_id.complete_name }}</h5>
+>>>>>>> 754dd75 ([REM] glyphicon [ADD] eshop_note beside note [IMP] Shopping Carte, register, login, catalog tree..)
 
                 {% if recovery_moment.description %}
                 <p class="text-muted small">{{ recovery_moment.description }}</p>
@@ -54,6 +75,7 @@
                 {% if recovery_moment.is_complete|function_to_eval %}
                   <span class="badge bg-secondary">{{ _('Complete') }}</span>
                 {% else %}
+<<<<<<< HEAD
                     {% if company.eshop_wallet_enabled %}
                       <a href="#" class="btn btn-primary btn-sm w-100 mt-3"
                          onclick="GoToThePage(this)"
@@ -74,6 +96,20 @@
                 {{ _('Extra Cost') }}: {{ recovery_moment.place_id.shipping_product_id.list_price|to_currency }}
             </div>
 
+=======
+                  <a href="#" class="btn btn-outline-primary btn-sm w-100 mt-2"
+                     data-href="{{ url_for('select_recovery_moment', recovery_moment_id=recovery_moment.id) }}"
+                     data-bs-toggle="modal" data-bs-target="#confirm-valid">
+                    <i class="bi bi-check-circle me-1"></i>{{ _('Select') }}
+                  </a>
+                {% endif %}
+            </div>
+            {% if recovery_moment.place_id.shipping_product_id %}
+            <div class="card-footer">
+                {{ _('Extra Cost') }}: {{ recovery_moment.place_id.shipping_product_id.list_price|to_currency }}</p>
+            </div>
+            
+>>>>>>> 754dd75 ([REM] glyphicon [ADD] eshop_note beside note [IMP] Shopping Carte, register, login, catalog tree..)
             {% endif %}
 
         </div>
@@ -119,4 +155,8 @@
         $(this).find('#btn-confirm').attr('href', $(e.relatedTarget).data('href'));
     });
 </script>
+<<<<<<< HEAD
 {% endblock %}
+=======
+{% endblock %}
+>>>>>>> 754dd75 ([REM] glyphicon [ADD] eshop_note beside note [IMP] Shopping Carte, register, login, catalog tree..)

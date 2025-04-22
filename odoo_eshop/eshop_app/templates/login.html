@@ -13,12 +13,16 @@ function togglePassword() {
 </script>
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 754dd75 ([REM] glyphicon [ADD] eshop_note beside note [IMP] Shopping Carte, register, login, catalog tree..)
 <style>
   label.required::after {
     content: " *";
     color: red;
   }
 </style>
+<<<<<<< HEAD
 
 <form class="needs-validation" novalidate method="POST" action="/login.html/">
     <div class="container col-md-5">
@@ -36,15 +40,19 @@ function togglePassword() {
                 <i class="bi bi-eye" id="toggleIcon"></i>
             </span>
 =======
+=======
+>>>>>>> 754dd75 ([REM] glyphicon [ADD] eshop_note beside note [IMP] Shopping Carte, register, login, catalog tree..)
 
-<form method="POST" action="/login.html/">
+<form class="needs-validation" novalidate method="POST" action="/login.html/">
     <div class="container col-md-5">
         <h1 class="mt-4">{{ _('Log In') }}</h1>
-        <div class="mb-3">
-            <label for="login" class="form-label">{{ _('Email') }} <span class="text-danger">*</span></label>
-            <input type="email" name="login" id="login" class="form-control input-required" value="{{ request.form.get('login', '') }}" required>
+
+        <div class="form-floating mb-3">
+            <input type="email" name="login" id="login" class="form-control input-required" placeholder="{{ _('Set your email...') }}" value="{{ request.form.get('login', '') }}" required>
+            <label for="login" class="required">{{ _('Email') }}</label>
         </div>
 
+<<<<<<< HEAD
         <div class="mb-3 position-relative">
             <label for="password" class="form-label">{{ _('Password') }} <span class="text-danger">*</span></label>
             <div class="input-group">
@@ -54,6 +62,14 @@ function togglePassword() {
                 </span>
             </div>
 >>>>>>> 1b905c0 ([IMP] Global style [IMP] Navbar top responsive and bottom, Login screen, Catalog tree view)
+=======
+        <div class="form-floating mb-3 position-relative">
+            <input type="password" name="password" id="password" class="form-control input-required" placeholder="{{ _('Set your password...') }}" required>
+            <label for="password" class="required">{{ _('Password') }}</label>
+            <span class="position-absolute top-50 end-0 translate-middle-y pe-3" onclick="togglePassword()" style="cursor:pointer;">
+                <i class="bi bi-eye" id="toggleIcon"></i>
+            </span>
+>>>>>>> 754dd75 ([REM] glyphicon [ADD] eshop_note beside note [IMP] Shopping Carte, register, login, catalog tree..)
         </div>
 
         <div class="d-grid gap-2 mb-3">
@@ -61,9 +77,12 @@ function togglePassword() {
         </div>
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 
 >>>>>>> 1b905c0 ([IMP] Global style [IMP] Navbar top responsive and bottom, Login screen, Catalog tree view)
+=======
+>>>>>>> 754dd75 ([REM] glyphicon [ADD] eshop_note beside note [IMP] Shopping Carte, register, login, catalog tree..)
         <div class="text-center small">
             {% if company.eshop_register_allowed %}
             <a href="/register.html" class="d-block mb-1">{{ _("I don't have an account yet, register")}}</a>
@@ -72,9 +91,12 @@ function togglePassword() {
             <a href="/password_lost.html">{{ _("I forgot my password")}}</a>
         </div>
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 
 >>>>>>> 1b905c0 ([IMP] Global style [IMP] Navbar top responsive and bottom, Login screen, Catalog tree view)
+=======
+>>>>>>> 754dd75 ([REM] glyphicon [ADD] eshop_note beside note [IMP] Shopping Carte, register, login, catalog tree..)
     </div>
 </form>
 

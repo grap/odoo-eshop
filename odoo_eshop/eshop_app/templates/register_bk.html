@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+
+{% block container %}
+<!-- JQuery -->
+<script>
+    $('#nav_register').addClass('active');
+</script>
+
+<script>
+function togglePassword() {
+    const input = document.getElementById("password_1");
+    const icon = document.getElementById("toggleIcon");
+    const isVisible = input.type === "text";
+
+    input.type = isVisible ? "password" : "text";
+    icon.className = isVisible ? "bi bi-eye" : "bi bi-eye-slash";
+}
+</script>
+
+
+
+<!-- Renders the lure checkbox invisible -->
+<style>
+  .nope{
+      opacity: 0;
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 0;
+      width: 0;
+      z-index:-1;
+  }
+</style>
+
+
+<!-- Account Data -->
+<div class="container mt-5">
+    <h1>{{ _('Create a new account') }}</h1>
+
+    <form role="form" method="POST" action="{{ url_for('register') }}">
+        <div class="row g-3">
+
+            <div class="col-md-6">
+                <label for="account_name" class="control-label">{{ _('First Name') }} <span class="text-danger">*</span></label>
+                <input type="text" class="form-control input-required account_data" name="first_name" value="{{ request.form['first_name']}}" placeholder="{{ _('Set your first name...') }}">
+            </div>
+            
+            <div class="col-md-6">
+                <label for="account_name" class="control-label">{{ _('Last Name') }} <span class="text-danger">*</span></label>
+                <input type="text" class="form-control input-required account_data" name="last_name" value="{{ request.form['last_name']}}" placeholder="{{ _('Set your last name...') }}">
+            </div>
+        
+            <div class="col-md-6">
+                <label for="account_email" class="control-label">{{ _('Email') }} <span class="text-danger">*</span></label>
+                <input type="email" class="form-control input-required account_data" name="email" value="{{ request.form['email']}}" placeholder="{{ _('Set your email...') }}">
+            </div>
+            
+            <div class="col-md-6">
+              <label for="password_1" class="control-label">{{ _('Password') }} <span class="text-danger">*</span></label>
+              <div class="input-group">
+                <input type="password" class="form-control input-required account_data" name="password_1" id="password_1" value="{{ request.form['password_1']}}" placeholder="{{ _('Set your password...') }}">
+                <span class="input-group-text" onclick="togglePassword()" style="cursor:pointer;">
+                    <i class="bi bi-eye" id="toggleIcon"></i>
+                </span>
+              </div>
+            </div>
+
+            <h4 class="mt-6">{{ _('Your adress') }}</h4>
+    
+            <div class="col-md-6">
+                <label for="account_street" class="control-label">{{ _('Street') }}</label>
+                <input type="text" class="form-control account_data" name="street" value="{{ request.form['street']}}" placeholder="{{ _('Set your street...') }}">
+            </div>
+        
+            <div class="col-md-6">
+                <label for="account_street2" class="control-label">{{ _('Street (Extra Info)') }}</label>
+                <input type="text" class="form-control account_data" name="street2" value="{{ request.form['street2']}}" placeholder="{{ _('Set your street extra information...') }}">
+            </div>
+
+            <div class="col-md-6">
+                <label for="account_zip" class="control-label">{{ _('ZIP Code') }}</label>
+                <input type="text" class="form-control account_data" name="zip" value="{{ request.form['zip']}}" placeholder="{{ _('Set your ZIP code...') }}">
+            </div>
+                    
+            <div class="col-md-6">
+                <label for="account_city" class="control-label">{{ _('City') }}</label>
+                <input type="text" class="form-control account_data" name="city" value="{{ request.form['city']}}" placeholder="{{ _('Set your city...') }}">
+            </div>
+        
+            <div class="col-md-6">
+                <label for="account_mobile" class="control-label">{{ _('Cell Phone') }}</label>
+                <input type="tel" class="form-control account_data" name="mobile" value="{{ request.form['mobile']}}" placeholder="{{ _('Set your Cell phone...') }}">
+            </div>
+            
+            
+            <div class="col-md-6">
+                <label for="account_phone" class="control-label">{{ _('Other Phone') }}</label>
+                <input type="tel" class="form-control account_data" name="phone" value="{{ request.form['phone']}}" placeholder="{{ _('Set your other phone number...') }}">
+            </div>
+
+            <div class="nope">
+              <label for="is_human" class="control-label">{{ _('Is human') }}</label>
+              {% if request.form['is_human'] %}
+                  <input type="checkbox" class="form-control account_data" name="is_human" value="no" checked>
+              {% else %}
+                  <input type="checkbox" class="form-control account_data" name="is_human" value="yes">
+              {% endif %}
+            </div>
+        
+            <div class="d-grid gap-2 mb-3">
+                <button type="submit" class="btn btn-primary">{{ _('Create')}}</button>
+            </div>
+
+            <div class="text-center small">
+                <a href="{{ url_for('login_view') }}">
+                    {{ _("I have already an account, sign in")}}
+                </a>
+            </div>
+
+
+    </form>
+</div>
+
+{% endblock %}

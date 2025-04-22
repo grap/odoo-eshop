@@ -1,10 +1,18 @@
 /* Webfont: Luciole-Regular */@font-face {
     font-family: 'Luciole';
+<<<<<<< HEAD
     src: url('/static/lib/fonts/Luciole-Regular/Luciole-Regular.eot'); /* IE9 Compat Modes */
     src: url('/static/lib/fonts/Luciole-Regular/Luciole-Regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
          url('/static/lib/fonts/Luciole-Regular/Luciole-Regular.woff') format('woff'), /* Modern Browsers */
          url('/static/lib/fonts/Luciole-Regular/Luciole-Regular.ttf') format('truetype'), /* Safari, Android, iOS */
          url('/static/lib/fonts/Luciole-Regular/Luciole-Regular.svg#Luciole-Regular') format('svg'); /* Legacy iOS */
+=======
+    src: url('/static/lib/fonts/Luciole_webfonts/Luciole-Regular/Luciole-Regular.eot'); /* IE9 Compat Modes */
+    src: url('/static/lib/fonts/Luciole_webfonts/Luciole-Regular/Luciole-Regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('/static/lib/fonts/Luciole_webfonts/Luciole-Regular/Luciole-Regular.woff') format('woff'), /* Modern Browsers */
+         url('/static/lib/fonts/Luciole_webfonts/Luciole-Regular/Luciole-Regular.ttf') format('truetype'), /* Safari, Android, iOS */
+         url('/static/lib/fonts/Luciole_webfonts/Luciole-Regular/Luciole-Regular.svg#Luciole-Regular') format('svg'); /* Legacy iOS */
+>>>>>>> 754dd75 ([REM] glyphicon [ADD] eshop_note beside note [IMP] Shopping Carte, register, login, catalog tree..)
     font-style: normal;
     font-weight: normal;
     text-rendering: optimizeLegibility;

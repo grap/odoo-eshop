@@ -50,10 +50,13 @@ document.addEventListener("DOMContentLoaded", function () {
 =======
 </script>
 
+<<<<<<< HEAD
 
 
 <!-- Renders the lure checkbox invisible -->
 >>>>>>> 050fc27 ([IMP] Register form, remove password 2)
+=======
+>>>>>>> 754dd75 ([REM] glyphicon [ADD] eshop_note beside note [IMP] Shopping Carte, register, login, catalog tree..)
 <style>
   .nope{
       opacity: 0;
@@ -70,11 +73,11 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 </style>
 
-
 <!-- Account Data -->
 <div class="container mt-5">
     <h1>{{ _('Create a new account') }}</h1>
 
+<<<<<<< HEAD
 <<<<<<< HEAD
     <form class="needs-validation" novalidate role="form" method="POST" action="{{ url_for('register') }}">
         <div class="row g-3">
@@ -141,65 +144,75 @@ document.addEventListener("DOMContentLoaded", function () {
                 <label for="phone">{{ _('Other Phone') }}</label>
 =======
     <form role="form" method="POST" action="{{ url_for('register') }}">
+=======
+    <form class="needs-validation" novalidate role="form" method="POST" action="{{ url_for('register') }}">
+>>>>>>> 754dd75 ([REM] glyphicon [ADD] eshop_note beside note [IMP] Shopping Carte, register, login, catalog tree..)
         <div class="row g-3">
 
-            <div class="col-md-6">
-                <label for="account_name" class="control-label">{{ _('First Name') }} <span class="text-danger">*</span></label>
-                <input type="text" class="form-control input-required account_data" name="first_name" value="{{ request.form['first_name']}}" placeholder="{{ _('Set your first name...') }}">
-            </div>
-            
-            <div class="col-md-6">
-                <label for="account_name" class="control-label">{{ _('Last Name') }} <span class="text-danger">*</span></label>
-                <input type="text" class="form-control input-required account_data" name="last_name" value="{{ request.form['last_name']}}" placeholder="{{ _('Set your last name...') }}">
-            </div>
-        
-            <div class="col-md-6">
-                <label for="account_email" class="control-label">{{ _('Email') }} <span class="text-danger">*</span></label>
-                <input type="email" class="form-control input-required account_data" name="email" value="{{ request.form['email']}}" placeholder="{{ _('Set your email...') }}">
-            </div>
-            
-            <div class="col-md-6">
-              <label for="password_1" class="control-label">{{ _('Password') }} <span class="text-danger">*</span></label>
-              <div class="input-group">
-                <input type="password" class="form-control input-required account_data" name="password_1" id="password_1" value="{{ request.form['password_1']}}" placeholder="{{ _('Set your password...') }}">
-                <span class="input-group-text" onclick="togglePassword()" style="cursor:pointer;">
-                    <i class="bi bi-eye" id="toggleIcon"></i>
-                </span>
-              </div>
+            <div class="col-md-6 form-floating">
+                <input type="text" class="form-control input-required account_data" id="first_name" name="first_name" value="{{ request.form['first_name']}}" required>
+                <label for="first_name" class="required">{{ _('First Name') }}</label>
             </div>
 
-            <h4 class="mt-6">{{ _('Your adress') }}</h4>
-    
-            <div class="col-md-6">
-                <label for="account_street" class="control-label">{{ _('Street') }}</label>
-                <input type="text" class="form-control account_data" name="street" value="{{ request.form['street']}}" placeholder="{{ _('Set your street...') }}">
+            <div class="col-md-6 form-floating">
+                <input type="text" class="form-control input-required account_data" id="last_name" name="last_name" value="{{ request.form['last_name']}}" required>
+                <label for="last_name" class="required">{{ _('Last Name') }}</label>
             </div>
-        
-            <div class="col-md-6">
-                <label for="account_street2" class="control-label">{{ _('Street (Extra Info)') }}</label>
-                <input type="text" class="form-control account_data" name="street2" value="{{ request.form['street2']}}" placeholder="{{ _('Set your street extra information...') }}">
+
+            <div class="col-md-6 form-floating">
+                <input type="email" class="form-control input-required account_data" id="email" name="email" value="{{ request.form['email']}}" required>
+                <label for="email" class="required">{{ _('Email') }}</label>
             </div>
 
             <div class="col-md-6">
-                <label for="account_zip" class="control-label">{{ _('ZIP Code') }}</label>
-                <input type="text" class="form-control account_data" name="zip" value="{{ request.form['zip']}}" placeholder="{{ _('Set your ZIP code...') }}">
+                <div class="form-floating position-relative">
+                    <input type="password" class="form-control input-required account_data" id="password_1" name="password_1" value="{{ request.form['password_1']}}" required>
+                    <label for="password_1" class="required">{{ _('Password') }}</label>
+                    <span class="position-absolute top-50 end-0 translate-middle-y pe-3" onclick="togglePassword()" style="cursor:pointer;">
+                        <i class="bi bi-eye" id="toggleIcon"></i>
+                    </span>
+                </div>
             </div>
-                    
-            <div class="col-md-6">
-                <label for="account_city" class="control-label">{{ _('City') }}</label>
-                <input type="text" class="form-control account_data" name="city" value="{{ request.form['city']}}" placeholder="{{ _('Set your city...') }}">
+
+            <h4 class="mt-4">{{ _('Your adress') }}</h4>
+
+            <div class="col-md-6 form-floating">
+                <input type="text" class="form-control account_data" id="street" name="street" value="{{ request.form['street']}}">
+                <label for="street">{{ _('Street') }}</label>
             </div>
-        
-            <div class="col-md-6">
-                <label for="account_mobile" class="control-label">{{ _('Cell Phone') }}</label>
-                <input type="tel" class="form-control account_data" name="mobile" value="{{ request.form['mobile']}}" placeholder="{{ _('Set your Cell phone...') }}">
+
+            <div class="col-md-6 form-floating">
+                <input type="text" class="form-control account_data" id="street2" name="street2" value="{{ request.form['street2']}}">
+                <label for="street2">{{ _('Street (Extra Info)') }}</label>
             </div>
+<<<<<<< HEAD
             
             
             <div class="col-md-6">
                 <label for="account_phone" class="control-label">{{ _('Other Phone') }}</label>
                 <input type="tel" class="form-control account_data" name="phone" value="{{ request.form['phone']}}" placeholder="{{ _('Set your other phone number...') }}">
 >>>>>>> 050fc27 ([IMP] Register form, remove password 2)
+=======
+
+            <div class="col-md-6 form-floating">
+                <input type="text" class="form-control account_data" id="zip" name="zip" value="{{ request.form['zip']}}">
+                <label for="zip">{{ _('ZIP Code') }}</label>
+            </div>
+
+            <div class="col-md-6 form-floating">
+                <input type="text" class="form-control account_data" id="city" name="city" value="{{ request.form['city']}}">
+                <label for="city">{{ _('City') }}</label>
+            </div>
+
+            <div class="col-md-6 form-floating">
+                <input type="tel" class="form-control account_data" id="mobile" name="mobile" value="{{ request.form['mobile']}}">
+                <label for="mobile">{{ _('Cell Phone') }}</label>
+            </div>
+
+            <div class="col-md-6 form-floating">
+                <input type="tel" class="form-control account_data" id="phone" name="phone" value="{{ request.form['phone']}}">
+                <label for="phone">{{ _('Other Phone') }}</label>
+>>>>>>> 754dd75 ([REM] glyphicon [ADD] eshop_note beside note [IMP] Shopping Carte, register, login, catalog tree..)
             </div>
 
             <div class="nope">
@@ -211,11 +224,15 @@ document.addEventListener("DOMContentLoaded", function () {
               {% endif %}
             </div>
 <<<<<<< HEAD
+<<<<<<< HEAD
 
             <div class="d-grid gap-2 mb-3">
                 <button type="submit" class="btn btn-primary" disabled>{{ _('Create')}}</button>
 =======
         
+=======
+
+>>>>>>> 754dd75 ([REM] glyphicon [ADD] eshop_note beside note [IMP] Shopping Carte, register, login, catalog tree..)
             <div class="d-grid gap-2 mb-3">
                 <button type="submit" class="btn btn-primary">{{ _('Create')}}</button>
 >>>>>>> 050fc27 ([IMP] Register form, remove password 2)
@@ -228,10 +245,14 @@ document.addEventListener("DOMContentLoaded", function () {
             </div>
 
 <<<<<<< HEAD
+<<<<<<< HEAD
         </div>
 =======
 
 >>>>>>> 050fc27 ([IMP] Register form, remove password 2)
+=======
+        </div>
+>>>>>>> 754dd75 ([REM] glyphicon [ADD] eshop_note beside note [IMP] Shopping Carte, register, login, catalog tree..)
     </form>
 </div>
 
