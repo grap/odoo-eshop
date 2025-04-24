@@ -28,6 +28,7 @@
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 <!-- Fields for next and previous product -->
 {% set current_category = get_object('eshop.category', product.eshop_category_id) %}
 {% set siblings = current_category.product_ids if current_category.product_ids|length else [] %}
@@ -41,6 +42,18 @@
     {% set next_product_id = siblings[next_index] if next_index is not none else None %}
     {% set prev_product_id = siblings[prev_index] if prev_index is not none else None %}
 {% endif %}
+=======
+<!-- Fields for next and previous product -->
+{% set current_category = get_object('eshop.category', product.eshop_category_id) %}
+{% set siblings = current_category.product_ids %}
+{% set current_index = siblings.index(product_id) %}
+
+{% set next_index = (current_index + 1) if current_index + 1 < siblings|length else None %}
+{% set prev_index = (current_index - 1) if current_index > 0 else None %}
+
+{% set next_product_id = siblings[next_index] if next_index is not none else None %}
+{% set prev_product_id = siblings[prev_index] if prev_index is not none else None %}
+>>>>>>> 6374b42 ([IMP] Navbar responsive [ADD] product siblings [IMP] add tooltips for shopping cart and labels)
 
 {% if next_product_id %}
     {% set next_product = get_object('product.product', next_product_id) %}
@@ -50,6 +63,7 @@
 {% endif %}
 
 
+<<<<<<< HEAD
 <div class="row gy-3 product-detail-wrapper">
     <div class="col-xs-12 col-sm-4">
         <div class="product-image shadow rounded p-3 bg-white position-relative">
@@ -93,6 +107,10 @@
 <div class="row gy-3">
 >>>>>>> 754dd75 ([REM] glyphicon [ADD] eshop_note beside note [IMP] Shopping Carte, register, login, catalog tree..)
     <div class="col-md-5">
+=======
+<div class="row gy-3">
+    <div class="col-md-4">
+>>>>>>> 6374b42 ([IMP] Navbar responsive [ADD] product siblings [IMP] add tooltips for shopping cart and labels)
         <div class="product-image shadow rounded p-3 bg-white position-relative">
             <a href="#" data-featherlight="{{ url_for('product_image_popup', product_id=product['id']) }}">
                 <img src="{{ url_for('static', filename=product.image_1920_local_path) }}"
@@ -104,14 +122,14 @@
                 {% for label_id in product.label_ids %}
                     {% set label = get_object('product.label', label_id) %}
                     <img src="{{ url_for('static', filename=label.image_1920_local_path) }}"
-                        class="img-thumbnail label-img" alt="{{ label.name }}" loading="lazy"/>
+                        class="img-thumbnail label-img" alt="{{ label.name }}" loading="lazy" data-bs-toggle="tooltip" title="{{label.name}}"/>
                 {% endfor %}
             </div>
             {% endif %}
         </div>
     </div>
 
-    <div class="col-md-7 p-3">
+    <div class="col-md-8 p-3">
         <h1 class="product-name">{{ product.name }}</h1>
         <div class="product-pricing md-4">
             {% if company.eshop_vat_included %}
@@ -267,7 +285,7 @@
 
     <!-- Product informations bottom page with tabs -->
     {% if product.eshop_description or product.origin_description or product.maker_description %}
-    <div class="col-md-12s">
+    <div class="col-md-11">
         <ul class="nav nav-underline" id="myTab" role="tablist">
                 {% if product.eshop_description %}
                 <li class="nav-item" role="presentation">
@@ -302,11 +320,14 @@
 
     </div>
 </div>
+<<<<<<< HEAD
 <!-- End container -->
 
 <!-- Previous and next products button -->
 <div class="space-for-mobile-view">
 </div>
+=======
+>>>>>>> 6374b42 ([IMP] Navbar responsive [ADD] product siblings [IMP] add tooltips for shopping cart and labels)
 
 <div class="next-prev-wrapper">
   {% if prev_product %}
@@ -314,15 +335,24 @@
     <a href="{{ url_for('product', product_id=prev_product.id) }}" class="d-flex align-items-center">
       <i class="bi bi-arrow-left me-3 fs-4"></i>
       <div>
+<<<<<<< HEAD
         <div class="fw-bold product-card-sibings-title">{{ _('Previous Product') }}</div>
         <div class="product-card-sibings-name">{{ prev_product.name }}</div>
+=======
+        <div class="fw-bold">{{ _('Previous Product') }}</div>
+        <div>{{ prev_product.name }}</div>
+>>>>>>> 6374b42 ([IMP] Navbar responsive [ADD] product siblings [IMP] add tooltips for shopping cart and labels)
       </div>
       <img src="{{ url_for('static', filename=prev_product.image_128_local_path) }}"
            alt="{{ prev_product.name }}" class="img-thumbnail ms-2">
     </a>
   </div>
   {% else %}
+<<<<<<< HEAD
   <div id="prev-product" style="display:none">
+=======
+  <div id="prev-product" class="next-product-card">
+>>>>>>> 6374b42 ([IMP] Navbar responsive [ADD] product siblings [IMP] add tooltips for shopping cart and labels)
   </div>
   {% endif %}
 
@@ -332,7 +362,11 @@
       <img src="{{ url_for('static', filename=next_product.image_128_local_path) }}"
            alt="{{ next_product.name }}" class="img-thumbnail me-2">
       <div>
+<<<<<<< HEAD
         <div class="fw-bold product-card-sibings-title">{{ _('Next Product') }}</div>
+=======
+        <div class="fw-bold">{{ _('Next Product') }}</div>
+>>>>>>> 6374b42 ([IMP] Navbar responsive [ADD] product siblings [IMP] add tooltips for shopping cart and labels)
         <div>{{ next_product.name }}</div>
       </div>
       <i class="bi bi-arrow-right ms-3 fs-4"></i>
@@ -340,6 +374,10 @@
   </div>
   {% endif %}
 </div>
+<<<<<<< HEAD
+=======
+
+>>>>>>> 6374b42 ([IMP] Navbar responsive [ADD] product siblings [IMP] add tooltips for shopping cart and labels)
 {% endblock %}
 
 <!-- Activate Tootltips -->
@@ -351,4 +389,8 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 });
 
+<<<<<<< HEAD
 </script>
+=======
+</script>
+>>>>>>> 6374b42 ([IMP] Navbar responsive [ADD] product siblings [IMP] add tooltips for shopping cart and labels)

@@ -73,16 +73,17 @@
     </head>
 
     <body>
-    <!-- TOP FIXED NAVBAR -->
-    <nav class="navbar sticky-top navbar-expand-xl bg-body-tertiary" data-bs-theme="light">
-      <div class="container">
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 6374b42 ([IMP] Navbar responsive [ADD] product siblings [IMP] add tooltips for shopping cart and labels)
     <!-- TOP FIXED NAVBAR FOR MOBILE-->
     <nav class="navbar sticky-top navbar-expand bg-body-tertiary" data-bs-theme="light">
       <div class="container-fluid">
 
         <!-- Logo -->
+<<<<<<< HEAD
         <a class="navbar-brand" href="/">
           <img src="{{ url_for('static', filename=company.eshop_image_128_local_path) }}" alt="Logo" width="30" height="30">
           <span class="d-none d-md-inline">{{ company.eshop_title }}</span>
@@ -212,119 +213,106 @@
 
 =======
         <!-- Home button -->
+=======
+>>>>>>> 6374b42 ([IMP] Navbar responsive [ADD] product siblings [IMP] add tooltips for shopping cart and labels)
         <a class="navbar-brand" href="/">
-          <img src="{{ url_for('static', filename=company.eshop_image_128_local_path) }}" alt="Logo" width="30" height="24">
-          {{ company.eshop_title }}
+          <img src="{{ url_for('static', filename=company.eshop_image_128_local_path) }}" alt="Logo" width="30" height="30">
+          <span class="d-none d-md-inline">{{ company.eshop_title }}</span>
         </a>
 
-        <!-- RESPONSIVE MENU NAVBAR -->
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <!-- Collapse toggle on mobile -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mobileNavbar"
+          aria-controls="mobileNavbar" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
 
-        <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
-
+        <div class="collapse navbar-collapse d-flex justify-content-between">
+        
         <!-- IF CONNECTED -->
         {% if partner %}
 
-            <!-- PRODUCTS CATALOG and QUICK PURCHASE -->
-            <ul class="nav navbar-nav nav-underline me-auto mb-2 mb-lg-0 justify-content-center">
-
-                {% if company.eshop_tree_view_enabled %}
+            <!-- Left block -->
+            <ul class="navbar-nav flex-row align-items-center gap-2 mb-0">
+            {% if company.eshop_tree_view_enabled %}
                 <li class="nav-item">
-                    <a class="nav-link pe-auto" id="nav_catalog_tree"
-                        onclick="GoToThePage(this)" page_url="{{url_for('catalog_tree')}}">
-                        <i class="bi bi-collection"></i> {{ _('Products Catalog') }}
-                    </a>
+                  <a class="nav-link" title="{{ _('Products Catalog') }}" onclick="GoToThePage(this)" page_url="{{url_for('catalog_tree')}}">
+                    <i class="bi bi-collection"></i>
+                    <span class="d-none d-sm-inline">{{ _('Products Catalog') }}</span>
+                  </a>
                 </li>
-                {% endif %}
-            
-                {% if company.eshop_list_view_enabled %}
+            {% endif %}
+
+            {% if company.eshop_list_view_enabled %}
                 <li class="nav-item">
-                    <a class="nav-link" id="nav_catalog_inline"
-                        onclick="GoToThePage(this)" page_url="{{url_for('catalog_inline')}}">
-                        <i class="bi bi-list-ul"></i> {{ _('Quick Purchase') }}
-                    </a>
+                  <a class="nav-link" title="{{ _('Quick Purchase') }}" onclick="GoToThePage(this)" page_url="{{url_for('catalog_inline')}}">
+                    <i class="bi bi-list-ul"></i>
+                    <span class="d-none d-sm-inline">{{ _('Quick Purchase') }}</span>
+                  </a>
                 </li>
-                {% endif %}
+            {% endif %}
+            </ul>
 
-
-                {% if sale_order %}
+            <!-- Right block -->
+            <ul class="navbar-nav flex-row align-items-center gap-2 mb-0 ms-auto">
+            {% if sale_order %}
                 <li class="nav-item">
-                    <a class="nav-link" id="nav_shopping_cart"
-                    onclick="GoToThePage(this)" page_url="{{url_for('shopping_cart')}}">
-                        <i class="bi bi-basket2" id="navbar-cart-icon"></i> {{ _('Shopping Cart: ') }}
+                  <a class="nav-link" onclick="GoToThePage(this)" page_url="{{url_for('shopping_cart')}}">
+                    <i class="bi bi-basket2"></i>
+                    <span class="d-none d-sm-inline">{{ _('Shopping Cart: ') }}</span>
+
                     {% if is_vat_included %}
-                        <span id="nav_amount_total">{{ sale_order.amount_total|to_currency }}</span>
-                                 {{_('VAT. Incl.')}}
-                        {% if sale_order.amount_total >= company.eshop_minimum_price %}
-                        <i class="bi bi-check-circle"></i>
-                        <i class="bi bi-exclamation-diamond" style="display:none"></i>
-                        {% else %}
-                        <i class="bi bi-exclamation-diamond"></i>
-                        <i class="bi bi-check-circle" style="display:none"></i>
-                        {% endif %}
+                      <span id="nav_amount_total">{{ sale_order.amount_total|to_currency }}</span>
+                      {{ _('VAT. Incl.') }}
+
+                      {% if sale_order.amount_total >= company.eshop_minimum_price %}
+                        <i class="bi bi-check-circle" data-bs-toggle="tooltip" title="{{ _('Minimum amount reached') }}"></i>
+                        <i class="bi bi-exclamation-diamond" style="display:none" data-bs-toggle="tooltip" title="{{ _('Below minimum amount') }}"></i>
+                      {% else %}
+                        <i class="bi bi-exclamation-diamond" data-bs-toggle="tooltip" title="{{ _('Below minimum amount') }}"></i>
+                        <i class="bi bi-check-circle" style="display:none" data-bs-toggle="tooltip" title="{{ _('Minimum amount reached') }}"></i>
+                      {% endif %}
+
                     {% else %}
-                        <span id="nav_amount_total">{{ sale_order.amount_untaxed|to_currency }}</span>
-                                 {{_('VAT. Excl.')}}
-                        {% if sale_order.amount_untaxed >= company.eshop_minimum_price %}
-                        <i class="bi bi-check-circle" id="nav_shopping_cart_ok" ></i>
+                      <span id="nav_amount_total">{{ sale_order.amount_untaxed|to_currency }}</span>
+                      {{ _('VAT. Excl.') }}
+
+                      {% if sale_order.amount_untaxed >= company.eshop_minimum_price %}
+                        <i class="bi bi-check-circle" id="nav_shopping_cart_ok" data-bs-toggle="tooltip" title="{{ _('Minimum amount reached') }}"></i>
                         <i class="bi bi-exclamation-diamond" id="nav_shopping_cart_warning"
-                            style="display:none"
-                            title="{{_('You have not reached the ceiling : ')}} {{company.eshop_minimum_price|to_currency}}"></i>
-                        {% else %}
+                           style="display:none"
+                           data-bs-toggle="tooltip"
+                           title="{{ _('Below minimum amount') }}"></i>
+                      {% else %}
                         <i class="bi bi-check-circle" id="nav_shopping_cart_ok"
-                                style="display:none"></i>
+                           style="display:none"
+                           data-bs-toggle="tooltip"
+                           title="{{ _('Minimum amount reached') }}"></i>
                         <i class="bi bi-exclamation-diamond" id="nav_shopping_cart_warning"
-                                    title="{{_('You have not reached the ceiling : ')}} {{company.eshop_minimum_price|to_currency}}"></i>
-                        {% endif %}
+                           data-bs-toggle="tooltip"
+                           title="{{ _('You have not reached the ceiling : ') }} {{ company.eshop_minimum_price|to_currency }}"></i>
+                      {% endif %}
                     {% endif %}
-                    </a>
-
+                  </a>
                 </li>
-                {% endif %}
+                <!-- Account -->
+                <li class="nav-item dropdown position-relative">
+                  <button class="nav-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" title="{{ _('Your Account') }}">
+                    <i class="bi bi-person-circle"></i>
+                    <span class="d-none d-sm-inline">{{ _('Your Account') }}</span>
+                  </button>
+                  <ul class="dropdown-menu dropdown-menu-end">
+                    <li><a class="dropdown-item" onclick="GoToThePage(this)" page_url="{{url_for('account')}}">{{ _('Personnal Datas') }}</a></li>
+                    <li><a class="dropdown-item" onclick="GoToThePage(this)" page_url="{{url_for('orders')}}">{{ _('Orders History') }}</a></li>
+                    <li><a class="dropdown-item" onclick="GoToThePage(this)" page_url="{{url_for('invoices')}}">{{ _('Invoices History') }}</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" onclick="GoToThePage(this)" page_url="{{url_for('logout_view')}}"><i class="bi bi-box-arrow-right"></i> {{ _('Log Out') }}</a></li>
+                </li>
+            {% endif %}
             </ul>
 
-            <!-- YOUR ACCOUNT -->
-            <ul class="nav navbar-nav nav-underline">
-
-                <li class="nav-item dropdown">
-                    <button class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="bi bi-person-circle"></i> {{ _('Your Account') }}
-                    </button>
-                    <ul class="dropdown-menu">
-                        <li>
-                            <a class="dropdown-item" href="#"
-                                onclick="GoToThePage(this)" page_url="{{url_for('account')}}">
-                            {{ _('Personnal Datas') }}
-                            </a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" href="#"
-                                onclick="GoToThePage(this)" page_url="{{url_for('orders')}}">
-                            {{ _('Orders History') }}
-                            </a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" href="#"
-                                onclick="GoToThePage(this)" page_url="{{url_for('invoices')}}">
-                            {{ _('Invoices History') }}
-                            </a>
-                        </li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li>
-                            <a class="dropdown-item" href="#"
-                                onclick="GoToThePage(this)" page_url="{{url_for('logout_view')}}">
-                                <i class="bi bi-box-arrow-right"></i> {{ _('Log Out') }}
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
+        <!-- IF NOT CONNECTED : REGISTER & LOG IN -->
         {% else %}
-
-            <!-- IF NOT CONNECTED : REGISTER & LOG IN -->
-            <ul class="nav navbar-nav nav-underline">
+            <ul class="nav navbar-nav nav-underline flex-row align-items-center gap-2 mb-0 ms-auto">
                 {% if company.eshop_register_allowed %}
                 <li class="nav-item">
                     <a class="nav-link" id="nav_register" href="{{ url_for('register') }}">
@@ -339,14 +327,16 @@
                 </li>
             </ul>
         {% endif %}
-
         </div>
-        <!-- END RESPONSIVE NAVBAR Button -->
 
       </div>
     </nav>
 
+<<<<<<< HEAD
 >>>>>>> 1b905c0 ([IMP] Global style [IMP] Navbar top responsive and bottom, Login screen, Catalog tree view)
+=======
+
+>>>>>>> 6374b42 ([IMP] Navbar responsive [ADD] product siblings [IMP] add tooltips for shopping cart and labels)
     <!-- FLASHED MESSAGES -->
     {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
@@ -458,4 +448,8 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 });
 
+<<<<<<< HEAD
 </script>
+=======
+</script>
+>>>>>>> 6374b42 ([IMP] Navbar responsive [ADD] product siblings [IMP] add tooltips for shopping cart and labels)
