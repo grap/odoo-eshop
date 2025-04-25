@@ -45,7 +45,11 @@
             {% set ns.current_category = item['category_id']%}
             {% set product = get_object('product.product', item['id'] ) %}
             <tr class="catalog-row-desktop">
+<<<<<<< HEAD
 
+=======
+               
+>>>>>>> c88e200 ([ADD] Catalog Inline works, Siblings products, Catalog product without auth [IMP] Account separate password and datas, Responsive Products, Bootstrap Account)
                 <!-- Image -->
                 <td class="td-product-image">
                     <a onclick="GoToThePage(this)" href="#" page_url="{{ url_for('product', product_id=product.id)}}">
@@ -58,7 +62,11 @@
                 <td>
                     <a onclick="GoToThePage(this)" href="#" page_url="{{ url_for('product', product_id=product.id)}}">
                         {% if not company.eshop_vat_included and product.default_code %}{{ product.default_code }} - {% endif %}{{ product.name }}
+<<<<<<< HEAD
                     </a>
+=======
+                    </a> 
+>>>>>>> c88e200 ([ADD] Catalog Inline works, Siblings products, Catalog product without auth [IMP] Account separate password and datas, Responsive Products, Bootstrap Account)
                     <span class="cart-unit-price"><br/>{{ _('Unit price:') }}
                         {% if company.eshop_vat_included %}
                                 {{ item['list_price']|to_currency }}
@@ -156,7 +164,11 @@
             <strong><i class="bi bi-currency-exchange"></i> {{ _('Unit Price') }}:</strong> {{ item['list_price']|to_currency }} / {{ item['uom_eshop_description'] }}
             {% if item['eshop_minimum_qty'] %}
             <br/>
+<<<<<<< HEAD
             <strong><i class="bi bi-arrow-up-short"></i> {{ _('Minimal Quantity') }}:</strong> {{ item['eshop_minimum_qty'] }} {{ item['uom_eshop_description'] }}
+=======
+            <strong><i class="bi bi-arrow-up-short"></i> {{ _('Minimal Quantity') }}:</strong> {{ item['eshop_minimum_qty'] }} {{ item['uom_eshop_description'] }} 
+>>>>>>> c88e200 ([ADD] Catalog Inline works, Siblings products, Catalog product without auth [IMP] Account separate password and datas, Responsive Products, Bootstrap Account)
             {% endif %}
         </div>
 
@@ -202,3 +214,4 @@
 
 
 {% endblock %}
+

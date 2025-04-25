@@ -21,12 +21,15 @@ $(document).ready(function() {
     $("input:text").focus(function() { $(this).select(); } );
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
     /*Bootstrap Tooltip has to be activated*/
 /*    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
     const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
 */
 >>>>>>> 1b905c0 ([IMP] Global style [IMP] Navbar top responsive and bottom, Login screen, Catalog tree view)
+=======
+>>>>>>> c88e200 ([ADD] Catalog Inline works, Siblings products, Catalog product without auth [IMP] Account separate password and datas, Responsive Products, Bootstrap Account)
 });
 
 var currentAjaxCall = false;

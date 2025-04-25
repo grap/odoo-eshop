@@ -36,6 +36,7 @@ body {
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 .btn:disabled {
     background-color: #8b5c2c;
     border-color: #8b5c2c;
@@ -132,6 +133,11 @@ body {
 }
 
 =======
+=======
+#base-container{
+    margin-bottom: 5em;
+}
+>>>>>>> c88e200 ([ADD] Catalog Inline works, Siblings products, Catalog product without auth [IMP] Account separate password and datas, Responsive Products, Bootstrap Account)
 
 /* ======== NAVBAR ======== */
 
@@ -156,13 +162,14 @@ body {
     color: var(--main-color);
 }
 
+.nav-empty-cart {
+    color: var(--main-color);
+
+}
 .navbar .nav-link {
     color: var(--main-color);
-    font-weight: 500;
     position: relative;
     padding: 0.5rem 0.75rem;
-    border: none;
-    background: none;
     transition: all 0.2s ease;
     cursor: pointer;
 }
@@ -184,10 +191,7 @@ body {
     color: #907257;
 }
 
-/* Dropdown */
 .navbar .dropdown-toggle {
-    border: none;
-    background: none;
     padding: 0.5rem 0.75rem;
 }
 
@@ -197,7 +201,7 @@ body {
 }
 
 .navbar .dropdown-item {
-    font-weight: 500;
+    cursor: pointer;
     color: var(--main-color);
     transition: background-color 0.2s;
 }
@@ -206,7 +210,6 @@ body {
     background-color: var(--hover-color);
     color: #000;
 }
-
 
 /* ======== FOOTER ======== */
 .navbar.fixed-bottom {
@@ -710,7 +713,6 @@ input.form-control.pe-5 {
 /* ======== CARTES ======== */
 .card {
     border: none;
-    border-radius: var(--card-radius);
     box-shadow: 0 2px 6px rgba(0,0,0,0.05);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     background-color: #fff;
@@ -756,15 +758,23 @@ input.form-control.pe-5 {
     text-decoration: underline;
 }
 
+.card-footer {
+    font-size:  0.8em;  
+} 
+
 /* ======== PRODUCT ======== */
-.product-pricing {
-    margin-top: 2em;
+.product-name-price {
     margin-bottom: 2em;
 }
 
 .product-image {
     position: relative;
     overflow: hidden;
+}
+
+.product_uom_description {
+    margin-right: 1em;
+    color: var(--text-color);
 }
 
 .product-labels {
@@ -781,7 +791,7 @@ input.form-control.pe-5 {
 }
 
 .product-labels img {
-    height: 60px;
+    height: 40px;
     width: auto;
     border-radius: 4px;
     border: 1px solid #ddd;
@@ -792,18 +802,6 @@ input.form-control.pe-5 {
 .product-labels img:hover {
     transform: scale(1.1) rotate(-2deg);
     box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
-}
-
-/* animation d’apparition fluide */
-@keyframes fadeInLabels {
-    from {
-        opacity: 0;
-        transform: translateY(10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
 }
 
 .nav-underline .nav-link {
@@ -835,18 +833,40 @@ input.form-control.pe-5 {
 }
 
 #product-origin {
-    margin-top: 4em;
+    margin-top: 2em;
 }
 
-.next-prev-wrapper {
+.next-prev-wrapper { 
     font-size:0.8em;
     position: fixed;
-    top: 5rem;
-    right: 0;
     display: flex;
     justify-content: space-between;
     padding: 0 1rem;
-    pointer-events: none;
+    pointer-events: none;   
+}
+
+/* < col-lg */
+@media (max-width:992px) {
+    .next-prev-wrapper { 
+        left: 0;
+        bottom: 5rem;
+    }
+    .product-card-sibings-title {
+        display: none;
+    }
+    .product-card-sibings-name {
+        font-size: 0.8em;
+    }
+    .space-for-mobile-view {
+        height:7em;
+    }
+}
+/* > col-lg */
+@media (min-width:992px) {
+    .next-prev-wrapper { 
+        right: 0;
+        top: 5rem;
+    }
 }
 
 .next-product-card {
@@ -859,6 +879,7 @@ input.form-control.pe-5 {
     display: flex;
     align-items: center;
     z-index: 999;
+    margin: 0 10px;
 }
 .next-product-card:hover {
     transform: translateY(-5px);
@@ -867,12 +888,12 @@ input.form-control.pe-5 {
     width: 50px;
     height: 50px;
     object-fit: cover;
+    border-style: unset;
 }
 .next-product-card a {
     text-decoration: none;
     color: inherit;
 }
-
 
 
 /* ======== ICÔNES DU PANIER ======== */
@@ -984,28 +1005,69 @@ input.form-control.pe-5 {
     width: 5%;
 }
 
-.table-head-image-mobile {
+.img-cart {
+    border-style: unset;
+}
+
+.image-cart-sm {
     width: 25%;
+    border-style: unset;
 }
 
-
-/* -------------------------------------------------------------------------- */
-/* CSS originel                                                              */
-/* -------------------------------------------------------------------------- */
-/* -------------------------------------------------------------------------- */
-/* Catalog Style                                                              */
-/* -------------------------------------------------------------------------- */
-.input-quantity{
-    width:150px !important;
-    text-align:right;
+.shopping-cart-product a {
+    color: inherit;
 }
 
-.input-amount{
-    width:120px !important;
-    text-align:right;
+/* ======== QUICK PURCHASE ======== */
+.catalog-table{
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
 }
 
-.img-small-label{
+.catalog-table .catalog-row-category {
+    background-color: #f7f7f7;
+    text-align: center;
+}
+
+.catalog-table .catalog-thead {
+    background-color: #f7f7f7;
+}
+
+.catalog-table td {
+    padding: 12px;
+}
+
+.catalog-table a {
+    color: inherit;
+}
+
+.catalog-table img.product-img {
+    max-height: 60px;
+    border-radius: 8px;
+}
+
+.catalog-table .labels img {
+    height: 28px;
+    margin-right: 4px;
+}
+
+.input-quantity {
+    max-width: 80px;
+    text-align: right;
+}
+
+#searchInput {
+    margin: 20px auto;
+    max-width: 400px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+
+.img-medium-eshop-categ {
+    max-width: 90px;
+}
+
+.card-img-small{
     margin: 0px;
     padding: 0px;
     border: 0px;
@@ -1013,16 +1075,40 @@ input.form-control.pe-5 {
     display: inline;
 }
 
-.img-medium-eshop-categ{
-    height:50px;width:50px;
-    display:inline;
+.product-card {
+    margin: 12px 0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
 }
 
-.input-not-null-qty{
-    background-color:#DDFFFF;
-    font-weight:bold;
+#catalog-btn-confirm {
+    padding-bottom: 3em;
 }
-.input-surcharge{
-    background-color:#EEE8AA;
-    font-weight:bold;
+
+/* ======== ACCOUNT ======== */
+
+.account{
+    margin-top: 20px;
+    margin-bottom: 80px;
 }
+
+input[readonly] {
+    background-color: #f0f0f0 !important;
+    border: 1px solid #ccc !important;
+    cursor: not-allowed;
+    color: #666;
+    opacity: 1;
+}
+
+.toggle-password {
+    height: calc(100% - 0.5rem);
+    padding: 0 0.75rem;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    border-left: none;
+}
+
+input.form-control.pe-5 {
+    padding-right: 3.5rem;
+}
+
+

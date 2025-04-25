@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+{% block container %}
+
+{% set sale_order = current_sale_order() %}
+
+<!-- JQuery -->
+<script>
+    $('#nav_catalog_inline').addClass('active');
+</script>
+
+<table class="table table-condensed table-bordered eshop_table_float_thead">
+    <thead>
+        <tr>
+            <th>{{_('Product Name')}}</th>
+            <th>{{_('Labels')}}</th>
+{% if company.eshop_vat_included %}
+                <th>{{_('U.P. VAT Incl.')}}</th>
+{% else %}
+                <th>{{_('U.P. VAT Excl.')}}</th>
+{% endif %}
+            <th>{{_('Unit')}}</th>
+            <th>{{_('Min.')}}</th>
+{% if not company.eshop_vat_included %}
+            <th>{{_('VAT')}}</th>
+{% endif %}
+            <th>{{ _('Quantity') }}</th>
+        </tr>
+    </thead>
+    <tbody>
+<!-- Categories -->
+    {% set ns = namespace(current_category=False) %}
+    {% for item in catalog_inline %}
+        {% if ns.current_category != item['category_id']%}
+        {% set category = get_object('eshop.category', category_id) %}
+        <tr>
+            <th colspan="100%">
+                <h2>
+                    <img class="thumbnail img-responsive img-medium-eshop-categ"
+                        src="{{ url_for('static', filename=category.image_512_local_path) }}"/>
+                    {{ item['category_complete_name'] }}<br />
+                </h2>
+            </th>
+        </tr>
+        {% endif %}
+        {% set ns.current_category = item['category_id']%}
+        <tr>
+            <td>
+                <a href="#" data-featherlight="{{ url_for('product_popup', product_id=item['id']) }}">
+            {% if not company.eshop_vat_included and item['default_code']%}{{ item['default_code']}} - {% endif %}
+                {{ item['name'] }}</a>
+            </td>
+            <td class="labels">
+            {% for label_id in item['label_ids'] %}
+                {% set label = get_object('product.label', label_id) %}
+                    <img class="img-small-label" title="{{label.name}}"
+                        src="{{ url_for('static', filename=label.image_128_local_path) }}"/>
+            {% endfor %}
+            </td>
+            <td>
+        {% if company.eshop_vat_included %}
+
+                {{ item['list_price']|to_currency }}
+        {% else %}
+                {{ item['list_price_vat_excl']|to_currency }}
+
+        {% endif %}
+
+            </td>
+            <td>
+                {{ item['uom_eshop_description'] }}
+            </td>
+            <td>
+                {{item['eshop_minimum_qty']|float_to_string}}
+            </td>
+            {% if not company.eshop_vat_included %}
+            <td>
+                {% for tax_id in item['tax_ids'] %}
+                    {% set tax = get_object('account.tax', tax_id) %}
+                    {{ tax.description }}
+                {% endfor %}
+            </td>
+            {% endif %}
+            <td class="td-input-text">
+                <input type="hidden" name="product_id" value="{{ item['id'] }}"/>
+                <input type="text" class="form-control input-quantity {{ item['qty'] and 'input-not-null-qty' or ''}} {{ item['discount'] < 0 and 'input-surcharge' or ''}}"
+                        id="quantity_{{item['id']}}"
+                        name="new_quantity" value="{{ item['qty'] }}"/>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+    <tfooter>
+        <tr id="catalog_inline_shopping_cart_line"
+
+        {% if not sale_order %}
+            style="visibility: hidden;"
+        {% endif %}
+        >
+            <th colspan="100%">
+                <a onclick="GoToThePage(this)" page_url="{{url_for('shopping_cart')}}"
+                    class="btn btn-default" href="#" role="button">
+                    <span class="glyphicon glyphicon-shopping-cart"/>
+                    {{ _('Go to Shopping Cart to finish your Order') }}</a>
+            </th>
+        </tr>
+    </tfooter>
+</table>
+
+
+<!-- JQuery -->
+<script src="{{ url_for('static', filename='js/catalog_inline_quantity_update.js') }}"></script>
+<script src="{{ url_for('static', filename='js/set_table_float_thead.js') }}"></script>
+{% endblock %}

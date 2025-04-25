@@ -28,6 +28,7 @@ def account():
     vals = {}
     if not len(request.form) == 0:
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
         # Check Password
         if "checkbox-change-password" in request.form:
@@ -39,6 +40,8 @@ def account():
                 flash(error_message, "danger")
             else:
                 vals.update({"eshop_password": password})
+=======
+>>>>>>> c88e200 ([ADD] Catalog Inline works, Siblings products, Catalog product without auth [IMP] Account separate password and datas, Responsive Products, Bootstrap Account)
 
 >>>>>>> 050fc27 ([IMP] Register form, remove password 2)
         # Check Phone
@@ -69,6 +72,34 @@ def account():
             )
             flash(
                 _("Account Datas updated successfully."),
+                "success",
+            )
+
+    partner = get_current_partner(force_reload=True)
+    return render_template("account.html", partner=partner)
+
+@app.route("/account_password", methods=["GET", "POST"])
+@requires_auth
+def account_password():
+    incorrect_data = False
+    vals = {}
+    if not len(request.form) == 0:
+        # Check Password
+        password, error_message = check_password(
+            request.form["password_1"]
+        )
+        if error_message:
+            incorrect_data = True
+            flash(error_message, "danger")
+        else:
+            vals.update({"eshop_password": password})
+
+        if not incorrect_data:
+            execute_odoo_command(
+                "res.partner", "update_from_eshop", get_current_partner_id(), vals
+            )
+            flash(
+                _("Password updated successfully."),
                 "success",
             )
 
