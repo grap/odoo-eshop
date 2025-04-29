@@ -1,18 +1,36 @@
+<<<<<<< HEAD
 from flask import flash, render_template
 from flask_babel import gettext as _
 
 from ..application import app
 from ..models.models import execute_odoo_command
+=======
+from flask import flash, jsonify, render_template, request
+from flask_babel import gettext as _
+
+from ..application import app
+from ..models.models import execute_odoo_command, get_odoo_object
+>>>>>>> b57e7c5 ([ADD] User can pay with Account Wallet + Validation page [REM] clean backup files)
 from ..models.res_partner import (
     get_current_partner,
     get_current_partner_id,
 )
+<<<<<<< HEAD
 from ..models.sale_order import get_current_sale_order
 
 from ..tools.auth import requires_auth
 from ..tools.web import redirect_url_for
 
 
+=======
+from ..models.sale_order import (
+    get_current_sale_order,
+    get_current_sale_order_lines,
+)
+from ..tools.auth import requires_auth
+from ..tools.web import redirect_url_for
+
+>>>>>>> b57e7c5 ([ADD] User can pay with Account Wallet + Validation page [REM] clean backup files)
 # ############################################################################
 # Payment Route
 # ############################################################################
@@ -41,6 +59,10 @@ def payment_validation(sale_order_id):
         flash(_("Error while confirming your sale order."), "danger")
         return redirect_url_for("payment")
     else:
+<<<<<<< HEAD
+=======
+
+>>>>>>> b57e7c5 ([ADD] User can pay with Account Wallet + Validation page [REM] clean backup files)
         # 2. Create a paid invoice and link to sale
         invoice_with_wallet = execute_odoo_command(
             "sale.order",
@@ -53,8 +75,15 @@ def payment_validation(sale_order_id):
         else:
             return redirect_url_for("sale_confirmed", recovery_name=recovery_name)
 
+<<<<<<< HEAD
 
 @app.route("/sale_confirmed/<string:recovery_name>")
 @requires_auth
 def sale_confirmed(recovery_name):
+=======
+@app.route("/sale_confirmed/<string:recovery_name>")
+@requires_auth
+def sale_confirmed(recovery_name):
+    sale_order = get_current_sale_order()
+>>>>>>> b57e7c5 ([ADD] User can pay with Account Wallet + Validation page [REM] clean backup files)
     return render_template("sale_confirmed.html", recovery_name=recovery_name)

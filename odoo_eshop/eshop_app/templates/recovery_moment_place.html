@@ -11,15 +11,21 @@
 
 {% block container %}
 <<<<<<< HEAD
+<<<<<<< HEAD
 {% set company = current_company() %}
 
 =======
 >>>>>>> 754dd75 ([REM] glyphicon [ADD] eshop_note beside note [IMP] Shopping Carte, register, login, catalog tree..)
+=======
+{% set company = current_company() %}
+
+>>>>>>> b57e7c5 ([ADD] User can pay with Account Wallet + Validation page [REM] clean backup files)
 <script>
     $('#nav_shopping_cart').addClass('active');
 </script>
 
 <div class="container my-4">
+<<<<<<< HEAD
 <<<<<<< HEAD
 
     <h1 class="mb-4"><i class="bi bi-shop-window"></i> {{ _('Select Place and Moment for Recovery') }}</h1>
@@ -30,6 +36,10 @@
         </div>
     </div>
 >>>>>>> 754dd75 ([REM] glyphicon [ADD] eshop_note beside note [IMP] Shopping Carte, register, login, catalog tree..)
+=======
+
+    <h1 class="mb-4"><i class="bi bi-shop-window"></i> {{ _('Select Place and Moment for Recovery') }}</h1>
+>>>>>>> b57e7c5 ([ADD] User can pay with Account Wallet + Validation page [REM] clean backup files)
 
     {% if recovery_moments|length == 0 %}
     <div class="alert alert-warning text-center">
@@ -75,8 +85,12 @@
             </div>
 
             <div class="card-body py-3 px-3">
+<<<<<<< HEAD
                 <h5 class="card-title"><i class="bi bi-shop-window"></i> {{ recovery_moment.place_id.complete_name }}</h5>
 >>>>>>> c88e200 ([ADD] Catalog Inline works, Siblings products, Catalog product without auth [IMP] Account separate password and datas, Responsive Products, Bootstrap Account)
+=======
+                <span><i class="bi bi-shop-window"></i> {{ recovery_moment.place_id.complete_name }}</span>
+>>>>>>> b57e7c5 ([ADD] User can pay with Account Wallet + Validation page [REM] clean backup files)
 
                 {% if recovery_moment.description %}
                 <p class="text-muted small">{{ recovery_moment.description }}</p>
@@ -87,9 +101,15 @@
                 {% else %}
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
                     {% if company.eshop_wallet_enabled %}
                       <a href="#" class="btn btn-primary btn-sm w-100 mt-3"
                          onclick="GoToThePage(this)"
+=======
+                    {% if company.eshop_wallet_enabled %}
+                      <a href="#" class="btn btn-primary btn-sm w-100 mt-3"
+                         onclick="GoToThePage(this)" 
+>>>>>>> b57e7c5 ([ADD] User can pay with Account Wallet + Validation page [REM] clean backup files)
                          page_url="{{ url_for('select_recovery_moment', recovery_moment_id=recovery_moment.id) }}">
                         <i class="bi bi-check-circle me-1"></i>{{ _('Select and go to payment') }}
                       </a>
@@ -100,6 +120,7 @@
                         <i class="bi bi-check-circle me-1"></i>{{ _('Select') }}
                       </a>
                     {% endif %}
+<<<<<<< HEAD
                 {% endif %}
             </div>
             {% if recovery_moment.place_id.shipping_product_id %}
@@ -116,6 +137,8 @@
                      data-bs-toggle="modal" data-bs-target="#confirm-valid">
                     <i class="bi bi-check-circle me-1"></i>{{ _('Select') }}
                   </a>
+=======
+>>>>>>> b57e7c5 ([ADD] User can pay with Account Wallet + Validation page [REM] clean backup files)
                 {% endif %}
             </div>
             {% if recovery_moment.place_id.shipping_product_id %}

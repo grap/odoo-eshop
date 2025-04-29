@@ -274,6 +274,12 @@
                 <!-- Shopping Cart -->
                 {% if partner %}
                 <li class="nav-item">
+                    <i class="bi bi-wallet2"></i>
+                    <span class="d-none d-sm-inline">{{ _('Wallet: ') }}</span>
+                    <span id="nav_wallet_balance">{{ current_partner().customer_wallet_balance|to_currency }}
+                    </span>
+                </li>
+                <li class="nav-item">
                   <a class="nav-link" onclick="GoToThePage(this)" page_url="{{ url_for('shopping_cart') }}">
                     <i class="bi bi-basket2"></i>
                     <span class="d-none d-sm-inline">{{ _('Shopping Cart: ') }}</span>

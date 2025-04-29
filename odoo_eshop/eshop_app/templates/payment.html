@@ -17,6 +17,10 @@
 
     <div class="card p-4 shadow">
         <p><strong>{{ _('Amount to pay') }}</strong> {{ sale_order.amount_total|to_currency }}</p>
+<<<<<<< HEAD
+=======
+        <p><strong>{{ _('Sale order id') }}</strong> {{ sale_order.id }}</p>
+>>>>>>> b57e7c5 ([ADD] User can pay with Account Wallet + Validation page [REM] clean backup files)
         <p><strong>{{ _('Money in your wallet') }}</strong> {{ partner.customer_wallet_balance|to_currency }}</p>
 
         {% set balance_after_payment = partner.customer_wallet_balance - sale_order.amount_total %}
@@ -29,14 +33,47 @@
         </p>
 
         {% if balance_after_payment >= 0 %}
+<<<<<<< HEAD
         <button onclick="GoToThePage(this);" class="btn btn-success w-100 mt-4" href="#" page_url="{{ url_for('payment_validation', sale_order_id=sale_order.id) }}">
 <!--         <button onclick="update_header_wallet({{ balance_after_payment }});GoToThePage(this);" class="btn btn-success w-100 mt-4" href="#" page_url="{{ url_for('payment_validation', sale_order_id=sale_order.id) }}">
  -->            <i class="bi bi-check-circle"></i> {{ _('Confirm payment') }}
+=======
+        <button onclick="update_header_wallet({{ balance_after_payment }});GoToThePage(this);" class="btn btn-success w-100 mt-4" href="#" page_url="{{ url_for('payment_validation', sale_order_id=sale_order.id) }}">
+            <i class="bi bi-check-circle"></i> {{ _('Confirm payment') }}
+>>>>>>> b57e7c5 ([ADD] User can pay with Account Wallet + Validation page [REM] clean backup files)
         </button>
         {% else %}
         <div class="alert alert-danger mt-4"> {{ _("You don't have enough money in your wallet to validate this order.") }}</div>
         {% endif %}
     </div>
 </div>
+<<<<<<< HEAD
 
+=======
+<!-- 
+<div class="modal fade" id="confirm-valid" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content rounded-3">
+      <div class="modal-header">
+        <h5 class="modal-title" id="confirmModalLabel">{{ _('Confirm payment') }}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+      </div>
+      <div class="modal-body">
+        Do you really want to use <b>{{ sale_order.amount_total|to_currency }}</b> from your wallet for this order?
+      </div>
+      <div class="modal-footer">
+        <a href="#" class="btn btn-success" id="btn-confirm">{{ _('Confirm') }}</a>
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">{{ _('Cancel') }}</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+    $('#confirm-valid').on('show.bs.modal', function(e) {
+        $(this).find('#btn-confirm').attr('href', $(e.relatedTarget).data('href'));
+    });
+</script>
+ -->
+>>>>>>> b57e7c5 ([ADD] User can pay with Account Wallet + Validation page [REM] clean backup files)
 {% endblock %}
