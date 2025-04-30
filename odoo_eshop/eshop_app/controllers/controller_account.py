@@ -173,6 +173,7 @@ def orders():
 def invoices():
     # browse was buggy with account.move so we used search_read
     # https://github.com/odoo/odoo/issues/109938
+<<<<<<< HEAD
     invoices = execute_odoo_command(
         "account.move",
         "search_read",
@@ -184,6 +185,13 @@ def invoices():
                 "!=",
                 False,
             ),
+=======
+    invoices = execute_odoo_command("account.move","search_read",
+        [
+            partner_domain("partner_id"),
+            ("state", "not in", ("draft", "cancel")),
+            ("invoice_user_id", "!=", False,)
+>>>>>>> 32bc652 ([IMP] Order and Invoice page)
         ],
     )
     # invoice_user_id not False to get only eshop invoice

@@ -209,7 +209,6 @@ def surcharge_to_string(value):
 def function_to_eval(arg):
     return arg
 
-
 @app.template_filter("to_day")
 def to_day(arg):
     return {

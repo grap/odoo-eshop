@@ -12,6 +12,7 @@
         </h1>
         <p class="text-muted">{{ _('Here are your most recent orders.') }}</p>
     </div>
+<<<<<<< HEAD
 
     {% if orders %}
 
@@ -129,10 +130,86 @@
         {{ _('No Orders for the time being.') }}
     </div>
     {% endif %}
+=======
+
+    {% if orders %}
+    <div class="table-responsive">
+        <table class="catalog-table table table-striped shadow-sm eshop_table_float_thead">
+            <thead class="catalog-thead  table-light">
+                <tr>
+                    <th>{{ _('Order Date') }}</th>
+                    <th>{{ _('Number') }}</th>
+                    <th>{{ _('Place') }}</th>
+                    <th>{{ _('Day') }}</th>
+                    <th>{{ _('Date') }}</th>
+                    <th>{{ _('Time') }}</th>
+                    <th>{{ _('Untaxed') }}</th>
+                    <th>{{ _('Total') }}</th>
+                    <th>{{ _('State') }}</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for order in orders %}
+                <tr class="order-row {% if loop.index > 5 %} d-none all-orders {% endif %}">
+                    <td>{{ order.date_order|to_date }}<br><small class="text-muted">{{ order.date_order|to_time }}</small></td>
+                    <td><strong>{{ order.name }}</strong></td>
+                    {% if order.recovery_moment_id %}
+                        <td>{{ order.recovery_moment_id.place_id.name }}</td>
+                        <td>{{ order.recovery_moment_id.min_recovery_date|to_day }}</td>
+                        <td>{{ order.recovery_moment_id.min_recovery_date|to_date }}</td>
+                        <td>
+                            {{ order.recovery_moment_id.min_recovery_date|to_time }}
+                            – {{ order.recovery_moment_id.max_recovery_date|to_time }}
+                        </td>
+                    {% else %}
+                        <td colspan="4" class="text-muted">{{ _('Undefined') }}</td>
+                    {% endif %}
+                    <td>{{ order.amount_untaxed|to_currency }}</td>
+                    <td>{{ order.amount_total|to_currency }}</td>
+                    <td>
+                        {% if company.eshop_wallet_enabled %}
+                            {% if order.invoice_status == 'invoiced' %}
+                                <span class="badge bg-success">{{ _('Paid and validated') }}</span>
+                            {% else %}
+                                <span class="badge bg-warning text-dark">{{ _('To pay') }}</span>
+                            {% endif %}    
+                        {% else %}
+                            {% if order.state == 'sent' %}
+                                <span class="badge bg-warning text-dark">{{ _('In Progress') }}</span>
+                            {% elif order.state != 'done' %}
+                                <span class="badge bg-primary">{{ _('Confirmed') }}</span>
+                            {% else %}
+                                <span class="badge bg-success">{{ _('Done') }}</span>
+                            {% endif %}
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+        {% if orders|length > 5 %}
+        <div class="text-center mt-3">
+            <button id="showMoreBtn" class="btn btn-primary">
+                {{ _('Show All Orders') }}
+            </button>
+        </div>
+        {% endif %}
+
+    {% else %}
+        <div class="alert alert-info" role="alert">
+            {{ _('No Orders for the time being.') }}
+        </div>
+    {% endif %}
+>>>>>>> 32bc652 ([IMP] Order and Invoice page)
 </div>
 
 <script src="{{ url_for('static', filename='js/set_table_float_thead.js') }}"></script>
 
+<<<<<<< HEAD
+=======
+<!-- Handle button "Show All orders" -->
+>>>>>>> 32bc652 ([IMP] Order and Invoice page)
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         const showMoreBtn = document.getElementById("showMoreBtn");
@@ -146,4 +223,9 @@
         }
     });
 </script>
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 32bc652 ([IMP] Order and Invoice page)
 {% endblock %}

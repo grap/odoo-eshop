@@ -14,8 +14,12 @@
     </div>
 
     {% if invoices %}
+<<<<<<< HEAD
     <!-- TABLE VIEW (desktop) -->
     <div class="table-responsive d-none d-md-block">
+=======
+    <div class="table-responsive">
+>>>>>>> 32bc652 ([IMP] Order and Invoice page)
         <table class="table table-striped align-middle shadow-sm eshop_table_float_thead" id="invoiceTable">
             <thead class="table-light">
                 <tr>
@@ -38,7 +42,11 @@
                         <span class="badge bg-success text-end">{{ _('Paid') }}</span>
                     {% else %}
                         <span class="badge bg-warning text-dark text-end">{{ _('To pay') }}</span>
+<<<<<<< HEAD
                     {% endif %}
+=======
+                    {% endif %} 
+>>>>>>> 32bc652 ([IMP] Order and Invoice page)
                     </td>
                 </tr>
                 {% endfor %}
@@ -46,6 +54,7 @@
         </table>
     </div>
 
+<<<<<<< HEAD
     <!-- CARD VIEW (mobile) -->
     <div class="d-md-none">
         {% for invoice in invoices %}
@@ -73,12 +82,17 @@
     </div>
 
 
+=======
+>>>>>>> 32bc652 ([IMP] Order and Invoice page)
         {% if invoices|length > 5 %}
         <div class="text-center mt-3">
             <button class="btn btn-primary" id="showMoreBtn">{{ _('Show all invoices') }}</button>
         </div>
         {% endif %}
+<<<<<<< HEAD
 
+=======
+>>>>>>> 32bc652 ([IMP] Order and Invoice page)
     {% else %}
     <div class="alert alert-info text-center" role="alert">
         {{ _('No Invoices for the time being.') }}
