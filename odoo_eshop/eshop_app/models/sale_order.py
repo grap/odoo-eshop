@@ -45,9 +45,12 @@ def get_current_sale_order_lines(order):
 
 def get_current_sale_order_recovery_moment(order):
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
     # import pdb; pdb.set_trace()
 >>>>>>> b57e7c5 ([ADD] User can pay with Account Wallet + Validation page [REM] clean backup files)
+=======
+>>>>>>> f6e83ae ([IMP] Handle better wallet balance with uncache data)
     result = get_odoo_uncached_object(
         "sale.recovery.moment",
         order.id,

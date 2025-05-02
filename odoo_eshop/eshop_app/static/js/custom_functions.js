@@ -38,12 +38,15 @@ function update_header(order_id, amount_total_header, minimum_ok){
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 function update_header_wallet(new_wallet_balance){
     $('#nav_wallet_balance').replaceWith("<span id='nav_wallet_balance'>" + new_wallet_balance + "</span>");
 }
 
 >>>>>>> b57e7c5 ([ADD] User can pay with Account Wallet + Validation page [REM] clean backup files)
+=======
+>>>>>>> f6e83ae ([IMP] Handle better wallet balance with uncache data)
 function display_message(state, message, always){
     if (state != 'success' || always) {
         $('.flashes').replaceWith("<div class='flashes'><p class='text-center bg-" + state + "'>" + message  + "</p></div>");

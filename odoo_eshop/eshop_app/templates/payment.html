@@ -18,9 +18,12 @@
     <div class="card p-4 shadow">
         <p><strong>{{ _('Amount to pay') }}</strong> {{ sale_order.amount_total|to_currency }}</p>
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
         <p><strong>{{ _('Sale order id') }}</strong> {{ sale_order.id }}</p>
 >>>>>>> b57e7c5 ([ADD] User can pay with Account Wallet + Validation page [REM] clean backup files)
+=======
+>>>>>>> f6e83ae ([IMP] Handle better wallet balance with uncache data)
         <p><strong>{{ _('Money in your wallet') }}</strong> {{ partner.customer_wallet_balance|to_currency }}</p>
 
         {% set balance_after_payment = partner.customer_wallet_balance - sale_order.amount_total %}
@@ -34,6 +37,7 @@
 
         {% if balance_after_payment >= 0 %}
 <<<<<<< HEAD
+<<<<<<< HEAD
         <button onclick="GoToThePage(this);" class="btn btn-success w-100 mt-4" href="#" page_url="{{ url_for('payment_validation', sale_order_id=sale_order.id) }}">
 <!--         <button onclick="update_header_wallet({{ balance_after_payment }});GoToThePage(this);" class="btn btn-success w-100 mt-4" href="#" page_url="{{ url_for('payment_validation', sale_order_id=sale_order.id) }}">
  -->            <i class="bi bi-check-circle"></i> {{ _('Confirm payment') }}
@@ -41,12 +45,18 @@
         <button onclick="update_header_wallet({{ balance_after_payment }});GoToThePage(this);" class="btn btn-success w-100 mt-4" href="#" page_url="{{ url_for('payment_validation', sale_order_id=sale_order.id) }}">
             <i class="bi bi-check-circle"></i> {{ _('Confirm payment') }}
 >>>>>>> b57e7c5 ([ADD] User can pay with Account Wallet + Validation page [REM] clean backup files)
+=======
+        <button onclick="GoToThePage(this);" class="btn btn-success w-100 mt-4" href="#" page_url="{{ url_for('payment_validation', sale_order_id=sale_order.id) }}">
+<!--         <button onclick="update_header_wallet({{ balance_after_payment }});GoToThePage(this);" class="btn btn-success w-100 mt-4" href="#" page_url="{{ url_for('payment_validation', sale_order_id=sale_order.id) }}">
+ -->            <i class="bi bi-check-circle"></i> {{ _('Confirm payment') }}
+>>>>>>> f6e83ae ([IMP] Handle better wallet balance with uncache data)
         </button>
         {% else %}
         <div class="alert alert-danger mt-4"> {{ _("You don't have enough money in your wallet to validate this order.") }}</div>
         {% endif %}
     </div>
 </div>
+<<<<<<< HEAD
 <<<<<<< HEAD
 
 =======
@@ -76,4 +86,7 @@
 </script>
  -->
 >>>>>>> b57e7c5 ([ADD] User can pay with Account Wallet + Validation page [REM] clean backup files)
+=======
+
+>>>>>>> f6e83ae ([IMP] Handle better wallet balance with uncache data)
 {% endblock %}

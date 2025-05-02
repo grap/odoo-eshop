@@ -140,11 +140,16 @@ def utility_processor():
 
     # Force uncache to get actualised wallet balance
     def current_partner_wallet():
+<<<<<<< HEAD
         partner = get_current_partner(True)
         if partner:
             return partner.customer_wallet_balance
         else:
             return False
+=======
+        partner = get_current_partner(True) 
+        return partner.customer_wallet_balance
+>>>>>>> f6e83ae ([IMP] Handle better wallet balance with uncache data)
 
     def current_company():
         return get_current_company()
