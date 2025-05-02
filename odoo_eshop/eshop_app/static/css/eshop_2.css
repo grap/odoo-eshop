@@ -1152,3 +1152,9 @@ input.form-control.pe-5 {
     font-size: 4rem;
 }
 
+/* ======== 404 - 500 ======== */
+.img-error {
+    max-height: 400px;
+    width: auto;
+    object-fit: cover;
+}
