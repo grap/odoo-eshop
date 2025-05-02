@@ -133,9 +133,11 @@
 =======
 
     {% if orders %}
-    <div class="table-responsive">
+
+    <!-- TABLE VIEW (desktop) -->
+    <div class="table-responsive d-none d-md-block">
         <table class="catalog-table table table-striped shadow-sm eshop_table_float_thead">
-            <thead class="catalog-thead  table-light">
+            <thead class="catalog-thead table-light">
                 <tr>
                     <th>{{ _('Order Date') }}</th>
                     <th>{{ _('Number') }}</th>
@@ -157,10 +159,7 @@
                         <td>{{ order.recovery_moment_id.place_id.name }}</td>
                         <td>{{ order.recovery_moment_id.min_recovery_date|to_day }}</td>
                         <td>{{ order.recovery_moment_id.min_recovery_date|to_date }}</td>
-                        <td>
-                            {{ order.recovery_moment_id.min_recovery_date|to_time }}
-                            – {{ order.recovery_moment_id.max_recovery_date|to_time }}
-                        </td>
+                        <td>{{ order.recovery_moment_id.min_recovery_date|to_time }} – {{ order.recovery_moment_id.max_recovery_date|to_time }}</td>
                     {% else %}
                         <td colspan="4" class="text-muted">{{ _('Undefined') }}</td>
                     {% endif %}
@@ -172,7 +171,7 @@
                                 <span class="badge bg-success">{{ _('Paid and validated') }}</span>
                             {% else %}
                                 <span class="badge bg-warning text-dark">{{ _('To pay') }}</span>
-                            {% endif %}    
+                            {% endif %}
                         {% else %}
                             {% if order.state == 'sent' %}
                                 <span class="badge bg-warning text-dark">{{ _('In Progress') }}</span>
@@ -188,18 +187,66 @@
             </tbody>
         </table>
     </div>
-        {% if orders|length > 5 %}
-        <div class="text-center mt-3">
-            <button id="showMoreBtn" class="btn btn-primary">
-                {{ _('Show All Orders') }}
-            </button>
+
+    <!-- CARD VIEW (mobile) -->
+    <div class="d-md-none">
+        {% for order in orders %}
+        <div class="card w-100 mb-3 border border-secondary order-row {% if loop.index > 5 %} d-none all-orders {% endif %}">
+            <div class="card-header rounded-3">
+                <span>
+                    <span class="orders-name">
+                    {{ order.name }}
+                    {% if company.eshop_wallet_enabled %}
+                        {% if order.invoice_status == 'invoiced' %}
+                            <span class="badge bg-success badge-b2px">{{ _('Paid and validated') }}</span>
+                        {% else %}
+                            <span class="badge bg-warning text-dark badge-b2px">{{ _('To pay') }}</span>
+                        {% endif %}
+                    {% else %}
+                        {% if order.state == 'sent' %}
+                            <span class="badge bg-warning text-dark badge-b2px">{{ _('In Progress') }}</span>
+                        {% elif order.state != 'done' %}
+                            <span class="badge bg-primary badge-b2px">{{ _('Confirmed') }}</span>
+                        {% else %}
+                            <span class="badge bg-success badge-b2px">{{ _('Done') }}</span>
+                        {% endif %}
+                    {% endif %}
+                    </span>
+                </span>
+                <hr class="my-2">
+                {{_('Order on')}} {{ order.date_order|to_date }} - {{ order.date_order|to_time }}
+            </div>
+            <div class="card-body">
+                <p>
+                    </i>{% if order.recovery_moment_id %}
+                        <i class="bi bi-shop-window"></i> {{ order.recovery_moment_id.place_id.name }}<br>
+                        <i class="bi bi-calendar2-range"></i> {{ order.recovery_moment_id.min_recovery_date|to_day }} {{ order.recovery_moment_id.min_recovery_date|to_date }}
+                        {{_('between')}} {{ order.recovery_moment_id.min_recovery_date|to_time }} {{_('and')}} {{ order.recovery_moment_id.max_recovery_date|to_time }}
+                    {% else %}
+                        <em>{{ _('Undefined recovery info') }}</em><br>
+                    {% endif %}
+                </p>
+            </div>
+            <div class="card-footer">
+                <strong>{{ _('Untaxed') }}:</strong> {{ order.amount_untaxed|to_currency }}<br>
+                <strong>{{ _('Total') }}:</strong> {{ order.amount_total|to_currency }}<br>
+            </div>            
         </div>
-        {% endif %}
+        {% endfor %}
+    </div>
+
+    {% if orders|length > 5 %}
+    <div class="text-center mt-3">
+        <button id="showMoreBtn" class="btn btn-primary">
+            {{ _('Show All Orders') }}
+        </button>
+    </div>
+    {% endif %}
 
     {% else %}
-        <div class="alert alert-info" role="alert">
-            {{ _('No Orders for the time being.') }}
-        </div>
+    <div class="alert alert-info" role="alert">
+        {{ _('No Orders for the time being.') }}
+    </div>
     {% endif %}
 >>>>>>> 32bc652 ([IMP] Order and Invoice page)
 </div>
@@ -207,9 +254,12 @@
 <script src="{{ url_for('static', filename='js/set_table_float_thead.js') }}"></script>
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 <!-- Handle button "Show All orders" -->
 >>>>>>> 32bc652 ([IMP] Order and Invoice page)
+=======
+>>>>>>> 406959c (Add responsive views for Orders and Invoices)
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         const showMoreBtn = document.getElementById("showMoreBtn");
@@ -224,8 +274,11 @@
     });
 </script>
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 
 
 >>>>>>> 32bc652 ([IMP] Order and Invoice page)
+=======
+>>>>>>> 406959c (Add responsive views for Orders and Invoices)
 {% endblock %}

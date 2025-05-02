@@ -209,6 +209,10 @@ body {
     transition: background-color 0.2s;
 }
 
+.navbar .no-pointer {
+    cursor: default;
+}
+
 .navbar .dropdown-item:hover {
     background-color: var(--hover-color);
     color: #000;
@@ -738,6 +742,10 @@ input.form-control.pe-5 {
     border-top-right-radius: var(--card-radius);
 }
 
+.card-header .orders-name {
+    color: var(--text-color);
+}
+
 .card-img-top {
     object-fit: cover;
     height: 130px;
@@ -764,6 +772,11 @@ input.form-control.pe-5 {
 .card-footer {
     font-size:  0.8em;  
 } 
+
+.badge-b2px {
+    position: relative;
+    bottom: 2px;
+}
 
 /* ======== PRODUCT ======== */
 .product-name-price {
