@@ -347,14 +347,14 @@
             <ul class="nav navbar-nav nav-underline flex-row align-items-center gap-2 mb-0 ms-auto">
                 {% if company.eshop_register_allowed %}
                 <li class="nav-item">
-                    <a class="nav-link" id="nav_register" href="{{ url_for('register') }}">
-                        <i class="bi bi-pencil"></i> {{ _('Register') }}
+                    <a class="nav-link" id="nav_register" title="{{ _('Register') }}" href="{{ url_for('register') }}">
+                        <i class="bi bi-pencil"></i><span class="d-none d-sm-inline"> {{ _('Register') }}</span>
                     </a>
                 </li>
                 {% endif %}
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('login_view') }}">
-                    <i class="bi bi-door-open"></i> {{ _('Log In') }}
+                    <a class="nav-link" href="{{ url_for('login_view') }}" title="{{ _('Log In') }}">
+                    <i class="bi bi-door-open"></i><span class="d-none d-sm-inline" > {{ _('Log In') }}</span>
                     </a>
                 </li>
             </ul>
