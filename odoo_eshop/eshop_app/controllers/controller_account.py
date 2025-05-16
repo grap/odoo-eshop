@@ -106,6 +106,13 @@ def account_password():
     partner = get_current_partner(force_reload=True)
     return render_template("account.html", partner=partner)
 
+@app.route("/account_wallet")
+@requires_auth
+def account_wallet():
+    partner = get_current_partner()
+    res_partner_bank = execute_odoo_command("res.partner.bank","browse_by_search",[("partner_id", "=", partner.id),])
+    return render_template("account_wallet.html", res_partner_bank=res_partner_bank)
+
 
 @app.route("/account_password", methods=["GET", "POST"])
 @requires_auth
