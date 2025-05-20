@@ -89,6 +89,10 @@ def home_logged():
         flash(_("Recovery Moment Unset"), "danger")
     return render_template("home.html")
 
+@app.route("/legal_notices")
+@requires_connection
+def legal_notices():
+    return render_template("legal_notices.html")
 
 @app.route("/legal_notices")
 @requires_connection
@@ -274,4 +278,12 @@ def safe_email(email):
 =======
     odoo_base_url = str('http://' + conf.get("odoo", "host") + ':' + conf.get("odoo", "port"))
     return html.replace('src="/web/image/', f'src="{odoo_base_url}/web/image/')
+<<<<<<< HEAD
 >>>>>>> 6baf9e3 ([FIX] Image url)
+=======
+
+
+@app.template_filter("safe_email")
+def safe_email(email):
+    return email.replace('@', '(arobase)')
+>>>>>>> baf7e98 ([ADD] Legal notices page)

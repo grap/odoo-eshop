@@ -1161,3 +1161,8 @@ input.form-control.pe-5 {
     width: auto;
     object-fit: cover;
 }
+
+/* ======== Legal notices ======== */
+.legal_notice_title {
+    color: var(--main-color);
+}
