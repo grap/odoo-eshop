@@ -261,6 +261,7 @@ def tax_description_per_line(line):
 
 @app.template_filter("html_fix_image_url")
 def html_fix_image_url(html):
+<<<<<<< HEAD
     odoo_base_url = str(
         "http://" + conf.get("odoo", "host") + ":" + conf.get("odoo", "port")
     )
@@ -270,3 +271,7 @@ def html_fix_image_url(html):
 @app.template_filter("safe_email")
 def safe_email(email):
     return email.replace("@", "(arobase)")
+=======
+    odoo_base_url = str('http://' + conf.get("odoo", "host") + ':' + conf.get("odoo", "port"))
+    return html.replace('src="/web/image/', f'src="{odoo_base_url}/web/image/')
+>>>>>>> 6baf9e3 ([FIX] Image url)
