@@ -255,7 +255,7 @@
         
             <!-- LEFT BLOCK -->
             <ul class="navbar-nav flex-row align-items-center gap-2 mb-0">
-                {% if company.eshop_tree_view_enabled %}
+                {% if company.eshop_catalog_view_enabled %}
                 <li class="nav-item">
                   <a class="nav-link" title="{{ _('Products Catalog') }}" onclick="GoToThePage(this)" page_url="{{url_for('catalog_tree')}}">
                     <i class="bi bi-collection"></i>
