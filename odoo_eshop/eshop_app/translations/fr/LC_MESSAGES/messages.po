@@ -566,6 +566,7 @@ msgstr "Total TTC"
 
 #: templates/invoices.html:26 templates/orders.html:31
 #: templates/product.html:138
+<<<<<<< HEAD
 msgid "State"
 msgstr "Région"
 
@@ -763,6 +764,195 @@ msgstr "Région"
 #: templates/orders.html:38 templates/orders.html:39 templates/orders.html:40
 #: templates/orders.html:41
 >>>>>>> 1b905c0 ([IMP] Global style [IMP] Navbar top responsive and bottom, Login screen, Catalog tree view)
+=======
+msgid "State"
+msgstr "Région"
+
+#: templates/invoices.html:38 templates/invoices.html:58
+msgid "Paid"
+msgstr "Payée"
+
+#: templates/invoices.html:40 templates/invoices.html:60
+#: templates/orders.html:54 templates/orders.html:84
+msgid "To pay"
+msgstr "À payer"
+
+#: templates/invoices.html:68 templates/orders.html:29
+#: templates/orders.html:112
+#, fuzzy
+msgid "Untaxed"
+msgstr "Total HT"
+
+#: templates/invoices.html:78
+#, fuzzy
+msgid "Show all invoices"
+msgstr "Vos Factures"
+
+#: templates/invoices.html:84
+msgid "No Invoices for the time being."
+msgstr "Pas de factures pour le moment."
+
+#: templates/legal_notices.html:12
+msgid "Legal notices"
+msgstr "Mentions légales"
+
+#: templates/legal_notices.html:13
+msgid ""
+"Even if we like them with chocolate, we don't need cookie here : no data "
+"leek !"
+msgstr ""
+"Même si on les aime avec du chocolat, on n'utilise pas de cookie ici : vos données sont préservées !"
+
+#: templates/legal_notices.html:18
+msgid "About us"
+msgstr "À propos"
+
+#: templates/legal_notices.html:21
+msgid "Registered capital: "
+msgstr "Capital social : "
+
+#: templates/legal_notices.html:22
+msgid "Registration number: "
+msgstr "Numéro d'enregistrement : "
+
+#: templates/legal_notices.html:23
+msgid "VAT: "
+msgstr "TVA"
+
+#: templates/legal_notices.html:28
+msgid "Details"
+msgstr "Détails"
+
+#: templates/legal_notices.html:36
+msgid "Terms and conditions of sale"
+msgstr "Termes et conditions de vente"
+
+#: templates/legal_notices.html:41
+msgid "Website hosting"
+msgstr "Hébergement du site web"
+
+#: templates/legal_notices.html:46
+msgid "Intellectual property"
+msgstr "Propriété intellectuelle"
+
+#: templates/legal_notices.html:48
+msgid ""
+"Products pictures, logo and other images related to our activity are "
+"protected : ask us for using them."
+msgstr ""
+"Les photos des produits, le logo et les autres images liées à notre activité sont"
+" protégées : demandez-nous de les utiliser."
+
+#: templates/legal_notices.html:49
+msgid ""
+"Other pictures used for page 404 etc are free pictures and copyright "
+"informations are never very far from the picture"
+msgstr ""
+"Les autres images utilisées pour la page 404 etc. sont des images libres de droit. " "Leurs informations légales ne sont jamais très loin de l'image"
+
+#: templates/legal_notices.html:50
+msgid ""
+"This website is a Free Software and is part of Odoo. You can find, use, "
+"modify and participate to our code here: <a target=\"_blank\" "
+"href=\"https://github.com/grap/odoo-eshop/\">https://github.com/grap"
+"/odoo-eshop</a>."
+msgstr ""
+"Ce site est un Logiciel Libre faisant partie du projet Odoo. Vous pouvez lire, modifier, utiliser et dupliquer notre code trouvable ici <a target=\"_blank\" "
+"href=\"https://github.com/grap/odoo-eshop/\">https://github.com/grap"
+"/odoo-eshop</a>."
+
+#: templates/legal_notices.html:57
+msgid "Data protection"
+msgstr "Protection des données"
+
+#: templates/legal_notices.html:59
+msgid ""
+"In accordance with the RGPD, you can request access, rectification or "
+"deletion of your data at the following address:"
+msgstr ""
+"En cohérence avec le RGPD, vous pouvez demander l'accès, la modification ou suppression de vos données personnelles avec cette adresse : "
+
+#: templates/legal_notices.html:64
+msgid "Mediation"
+msgstr "Médiation"
+
+#: templates/legal_notices.html:74
+msgid "Credits & thanks"
+msgstr "Crédits & remerciements"
+
+#: templates/legal_notices.html:76
+msgid ""
+"This website was developed by the IT team of <a target=\"_blank\" "
+"href=\"https://www.grap.coop/\">our democratic cooperative Grap</a>"
+msgstr ""
+"Ce site a été développé par l'équipe informatique de <a target=\"_blank\" "
+"href=\"https://www.grap.coop/\">notre cooperative Grap</a>"
+
+#: templates/legal_notices.html:77
+msgid ""
+"Thanks to our fabulous colleagues from <a target=\"_blank\" "
+"href=\"https://labellebrulerie.fr/\">Label(le) Brûlerie</a> and their "
+"delicious coffee ☕💛"
+msgstr ""
+"Merci à nos fabuleux·ses collègues de <a target=\"_blank\" "
+"href=\"https://labellebrulerie.fr/\">Label(le) Brûlerie</a> et de leur "
+"délicieux café ☕💛"
+
+#: templates/legal_notices.html:78
+msgid ""
+"Thanks to all the Free Software communities of Flask, Jinja2, Bootstrap, "
+"Jquery and Odoo Community Association of course ✊"
+msgstr ""
+"Merci à toutes les communautées des Logicies Libres Flask, Jinja2, Bootstrap,"
+"Jquery et à l'OCA Odoo Community Association bien sûr ✊"
+
+#: templates/login.html:27
+msgid "Set your email..."
+msgstr "Paramétrez votre email..."
+
+#: templates/login.html:32
+#, fuzzy
+msgid "Set your password..."
+msgstr "Récupérer son mot de passe"
+
+#: templates/login.html:45
+msgid "I don't have an account yet, register"
+msgstr "Je n'ai pas encore de compte, s'enregistrer"
+
+#: templates/login.html:48
+msgid "I forgot my password"
+msgstr "J'ai oublié mon mot de passe"
+
+#: templates/orders.html:11
+msgid "Your Orders"
+msgstr "Vos Commandes"
+
+#: templates/orders.html:13
+msgid "Here are your most recent orders."
+msgstr "Voici vos commandes les plus récentes."
+
+#: templates/orders.html:23
+msgid "Order Date"
+msgstr "Date de commande"
+
+#: templates/orders.html:25
+msgid "Place"
+msgstr "Lieu"
+
+#: templates/orders.html:26
+msgid "Day"
+msgstr "Jour"
+
+#: templates/orders.html:27
+msgid "Date"
+msgstr "Date"
+
+#: templates/orders.html:28
+msgid "Time"
+msgstr "Heure"
+
+#: templates/orders.html:45
+>>>>>>> 853dc74 ([MIG] babel translation [i18n] update fr.po)
 msgid "Undefined"
 msgstr "Non Défini"
 
@@ -817,6 +1007,7 @@ msgid "Send Reset Link"
 msgstr "Envoyer le lien de réinitialisation"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 #: templates/payment.html:6 templates/recovery_moment_place.html:6
 =======
 #: templates/product.html:71 templates/product_popup.html:52
@@ -854,6 +1045,9 @@ msgstr "Ajouter au panier"
 
 #: templates/recovery_moment_place.html:5 templates/shopping_cart.html:6
 >>>>>>> 754dd75 ([REM] glyphicon [ADD] eshop_note beside note [IMP] Shopping Carte, register, login, catalog tree..)
+=======
+#: templates/payment.html:6 templates/recovery_moment_place.html:6
+>>>>>>> 853dc74 ([MIG] babel translation [i18n] update fr.po)
 msgid "Shopping Cart"
 msgstr "Panier"
 
