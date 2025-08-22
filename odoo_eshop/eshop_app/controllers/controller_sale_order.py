@@ -94,10 +94,18 @@ def shopping_cart_delete_line(line_id):
 @requires_auth
 def recovery_moment_place():
     company = get_current_company()
+    partner_id = get_current_partner_id()
+    #  Get Recovery moment with no limitation
+    #       + the ones with limitation where the partner is
     recovery_moments = execute_odoo_command(
         "sale.recovery.moment",
         "browse_by_search",
-        [("state", "=", "pending_sale")],
+        ['&',
+            '|',
+                ("limited_partners_ids", "in", partner_id),
+                ("is_limited", "=", False),
+            ("state", "=", "pending_sale"),
+        ],
         order="min_recovery_date",
     )
     sale_order = get_current_sale_order()
