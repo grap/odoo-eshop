@@ -13,24 +13,10 @@
         <meta http-equiv="X-UA-Compatible" content="IE=10; IE=9; IE=8; IE=7; IE=EDGE" />
         <title>{{ company.eshop_title }}</title>
 
-        <script src="{{ url_for('static', filename='lib/js/jquery-3.7.1.min.js') }}"></script>
-        <script src="{{ url_for('static', filename='lib/js/jquery.floatThead.min.js') }}"></script>
-
-    <!-- ONLINE Bootstrap by official CDN -->
-<!--     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script> -->
-
-        <!-- OFFLINE Bootsrap 5.3.5 from https://getbootstrap.com/ -->
-        <script src="{{ url_for('static', filename='lib/js/bootstrap.bundle.min.js') }}"></script>
-<!--         <script src="{{ url_for('static', filename='lib/js/bootstrap.esm.min.js') }}"></script>
-         <script src="{{ url_for('static', filename='lib/js/bootstrap.min.js') }}"></script>-->
-        <link href="{{ url_for('static', filename='lib/css/bootstrap.min.css') }}" rel="stylesheet" />
-        <link href="{{ url_for('static', filename='lib/css/bootstrap-icons-1.11.3/font/bootstrap-icons.min.css') }}" rel="stylesheet" />
-
-        <!-- Custom script -->
-        <script src="{{ url_for('static', filename='js/custom_functions.js') }}"></script>
-        <script src="{{ url_for('static', filename='js/global_scripts.js') }}"></script>
+        <script src="{{ url_for('static', filename='lib/jquery/jquery-3.7.1.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='lib/bootstrap/bootstrap.bundle.min.js') }}"></script>
+        <link href="{{ url_for('static', filename='lib/bootstrap/bootstrap.min.css') }}" rel="stylesheet" />
+        <link href="{{ url_for('static', filename='lib/bootstrap-icons/bootstrap-icons.min.css') }}" rel="stylesheet" />
 
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -38,6 +24,10 @@
           <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
           <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
         <![endif]-->
+
+        <!-- Custom script -->
+        <script src="{{ url_for('static', filename='js/custom_functions.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/global_scripts.js') }}"></script>
 
         <script>
             FLASK_URL_FOR = {
