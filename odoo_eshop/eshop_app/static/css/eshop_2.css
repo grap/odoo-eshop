@@ -201,8 +201,8 @@ body {
 }
 
 .card-footer {
-    font-size:  0.8em;  
-} 
+    font-size:  0.8em;
+}
 
 .badge-b2px {
     position: relative;
@@ -283,18 +283,18 @@ body {
     margin-top: 2em;
 }
 
-.next-prev-wrapper { 
+.next-prev-wrapper {
     font-size:0.8em;
     position: fixed;
     display: flex;
     justify-content: space-between;
     padding: 0 1rem;
-    pointer-events: none;   
+    pointer-events: none;
 }
 
 /* < col-lg */
 @media (max-width:992px) {
-    .next-prev-wrapper { 
+    .next-prev-wrapper {
         left: 0;
         bottom: 5rem;
     }
@@ -310,7 +310,7 @@ body {
 }
 /* > col-lg */
 @media (min-width:992px) {
-    .next-prev-wrapper { 
+    .next-prev-wrapper {
         right: 0;
         top: 5rem;
     }

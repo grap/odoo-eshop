@@ -131,10 +131,10 @@ def select_recovery_moment(recovery_moment_id):
         return redirect_url_for("recovery_moment_place")
     else:
         if company.eshop_wallet_enabled:
-            # Sale order will be confirmed at payment 
+            # Sale order will be confirmed at payment
             return redirect_url_for("payment")
         else:
-            # Sale order is confirmed now 
+            # Sale order is confirmed now
             result = execute_odoo_command(
                 "sale.order",
                 "eshop_confirm_sale_order",

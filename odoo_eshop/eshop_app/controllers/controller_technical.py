@@ -89,10 +89,12 @@ def home_logged():
         flash(_("Recovery Moment Unset"), "danger")
     return render_template("home.html")
 
+
 @app.route("/legal_notices")
 @requires_connection
 def legal_notices():
     return render_template("legal_notices.html")
+
 
 # ############################################################################
 # Technical Routes
@@ -207,6 +209,7 @@ def surcharge_to_string(value):
 def function_to_eval(arg):
     return arg
 
+
 @app.template_filter("to_day")
 def to_day(arg):
     return {
@@ -248,10 +251,12 @@ def tax_description_per_line(line):
 
 @app.template_filter("html_fix_image_url")
 def html_fix_image_url(html):
-    odoo_base_url = str('http://' + conf.get("odoo", "host") + ':' + conf.get("odoo", "port"))
+    odoo_base_url = str(
+        "http://" + conf.get("odoo", "host") + ":" + conf.get("odoo", "port")
+    )
     return html.replace('src="/web/image/', f'src="{odoo_base_url}/web/image/')
 
 
 @app.template_filter("safe_email")
 def safe_email(email):
-    return email.replace('@', '(arobase)')
+    return email.replace("@", "(arobase)")

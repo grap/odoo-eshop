@@ -39,7 +39,7 @@
     {% set next_product_id = siblings[next_index] if next_index is not none else None %}
     {% set prev_product_id = siblings[prev_index] if prev_index is not none else None %}
 {% endif %}
-    
+
 {% if next_product_id %}
     {% set next_product = get_object('product.product', next_product_id) %}
 {% endif %}
@@ -139,7 +139,7 @@
                     <div class="col-6">{{ state.name }}</div>
                 </div>
                 {% endif %}
-                
+
                 {% if department %}
                 <div class="row">
                     <div class="col-6 fw-semibold text-muted">{{ _('Department') }}</div>
@@ -165,7 +165,7 @@
                 {% endif %}
             </div>
             {% endif %}
-        </div>  
+        </div>
     </div>
 
     <!-- Product informations bottom page with tabs -->

@@ -27,7 +27,6 @@ def account():
     incorrect_data = False
     vals = {}
     if not len(request.form) == 0:
-
         # Check Phone
         phone, error_message = check_phone(request.form["phone"])
         if error_message and phone:
@@ -62,6 +61,7 @@ def account():
     partner = get_current_partner(force_reload=True)
     return render_template("account.html", partner=partner)
 
+
 @app.route("/account_password", methods=["GET", "POST"])
 @requires_auth
 def account_password():
@@ -69,9 +69,7 @@ def account_password():
     vals = {}
     if not len(request.form) == 0:
         # Check Password
-        password, error_message = check_password(
-            request.form["password_1"]
-        )
+        password, error_message = check_password(request.form["password_1"])
         if error_message:
             incorrect_data = True
             flash(error_message, "danger")
@@ -90,11 +88,18 @@ def account_password():
     partner = get_current_partner(force_reload=True)
     return render_template("account.html", partner=partner)
 
+
 @app.route("/account_wallet")
 @requires_auth
 def account_wallet():
     partner = get_current_partner()
-    res_partner_bank = execute_odoo_command("res.partner.bank","browse_by_search",[("partner_id", "=", partner.id),])
+    res_partner_bank = execute_odoo_command(
+        "res.partner.bank",
+        "browse_by_search",
+        [
+            ("partner_id", "=", partner.id),
+        ],
+    )
     return render_template("account_wallet.html", res_partner_bank=res_partner_bank)
 
 
@@ -123,11 +128,17 @@ def orders():
 def invoices():
     # browse was buggy with account.move so we used search_read
     # https://github.com/odoo/odoo/issues/109938
-    invoices = execute_odoo_command("account.move","search_read",
+    invoices = execute_odoo_command(
+        "account.move",
+        "search_read",
         [
             partner_domain("partner_id"),
             ("state", "not in", ("draft", "cancel")),
-            ("invoice_user_id", "!=", False,)
+            (
+                "invoice_user_id",
+                "!=",
+                False,
+            ),
         ],
     )
     # invoice_user_id not False to get only eshop invoice
@@ -255,9 +266,7 @@ def register():  # noqa: C901
         flash(error_message, "danger")
 
     # Check password
-    password, error_message = check_password(
-        request.form["password_1"]
-    )
+    password, error_message = check_password(request.form["password_1"])
     if error_message:
         incorrect_data = True
         flash(error_message, "danger")

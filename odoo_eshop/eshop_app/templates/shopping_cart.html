@@ -47,7 +47,7 @@
                 <td class="shopping-cart-product">
                     <a onclick="GoToThePage(this)" href="#" page_url="{{ url_for('product', product_id=product.id)}}">
                         {% if not company.eshop_vat_included and product.default_code %}{{ product.default_code }} - {% endif %}{{ product.name }}
-                    </a> 
+                    </a>
                     <span class="cart-unit-price"><br/>{{ _('Unit price:') }} {{ line.price_unit|to_currency }} / {{ uom.eshop_description }}</span>
                 </td>
 
@@ -102,14 +102,14 @@
                     <img src="{{ url_for('static', filename=product.image_128_local_path) }}"
                          class="img-thumbnail image-cart-sm"
                          alt="{{ product.name }}">
-                    
+
                     <div class="flex-grow-1 shopping-cart-product">
                         <a onclick="GoToThePage(this)" href="#" page_url="{{ url_for('product', product_id=product.id)}}">
                             <h6 class="fw-bold mb-1">{{ product.name }}</h6>
                             {% if not company.eshop_vat_included and product.default_code %}
                                 <div class="text-muted small">{{ product.default_code }}</div>
                             {% endif %}
-                        </a> 
+                        </a>
                         {% if line|tax_description_per_line %}
                         <div class="small text-muted">
                             {{ _('VAT:') }} {{ line|tax_description_per_line }}

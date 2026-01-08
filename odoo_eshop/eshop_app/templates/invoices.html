@@ -38,7 +38,7 @@
                         <span class="badge bg-success text-end">{{ _('Paid') }}</span>
                     {% else %}
                         <span class="badge bg-warning text-dark text-end">{{ _('To pay') }}</span>
-                    {% endif %} 
+                    {% endif %}
                     </td>
                 </tr>
                 {% endfor %}
@@ -58,7 +58,7 @@
                         <span class="badge bg-success text-end">{{ _('Paid') }}</span>
                     {% else %}
                         <span class="badge bg-warning text-dark text-end">{{ _('To pay') }}</span>
-                    {% endif %} 
+                    {% endif %}
                     </span>
                 </span>
                 <hr class="my-2">
@@ -67,7 +67,7 @@
             <div class="card-footer">
                 <strong>{{ _('Untaxed') }}:</strong> {{ invoice.amount_untaxed|to_currency  }}<br>
                 <strong>{{ _('Total') }}:</strong> {{ invoice.amount_total|to_currency }}<br>
-            </div>            
+            </div>
         </div>
         {% endfor %}
     </div>
