@@ -17,19 +17,19 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ******************************************************************************/
 
-$('#shopping_cart_note').change(function(e){
+$('#shopping_cart_eshop_note').change(function(e){
     self = this;
     currentAjaxCall = $.ajax({
-        url: FLASK_URL_FOR['shopping_cart_note_update'],
+        url: FLASK_URL_FOR['shopping_cart_eshop_note_update'],
         type: "POST",
         data: {
-            note: $('#shopping_cart_note').val(),
+            eshop_note: $('#shopping_cart_eshop_note').val(),
             },
         timeout: AJAX_TIMEOUT,
     }).done(function(msg){
         currentAjaxCall = false;
         if (msg.result.state == 'success' || msg.result.state == 'warning'){
-            $('#shopping_cart_note').val(msg.result.note);
+            $('#shopping_cart_eshop_note').val(msg.result.eshop_note);
         }
         display_message(msg.result.state, msg.result.message, true);
     }).fail(function(xhr, textstatus){

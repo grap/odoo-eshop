@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block container %}
+{% set partner = current_partner() %}
+{% set wallet = current_partner_wallet() %}
+{% set company = current_company() %}
+
+<div class="container py-5">
+    <div class="row justify-content-center mb-4">
+        <div class="col-md-8 text-center">
+            <h1 class="display-5 mb-3">
+                <i class="bi bi-wallet2 me-2"></i>{{ _('My Wallet') }}
+            </h1>
+        </div>
+    </div>
+
+    <div class="row justify-content-center mb-5">
+        <div class="col-md-6">
+            <div class="card shadow-sm border-success text-center">
+                <div class="card-body">
+                    <h2 class="text-success display-4 mb-2">
+                        {{ partner.customer_wallet_balance | to_currency }}
+                    </h2>
+                    <p class="text-muted">{{ _('Current Balance') }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row justify-content-center mb-5">
+        <div class="col-md-8">
+            <div class="card shadow-sm border-info">
+                <h5 class="card-header">
+                    <i class="bi bi-bank2 me-1"></i> {{ _('Recharge Instructions') }}
+                </h5>
+                <div class="card-body">
+
+                    <!-- Method 1 -->
+                    {% if company.eshop_wallet_recharge_bank_transfer %}
+                        <h5 class="mb-3"><i class="bi bi-arrow-right-circle me-1"></i>{{ _('By Bank Transfer') }}</h5>
+                        <p>{{ _('You can recharge your wallet by bank transfer using the following RIB:') }}</p>
+                        <ul class="list-group list-group-flush mb-4">
+                            <li class="list-group-item"><strong>IBAN :</strong> {{ res_partner_bank.acc_number }}</li>
+                            {% if res_partner_bank.bank_id %}
+                            <li class="list-group-item"><strong>BIC :</strong> {{ res_partner_bank.bank_id.display_name }}</li>
+                            {% endif %}
+                            <li class="list-group-item">
+                                <strong>{{ _('Beneficiary') }} :</strong>
+                                {% if res_partner_bank.acc_holder_name %}
+                                    {{ res_partner_bank.acc_holder_name }}
+                                {% else %}
+                                    {{ company.name }}
+                                {% endif %}
+                            </li>
+                        </ul>
+                        <p class="text-muted">
+                            {{ _('Don’t forget to include your full name or customer number in the transfer label.') }}
+                        </p>
+                        <div class="alert alert-warning">
+                            {{ _('Your wallet account will be updated after a <b>manual verification</b> that the transfer has been received.') }}
+                        </div>
+
+                        <hr class="my-4">
+                    {% endif %}
+
+
+                    <!-- Method 2 -->
+                    <h5 class="mb-3"><i class="bi bi-cash-coin me-1"></i>{{ _('In-Store Payment') }}</h5>
+                    <p>
+                        {{ _('You can recharge your wallet directly in our store by paying with your credit card or cash at the counter.') }}
+                    </p>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

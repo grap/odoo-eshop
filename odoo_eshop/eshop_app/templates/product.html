@@ -1,120 +1,239 @@
 {% extends 'base.html' %}
 
 {% block breadcrumb %}
-<ol class="breadcrumb">
-    <li class="active">
-        <a href="{{ url_for('catalog_tree')}}">{{ _('Catalog') }}</a>
-    </li>
-    {% for parent_category in parent_categories %}
-    <li class="active">
-        <a href="{{ url_for('catalog_tree', category_id=parent_category['id'])}}">{{ parent_category['name'] }}</a>
-    </li>
-    {% endfor %}
-</ol>
+<nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="{{ url_for('catalog_tree')}}">{{ _('Catalog') }}</a>
+        </li>
+        {% for parent_category in parent_categories %}
+        <li class="breadcrumb-item">
+            <a href="{{ url_for('catalog_tree', category_id=parent_category['id'])}}">{{ parent_category['name'] }}</a>
+        </li>
+        {% endfor %}
+    </ol>
+</nav>
 {% endblock %}
 
 {% block container %}
-<!-- JQuery -->
 <script>
     $('#nav_catalog_tree').addClass('active');
 </script>
 
-
-<!-- Products -->
 {% set product = get_object('product.product', product_id) %}
 {% set uom = get_object('uom.uom', product.uom_id) %}
 {% set country = get_object('res.country', product.country_id)%}
 {% set state = get_object('res.country.state', product.state_id)%}
 {% set department = get_object('res.country.department', product.department_id)%}
 
-<div class="row">
-    <div class="col-md-12">
-        <h1>{{ product.name }}</h1>
-    </div>
-</div>
+<!-- Fields for next and previous product -->
+{% set current_category = get_object('eshop.category', product.eshop_category_id) %}
+{% set siblings = current_category.product_ids if current_category.product_ids|length else [] %}
 
-<div class="row">
-    <div class="col-md-4">
-        <center>
-            <div>
-                <a href="#" data-featherlight="{{ url_for('product_image_popup', product_id=product['id']) }}">
-                    <img src="{{ url_for('static', filename=product.image_local_path) }}"
-                        style="width:250px;"
-                        class="img-thumbnail"/>
-                </a>
-            </div>
-            <br />
-            <div>
-    {% if product.label_ids|length %}
-                <center>
-        {% for label_id in product.label_ids %}
-            {% set label = get_object('product.label', label_id) %}
-                    <img src="{{ url_for('static', filename=label.image_local_path) }}"
-                    class="img-thumbnail"
-                    alt="{{ label.name }}" style="width:80px;"/>
-        {% endfor %}
-            </center>
-    {% endif %}
-            </div>
-        </center>
-    </div>
-    <div class="col-md-4">
-        <dl class="dl-horizontal">
+{% if siblings|length %}
+    {% set current_index = siblings.index(product_id) %}
 
-            <dt>{{ _('Price') }}</dt>
-        {% if company.eshop_vat_included %}
+    {% set next_index = (current_index + 1) if current_index + 1 < siblings|length else None %}
+    {% set prev_index = (current_index - 1) if current_index > 0 else None %}
 
-            <dd>{{ product.list_price|to_currency }} {{_('VAT. Incl.')}} / {{ uom.eshop_description }}</dd>
-        {% else %}
-            <dd>{{ product.list_price_vat_excl|to_currency }} {{_('VAT. Excl.')}} / {{ uom.eshop_description }}</dd>
-        {% endif %}
-            <dt>{{ _('Minimum Quantity') }}</dt>
-            <dd>{{ product.eshop_minimum_qty}} {{ uom.eshop_description }}</dd>
-            <dt>{{ _('Rounding Quantity') }}</dt>
-            <dd>{{ product.eshop_rounded_qty}} {{ uom.eshop_description }}</dd>
-            <br />
-    {% if country != False %}
-            <dt>{{ _('Country') }}</dt>
-            <dd>{{ country.name }}</dd>
-    {% endif %}
-    {% if state != False %}
-            <dt>{{ _('State') }}</dt>
-            <dd>{{ state.name }}</dd>
-    {% endif %}
-    {% if department != False %}
-            <dt>{{ _('Department') }}</dt>
-            <dd>{{ department.name }}</dd>
-    {% endif %}
-    {% if product.origin_description != False %}
-            <dt>{{ _('Origin Description') }}</dt>
-            <dd>{{ product.origin_description }}</dd>
-    {% endif %}
-    {% if product.maker_description != False %}
-            <dt>{{ _('Maker Description') }}</dt>
-            <dd>{{ product.maker_description }}</dd>
-    {% endif %}
-            <br />
-    {% if product.eshop_description != False %}
-            <dt>{{ _('Description') }}</dt>
-            <dd>{{ product.eshop_description|safe }}</dd>
-    {% endif %}
-        </dl>
-    </div>
-    <div class="col-md-4">
-        <form class="form-horizontal" role="form" method="POST" action="{{ url_for('product_add_qty', product_id=product.id) }}">
-            <div class="form-group">
-                <label class="col-sm-3 control-label">{{ _('Quantity') }}</label>
-                <div class="col-sm-5">
-                    <input type="text" class="form-control" name="quantity" placeholder="({{ uom.eshop_description }})"/>
-                </div>
+    {% set next_product_id = siblings[next_index] if next_index is not none else None %}
+    {% set prev_product_id = siblings[prev_index] if prev_index is not none else None %}
+{% endif %}
+
+{% if next_product_id %}
+    {% set next_product = get_object('product.product', next_product_id) %}
+{% endif %}
+{% if prev_product_id %}
+    {% set prev_product = get_object('product.product', prev_product_id) %}
+{% endif %}
+
+
+<div class="row gy-3 product-detail-wrapper">
+    <div class="col-xs-12 col-sm-4">
+        <div class="product-image shadow rounded p-3 bg-white position-relative">
+            <a href="#" data-featherlight="{{ url_for('product_image_popup', product_id=product['id']) }}">
+                <img src="{{ url_for('static', filename=product.image_1920_local_path) }}"
+                    class="img-fluid rounded" alt="{{ product.name }}" loading="lazy"/>
+            </a>
+
+            {% if product.label_ids|length %}
+            <div class="product-labels position-absolute d-flex flex-wrap">
+                {% for label_id in product.label_ids %}
+                    {% set label = get_object('product.label', label_id) %}
+                    <img src="{{ url_for('static', filename=label.image_1920_local_path) }}"
+                        class="img-thumbnail label-img" alt="{{ label.name }}" loading="lazy" data-bs-toggle="tooltip" title="{{label.name}}"/>
+                {% endfor %}
             </div>
-            <div class="form-group">
-                <div class="col-sm-5 col-sm-offset-3">
-                    <button type="submit" class="btn btn-default">{{ _('Add to Shopping Cart') }}</button>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="p-3 col-xs-12 col-sm-8">
+        <div class="product-name-price">
+            <span>
+                <h1 class="product-name">{{ product.name }}</h1>
+                <span class="product-pricing md-4">
+                    {% if company.eshop_vat_included %}
+                    <h4>{{ product.list_price|to_currency }} {{_('VAT. Incl.')}} / {{ uom.eshop_description }}</h4>
+                    {% else %}
+                    <h4>{{ product.list_price_vat_excl|to_currency }} {{_('VAT. Excl.')}} / {{ uom.eshop_description }}</h4>
+                    {% endif %}
+                </span>
+            </span>
+        </div>
+
+        <form method="POST" action="{{ url_for('product_add_qty', product_id=product.id) }}">
+            <div class="container form-add-product">
+                <div class="row row-cols-auto align-items-center">
+
+                    <div class="col">
+                        <div class="quantity-selector">
+                            <button type="button" onclick="adjustQty(-1)">−</button>
+                            <input type="text" name="quantity" id="quantityInput" value="{{ product.eshop_minimum_qty or 1 }}" />
+                            <span class="product_uom_description">{{ uom.eshop_description }}</span>
+                            <button type="button" onclick="adjustQty(1)">+</button>
+                        </div>
+                    </div>
+
+                    {% if partner %}
+                        <button type="submit" class="btn btn-primary btn-buy">
+                            <span class="d-none d-md-block"><i class="bi bi-basket2"></i> {{ _('Add to Shopping Cart') }}</span>
+                            <span class="d-block d-md-none"><i class="bi bi-basket2"></i> {{ _('Add') }}</span>
+                        </button>
+                    {% else %}
+                        <span>
+                            <button type="submit" class="btn btn-secondary disabled">{{ _('Add to Shopping Cart') }}</button>
+                            <i class="bi bi-info-circle"></i> {{ _('Create an account or Log In') }}
+                        </span>
+                    {% endif %}
                 </div>
             </div>
         </form>
+
+        <div class="product-informations col-md-7 mt-4 mb-5">
+
+            <div class="row">
+                <div class="col-6 fw-semibold text-muted">{{ _('Minimum Quantity') }}</div>
+                <div class="col-6">{{ product.eshop_minimum_qty }} {{ uom.eshop_description }}</div>
+            </div>
+
+            <div class="row">
+                <div class="col-6 fw-semibold text-muted">{{ _('Rounding Quantity') }}</div>
+                <div class="col-6">{{ product.eshop_rounded_qty }} {{ uom.eshop_description }}</div>
+            </div>
+
+            {% if country or state or department%}
+            <div id="product-origin">
+                <h4 class="my-3 product-subtitle">{{ _('Product origin') }}</h4>
+
+                {% if country %}
+                <div class="row">
+                    <div class="col-6 fw-semibold text-muted">{{ _('Country') }}</div>
+                    <div class="col-6">{{ country.name }}</div>
+                </div>
+                {% endif %}
+
+                {% if state and not department %}
+                <div class="row">
+                    <div class="col-6 fw-semibold text-muted">{{ _('State') }}</div>
+                    <div class="col-6">{{ state.name }}</div>
+                </div>
+                {% endif %}
+
+                {% if department %}
+                <div class="row">
+                    <div class="col-6 fw-semibold text-muted">{{ _('Department') }}</div>
+                    <div class="col-6">{{ department.name }}</div>
+                </div>
+                {% endif %}
+            </div>
+            {% endif %}
+
+            {% if product.origin_description or product.maker_description %}
+            <div id="product-description">
+                {% if product.origin_description %}
+                <div class="row">
+                    <div class="col-6 fw-semibold text-muted">{{ _('Origin Description') }}</div>
+                    <div class="col-6">{{ product.origin_description }}</div>
+                </div>
+                {% endif %}
+                {% if product.maker_description %}
+                <div class="row">
+                    <div class="col-6 fw-semibold text-muted">{{ _('Maker Description') }}</div>
+                    <div class="col-6">{{ product.maker_description }}</div>
+                </div>
+                {% endif %}
+            </div>
+            {% endif %}
+        </div>
     </div>
+
+    <!-- Product informations bottom page with tabs -->
+    {% if product.eshop_description or product.origin_description or product.maker_description %}
+    <div class="col-xs-12 col-md-11">
+        <ul class="nav nav-underline" id="myTab" role="tablist">
+                {% if product.eshop_description %}
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact-tab-pane" type="button" role="tab" aria-controls="contact-tab-pane" aria-selected="false">{{ _('Description') }}</button>
+                </li>
+                {% endif %}
+        </ul>
+        <div class="tab-content pt-3" id="myTabContent">
+            <div class="tab-pane fade show active" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">{{ product.eshop_description|safe }}</div>
+        </div>
+    </div>
+    {% endif %}
+
+    </div>
+</div>
+<!-- End container -->
+
+<!-- Previous and next products button -->
+<div class="space-for-mobile-view">
+</div>
+
+<div class="next-prev-wrapper">
+  {% if prev_product %}
+  <div id="prev-product" class="next-product-card shadow">
+    <a href="{{ url_for('product', product_id=prev_product.id) }}" class="d-flex align-items-center">
+      <i class="bi bi-arrow-left me-3 fs-4"></i>
+      <div>
+        <div class="fw-bold product-card-sibings-title">{{ _('Previous Product') }}</div>
+        <div class="product-card-sibings-name">{{ prev_product.name }}</div>
+      </div>
+      <img src="{{ url_for('static', filename=prev_product.image_128_local_path) }}"
+           alt="{{ prev_product.name }}" class="img-thumbnail ms-2">
+    </a>
+  </div>
+  {% else %}
+  <div id="prev-product" style="display:none">
+  </div>
+  {% endif %}
+
+  {% if next_product %}
+  <div id="next-product" class="next-product-card shadow">
+    <a href="{{ url_for('product', product_id=next_product.id) }}" class="d-flex align-items-center">
+      <img src="{{ url_for('static', filename=next_product.image_128_local_path) }}"
+           alt="{{ next_product.name }}" class="img-thumbnail me-2">
+      <div>
+        <div class="fw-bold product-card-sibings-title">{{ _('Next Product') }}</div>
+        <div>{{ next_product.name }}</div>
+      </div>
+      <i class="bi bi-arrow-right ms-3 fs-4"></i>
+    </a>
+  </div>
+  {% endif %}
 </div>
 
 {% endblock %}
+
+<!-- Activate Tootltips -->
+<script type="text/javascript">
+document.addEventListener('DOMContentLoaded', function () {
+  const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+  tooltipTriggerList.map(function (tooltipTriggerEl) {
+    return new bootstrap.Tooltip(tooltipTriggerEl);
+  });
+});
+
+</script>

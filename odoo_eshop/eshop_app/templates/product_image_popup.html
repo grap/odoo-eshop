@@ -1,9 +1,0 @@
-{% extends 'base_popup.html' %}
-
-{% block container_popup %}
-<!-- Products -->
-{% set product = get_object('product.product', product_id) %}
-
-<img src="{{ url_for('static', filename=product.image_local_path) }}" class="img-thumbnail"/>
-
-{% endblock %}

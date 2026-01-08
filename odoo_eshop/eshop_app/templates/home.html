@@ -11,7 +11,7 @@
 <div class="row">
     <div class="col-md-12">
 {% if company.eshop_home_text %}
-    {{company.eshop_home_text|safe}}
+    {{company.eshop_home_text|html_fix_image_url|safe}}
 {% else %}
     {{_('eShop not set.')}}
 {% endif %}

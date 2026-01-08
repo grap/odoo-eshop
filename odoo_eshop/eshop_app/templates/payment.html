@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block breadcrumb %}
+<nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{ url_for('shopping_cart')}}">{{ _('Shopping Cart') }}</a></li>
+        <li class="breadcrumb-item"><a href="{{ url_for('recovery_moment_place')}}">{{ _('Recovery Moment Place') }}</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{{ _('Payment') }}</li>
+    </ol>
+</nav>
+{% endblock %}
+
+{% block container %}
+
+<div class="container">
+    <h1 class="my-4"><i class="bi bi-wallet2"></i> {{ _('Pay with wallet') }}</h1>
+
+    <div class="card p-4 shadow">
+        <p><strong>{{ _('Amount to pay') }}</strong> {{ sale_order.amount_total|to_currency }}</p>
+        <p><strong>{{ _('Money in your wallet') }}</strong> {{ partner.customer_wallet_balance|to_currency }}</p>
+
+        {% set balance_after_payment = partner.customer_wallet_balance - sale_order.amount_total %}
+        <p><strong>{{ _('Balance after payment :') }}</strong>
+            {% if balance_after_payment >= 0 %}
+                {{ balance_after_payment|to_currency }}
+            {% else %}
+                <span class="text-danger">{{ balance_after_payment|to_currency }}</span>
+            {% endif %}
+        </p>
+
+        {% if balance_after_payment >= 0 %}
+        <button onclick="GoToThePage(this);" class="btn btn-success w-100 mt-4" href="#" page_url="{{ url_for('payment_validation', sale_order_id=sale_order.id) }}">
+<!--         <button onclick="update_header_wallet({{ balance_after_payment }});GoToThePage(this);" class="btn btn-success w-100 mt-4" href="#" page_url="{{ url_for('payment_validation', sale_order_id=sale_order.id) }}">
+ -->            <i class="bi bi-check-circle"></i> {{ _('Confirm payment') }}
+        </button>
+        {% else %}
+        <div class="alert alert-danger mt-4"> {{ _("You don't have enough money in your wallet to validate this order.") }}</div>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

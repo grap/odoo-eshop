@@ -43,6 +43,15 @@ def get_current_sale_order_lines(order):
     return result
 
 
+def get_current_sale_order_recovery_moment(order):
+    result = get_odoo_uncached_object(
+        "sale.recovery.moment",
+        order.id,
+    )
+    result = result or []
+    return result
+
+
 # ############################################################################
 # I/O Odoo - Sale Order Line
 # ############################################################################
