@@ -1,7 +1,26 @@
 {% extends 'base.html' %}
 
 {% block container %}
+<div class="container py-5">
+    <div class="row align-items-center justify-content-center">
 
-<h1 class="text-center">{{ _('Page not found.') }}</h1>
+        <div class="col-md-4 text-center mb-4 mb-md-0">
+            <img src="{{ url_for('static', filename='images/404.jpg') }}" alt="A lost paper robot" class="img-fluid rounded shadow-sm img-error">
+        </div>
 
+        <div class="col-md-8 text-center text-md-start">
+            <h1 class="fw-bold">404</h1>
+            <p class="lead mb-3">{{ _("Roby the robot can't find the page you're looking for, which makes him very sad.") }}</p>
+            <p class="text-muted mb-4">{{ _("It might have been moved or deleted.") }}</p>
+            <a href="{{ url_for('home') }}" class="btn btn-primary">
+                <i class="bi bi-house-door me-2"></i>{{ _('Back to Home') }}
+            </a>
+
+            <hr class="my-4">
+			{{_('Picture of')}} <a href="https://unsplash.com/fr/@mullyadii?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Mulyadi</a> - <a href="https://unsplash.com/fr/photos/photo-en-niveaux-de-gris-dun-robot-de-boite-sur-une-table-ZnLprInKM7s?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
+
+
+        </div>
+    </div>
+</div>
 {% endblock %}

@@ -1,12 +1,48 @@
 {% extends 'base.html' %}
 
 {% block container %}
+{% set company = current_company() %}
+
 <!-- JQuery -->
 <script>
     $('#nav_register').addClass('active');
 </script>
 
-<!-- Renders the lure checkbox invisible -->
+<!-- Javascript -->
+<script>
+function togglePassword() {
+    const input = document.getElementById("password_1");
+    const icon = document.getElementById("toggleIcon");
+    const isVisible = input.type === "text";
+
+    input.type = isVisible ? "password" : "text";
+    icon.className = isVisible ? "bi bi-eye" : "bi bi-eye-slash";
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+    const requiredInputs = document.querySelectorAll("input[required]");
+    const submitButton = document.querySelector("button[type='submit']");
+
+    function validateForm() {
+        let allFilled = true;
+        requiredInputs.forEach(input => {
+            if (!input.value.trim()) {
+                allFilled = false;
+            }
+        });
+        submitButton.disabled = !allFilled;
+    }
+
+    // Initial check
+    validateForm();
+
+    requiredInputs.forEach(input => {
+        input.addEventListener("input", validateForm);
+    });
+});
+</script>
+
+
 <style>
   .nope{
       opacity: 0;
@@ -17,123 +53,102 @@
       width: 0;
       z-index:-1;
   }
+  label.required::after {
+      content: " *";
+      color: red;
+  }
 </style>
 
 <!-- Account Data -->
-<h1>{{ _('Create a new account') }}</h1>
+<div class="container mt-5">
+    <h1>{{ _('Create a new account') }}</h1>
 
-<form class="form-horizontal" role="form" method="POST" action="{{ url_for('register') }}">
-    <table class="table table-condensed table-bordered">
-        <tbody>
-            <tr>
-                <th>
-                    <label for="account_name" class="control-label">{{ _('First Name') }} (*)</label>
-                </th>
-                <td>
-                    <input type="text" class="form-control input-required account_data" name="first_name" value="{{ request.form['first_name']}}">
-                </td>
-                <th>
-                    <label for="account_name" class="control-label">{{ _('Last Name') }} (*)</label>
-                </th>
-                <td>
-                    <input type="text" class="form-control input-required account_data" name="last_name" value="{{ request.form['last_name']}}">
-                </td>
-            </tr>
-            <tr>
-                <th>
-                    <label for="account_email" class="control-label">{{ _('Email') }} (*)</label>
-                </th>
-                <td>
-                    <input type="email" class="form-control input-required account_data" name="email" value="{{ request.form['email']}}">
-                </td>
-                <th>
-                    <label for="password_1" class="control-label">{{ _('Password') }} (*)</label>
-                </th>
+    <form class="needs-validation" novalidate role="form" method="POST" action="{{ url_for('register') }}">
+        <div class="row g-3">
 
-                <td>
-                    <input type="password" class="form-control input-required account_data" name="password_1" value="{{ request.form['password_1']}}">
-                </td>
-            </tr>
-            <tr>
-                <th colspan="2" />
-                <th>
-                    <label for="password_2" class="control-label">{{ _('Password (Check)') }} (*)</label>
-                </th>
-                <td>
-                    <input type="password" class="form-control input-required account_data" name="password_2" value="{{ request.form['password_2']}}">
-                </td>
-            </tr>
-            <tr>
-                <th>
-                    <label for="account_mobile" class="control-label">{{ _('Cell Phone') }}</label>
-                </th>
-                <td>
-                    <input type="tel" class="form-control account_data" name="mobile" value="{{ request.form['mobile']}}">
-                </td>
-                <th>
-                    <label for="account_phone" class="control-label">{{ _('Other Phone') }}</label>
-                </th>
-                <td>
-                    <input type="tel" class="form-control account_data" name="phone" value="{{ request.form['phone']}}" >
-                </td>
-            </tr>
-            <tr>
-                <th>
-                    <label for="account_street" class="control-label">{{ _('Street') }}</label>
-                </th>
-                <td colspan="100%">
-                    <input type="text" class="form-control account_data" name="street" value="{{ request.form['street']}}">
-                </td>
-            </tr>
-            <tr>
-                <th>
-                    <label for="account_street2" class="control-label">{{ _('Street (Extra Info)') }}</label>
-                </th>
-                <td colspan="100%">
-                    <input type="text" class="form-control account_data" name="street2" value="{{ request.form['street2']}}">
-                </td>
-            </tr>
-            <tr>
-                <th>
-                    <label for="account_zip" class="control-label">{{ _('ZIP Code') }}</label>
-                </th>
-                <td>
-                    <input type="text" class="form-control account_data" name="zip" value="{{ request.form['zip']}}">
-                </td>
-                <th>
-                    <label for="account_city" class="control-label">{{ _('City') }}</label>
-                </th>
-                <td>
-                    <input type="text" class="form-control account_data" name="city" value="{{ request.form['city']}}">
-                </td>
-                <th class="nope">
-                  <label for="is_human" class="control-label">{{ _('Is human') }}</label>
-                </th>
-                <td class="nope">
-                  {% if request.form['is_human'] %}
-                      <input type="checkbox" class="form-control account_data" name="is_human" value="no" checked>
-                  {% else %}
-                      <input type="checkbox" class="form-control account_data" name="is_human" value="yes">
-                  {% endif %}
-                </td>
-            </tr>
+            <div class="col-md-6 form-floating">
+                <input type="text" class="form-control input-required account_data" id="first_name" name="first_name" value="{{ request.form['first_name']}}" required>
+                <label for="first_name" class="required">{{ _('First Name') }}</label>
+            </div>
 
-        </tbody>
-        <tfoot>
-            <tr>
-                <td class="td-action" colspan="100%">
-                    <button type="submit" class="btn btn-default">{{ _('Create')}}</button>
-                </td>
-            </tr>
-            <tr>
-                <td class="td-action" colspan="100%">
-                    <a href="{{ url_for('login_view') }}">
-                        {{ _("I have already an account, sign in")}}
-                    </a>
-                </td>
-            </tr>
-        </tfoot>
-    </table>
-</form>
+            <div class="col-md-6 form-floating">
+                <input type="text" class="form-control input-required account_data" id="last_name" name="last_name" value="{{ request.form['last_name']}}" required>
+                <label for="last_name" class="required">{{ _('Last Name') }}</label>
+            </div>
+
+            <div class="col-md-6 form-floating">
+                <input type="email" class="form-control input-required account_data" id="email" name="email" value="{{ request.form['email']}}" required>
+                <label for="email" class="required">{{ _('Email') }}</label>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-floating position-relative">
+                    <input type="password" class="form-control input-required account_data" id="password_1" name="password_1" value="{{ request.form['password_1']}}" required>
+                    <label for="password_1" class="required">{{ _('Password') }}</label>
+                    <span class="position-absolute top-50 end-0 translate-middle-y pe-3" onclick="togglePassword()" style="cursor:pointer;">
+                        <i class="bi bi-eye" id="toggleIcon"></i>
+                    </span>
+                </div>
+            </div>
+
+            <h4 class="mt-4">{{ _('Your adress') }}</h4>
+
+            <div class="col-md-6 form-floating">
+                <input type="text" class="form-control account_data" id="street" name="street" value="{{ request.form['street']}}">
+                <label for="street">{{ _('Street') }}</label>
+            </div>
+
+            <div class="col-md-6 form-floating">
+                <input type="text" class="form-control account_data" id="street2" name="street2" value="{{ request.form['street2']}}">
+                <label for="street2">{{ _('Street (Extra Info)') }}</label>
+            </div>
+
+            <div class="col-md-6 form-floating">
+                <input type="text" class="form-control account_data" id="zip" name="zip" value="{{ request.form['zip']}}">
+                <label for="zip">{{ _('ZIP Code') }}</label>
+            </div>
+
+            <div class="col-md-6 form-floating">
+                <input type="text" class="form-control account_data" id="city" name="city" value="{{ request.form['city']}}">
+                <label for="city">{{ _('City') }}</label>
+            </div>
+
+            <div class="col-md-6 form-floating">
+                {% if company.eshop_register_phone_required %}
+                    <input type="tel" class="form-control account_data" id="mobile" name="mobile" value="{{ request.form['mobile']}}" required>
+                    <label for="mobile" class="required">{{ _('Cell Phone') }}</label>
+                {% else %}
+                    <input type="tel" class="form-control account_data" id="mobile" name="mobile" value="{{ request.form['mobile']}}">
+                    <label for="mobile">{{ _('Cell Phone') }}</label>
+                {% endif %}
+            </div>
+
+            <div class="col-md-6 form-floating">
+                <input type="tel" class="form-control account_data" id="phone" name="phone" value="{{ request.form['phone']}}">
+                <label for="phone">{{ _('Other Phone') }}</label>
+            </div>
+
+            <div class="nope">
+              <label for="is_human" class="control-label">{{ _('Is human') }}</label>
+              {% if request.form['is_human'] %}
+                  <input type="checkbox" class="form-control account_data" name="is_human" value="no" checked>
+              {% else %}
+                  <input type="checkbox" class="form-control account_data" name="is_human" value="yes">
+              {% endif %}
+            </div>
+
+            <div class="d-grid gap-2 mb-3">
+                <button type="submit" class="btn btn-primary" disabled>{{ _('Create')}}</button>
+            </div>
+
+            <div class="text-center small">
+                <a href="{{ url_for('login_view') }}">
+                    {{ _("I have already an account, sign in")}}
+                </a>
+            </div>
+
+        </div>
+    </form>
+</div>
 
 {% endblock %}

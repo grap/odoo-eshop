@@ -32,11 +32,11 @@ $('.input-quantity').change(function(e){
             // Update Sale Order Line infos
             $('#quantity_' + product_id).val(msg.result.quantity);
             $('#quantity_' + product_id).toggleClass('input-surcharge', (msg.result.discount < '0'));
-            $('#price_subtotal_' + product_id).attr('placeholder', msg.result.amount_line);
+            $('#price_subtotal_' + product_id).text(msg.result.amount_line);
             // Update Sale Order infos
-            $('#amount_untaxed').attr('placeholder', msg.result.amount_untaxed);
-            $('#amount_tax').attr('placeholder', msg.result.amount_tax);
-            $('#amount_total').attr('placeholder', msg.result.amount_total);
+            $('#amount_untaxed').text(msg.result.amount_untaxed + " €");
+            $('#amount_tax').text(msg.result.amount_tax + " €");
+            $('#amount_total').text(msg.result.amount_total + " €");
         }
         update_header(msg.result.order_id, msg.result.amount_total_header, msg.result.minimum_ok);
         display_message(msg.result.state, msg.result.message, false);

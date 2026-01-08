@@ -28,17 +28,17 @@ def shopping_cart():
     return render_template("shopping_cart.html", sale_order_lines=sale_order_lines)
 
 
-@app.route("/shopping_cart_note_update", methods=["POST"])
-def shopping_cart_note_update():
-    note = execute_odoo_command(
+@app.route("/shopping_cart_eshop_note_update", methods=["POST"])
+def shopping_cart_eshop_note_update():
+    eshop_note = execute_odoo_command(
         "sale.order",
-        "eshop_set_note",
+        "eshop_set_eshop_note",
         get_current_partner_id(),
-        request.form["note"],
+        request.form["eshop_note"],
     )
     result = {
         "state": "success",
-        "note": note,
+        "eshop_note": eshop_note,
         "message": _("Your comment has been successfully updated."),
     }
     if True:  # request.is_xhr:
@@ -119,6 +119,7 @@ def recovery_moment_place():
 @app.route("/select_recovery_moment/<int:recovery_moment_id>")
 @requires_auth
 def select_recovery_moment(recovery_moment_id):
+    company = get_current_company()
     result = execute_odoo_command(
         "sale.order",
         "eshop_select_recovery_moment",
@@ -126,9 +127,18 @@ def select_recovery_moment(recovery_moment_id):
         recovery_moment_id,
     )
     if result == "recovery_moment_complete":
-        flash(_("The recovery moment is complete." " Please try again."), "error")
-        return redirect_url_for("shopping_cart")
+        flash(_("The recovery moment is complete." " Please try again."), "danger")
+        return redirect_url_for("recovery_moment_place")
     else:
-        flash(_("Your Sale Order is now confirmed."), "success")
-        get_current_sale_order()
-        return redirect_url_for("home")
+        if company.eshop_wallet_enabled:
+            # Sale order will be confirmed at payment
+            return redirect_url_for("payment")
+        else:
+            # Sale order is confirmed now
+            result = execute_odoo_command(
+                "sale.order",
+                "eshop_confirm_sale_order",
+                get_current_partner_id(),
+            )
+            flash(_("Your Sale Order is now confirmed."), "success")
+            return redirect_url_for("home")

@@ -27,12 +27,9 @@ def partner_domain(partner_field):
     return (partner_field, "=", session.get("partner_id", -1))
 
 
-def check_password(password_1, password_2):
+def check_password(password_1):
     error_message = False
-    if password_1 != password_2:
-        # Check consistencies
-        error_message = _("The 'Password' Fields do not match.")
-    elif len(password_1) < 6 or re.search(r"\d", password_1) is None:
+    if len(password_1) < 6 or re.search(r"\d", password_1) is None:
         error_message = _(
             "The password should have 6 characters or more,"
             " and should contain at least one digits."

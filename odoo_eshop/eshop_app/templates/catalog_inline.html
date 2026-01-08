@@ -3,111 +3,202 @@
 
 {% set sale_order = current_sale_order() %}
 
-<!-- JQuery -->
+
 <script>
     $('#nav_catalog_inline').addClass('active');
 </script>
 
-<table class="table table-condensed table-bordered eshop_table_float_thead">
-    <thead>
-        <tr>
-            <th>{{_('Product Name')}}</th>
-            <th>{{_('Labels')}}</th>
-{% if company.eshop_vat_included %}
-                <th>{{_('U.P. VAT Incl.')}}</th>
-{% else %}
-                <th>{{_('U.P. VAT Excl.')}}</th>
-{% endif %}
-            <th>{{_('Unit')}}</th>
-            <th>{{_('Min.')}}</th>
-{% if not company.eshop_vat_included %}
-            <th>{{_('VAT')}}</th>
-{% endif %}
-            <th>{{ _('Quantity') }}</th>
-        </tr>
-    </thead>
-    <tbody>
-<!-- Categories -->
-    {% set ns = namespace(current_category=False) %}
-    {% for item in catalog_inline %}
-        {% if ns.current_category != item['category_id']%}
-        <tr>
-            <th colspan="100%">
-                <h2>
-                    <img class="thumbnail img-responsive img-medium-eshop-categ"
-                        src="{{ url_for('static', filename='odoo_data/eshop_category__image_medium__%d__%s' % (
-item['category_id'], item['category_image_write_date_hash'])) }}"/>
-                    {{ item['category_complete_name'] }}<br />
-                </h2>
-            </th>
-        </tr>
-        {% endif %}
-        {% set ns.current_category = item['category_id']%}
-        <tr>
-            <td>
-                <a href="#" data-featherlight="{{ url_for('product_popup', product_id=item['id']) }}">
-            {% if not company.eshop_vat_included and item['default_code']%}{{ item['default_code']}} - {% endif %}
-                {{ item['name'] }}</a>
-            </td>
-            <td class="labels">
-            {% for label_id in item['label_ids'] %}
-                {% set label = get_object('product.label', label_id) %}
-                    <img class="img-small-label" title="{{label.name}}"
-                        src="{{ url_for('static', filename=label.image_small_local_path) }}"/>
-            {% endfor %}
-            </td>
-            <td>
-        {% if company.eshop_vat_included %}
+<input type="text" id="searchInput" class="form-control" placeholder="{{ _('Search products...') }}"/>
 
-                {{ item['list_price']|to_currency }}
-        {% else %}
-                {{ item['list_price_vat_excl']|to_currency }}
+<!-- Init variable -->
+{% set ns = namespace(current_category=False) %}
 
-        {% endif %}
-
-            </td>
-            <td>
-                {{ item['uom_eshop_description'] }}
-            </td>
-            <td>
-                {{item['eshop_minimum_qty']|float_to_string}}
-            </td>
-            {% if not company.eshop_vat_included %}
-            <td>
-                {% for tax_id in item['tax_ids'] %}
-                    {% set tax = get_object('account.tax', tax_id) %}
-                    {{ tax.description }}
-                {% endfor %}
-            </td>
+<!-- LARGE SCREEN -->
+<div class="d-none d-md-block">
+<div class="table-responsive">
+    <table class="catalog-table table table-hover eshop_table_float_thead" id="catalog-inline-table">
+        <thead class="catalog-thead table-light">
+            <tr>
+                <th class="table-head-image"><!-- Product image --></th>
+                <th>{{_('Product Name')}}</th>
+                <th>{{_('Labels')}}</th>
+                {% if not company.eshop_vat_included %}
+                    <th>{{_('VAT')}}</th>
+                {% endif %}
+                <th>{{ _('Quantity') }}</th>
+            </tr>
+        </thead>
+        <tbody class="table-group-divider" id="catalog-inline-body">
+        {% for item in catalog_inline %}
+            {% if ns.current_category != item['category_id']%}
+            {% set category = get_object('eshop.category', item['category_id']) %}
+            <tr class="catalog-row-desktop">
+                <th class="catalog-row-category" colspan="100%">
+                    <h3>
+                        <img class="img-medium-eshop-categ"
+                            src="{{ url_for('static', filename=category.image_512_local_path) }}"/>
+                        {{ item['category_complete_name'] }}
+                    </h3>
+                </th>
+            </tr>
             {% endif %}
-            <td class="td-input-text">
+            {% set ns.current_category = item['category_id']%}
+            {% set product = get_object('product.product', item['id'] ) %}
+            <tr class="catalog-row-desktop">
+
+                <!-- Image -->
+                <td class="td-product-image">
+                    <a onclick="GoToThePage(this)" href="#" page_url="{{ url_for('product', product_id=product.id)}}">
+                        <img src="{{ url_for('static', filename=product.image_128_local_path) }}"
+                        class="img-thumbnail rounded" alt="{{ product.name }}" loading="lazy"/>
+                    </a>
+                </td>
+
+                <!-- Product name and description -->
+                <td>
+                    <a onclick="GoToThePage(this)" href="#" page_url="{{ url_for('product', product_id=product.id)}}">
+                        {% if not company.eshop_vat_included and product.default_code %}{{ product.default_code }} - {% endif %}{{ product.name }}
+                    </a>
+                    <span class="cart-unit-price"><br/>{{ _('Unit price:') }}
+                        {% if company.eshop_vat_included %}
+                                {{ item['list_price']|to_currency }}
+                        {% else %}
+                                {{ item['list_price_vat_excl']|to_currency }} {{ _('VAT. Excl.') }}
+                        {% endif %} / {{ item['uom_eshop_description'] }}</span>
+                </td>
+
+                <!-- Labels -->
+                <td class="labels">
+                    {% for label_id in item['label_ids'] %}
+                        {% set label = get_object('product.label', label_id) %}
+                        <img class="img-small-label" data-bs-toggle="tooltip" title="{{label.name}}"
+                            src="{{ url_for('static', filename=label.image_128_local_path) }}" />
+                    {% endfor %}
+                </td>
+
+                <!-- Taxes -->
+                {% if not company.eshop_vat_included %}
+                    <td>
+                        {% for tax_id in item['tax_ids'] %}
+                            {% set tax = get_object('account.tax', tax_id) %}
+                            {{ tax.description }}
+                        {% endfor %}
+                    </td>
+                {% endif %}
+
+                <!-- Quantity -->
+                <td>
+                    <form class="d-flex align-items-center gap-2">
+                        <input type="hidden" name="product_id" value="{{ item['id'] }}"/>
+                        <input type="text" class="form-control input-quantity {{ item['qty'] and 'input-not-null-qty' or '' }} {{ item['discount'] < 0 and 'input-surcharge' or '' }}"
+                            id="quantity_{{ item['id'] }}"
+                            name="new_quantity" value="{{ item['qty'] }}"/>
+                        <span class="small">{{ item['uom_eshop_description'] }}
+                        </span>
+                        <span class="text-muted small">
+                        {% if item['eshop_minimum_qty'] %}
+                             {{ _('Min: ') }}{{ item['eshop_minimum_qty'] | float_to_string }} {{ item['uom_eshop_description'] }}
+                        {% endif %}
+                        </span>
+                    </form>
+                </td>
+            </tr>
+
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+</div>
+
+
+<!-- SMALL SCREEN -->
+{% set ns = namespace(current_category=False) %}
+<div class="catalog-table-responsive d-md-none d-block">
+{% for item in catalog_inline %}
+    {% if ns.current_category != item['category_id']%}
+    {% set category = get_object('eshop.category', item['category_id']) %}
+    <hr/>
+    <h5 class="text-center">{{ item['category_complete_name'] }}</h5>
+    {% endif %}
+
+    {% set ns.current_category = item['category_id']%}
+    {% set product = get_object('product.product', item['id'] ) %}
+    <div class="product-card card border border-secondary" data-name="{{ item['name'] }}">
+
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center gap-2">
+                <img src="{{ url_for('static', filename=product.image_128_local_path) }}"
+                     class="card-img-small rounded" alt="{{ product.name }}" loading="lazy"/>
+                <span>{{ item['name'] }}</span>
+            </div>
+            <div class="d-flex align-items-center gap-1 flex-wrap">
+                {% for label_id in item['label_ids'] %}
+                    {% set label = get_object('product.label', label_id) %}
+                    <img class="card-img-small" title="{{label.name}}"
+                         src="{{ url_for('static', filename=label.image_128_local_path) }}"/>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="card-body py-3 px-3">
+            <form class="d-flex align-items-center gap-2">
+                {{ _('Quantity to order: ') }}
                 <input type="hidden" name="product_id" value="{{ item['id'] }}"/>
-                <input type="text" class="form-control input-quantity {{ item['qty'] and 'input-not-null-qty' or ''}} {{ item['discount'] < 0 and 'input-surcharge' or ''}}"
-                        id="quantity_{{item['id']}}"
-                        name="new_quantity" value="{{ item['qty'] }}"/>
-            </td>
-        </tr>
-    {% endfor %}
-    </tbody>
-    <tfooter>
-        <tr id="catalog_inline_shopping_cart_line"
+                <input type="text" class="form-control input-quantity {{ item['qty'] and 'input-not-null-qty' or '' }} {{ item['discount'] < 0 and 'input-surcharge' or '' }}"
+                    id="quantity_{{ item['id'] }}"
+                    name="new_quantity" value="{{ item['qty'] }}"/>
+                <span class="small">{{ item['uom_eshop_description'] }}
+                </span>
+            </form>
+        </div>
 
-        {% if not sale_order %}
-            style="visibility: hidden;"
-        {% endif %}
-        >
-            <th colspan="100%">
-                <a onclick="GoToThePage(this)" page_url="{{url_for('shopping_cart')}}"
-                    class="btn btn-default" href="#" role="button">
-                    <span class="glyphicon glyphicon-shopping-cart"/>
-                    {{ _('Go to Shopping Cart to finish your Order') }}</a>
-            </th>
-        </tr>
-    </tfooter>
-</table>
+        <div class="card-footer">
+            <strong><i class="bi bi-currency-exchange"></i> {{ _('Unit Price') }}:</strong> {{ item['list_price']|to_currency }} / {{ item['uom_eshop_description'] }}
+            {% if item['eshop_minimum_qty'] %}
+            <br/>
+            <strong><i class="bi bi-arrow-up-short"></i> {{ _('Minimal Quantity') }}:</strong> {{ item['eshop_minimum_qty'] }} {{ item['uom_eshop_description'] }}
+            {% endif %}
+        </div>
 
+    </div>
+{% endfor %}
+</div>
 
-<!-- JQuery -->
+<div id="catalog-btn-confirm" class="position-sticky bottom-0">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6 col-xl-4">
+                <button id="cart-btn-confirm" class="btn btn-primary btn-lg w-100 d-flex align-items-center justify-content-center"
+                    onclick="GoToThePage(this)" href="#" page_url="{{url_for('shopping_cart')}}">
+                    <i class="bi bi-basket2 me-2"></i>{{ _('Finish Order') }}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script src="{{ url_for('static', filename='js/catalog_inline_quantity_update.js') }}"></script>
 <script src="{{ url_for('static', filename='js/set_table_float_thead.js') }}"></script>
+
+
+<script>
+    /* Handling search filtering */
+    document.getElementById('searchInput').addEventListener('input', function () {
+        const search = this.value.toLowerCase();
+
+        /* Desktop view */
+        document.querySelectorAll('.catalog-row-desktop').forEach(function (row) {
+            const name = row.textContent.toLowerCase();
+            row.style.display = name.includes(search) ? '' : 'none';
+        });
+
+        /* Mobile view */
+        document.querySelectorAll('.product-card').forEach(function (card) {
+            const name = card.dataset.name.toLowerCase();
+            card.style.setProperty('display', name.includes(search) ? '' : 'none');
+        });
+    });
+</script>
+
+
 {% endblock %}

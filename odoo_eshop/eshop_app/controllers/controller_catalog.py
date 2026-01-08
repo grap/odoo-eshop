@@ -13,7 +13,6 @@ from ..tools.web import redirect_url_for
 # ############################################################################
 @app.route("/catalog_tree/", defaults={"category_id": False})
 @app.route("/catalog_tree/<int:category_id>")
-@requires_auth
 def catalog_tree(category_id):
     category_ids = execute_odoo_command(
         "eshop.category",
@@ -68,7 +67,7 @@ def catalog_inline_quantity_update():
         return jsonify(result=res)
     # TODO, fix me, the website is not working anymore if javascript is
     # disabled
-    flash(res["message"], res["state"])
+    flash(res["messages"], res["state"])
     return redirect_url_for("catalog_inline")
 
 
@@ -76,7 +75,6 @@ def catalog_inline_quantity_update():
 # Product Routes
 # ############################################################################
 @app.route("/product/<int:product_id>")
-@requires_auth
 def product(product_id):
     # Get Products
     product = get_odoo_object("product.product", product_id)

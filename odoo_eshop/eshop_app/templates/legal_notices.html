@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+
+{% block container %}
+
+<!-- JQuery -->
+<script>
+    $('#nav_legal_notices').addClass('active');
+</script>
+
+<div class="container my-3 py-4">
+    <div class="text-center mb-3">
+        <h1 class="display-5 fw-bold">⚖️ {{ _('Legal notices') }}</h1>
+        <p class="text-muted">{{ _("Even if we like them with chocolate, we don't need cookie here : no data leek !") }} <i class="bi bi-cookie"></i></p>
+    </div>
+
+    <div class="card shadow-lg border-0 rounded-4 p-4 bg-light">
+        <section class="mb-3">
+            <h4 class="legal_notice_title"><i class="bi bi-person-badge"></i> {{ _('About us') }}</h4>
+            <p><strong>{{ company.name }}</strong><br>
+            {{ company.report_legal_description }}<br><br>
+                {{ _('Registered capital: ') }}{{ company.eshop_registered_capital | to_currency }}<br>
+                {{ _('Registration number: ') }}{{ company.eshop_registration_number }}<br>
+                {{ _('VAT: ') }}{{ company.vat }}
+            </p>
+        </section>
+
+        <section class="mb-3">
+            <h4 class="legal_notice_title"><i class="bi bi-feather"></i> {{ _('Details') }}</h4>
+            <p>
+               {{ company.street }} - {{ company.zip }} {{ company.city }}<br>
+               <i class="bi bi-envelope-at"></i> {{ company.email | safe_email }}<br>
+            </p>
+        </section>
+
+        <section class="mb-3">
+            <h4 class="legal_notice_title"><i class="bi bi-person-lines-fill"></i> {{ _('Terms and conditions of sale') }}</h4>
+            <p>{{ company.invoice_terms | safe }}</p>
+        </section>
+
+        <section class="mb-3">
+            <h4 class="legal_notice_title"><i class="bi bi-cloud-check-fill"></i> {{ _('Website hosting') }}</h4>
+            {{ company.eshop_hosting | safe }}
+        </section>
+
+        <section class="mb-3">
+            <h4 class="legal_notice_title"><i class="bi bi-lightbulb-fill"></i> {{ _('Intellectual property') }}</h4>
+            <p>
+                {{ _('Products pictures, logo and other images related to our activity are protected : ask us for using them.') }}<br>
+                {{ _('Other pictures used for page 404 etc are free pictures and copyright informations are never very far from the picture') }}<br>
+                {{ _('This website is a Free Software and is part of Odoo. You can find, use, modify and participate to our code here: <a target="_blank" href="https://github.com/grap/odoo-eshop/">https://github.com/grap/odoo-eshop</a>.') }}<br>
+
+
+            </p>
+        </section>
+
+        <section class="mb-3">
+            <h4 class="legal_notice_title"><i class="bi bi-shield-lock-fill"></i> {{ _('Data protection') }}</h4>
+            <p>
+                {{ _('In accordance with the RGPD, you can request access, rectification or deletion of your data at the following address:') }}<br>
+               <i class="bi bi-envelope-at"></i> informatique(arobase)grap.coop<br>
+            </p>
+        </section>
+        <section class="mb-3">
+            <h4 class="legal_notice_title"><i class="bi bi-person-fill-gear"></i> {{ _('Mediation') }}</h4>
+            <p>
+                In accordance with article L156-1 of the French Consumer Code, the consumer is informed of the possibility of resorting, in the event of a dispute, to a conventional mediation procedure or any other alternative dispute resolution method.
+                <br>
+                {{ company.name }} is a member of {{ company.eshop_consumer_mediation }}.
+                <br>Consumers are also informed of the existence of the platform set up online by the European Commission, whose purpose is to collect any complaints arising from an online purchase by European consumers, and then to forward the cases received to the competent national mediators: <a target="_blank" href="http://ec.europa.eu/consumers/odr/">http://ec.europa.eu/consumers/odr/</a>
+            </p>
+        </section>
+
+        <section>
+            <h4 class="legal_notice_title"><i class="bi bi-stars"></i> {{ _('Credits & thanks') }}</h4>
+            <p>
+                {{ _('This website was developed by the IT team of <a target="_blank" href="https://www.grap.coop/">our democratic cooperative Grap</a>')}}<br>
+                {{ _('Thanks to our fabulous colleagues from <a target="_blank" href="https://labellebrulerie.fr/">Label(le) Brûlerie</a> and their delicious coffee ☕💛')}}<br>
+                {{ _('Thanks to all the Free Software communities of Flask, Jinja2, Bootstrap, Jquery and Odoo Community Association of course ✊') }}<br>
+            </p>
+        </section>
+    </div>
+</div>
+{% endblock %}
