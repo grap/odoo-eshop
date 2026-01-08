@@ -7,9 +7,8 @@ from ..models.res_partner import (
     get_current_partner,
     get_current_partner_id,
 )
-from ..models.sale_order import (
-    get_current_sale_order,
-)
+from ..models.sale_order import get_current_sale_order
+
 from ..tools.auth import requires_auth
 from ..tools.web import redirect_url_for
 
