@@ -17,14 +17,19 @@ def catalog_tree(category_id):
     category_ids = execute_odoo_command(
         "eshop.category",
         "search",
-        [("parent_id", "=", category_id)],
+        [
+            ("parent_id", "=", category_id),
+        ],
     )
 
     # Get Products
     product_ids = execute_odoo_command(
         "product.product",
         "search",
-        [("eshop_state", "=", "available"), ("eshop_category_id", "=", category_id)],
+        [
+            ("eshop_state", "=", "available"), 
+            ("eshop_category_id", "=", category_id),
+        ],
         order="name",
     )
 
