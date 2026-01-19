@@ -26,7 +26,14 @@ from ..tools.web import redirect_url_for
 def account():
     incorrect_data = False
     vals = {}
+    # Load all countries
+    countries_list = execute_odoo_command(
+        "res.country",
+        "browse_by_search", [],
+    )
+    country_id = get_current_partner(force_reload=True).country_id
     if not len(request.form) == 0:
+
         # Check Phone
         phone, error_message = check_phone(request.form["phone"])
         if error_message and phone:
@@ -46,10 +53,12 @@ def account():
                     "street2": request.form["street2"],
                     "zip": request.form["zip"],
                     "city": request.form["city"],
+                    "country_id": request.form["country_id"],
                     "phone": phone,
                     "mobile": mobile,
                 }
             )
+            country_id = request.form["country_id"]
             execute_odoo_command(
                 "res.partner", "update_from_eshop", get_current_partner_id(), vals
             )
@@ -58,8 +67,14 @@ def account():
                 "success",
             )
 
+    # Handle country in select list of account page
+    actual_country = execute_odoo_command(
+        "res.country",
+        "browse_by_search", [('id', '=', country_id)],
+    )
+
     partner = get_current_partner(force_reload=True)
-    return render_template("account.html", partner=partner)
+    return render_template("account.html", partner=partner, countries_list=countries_list, actual_country=actual_country)
 
 
 @app.route("/account_password", methods=["GET", "POST"])
@@ -180,11 +195,18 @@ def logout_view():
 def register():  # noqa: C901
     # Check if the operation is possible
     company = get_current_company()
+
+    # Load all countries
+    countries_list = execute_odoo_command(
+        "res.country",
+        "browse_by_search", [],
+    )
+
     if not company.eshop_register_allowed or get_current_partner():
         return redirect_url_for("home")
 
     if len(request.form) == 0:
-        return render_template("register.html")
+        return render_template("register.html", countries_list=countries_list)
 
     incorrect_data = False
     # Check First Name
@@ -291,6 +313,7 @@ def register():  # noqa: C901
                 "street2": request.form["street2"],
                 "zip": request.form["zip"],
                 "city": request.form["city"],
+                "country_id": request.form["country_id"],
                 "phone": phone,
                 "mobile": mobile,
                 "eshop_password": password,

@@ -54,7 +54,7 @@
                 {% if recovery_moment.is_complete|function_to_eval %}
                   <span class="badge bg-secondary">{{ _('Complete') }}</span>
                 {% else %}
-                    {% if company.eshop_wallet_enabled %}
+                    {% if company.eshop_wallet_enabled or company.eshop_mollie_enabled %}
                       <a href="#" class="btn btn-primary btn-sm w-100 mt-3"
                          onclick="GoToThePage(this)"
                          page_url="{{ url_for('select_recovery_moment', recovery_moment_id=recovery_moment.id) }}">

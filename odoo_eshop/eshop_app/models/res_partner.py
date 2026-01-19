@@ -22,7 +22,6 @@ def get_current_partner(force_reload=False):
         force_reload=force_reload,
     )
 
-
 def partner_domain(partner_field):
     return (partner_field, "=", session.get("partner_id", -1))
 

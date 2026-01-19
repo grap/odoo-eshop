@@ -73,6 +73,10 @@ _ODOO_MODELS = {
         "proxy": odoo.env["account.tax"],
         "prefetch": True,
     },
+    "account.move": {
+        "proxy": odoo.env["account.move"],
+        "prefetch": True,
+    },
     "eshop.category": {
         "proxy": odoo.env["eshop.category"],
         "prefetch": True,

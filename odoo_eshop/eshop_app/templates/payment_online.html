@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block breadcrumb %}
+<nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{ url_for('shopping_cart')}}">{{ _('Shopping Cart') }}</a></li>
+        <li class="breadcrumb-item"><a href="{{ url_for('recovery_moment_place')}}">{{ _('Recovery Moment Place') }}</a></li>
+        <li class="breadcrumb-item" aria-current="page"><a href="{{ url_for('payment')}}">{{ _('Choose payment') }}</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{{ _('Online payment') }}</li>
+    </ol>
+</nav>
+{% endblock %}
+
+{% block container %}
+
+<!-- PAY ONLINE WITH MOLLIE -->
+{% if company.eshop_mollie_enabled %}
+
+<div class="container">
+
+    <div class="card p-4 shadow">
+        
+        <iframe
+          id="payment_online"
+          allow="payment"
+          title="Exemple"
+          height="1200"
+          src="{{payment_url}}">
+        </iframe>
+
+
+    </div>
+</div>
+{% endif %}
+
+{% endblock %}

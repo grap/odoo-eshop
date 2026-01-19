@@ -114,6 +114,22 @@ document.addEventListener("DOMContentLoaded", function () {
             </div>
 
             <div class="col-md-6 form-floating">
+                <select name="country_id" id="country" class="form-control input-required account_data" required>
+                    <!-- TODO : Default value could be based on res.company ? -->                    
+                    <option value="75">{{ _('France') }}</option>
+
+                    {% for country in countries_list %}
+                        <option value="{{ country.id }}">
+                            {{ country.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+                <label for="country" class="required">{{ _('Country') }}</label>
+            </div>
+
+            <br/>
+            
+            <div class="col-md-6 form-floating">
                 {% if company.eshop_register_phone_required %}
                     <input type="tel" class="form-control account_data" id="mobile" name="mobile" value="{{ request.form['mobile']}}" required>
                     <label for="mobile" class="required">{{ _('Cell Phone') }}</label>
