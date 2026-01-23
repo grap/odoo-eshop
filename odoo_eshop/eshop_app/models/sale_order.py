@@ -1,6 +1,6 @@
 from flask_babel import gettext as _
 
-from ..models.models import execute_odoo_command, get_odoo_uncached_object
+from ..models.models import execute_odoo_command, get_odoo_uncached_object, get_odoo_object
 from .res_company import get_current_company
 from .res_partner import get_current_partner_id
 from .tools import currency
@@ -51,6 +51,10 @@ def get_current_sale_order_recovery_moment(order):
     result = result or []
     return result
 
+def get_sale_order(sale_id):
+    result = get_odoo_object("sale.order", sale_id)
+    result = result or []
+    return result
 
 # ############################################################################
 # I/O Odoo - Sale Order Line

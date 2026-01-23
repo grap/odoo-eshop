@@ -85,6 +85,9 @@ _ODOO_MODELS = {
     "eshop.fake.account": {
         "proxy": odoo.env["eshop.fake.account"],
     },
+    "payment.transaction": {
+        "proxy": odoo.env["payment.transaction"],
+    },
     "product.label": {
         "proxy": odoo.env["product.label"],
         "prefetch": True,

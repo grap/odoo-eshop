@@ -96,6 +96,12 @@ def legal_notices():
     return render_template("legal_notices.html")
 
 
+@app.route("/contact")
+@requires_connection
+def contact():
+    return render_template("contact.html")
+
+
 # ############################################################################
 # Technical Routes
 # ############################################################################
