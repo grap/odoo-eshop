@@ -593,3 +593,24 @@ input.form-control.pe-5 {
 .legal_notice_title {
     color: var(--main-color);
 }
+
+/* ======== Online payment ======== */
+#mollie_container_payment_online {
+    text-align: center;
+
+    iframe {
+        width: 350px;
+        height: 550px;
+    }
+
+    @media (min-width: 600px) {
+        iframe {
+            width: 500px;
+        }
+    }
+    @media (min-width: 1000px) {
+        iframe {
+            width: 800px;
+        }
+    }
+}
