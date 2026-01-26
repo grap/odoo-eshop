@@ -12,8 +12,10 @@ from ..models.sale_order import (
     get_current_sale_order,
     get_sale_order,
 )
-from ..models.payment_transaction import get_transaction_status
-
+from ..models.payment_transaction import (
+    get_transaction,
+    get_transaction_status,
+)
 from ..tools.auth import requires_auth
 from ..tools.web import redirect_url_for
 from ..tools.config import conf
@@ -97,15 +99,13 @@ def payment_validation_online(sale_order_id):
 @requires_auth
 def payment_validation_online_status(sale_id, transaction_id):
     '''
-        Retrieve transaction status and give to template
-        state = [draft, pending, authorized, done, cancel, error]
+        Retrieve transaction status [draft, pending, authorized, done, cancel, error]
+        1. If it's ok, create invoice, payment and reconcile them
+        2. Then give transaction status to template
     '''
+    transaction = get_transaction(transaction_id)
     transaction_status = get_transaction_status(transaction_id)
     sale_order = get_sale_order(sale_id)
-
-
-
-    import pdb; pdb.set_trace()
 
     if not transaction_status:
         return render_template("404.html")
@@ -122,68 +122,16 @@ def payment_validation_online_status(sale_id, transaction_id):
             flash(_("Error while confirming your sale order."), "danger")
             return render_template("200.html")
         else:
-            # Create a paid invoice and link to sale
             invoice_id = execute_odoo_command(
                 "sale.order",
                 "eshop_invoice_online_payment",
                 sale_order.id,
+                transaction.id,
             )
+
             return render_template("payment_online.html", status=transaction_status)
 
     return render_template("payment_online.html", status=transaction_status)
-
-
-
-
-# @app.route("/payment_validation_online/<int:sale_order_id>")
-# @requires_auth
-# def payment_validation_online(sale_order_id):
-#     # 0. Get infos before SO to be validated
-#     sale_order = get_current_sale_order()
-#     recovery_name = sale_order.recovery_name
-
-#     # 1. Confirm Sale Order
-#     confirm_order = execute_odoo_command(
-#         "sale.order",
-#         "eshop_confirm_sale_order",
-#         get_current_partner_id(),
-#     )
-#     if not confirm_order:
-#         flash(_("Error while confirming your sale order."), "danger")
-#         return redirect_url_for("payment")
-#     else:
-#         # 2. Create a paid invoice and link to sale
-#         invoice_id = execute_odoo_command(
-#             "sale.order",
-#             "eshop_invoice_online_payment",
-#             sale_order_id,
-#         )
-        
-#         import requests
-
-#         url = "http://localhost:8016/api/generate_payment_link/"
-#         data = {
-#             "jsonrpc": "2.0",
-#             "method": "call",
-#             "params": {"invoice_id": invoice_id},
-#             "id": 1
-#         }
-
-#         resp = requests.post(url, json=data)
-#         print(resp.json())
-
-#         payment_url = resp.json().get('result')['payment_url']
-
-
-#         # Gérer les erreurs
-
-#         # if invoice_online_payment == "error":
-#         #     flash(_("Error while confirming your payment."), "danger")
-#         #     return redirect_url_for("payment")
-#         # else:
-#         return render_template("payment_online.html", payment_url=payment_url)
-#         # return redirect(payment_url)
-
 
 @app.route("/sale_confirmed/<string:recovery_name>")
 @requires_auth

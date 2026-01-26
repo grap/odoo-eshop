@@ -9,3 +9,8 @@ def get_transaction_status(transaction_id):
         return res.state
     else:
         return False
+
+def get_transaction(transaction_id):
+    result = get_odoo_object("payment.transaction", transaction_id)
+    result = result or []
+    return result
