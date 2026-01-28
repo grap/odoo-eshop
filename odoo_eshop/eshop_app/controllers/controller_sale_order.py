@@ -127,26 +127,33 @@ def recovery_moment_place():
 @app.route("/select_recovery_moment/<int:recovery_moment_id>")
 @requires_auth
 def select_recovery_moment(recovery_moment_id):
-    company = get_current_company()
-    result = execute_odoo_command(
+    # Add recovery moment to SO
+    res_recovery_moment = execute_odoo_command(
         "sale.order",
         "eshop_select_recovery_moment",
         get_current_partner_id(),
         recovery_moment_id,
     )
-    if result == "recovery_moment_complete":
+    recovery_name = get_current_sale_order().recovery_name
+
+    # Full recovery moment
+    if res_recovery_moment == "recovery_moment_complete":
         flash(_("The recovery moment is complete." " Please try again."), "danger")
         return redirect_url_for("recovery_moment_place")
     else:
-        if company.eshop_wallet_enabled:
-            # Sale order will be confirmed at payment
-            return redirect_url_for("payment")
-        else:
-            # Sale order is confirmed now
-            result = execute_odoo_command(
-                "sale.order",
-                "eshop_confirm_sale_order",
-                get_current_partner_id(),
-            )
-            flash(_("Your Sale Order is now confirmed."), "success")
-            return redirect_url_for("home")
+        # Get to payment choice
+        return redirect_url_for("payment")
+
+
+        # company = get_current_company()
+        # if company.eshop_wallet_enabled or company.eshop_mollie_enabled:
+        #     # Sale order will be confirmed after payment validation
+        #     return redirect_url_for("payment")
+        # else:
+        #     # Sale order is confirmed now
+        #     execute_odoo_command(
+        #         "sale.order",
+        #         "eshop_confirm_sale_order",
+        #         get_current_partner_id(),
+        #     )
+        #     return render_template("sale_confirmed.html", recovery_name=recovery_name, command_paid=False)

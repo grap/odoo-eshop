@@ -29,8 +29,11 @@ import requests
 @requires_auth
 def payment():
     sale_order = get_current_sale_order()
+    if not sale_order:
+        return render_template("404.html")    
     partner = get_current_partner()
-    return render_template("payment.html", partner=partner, sale_order=sale_order)
+    recovery_name = sale_order.recovery_name
+    return render_template("payment.html", partner=partner, sale_order=sale_order, recovery_name=recovery_name)
 
 
 # Confirm SO
@@ -40,6 +43,8 @@ def payment():
 def payment_validation(sale_order_id):
     # 0. Get infos before SO to be validated
     sale_order = get_current_sale_order()
+    if not sale_order:
+        return render_template("404.html")    
     recovery_name = sale_order.recovery_name
 
     # 1. Confirm Sale Order
@@ -62,7 +67,7 @@ def payment_validation(sale_order_id):
             flash(_("Error while confirming your payment."), "danger")
             return redirect_url_for("payment")
         else:
-            return redirect_url_for("sale_confirmed", recovery_name=recovery_name)
+            return redirect_url_for("sale_confirmed", recovery_name=recovery_name, command_paid=True)
 
 # Launch payment with Mollie
 @app.route("/payment_validation_online/<int:sale_order_id>")
@@ -70,6 +75,8 @@ def payment_validation(sale_order_id):
 def payment_validation_online(sale_order_id):
     # 0. Get infos
     sale_order = get_current_sale_order()
+    if not sale_order:
+        return render_template("404.html")
 
     odoo_base_url = str(
         "http://" + conf.get("odoo", "host") + ":" + conf.get("odoo", "port")
@@ -84,15 +91,7 @@ def payment_validation_online(sale_order_id):
     resp = requests.post(url, json=data)
     payment_url = resp.json().get('result')['payment_url']
 
-
-    # Gérer les erreurs
-
-    # if invoice_online_payment == "error":
-    #     flash(_("Error while confirming your payment."), "danger")
-    #     return redirect_url_for("payment")
-    # else:
     return render_template("payment_online.html", payment_url=payment_url)
-    # return redirect(payment_url)
 
 # Retrieve page after Mollie payment
 @app.route("/payment_validation_online/status/<int:sale_id>/<int:transaction_id>")
@@ -120,7 +119,7 @@ def payment_validation_online_status(sale_id, transaction_id):
         )
         if not confirm_order:
             flash(_("Error while confirming your sale order."), "danger")
-            return render_template("200.html")
+            return render_template("404.html")
         else:
             invoice_id = execute_odoo_command(
                 "sale.order",
@@ -133,10 +132,31 @@ def payment_validation_online_status(sale_id, transaction_id):
 
     return render_template("payment_online.html", status=transaction_status)
 
+@app.route("/payment_on_site_validation")
+@requires_auth
+def payment_on_site_validation():
+    # 0. Get infos before SO to be validated
+    sale_order = get_current_sale_order()
+    if not sale_order:
+        return render_template("404.html")
+    recovery_name = sale_order.recovery_name 
+
+    # 1. Confirm Sale Order
+    confirm_order = execute_odoo_command(
+        "sale.order",
+        "eshop_confirm_sale_order",
+        get_current_partner_id(),
+    )
+    if not confirm_order:
+        flash(_("Error while confirming your sale order."), "danger")
+        return redirect_url_for("payment")
+    else:
+        return render_template("sale_confirmed.html", recovery_name=recovery_name, command_paid=False)
+
 @app.route("/sale_confirmed/<string:recovery_name>")
 @requires_auth
 def sale_confirmed(recovery_name):
-    return render_template("sale_confirmed.html", recovery_name=recovery_name)
+    return render_template("sale_confirmed.html", recovery_name=recovery_name, command_paid=False)
 
 
 
