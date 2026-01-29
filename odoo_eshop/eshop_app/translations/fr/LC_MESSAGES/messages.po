@@ -373,7 +373,7 @@ msgstr "Par virement bancaire"
 #: templates/account_wallet.html:41
 msgid "You can recharge your wallet by bank transfer using the following RIB:"
 msgstr ""
-"Vous pouvez recharger votre compte par virement bancaire en utilisant ce "
+"Vous pouvez recharger votre porte monnaie par virement bancaire en utilisant ce "
 "RIB :"
 
 #: templates/account_wallet.html:48
@@ -391,7 +391,7 @@ msgid ""
 "Your wallet account will be updated after a <b>manual verification</b> "
 "that the transfer has been received."
 msgstr ""
-"Votre compte client sera mis à jour <b>manuellement</b> après "
+"Votre porte monnaie sera mis à jour <b>manuellement</b> après "
 "vérification."
 
 #: templates/account_wallet.html:68
@@ -420,7 +420,7 @@ msgstr "Achat rapide"
 
 #: templates/base.html:96 templates/base.html:145
 msgid "Wallet: "
-msgstr "Compte client·e :"
+msgstr "Porte monnaie :"
 
 #: templates/base.html:103
 msgid "Shopping Cart: "
@@ -863,11 +863,11 @@ msgstr "Choisissez un de ce moyens de paiement :"
 
 #: templates/payment.html:27
 msgid "Pay with wallet"
-msgstr "Payer avec son compte client·e"
+msgstr "Payer avec son porte monnaie"
 
 #: templates/payment.html:30
 msgid "Money in your wallet"
-msgstr "Montant dans votre compte client·e"
+msgstr "Montant dans votre porte monnaie"
 
 #: templates/payment.html:33
 msgid "Balance after payment :"
@@ -881,7 +881,7 @@ msgstr "Confirmer la suppression"
 #: templates/payment.html:46
 msgid "You don't have enough money in your wallet to validate this order."
 msgstr ""
-"Vous n'avez pas assez d'argent dans votre compte client·e pour valider ce"
+"Vous n'avez pas assez d'argent dans votre porte monnaie pour valider ce"
 " panier."
 
 #: templates/payment.html:57
@@ -1075,7 +1075,7 @@ msgstr "Choisir"
 
 #: templates/recovery_moment_place.html:74
 msgid "Extra Cost"
-msgstr "Coût supplémentaire"
+msgstr "Frais de livraison"
 
 #: templates/recovery_moment_place.html:93
 msgid "Confirm Order"

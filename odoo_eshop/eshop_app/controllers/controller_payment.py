@@ -127,10 +127,12 @@ def payment_validation_online_status(sale_id, transaction_id):
                 sale_order.id,
                 transaction.id,
             )
+            recovery_name = sale_order.recovery_name
+            return render_template("sale_confirmed.html", status=transaction_status, recovery_name=recovery_name, command_paid=True)
 
-            return render_template("payment_online.html", status=transaction_status)
+    else:
 
-    return render_template("payment_online.html", status=transaction_status)
+        return render_template("sale_confirmed.html", status=transaction_status)
 
 @app.route("/payment_on_site_validation")
 @requires_auth

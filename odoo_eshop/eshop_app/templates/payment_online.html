@@ -20,137 +20,22 @@
 <!-- PAY ONLINE WITH MOLLIE -->
 {% if company.eshop_mollie_enabled %}
 
-    {% if payment_url %}
-    <div id="mollie_container_payment_online" class="container">
+<div id="mollie_container_payment_online" class="container">
 
-        <div class="mt-4 container alert alert-info alert-dismissible fade show" role="alert">
-            <i class="bi bi-exclamation-diamond"></i> {{ _('Clicking on Pay will redirect you on Mollie.com page to validate your payment.') }}
-        </div>
-
-        <iframe
-          id="mollie_payment_online"
-          allowpaymentrequest="true"
-          allow="payment"
-          title="Mollie Online Payment"
-          src="{{payment_url}}"
-          frameborder="0"
-          scrolling="no"/>
-
+    <div class="mt-4 container alert alert-info alert-dismissible fade show" role="alert">
+        <i class="bi bi-exclamation-diamond"></i> {{ _('Clicking on Pay will redirect you on Mollie.com page to validate your payment.') }}
     </div>
 
-    {% elif status %}
-    <!-- status = [draft, pending, authorized, done, cancel, error] -->
+    <iframe
+      id="mollie_payment_online"
+      allowpaymentrequest="true"
+      allow="payment"
+      title="Mollie Online Payment"
+      src="{{payment_url}}"
+      frameborder="0"
+      scrolling="no"/>
 
-         <div class="container py-5">
-            <div class="row justify-content-center">
-                <div class="col-lg-7 col-md-9">
-
-        {% if status == 'draft' %}
-                    <div class="card border-secondary mb-4" data-status="draft">
-                        <div class="card-body text-center">
-                            <div class="display-4 mb-3">📝</div>
-                            <h3 class="mb-2">{{ _('Payment not completed') }}</h3>
-                            <p class="text-muted">
-                                {{ _('Your payment was not completed.') }}
-                            </p>
-                            <a href="/payment" class="btn btn-outline-secondary mt-3">
-                                {{ _('Back to payment page') }}
-                            </a>
-                            <a href="/shopping_cart" class="btn btn-secondary mt-3">
-                                {{ _('Back to cart') }}
-                            </a>
-                        </div>
-                    </div>
-
-        {% elif status == 'pending' %}
-
-                    <div class="card border-warning mb-4" data-status="pending">
-                        <div class="card-body text-center">
-                            <div class="display-4 mb-3">⏳</div>
-                            <h3 class="mb-2">{{ _('Payment pending') }}</h3>
-                            <p class="text-muted">
-                                {{ _('Your payment is being processed. This may take a few moments.') }}
-                            </p>
-                            <a href="/orders" class="btn btn-warning mt-3">
-                                {{ _('View my orders') }}
-                            </a>
-                        </div>
-                    </div>
-
-        {% elif status == 'authorized' %}
-
-                    <div class="card border-info mb-4" data-status="authorized">
-                        <div class="card-body text-center">
-                            <div class="display-4 mb-3">🔐</div>
-                            <h3 class="mb-2">{{ _('Payment authorized') }}</h3>
-                            <p class="text-muted">
-                                {{ _('Your payment method has been authorized. The transaction will be completed shortly.') }}
-                            </p>
-                            <a href="/orders" class="btn btn-info mt-3">
-                                {{ _('Track my order') }}
-                            </a>
-                        </div>
-                    </div>
-
-        {% elif status == 'done' %}
-
-                    <div class="card border-success mb-4" data-status="done">
-                        <div class="card-body text-center">
-                            <div class="display-4 mb-3">✅</div>
-                            <h3 class="mb-2">{{ _('Payment successful') }}</h3>
-                            <p class="text-muted">
-                                {{ _('Thank you for your purchase! Your payment has been successfully processed.') }}
-                            </p>
-                            <a href="/orders" class="btn btn-success mt-3">
-                                {{ _('View my orders') }}
-                            </a>
-                        </div>
-                    </div>
-
-        {% elif status == 'cancel' %}
-
-                    <div class="card border-secondary mb-4" data-status="cancel">
-                        <div class="card-body text-center">
-                            <div class="display-4 mb-3">↩️</div>
-                            <h3 class="mb-2">{{ _('Payment cancelled') }}</h3>
-                            <p class="text-muted">
-                                {{ _('The payment was cancelled. No amount has been charged.') }}
-                            </p>
-                            <a href="/payment" class="btn btn-secondary mt-3">
-                                {{ _('Back to payment method selection') }}
-                            </a>
-                        </div>
-                    </div>
-
-        {% else %}
-
-                    <!-- ERROR or other-->
-                    <div class="card border-danger mb-4" data-status="error">
-                        <div class="card-body text-center">
-                            <div class="display-4 mb-3">❌</div>
-                            <h3 class="mb-2">{{ _('Payment error') }}</h3>
-                            <p class="text-muted">
-                                {{ _('An error occurred while processing your payment. Please try again or use another payment method.') }}
-                            </p>
-                            <div class="d-flex justify-content-center gap-2 mt-3">
-                                <a href="/payment" class="btn btn-outline-danger">
-                                    {{ _('Try again') }}
-                                </a>
-                                <a href="/contact" class="btn btn-danger">
-                                    {{ _('Contact support') }}
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
-        {% endif %}
-
-                </div>
-            </div>
-        </div>  
-
-
-    {% endif %}
+</div>
 
 {% endif %}
 

@@ -143,17 +143,3 @@ def select_recovery_moment(recovery_moment_id):
     else:
         # Get to payment choice
         return redirect_url_for("payment")
-
-
-        # company = get_current_company()
-        # if company.eshop_wallet_enabled or company.eshop_mollie_enabled:
-        #     # Sale order will be confirmed after payment validation
-        #     return redirect_url_for("payment")
-        # else:
-        #     # Sale order is confirmed now
-        #     execute_odoo_command(
-        #         "sale.order",
-        #         "eshop_confirm_sale_order",
-        #         get_current_partner_id(),
-        #     )
-        #     return render_template("sale_confirmed.html", recovery_name=recovery_name, command_paid=False)

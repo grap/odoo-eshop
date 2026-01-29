@@ -1,33 +1,134 @@
 {% extends 'base.html' %}
 
+{% block breadcrumb %}
+
+{% if status in ['draft', 'pending', 'cancel', 'error'] %}
+<nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{ url_for('shopping_cart')}}">{{ _('Shopping Cart') }}</a></li>
+        <li class="breadcrumb-item"><a href="{{ url_for('recovery_moment_place')}}">{{ _('Recovery Moment Place') }}</a></li>
+        <li class="breadcrumb-item" aria-current="page"><a href="{{ url_for('payment')}}">{{ _('Choose payment') }}</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{{ _('Online payment') }}</li>
+    </ol>
+</nav>
+{% endif %}
+
+{% endblock %}
+
 {% block container %}
 
 <div class="container confirmation-container d-flex">
     <div class="confirmation-box text-center p-4 rounded shadow-lg">
+
+        <!-- HANDLE ONLINE PAYMENT CASE -->
+        {% if status == 'draft' %}
+        <div class="card-body text-center">
+            <div class="display-4 mb-3">
+                <i class="bi bi-slash-circle text-light icon-check"></i>                    
+            </div>
+            <h3 class="mb-2">{{ _('Payment not completed') }}</h3>
+            <p class="text-muted">
+                {{ _('Your payment was not completed.') }}
+            </p>
+            <a href="/payment" class="btn btn-outline-secondary mt-3">
+                {{ _('Back to payment page') }}
+            </a>
+            <a href="/shopping_cart" class="btn btn-secondary mt-3">
+                {{ _('Back to cart') }}
+            </a>
+        </div>
+
+        {% elif status == 'pending' %}
+        <div class="card-body text-center">
+            <div class="display-4 mb-3">
+                <i class="bi bi-hourglass-split text-warning icon-check"></i>                                        
+            </div>
+            <h3 class="mb-2">{{ _('Payment pending') }}</h3>
+            <p class="text-muted">
+                {{ _('Your payment is being processed. This may take a few moments.') }}
+            </p>
+            <a href="/orders" class="btn btn-warning mt-3">
+                {{ _('View my orders') }}
+            </a>
+        </div>
+
+        {% elif status == 'authorized' %}
+        <div class="card-body text-center">
+            <div class="display-4 mb-3">
+                <i class="bi bi-fast-forward-circle-fill text-warning icon-check"></i>                    
+            </div>
+            <h3 class="mb-2">{{ _('Payment authorized') }}</h3>
+            <p class="text-muted">
+                {{ _('Your payment method has been authorized. The transaction will be completed shortly.') }}
+            </p>
+            <a href="/orders" class="btn btn-info mt-3">
+                {{ _('Track my order') }}
+            </a>
+        </div>
+
+        {% elif status == 'cancel' %}
+        <div class="card-body text-center">
+            <div class="display-4 mb-3">
+                <i class="bi bi-arrow-left-circle-fill text-warning icon-check"></i>                    
+            </div>
+            <h3 class="mb-2">{{ _('Payment cancelled') }}</h3>
+            <p class="text-muted">
+                {{ _('The payment was cancelled. No amount has been charged.') }}
+            </p>
+            <a href="/payment" class="btn btn-secondary mt-3">
+                {{ _('Back to payment method selection') }}
+            </a>
+        </div>
+
+        {% elif status == 'error' %}
+        <!-- ERROR or other-->
+        <div class="card-body text-center">
+            <div class="display-4 mb-3">
+                <i class="bi bi-x-circle-fill text-danger icon-check"></i>
+            </div>
+            <h3 class="mb-2">{{ _('Payment error') }}</h3>
+            <p class="text-muted">
+                {{ _('An error occurred while processing your payment. Please try again or use another payment method.') }}
+            </p>
+            <div class="d-flex justify-content-center gap-2 mt-3">
+                <a href="/payment" class="btn btn-outline-danger">
+                    {{ _('Try again') }}
+                </a>
+                <a href="/contact" class="btn btn-danger">
+                    {{ _('Contact support') }}
+                </a>
+            </div>
+        </div>
+
+
+        <!-- NO ONLINE PAYMENT OR PAYMENT ONLINE WITH SUCCESS -->
+        {% else %}
+
         <div class="mb-4">
             <i class="bi bi-check-circle-fill text-success icon-check"></i>
         </div>
-
-            {% if command_paid %}
-            <h2 class="mb-3">{{ _('Order and payment validated') }}</h2>
-            {% else %}
-            <h2 class="mb-3">{{ _('Order validated') }}</h2>
-            {% endif %}
-            <p class="text-muted mb-4">
-                {{ _("Thank you for your order!") }}
-            </p>
-            <p class="text-muted mb-4">
-                {{ _("All that's left to do is pick up your order at your chosen collection point :") }}
-                <b>{{ recovery_name }}</b>
-            </p>
-            <p class="text-muted mb-4">
-                {{ _("You should have receive an email with all the details.") }}
-            </p>
+    
+        {% if command_paid %}
+        <h2 class="mb-3">{{ _('Order and payment validated') }}</h2>
+        {% else %}
+        <h2 class="mb-3">{{ _('Order validated') }}</h2>
+        {% endif %}
+        <p class="text-muted mb-4">
+            {{ _("Thank you for your order!") }}
+        </p>
+        <p class="text-muted mb-4">
+            {{ _("All that's left to do is pick up your order at your chosen collection point :") }}
+            <b>{{ recovery_name }}</b>
+        </p>
+        <p class="text-muted mb-4">
+            {{ _("You should have receive an email with all the details.") }}
+        </p>
         {% if not company.eshop_wallet_enabled or not command_paid %}
             <div class="alert alert-warning" role="alert">
                 <i class="bi bi-currency-exchange me-2"></i>{{ _("Don't forget your money to pay your order.") }}
             </div>
         {% endif %}
+
         <div class="d-grid gap-2">
             <a href="{{ url_for('home_logged') }}" class="btn btn-success">
                 <i class="bi bi-house-door-fill me-2"></i> {{ _('Return to Home') }}
@@ -36,6 +137,9 @@
                 <i class="bi bi-bag-check-fill me-2"></i> {{ _('View My Orders') }}
             </a>
         </div>
+        {% endif %}
+
+                        
     </div>
 </div>
 {% endblock %}
