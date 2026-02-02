@@ -1,5 +1,14 @@
 {% extends 'base.html' %}
 
+{% block breadcrumb %}
+<nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item active" aria-current="page">{{ _('Shopping Cart') }}</li>
+        <li class="breadcrumb-item "><a href="{{ url_for('recovery_moment_place')}}">{{ _('Recovery Moment Place') }}</a></li>
+    </ol>
+</nav>
+{% endblock %}
+
 {% block container %}
 
 <div class="container my-5">
@@ -32,7 +41,8 @@
             </tr>
         </thead>
         <tbody class="table-group-divider">
-        {% for line in sale_order_lines %}
+        {% for line in sale_order_lines if not line.is_shipping %}
+
             {% set product = get_object('product.product', line.product_id) %}
             {% set uom = get_object('uom.uom', line.product_uom_id) %}
             <tr>
@@ -166,6 +176,12 @@
         <div class="col-sm-12 col-lg-3 justify-content-center ">
             <div class="card w-75 w-md-100 shadow-sm rounded-3 border-success" id="card-cart-total">
                 <div class="card-body">
+                    {% for line in sale_order_lines if line.is_shipping %}
+                    <div class="d-flex justify-content-between border-bottom pb-2 mb-2">
+                        <span class="fw-semibold text-muted">{{ _('+ Shipping cost') }}</span>
+                        <span id="amount_untaxed">{{ line.price_unit|to_currency }}</span>
+                    </div>
+                    {% endfor %}
                     <div class="d-flex justify-content-between">
                         <span class="fw-semibold text-muted">{{ _('Untaxed Amount') }}</span>
                         <span id="amount_untaxed">{{ sale_order.amount_untaxed|to_currency }}</span>
