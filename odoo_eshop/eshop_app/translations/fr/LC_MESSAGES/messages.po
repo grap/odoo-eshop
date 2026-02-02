@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-01-27 11:03+0100\n"
+"POT-Creation-Date: 2026-02-02 14:28+0100\n"
 "PO-Revision-Date: 2014-10-06 14:07+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -23,9 +23,8 @@ msgid "Account Datas updated successfully."
 msgstr "Données personnelles mise à jour."
 
 #: controllers/controller_account.py:99
-#, fuzzy
 msgid "Password updated successfully."
-msgstr "Données personnelles mise à jour."
+msgstr "Mot de passe mis à jour."
 
 #: controllers/controller_account.py:182
 msgid "Login/password incorrects"
@@ -120,11 +119,12 @@ msgid ""
 "account."
 msgstr "Nous vous avons envoyé un email, si l'email fourni était lié à un compte."
 
-#: controllers/controller_payment.py:52 controllers/controller_payment.py:122
+#: controllers/controller_payment.py:57 controllers/controller_payment.py:121
+#: controllers/controller_payment.py:153
 msgid "Error while confirming your sale order."
 msgstr "Erreur au moment de la confirmation de votre panier."
 
-#: controllers/controller_payment.py:62
+#: controllers/controller_payment.py:67
 msgid "Error while confirming your payment."
 msgstr "Erreur au moment de la confirmation de votre paiement."
 
@@ -148,13 +148,9 @@ msgstr "Votre panier a été supprimé avec succès."
 msgid "You have not reached the ceiling : "
 msgstr "Vous n'avez pas atteint le franco : "
 
-#: controllers/controller_sale_order.py:138
+#: controllers/controller_sale_order.py:141
 msgid "The recovery moment is complete. Please try again."
 msgstr "Le moment de récupération est complet. Veuillez réessayer."
-
-#: controllers/controller_sale_order.py:151
-msgid "Your Sale Order is now confirmed."
-msgstr "Votre commande est désormais terminée."
 
 #: controllers/controller_technical.py:61
 #, python-format
@@ -289,7 +285,6 @@ msgstr ""
 " questionnements"
 
 #: templates/503.html:13
-#, fuzzy
 msgid "'Unavailable Service"
 msgstr "Service Indisponible"
 
@@ -373,8 +368,8 @@ msgstr "Par virement bancaire"
 #: templates/account_wallet.html:41
 msgid "You can recharge your wallet by bank transfer using the following RIB:"
 msgstr ""
-"Vous pouvez recharger votre porte monnaie par virement bancaire en utilisant ce "
-"RIB :"
+"Vous pouvez recharger votre porte monnaie par virement bancaire en "
+"utilisant ce RIB :"
 
 #: templates/account_wallet.html:48
 msgid "Beneficiary"
@@ -506,16 +501,16 @@ msgstr "Nom du produit"
 msgid "Labels"
 msgstr "Labels"
 
-#: templates/catalog_inline.html:26 templates/shopping_cart.html:17
+#: templates/catalog_inline.html:26 templates/shopping_cart.html:26
 msgid "VAT"
 msgstr "TVA"
 
-#: templates/catalog_inline.html:28 templates/shopping_cart.html:18
+#: templates/catalog_inline.html:28 templates/shopping_cart.html:27
 msgid "Quantity"
 msgstr "Quantité"
 
-#: templates/catalog_inline.html:62 templates/shopping_cart.html:52
-#: templates/shopping_cart.html:120
+#: templates/catalog_inline.html:62 templates/shopping_cart.html:62
+#: templates/shopping_cart.html:130
 msgid "Unit price:"
 msgstr "Prix unitaire:"
 
@@ -560,7 +555,6 @@ msgid "About us"
 msgstr "À propos"
 
 #: templates/contact.html:27
-#, fuzzy
 msgid "Address"
 msgstr "Adresse"
 
@@ -584,13 +578,13 @@ msgstr "Numéro"
 msgid "Invoice Date"
 msgstr "Date de facture"
 
-#: templates/invoices.html:24 templates/shopping_cart.html:170
+#: templates/invoices.html:24 templates/shopping_cart.html:186
 msgid "Untaxed Amount"
 msgstr "Total HT"
 
 #: templates/invoices.html:25 templates/invoices.html:69
 #: templates/orders.html:30 templates/orders.html:113
-#: templates/shopping_cart.html:178
+#: templates/shopping_cart.html:194
 msgid "Total"
 msgstr "Total TTC"
 
@@ -610,14 +604,12 @@ msgstr "À payer"
 
 #: templates/invoices.html:68 templates/orders.html:29
 #: templates/orders.html:112
-#, fuzzy
 msgid "Untaxed"
 msgstr "Total HT"
 
 #: templates/invoices.html:78
-#, fuzzy
 msgid "Show all invoices"
-msgstr "Vos Factures"
+msgstr "Voir toutes les factures"
 
 #: templates/invoices.html:84
 msgid "No Invoices for the time being."
@@ -743,9 +735,8 @@ msgid "Set your email..."
 msgstr "Paramétrez votre email..."
 
 #: templates/login.html:32
-#, fuzzy
 msgid "Set your password..."
-msgstr "Récupérer son mot de passe"
+msgstr "Écrire votre mot de passe"
 
 #: templates/login.html:45
 msgid "I don't have an account yet, register"
@@ -804,9 +795,8 @@ msgid "Done"
 msgstr "Terminé"
 
 #: templates/orders.html:98
-#, fuzzy
 msgid "Order on"
-msgstr "Date de commande"
+msgstr "Commandé le"
 
 #: templates/orders.html:105
 msgid "between"
@@ -821,9 +811,8 @@ msgid "Undefined recovery info"
 msgstr ""
 
 #: templates/orders.html:122
-#, fuzzy
 msgid "Show All Orders"
-msgstr "Montrer toutes vos Commandes"
+msgstr "Montrer toutes vos commandes"
 
 #: templates/orders.html:129
 msgid "No Orders for the time being."
@@ -838,168 +827,75 @@ msgid "Send Reset Link"
 msgstr "Envoyer le lien de réinitialisation"
 
 #: templates/payment.html:6 templates/payment_online.html:8
-#: templates/recovery_moment_place.html:6
+#: templates/recovery_moment_place.html:6 templates/sale_confirmed.html:8
+#: templates/shopping_cart.html:6
 msgid "Shopping Cart"
 msgstr "Panier"
 
 #: templates/payment.html:7 templates/payment_online.html:9
-#: templates/recovery_moment_place.html:7
+#: templates/recovery_moment_place.html:7 templates/sale_confirmed.html:9
+#: templates/shopping_cart.html:7
 msgid "Recovery Moment Place"
 msgstr "Lieu de récupération"
 
 #: templates/payment.html:8 templates/payment_online.html:10
-#, fuzzy
+#: templates/sale_confirmed.html:10
 msgid "Choose payment"
 msgstr "Choisir le moyen de paiement"
 
 #: templates/payment.html:16
-#, fuzzy
 msgid "Amount to pay: "
 msgstr "Montant à payer :"
 
-#: templates/payment.html:19
+#: templates/payment.html:18
 msgid "Choose one of this payment methods:"
 msgstr "Choisissez un de ce moyens de paiement :"
 
-#: templates/payment.html:27
+#: templates/payment.html:28 templates/payment.html:33
+msgid "Pay on site"
+msgstr "Payer sur place"
+
+#: templates/payment.html:47
 msgid "Pay with wallet"
 msgstr "Payer avec son porte monnaie"
 
-#: templates/payment.html:30
+#: templates/payment.html:49
 msgid "Money in your wallet"
 msgstr "Montant dans votre porte monnaie"
 
-#: templates/payment.html:33
+#: templates/payment.html:52
 msgid "Balance after payment :"
 msgstr "Solde après paiement :"
 
-#: templates/payment.html:43
-#, fuzzy
+#: templates/payment.html:62
 msgid "Confirm payment"
 msgstr "Confirmer la suppression"
 
-#: templates/payment.html:46
+#: templates/payment.html:65
 msgid "You don't have enough money in your wallet to validate this order."
 msgstr ""
-"Vous n'avez pas assez d'argent dans votre porte monnaie pour valider ce"
-" panier."
+"Vous n'avez pas assez d'argent dans votre porte monnaie pour valider ce "
+"panier."
 
-#: templates/payment.html:57
+#: templates/payment.html:79
 msgid "Pay online"
 msgstr "Payer en ligne"
 
-#: templates/payment.html:63
-#, fuzzy
+#: templates/payment.html:82
 msgid "Go to online payment"
 msgstr "Aller au paiement en ligne"
 
-#: templates/payment_online.html:11
-#, fuzzy
+#: templates/payment_online.html:11 templates/sale_confirmed.html:11
 msgid "Online payment"
 msgstr "Paiement en ligne"
 
-#: templates/payment_online.html:27
+#: templates/payment_online.html:26
 msgid ""
 "Clicking on Pay will redirect you on Mollie.com page to validate your "
 "payment."
 msgstr ""
-"Cliquer sur Payer vous redirigera vers la page de Mollie.com pour "
-"valider le paiement."
-
-#: templates/payment_online.html:52
-msgid "Payment not completed"
-msgstr "Paiement non effectué"
-
-#: templates/payment_online.html:54
-#, fuzzy
-msgid "Your payment was not completed."
-msgstr "Votre email n'a pas été trouvé"
-
-#: templates/payment_online.html:57
-#, fuzzy
-msgid "Back to payment page"
-msgstr "Solde après paiement :"
-
-#: templates/payment_online.html:60
-#, fuzzy
-msgid "Back to cart"
-msgstr "Retour à l'accueil"
-
-#: templates/payment_online.html:70
-#, fuzzy
-msgid "Payment pending"
-msgstr "Département"
-
-#: templates/payment_online.html:72
-#, fuzzy
-msgid "Your payment is being processed. This may take a few moments."
-msgstr ""
-"Merci de patienter : votre vente est en train d'être traitée.<br /> Cela "
-"peut prendre quelques secondes."
-
-#: templates/payment_online.html:75 templates/payment_online.html:105
-#, fuzzy
-msgid "View my orders"
-msgstr "Vos Commandes"
-
-#: templates/payment_online.html:85
-msgid "Payment authorized"
-msgstr "Paiement autorisé"
-
-#: templates/payment_online.html:87
-msgid ""
-"Your payment method has been authorized. The transaction will be "
-"completed shortly."
-msgstr ""
-"Votre paiement a été autorisé. La transaction sera "
-"finalisé prochainement."
-
-#: templates/payment_online.html:90
-#, fuzzy
-msgid "Track my order"
-msgstr "Vos Commandes"
-
-#: templates/payment_online.html:100
-msgid "Payment successful"
-msgstr "Paiement réussi"
-
-#: templates/payment_online.html:102
-#, fuzzy
-msgid "Thank you for your purchase! Your payment has been successfully processed."
-msgstr "Votre commentaire a été modifié avec succès."
-
-#: templates/payment_online.html:115
-msgid "Payment cancelled"
-msgstr "Paiement annulé"
-
-#: templates/payment_online.html:117
-msgid "The payment was cancelled. No amount has been charged."
-msgstr "Votre paiement a été annulé. Aucun montant n'a été facturé."
-
-#: templates/payment_online.html:120
-msgid "Back to payment method selection"
-msgstr "Retour au choix du moyen de paiement"
-
-#: templates/payment_online.html:131
-#, fuzzy
-msgid "Payment error"
-msgstr "Erreur durant le paiement"
-
-#: templates/payment_online.html:133
-msgid ""
-"An error occurred while processing your payment. Please try again or use "
-"another payment method."
-msgstr ""
-"Une erreur s'est produite lors du traitement de votre paiement. Veuillez "
-"réessayer ou utiliser un autre mode de paiement.""
-
-#: templates/payment_online.html:137
-msgid "Try again"
-msgstr "Essayer de nouveau"
-
-#: templates/payment_online.html:140
-msgid "Contact support"
-msgstr "Nous contacter"
+"Cliquer sur Payer vous redirigera vers la page de Mollie.com pour valider"
+" le paiement."
 
 #: templates/product.html:100 templates/product.html:105
 msgid "Add to Shopping Cart"
@@ -1089,11 +985,11 @@ msgstr ""
 "Vous êtes sur le point de valider votre panier, cette procédure est "
 "définitive."
 
-#: templates/recovery_moment_place.html:98 templates/shopping_cart.html:220
+#: templates/recovery_moment_place.html:98 templates/shopping_cart.html:236
 msgid "Do you want to proceed?"
 msgstr "Voulez vous continuer ?"
 
-#: templates/recovery_moment_place.html:101 templates/shopping_cart.html:223
+#: templates/recovery_moment_place.html:101 templates/shopping_cart.html:239
 msgid "Cancel"
 msgstr "Annuler"
 
@@ -1126,9 +1022,8 @@ msgid "Your adress"
 msgstr "Infos personnelles"
 
 #: templates/register.html:119
-#, fuzzy
 msgid "France"
-msgstr "Annuler"
+msgstr "France"
 
 #: templates/register.html:148
 msgid "Is human"
@@ -1142,15 +1037,95 @@ msgstr "Créer"
 msgid "I have already an account, sign in"
 msgstr "J'ai déjà un compte, s'identifier"
 
-#: templates/sale_confirmed.html:11
+#: templates/sale_confirmed.html:29
+msgid "Payment not completed"
+msgstr "Paiement non effectué"
+
+#: templates/sale_confirmed.html:31
+msgid "Your payment was not completed."
+msgstr "Votre paiement n'a pas été validé."
+
+#: templates/sale_confirmed.html:34
+msgid "Back to payment page"
+msgstr "Retour à la page de paiement"
+
+#: templates/sale_confirmed.html:37
+msgid "Back to cart"
+msgstr "Retour au panier"
+
+#: templates/sale_confirmed.html:46
+msgid "Payment pending"
+msgstr "Paiement en cours"
+
+#: templates/sale_confirmed.html:48
+msgid "Your payment is being processed. This may take a few moments."
+msgstr ""
+"Votre paiement est en cours de traitement.<br /> Cela "
+"peut prendre quelques secondes."
+
+#: templates/sale_confirmed.html:51
+msgid "View my orders"
+msgstr "Voir vos commandes"
+
+#: templates/sale_confirmed.html:60
+msgid "Payment authorized"
+msgstr "Paiement autorisé"
+
+#: templates/sale_confirmed.html:62
+msgid ""
+"Your payment method has been authorized. The transaction will be "
+"completed shortly."
+msgstr "Votre paiement a été autorisé. La transaction sera finalisé prochainement."
+
+#: templates/sale_confirmed.html:65
+msgid "Track my order"
+msgstr "Vos Commandes"
+
+#: templates/sale_confirmed.html:74
+msgid "Payment cancelled"
+msgstr "Paiement annulé"
+
+#: templates/sale_confirmed.html:76
+msgid "The payment was cancelled. No amount has been charged."
+msgstr "Votre paiement a été annulé. Aucun montant n'a été facturé."
+
+#: templates/sale_confirmed.html:79
+msgid "Back to payment method selection"
+msgstr "Retour au choix du moyen de paiement"
+
+#: templates/sale_confirmed.html:89
+msgid "Payment error"
+msgstr "Erreur durant le paiement"
+
+#: templates/sale_confirmed.html:91
+msgid ""
+"An error occurred while processing your payment. Please try again or use "
+"another payment method."
+msgstr ""
+"Une erreur s'est produite lors du traitement de votre paiement. Veuillez "
+"réessayer ou utiliser un autre mode de paiement.\""
+
+#: templates/sale_confirmed.html:95
+msgid "Try again"
+msgstr "Essayer de nouveau"
+
+#: templates/sale_confirmed.html:98
+msgid "Contact support"
+msgstr "Nous contacter"
+
+#: templates/sale_confirmed.html:112
 msgid "Order and payment validated"
 msgstr "Commande et paiement validé"
 
-#: templates/sale_confirmed.html:13
+#: templates/sale_confirmed.html:114
+msgid "Order validated"
+msgstr "Commande validé"
+
+#: templates/sale_confirmed.html:117
 msgid "Thank you for your order!"
 msgstr "Merci pour votre commande"
 
-#: templates/sale_confirmed.html:16
+#: templates/sale_confirmed.html:120
 msgid ""
 "All that's left to do is pick up your order at your chosen collection "
 "point :"
@@ -1158,78 +1133,79 @@ msgstr ""
 "Il ne vous reste plus qu'à venir chercher votre commande au point de "
 "collecte de votre choix."
 
-#: templates/sale_confirmed.html:20
-msgid "You should have receive an email with all the details."
-msgstr "Vous avez du recevoir un mail avec les détails de la commande."
+#: templates/sale_confirmed.html:124
+msgid "We have just send you an email with all the details."
+msgstr "On vient de vous envoyer un mail avec les détails de la commande."
 
-#: templates/sale_confirmed.html:24
+#: templates/sale_confirmed.html:128
 msgid "Don't forget your money to pay your order."
 msgstr "N'oubliez pas votre argent pour payer la commande."
 
-#: templates/sale_confirmed.html:29
+#: templates/sale_confirmed.html:134
 msgid "Return to Home"
 msgstr "Retour à l'accueil"
 
-#: templates/sale_confirmed.html:32
+#: templates/sale_confirmed.html:137
 msgid "View My Orders"
 msgstr "Vos Commandes"
 
-#: templates/shopping_cart.html:6
+#: templates/shopping_cart.html:15
 msgid "Validate your cart and choose a moment to recover it"
 msgstr "Valider le panier et choisir le moment de récupération"
 
-#: templates/shopping_cart.html:7
-#, fuzzy
+#: templates/shopping_cart.html:16
 msgid "Command"
 msgstr "Commande"
 
-#: templates/shopping_cart.html:16
+#: templates/shopping_cart.html:25
 msgid "Product"
 msgstr "Produit"
 
-#: templates/shopping_cart.html:20
+#: templates/shopping_cart.html:29
 msgid "Subtotal VAT Incl."
 msgstr "Sous total TTC"
 
-#: templates/shopping_cart.html:22
+#: templates/shopping_cart.html:31
 msgid "Subtotal VAT Excl."
 msgstr "Sous total HT"
 
-#: templates/shopping_cart.html:84 templates/shopping_cart.html:142
+#: templates/shopping_cart.html:94 templates/shopping_cart.html:152
 msgid "Remove"
 msgstr "Retirer"
 
-#: templates/shopping_cart.html:116
-#, fuzzy
+#: templates/shopping_cart.html:126
 msgid "VAT:"
-msgstr "TVA"
+msgstr "TVA :"
 
-#: templates/shopping_cart.html:123
-#, fuzzy
+#: templates/shopping_cart.html:133
 msgid "Subtotal:"
 msgstr "Sous-total: "
 
-#: templates/shopping_cart.html:156
+#: templates/shopping_cart.html:166
 msgid "You can leave a comment here"
 msgstr "Vous pouvez laisser un commentaire ici"
 
-#: templates/shopping_cart.html:160
+#: templates/shopping_cart.html:170
 msgid "Write a comment..."
 msgstr "Écrire un commentaire..."
 
-#: templates/shopping_cart.html:174
+#: templates/shopping_cart.html:181
+msgid "+ Shipping cost"
+msgstr "+ Livraison"
+
+#: templates/shopping_cart.html:190
 msgid "Taxes"
 msgstr "TVA"
 
-#: templates/shopping_cart.html:202
+#: templates/shopping_cart.html:218
 msgid "Confirm and go pick your recovery place"
 msgstr "Confirmer et choisir le moment de récupération"
 
-#: templates/shopping_cart.html:215
+#: templates/shopping_cart.html:231
 msgid "Confirm Delete"
 msgstr "Confirmer la suppression"
 
-#: templates/shopping_cart.html:219
+#: templates/shopping_cart.html:235
 msgid ""
 "You are about to delete your Shopping Cart, this procedure is "
 "irreversible."
@@ -1237,7 +1213,7 @@ msgstr ""
 "Vous êtes sur le point de supprimer votre panier, cette procédure ne peut"
 " être annulée"
 
-#: templates/shopping_cart.html:224
+#: templates/shopping_cart.html:240
 msgid "Delete"
 msgstr "Supprimer"
 
@@ -1249,4 +1225,15 @@ msgstr ""
 "Service distant indisponible. Si vous aviez une commande en cours, votre "
 "panier a été sauvegardé. Merci de vous connecter de nouveau dans un "
 "moment."
+
+#~ msgid "Your Sale Order is now confirmed."
+#~ msgstr "Votre commande est désormais terminée."
+
+#~ msgid "Payment successful"
+#~ msgstr "Paiement réussi"
+
+#~ msgid ""
+#~ "Thank you for your purchase! Your "
+#~ "payment has been successfully processed."
+#~ msgstr "Votre commentaire a été modifié avec succès."
 

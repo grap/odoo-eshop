@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-01-27 11:14+0100\n"
+"POT-Creation-Date: 2026-02-02 14:28+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -103,11 +103,12 @@ msgid ""
 "account."
 msgstr ""
 
-#: controllers/controller_payment.py:52 controllers/controller_payment.py:122
+#: controllers/controller_payment.py:57 controllers/controller_payment.py:121
+#: controllers/controller_payment.py:153
 msgid "Error while confirming your sale order."
 msgstr ""
 
-#: controllers/controller_payment.py:62
+#: controllers/controller_payment.py:67
 msgid "Error while confirming your payment."
 msgstr ""
 
@@ -131,12 +132,8 @@ msgstr ""
 msgid "You have not reached the ceiling : "
 msgstr ""
 
-#: controllers/controller_sale_order.py:138
+#: controllers/controller_sale_order.py:141
 msgid "The recovery moment is complete. Please try again."
-msgstr ""
-
-#: controllers/controller_sale_order.py:151
-msgid "Your Sale Order is now confirmed."
 msgstr ""
 
 #: controllers/controller_technical.py:61
@@ -467,16 +464,16 @@ msgstr ""
 msgid "Labels"
 msgstr ""
 
-#: templates/catalog_inline.html:26 templates/shopping_cart.html:17
+#: templates/catalog_inline.html:26 templates/shopping_cart.html:26
 msgid "VAT"
 msgstr ""
 
-#: templates/catalog_inline.html:28 templates/shopping_cart.html:18
+#: templates/catalog_inline.html:28 templates/shopping_cart.html:27
 msgid "Quantity"
 msgstr ""
 
-#: templates/catalog_inline.html:62 templates/shopping_cart.html:52
-#: templates/shopping_cart.html:120
+#: templates/catalog_inline.html:62 templates/shopping_cart.html:62
+#: templates/shopping_cart.html:130
 msgid "Unit price:"
 msgstr ""
 
@@ -544,13 +541,13 @@ msgstr ""
 msgid "Invoice Date"
 msgstr ""
 
-#: templates/invoices.html:24 templates/shopping_cart.html:170
+#: templates/invoices.html:24 templates/shopping_cart.html:186
 msgid "Untaxed Amount"
 msgstr ""
 
 #: templates/invoices.html:25 templates/invoices.html:69
 #: templates/orders.html:30 templates/orders.html:113
-#: templates/shopping_cart.html:178
+#: templates/shopping_cart.html:194
 msgid "Total"
 msgstr ""
 
@@ -773,16 +770,19 @@ msgid "Send Reset Link"
 msgstr ""
 
 #: templates/payment.html:6 templates/payment_online.html:8
-#: templates/recovery_moment_place.html:6
+#: templates/recovery_moment_place.html:6 templates/sale_confirmed.html:8
+#: templates/shopping_cart.html:6
 msgid "Shopping Cart"
 msgstr ""
 
 #: templates/payment.html:7 templates/payment_online.html:9
-#: templates/recovery_moment_place.html:7
+#: templates/recovery_moment_place.html:7 templates/sale_confirmed.html:9
+#: templates/shopping_cart.html:7
 msgid "Recovery Moment Place"
 msgstr ""
 
 #: templates/payment.html:8 templates/payment_online.html:10
+#: templates/sale_confirmed.html:10
 msgid "Choose payment"
 msgstr ""
 
@@ -790,126 +790,50 @@ msgstr ""
 msgid "Amount to pay: "
 msgstr ""
 
-#: templates/payment.html:19
+#: templates/payment.html:18
 msgid "Choose one of this payment methods:"
 msgstr ""
 
-#: templates/payment.html:27
+#: templates/payment.html:28 templates/payment.html:33
+msgid "Pay on site"
+msgstr ""
+
+#: templates/payment.html:47
 msgid "Pay with wallet"
 msgstr ""
 
-#: templates/payment.html:30
+#: templates/payment.html:49
 msgid "Money in your wallet"
 msgstr ""
 
-#: templates/payment.html:33
+#: templates/payment.html:52
 msgid "Balance after payment :"
 msgstr ""
 
-#: templates/payment.html:43
+#: templates/payment.html:62
 msgid "Confirm payment"
 msgstr ""
 
-#: templates/payment.html:46
+#: templates/payment.html:65
 msgid "You don't have enough money in your wallet to validate this order."
 msgstr ""
 
-#: templates/payment.html:57
+#: templates/payment.html:79
 msgid "Pay online"
 msgstr ""
 
-#: templates/payment.html:63
+#: templates/payment.html:82
 msgid "Go to online payment"
 msgstr ""
 
-#: templates/payment_online.html:11
+#: templates/payment_online.html:11 templates/sale_confirmed.html:11
 msgid "Online payment"
 msgstr ""
 
-#: templates/payment_online.html:27
+#: templates/payment_online.html:26
 msgid ""
 "Clicking on Pay will redirect you on Mollie.com page to validate your "
 "payment."
-msgstr ""
-
-#: templates/payment_online.html:52
-msgid "Payment not completed"
-msgstr ""
-
-#: templates/payment_online.html:54
-msgid "Your payment was not completed."
-msgstr ""
-
-#: templates/payment_online.html:57
-msgid "Back to payment page"
-msgstr ""
-
-#: templates/payment_online.html:60
-msgid "Back to cart"
-msgstr ""
-
-#: templates/payment_online.html:70
-msgid "Payment pending"
-msgstr ""
-
-#: templates/payment_online.html:72
-msgid "Your payment is being processed. This may take a few moments."
-msgstr ""
-
-#: templates/payment_online.html:75 templates/payment_online.html:105
-msgid "View my orders"
-msgstr ""
-
-#: templates/payment_online.html:85
-msgid "Payment authorized"
-msgstr ""
-
-#: templates/payment_online.html:87
-msgid ""
-"Your payment method has been authorized. The transaction will be "
-"completed shortly."
-msgstr ""
-
-#: templates/payment_online.html:90
-msgid "Track my order"
-msgstr ""
-
-#: templates/payment_online.html:100
-msgid "Payment successful"
-msgstr ""
-
-#: templates/payment_online.html:102
-msgid "Thank you for your purchase! Your payment has been successfully processed."
-msgstr ""
-
-#: templates/payment_online.html:115
-msgid "Payment cancelled"
-msgstr ""
-
-#: templates/payment_online.html:117
-msgid "The payment was cancelled. No amount has been charged."
-msgstr ""
-
-#: templates/payment_online.html:120
-msgid "Back to payment method selection"
-msgstr ""
-
-#: templates/payment_online.html:131
-msgid "Payment error"
-msgstr ""
-
-#: templates/payment_online.html:133
-msgid ""
-"An error occurred while processing your payment. Please try again or use "
-"another payment method."
-msgstr ""
-
-#: templates/payment_online.html:137
-msgid "Try again"
-msgstr ""
-
-#: templates/payment_online.html:140
-msgid "Contact support"
 msgstr ""
 
 #: templates/product.html:100 templates/product.html:105
@@ -996,11 +920,11 @@ msgid ""
 "irreversible."
 msgstr ""
 
-#: templates/recovery_moment_place.html:98 templates/shopping_cart.html:220
+#: templates/recovery_moment_place.html:98 templates/shopping_cart.html:236
 msgid "Do you want to proceed?"
 msgstr ""
 
-#: templates/recovery_moment_place.html:101 templates/shopping_cart.html:223
+#: templates/recovery_moment_place.html:101 templates/shopping_cart.html:239
 msgid "Cancel"
 msgstr ""
 
@@ -1046,95 +970,175 @@ msgstr ""
 msgid "I have already an account, sign in"
 msgstr ""
 
-#: templates/sale_confirmed.html:11
+#: templates/sale_confirmed.html:29
+msgid "Payment not completed"
+msgstr ""
+
+#: templates/sale_confirmed.html:31
+msgid "Your payment was not completed."
+msgstr ""
+
+#: templates/sale_confirmed.html:34
+msgid "Back to payment page"
+msgstr ""
+
+#: templates/sale_confirmed.html:37
+msgid "Back to cart"
+msgstr ""
+
+#: templates/sale_confirmed.html:46
+msgid "Payment pending"
+msgstr ""
+
+#: templates/sale_confirmed.html:48
+msgid "Your payment is being processed. This may take a few moments."
+msgstr ""
+
+#: templates/sale_confirmed.html:51
+msgid "View my orders"
+msgstr ""
+
+#: templates/sale_confirmed.html:60
+msgid "Payment authorized"
+msgstr ""
+
+#: templates/sale_confirmed.html:62
+msgid ""
+"Your payment method has been authorized. The transaction will be "
+"completed shortly."
+msgstr ""
+
+#: templates/sale_confirmed.html:65
+msgid "Track my order"
+msgstr ""
+
+#: templates/sale_confirmed.html:74
+msgid "Payment cancelled"
+msgstr ""
+
+#: templates/sale_confirmed.html:76
+msgid "The payment was cancelled. No amount has been charged."
+msgstr ""
+
+#: templates/sale_confirmed.html:79
+msgid "Back to payment method selection"
+msgstr ""
+
+#: templates/sale_confirmed.html:89
+msgid "Payment error"
+msgstr ""
+
+#: templates/sale_confirmed.html:91
+msgid ""
+"An error occurred while processing your payment. Please try again or use "
+"another payment method."
+msgstr ""
+
+#: templates/sale_confirmed.html:95
+msgid "Try again"
+msgstr ""
+
+#: templates/sale_confirmed.html:98
+msgid "Contact support"
+msgstr ""
+
+#: templates/sale_confirmed.html:112
 msgid "Order and payment validated"
 msgstr ""
 
-#: templates/sale_confirmed.html:13
+#: templates/sale_confirmed.html:114
+msgid "Order validated"
+msgstr ""
+
+#: templates/sale_confirmed.html:117
 msgid "Thank you for your order!"
 msgstr ""
 
-#: templates/sale_confirmed.html:16
+#: templates/sale_confirmed.html:120
 msgid ""
 "All that's left to do is pick up your order at your chosen collection "
 "point :"
 msgstr ""
 
-#: templates/sale_confirmed.html:20
-msgid "You should have receive an email with all the details."
+#: templates/sale_confirmed.html:124
+msgid "We have just send you an email with all the details."
 msgstr ""
 
-#: templates/sale_confirmed.html:24
+#: templates/sale_confirmed.html:128
 msgid "Don't forget your money to pay your order."
 msgstr ""
 
-#: templates/sale_confirmed.html:29
+#: templates/sale_confirmed.html:134
 msgid "Return to Home"
 msgstr ""
 
-#: templates/sale_confirmed.html:32
+#: templates/sale_confirmed.html:137
 msgid "View My Orders"
 msgstr ""
 
-#: templates/shopping_cart.html:6
+#: templates/shopping_cart.html:15
 msgid "Validate your cart and choose a moment to recover it"
 msgstr ""
 
-#: templates/shopping_cart.html:7
+#: templates/shopping_cart.html:16
 msgid "Command"
 msgstr ""
 
-#: templates/shopping_cart.html:16
+#: templates/shopping_cart.html:25
 msgid "Product"
 msgstr ""
 
-#: templates/shopping_cart.html:20
+#: templates/shopping_cart.html:29
 msgid "Subtotal VAT Incl."
 msgstr ""
 
-#: templates/shopping_cart.html:22
+#: templates/shopping_cart.html:31
 msgid "Subtotal VAT Excl."
 msgstr ""
 
-#: templates/shopping_cart.html:84 templates/shopping_cart.html:142
+#: templates/shopping_cart.html:94 templates/shopping_cart.html:152
 msgid "Remove"
 msgstr ""
 
-#: templates/shopping_cart.html:116
+#: templates/shopping_cart.html:126
 msgid "VAT:"
 msgstr ""
 
-#: templates/shopping_cart.html:123
+#: templates/shopping_cart.html:133
 msgid "Subtotal:"
 msgstr ""
 
-#: templates/shopping_cart.html:156
+#: templates/shopping_cart.html:166
 msgid "You can leave a comment here"
 msgstr ""
 
-#: templates/shopping_cart.html:160
+#: templates/shopping_cart.html:170
 msgid "Write a comment..."
 msgstr ""
 
-#: templates/shopping_cart.html:174
+#: templates/shopping_cart.html:181
+msgid "+ Shipping cost"
+msgstr ""
+
+#: templates/shopping_cart.html:190
 msgid "Taxes"
 msgstr ""
 
-#: templates/shopping_cart.html:202
+#: templates/shopping_cart.html:218
 msgid "Confirm and go pick your recovery place"
 msgstr ""
 
-#: templates/shopping_cart.html:215
+#: templates/shopping_cart.html:231
 msgid "Confirm Delete"
 msgstr ""
 
-#: templates/shopping_cart.html:219
+#: templates/shopping_cart.html:235
 msgid ""
 "You are about to delete your Shopping Cart, this procedure is "
 "irreversible."
 msgstr ""
 
-#: templates/shopping_cart.html:224
+#: templates/shopping_cart.html:240
 msgid "Delete"
 msgstr ""
 
