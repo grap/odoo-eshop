@@ -138,8 +138,8 @@ def error(e):
 # ############################################################################
 @app.context_processor
 def utility_processor():
-    def get_object(model_name, id):
-        return get_odoo_object(model_name, id)
+    def get_object(model_name, id, force_reload=False):
+        return get_odoo_object(model_name, id, force_reload)
 
     def current_partner():
         return get_current_partner()
@@ -215,6 +215,10 @@ def surcharge_to_string(value):
 def function_to_eval(arg):
     return arg
 
+# todo : pattern should be dependant of odoo params ? 
+@app.template_filter("str_to_datetime")
+def str_to_datetime(arg):
+    return datetime.strptime(arg, "%Y-%m-%d %H:%M:%S")
 
 @app.template_filter("to_day")
 def to_day(arg):

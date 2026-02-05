@@ -91,15 +91,19 @@ def shopping_cart_delete_line(line_id):
 # Recovery Moment Place Route
 # ############################################################################
 @app.route("/recovery_moment_place")
-@requires_auth
 def recovery_moment_place():
     company = get_current_company()
     partner_id = get_current_partner_id()
     #  Get Recovery moment with no limitation
     #       + the ones with limitation where the partner is
+    #
+    # Search method (instead of browse_by_search) avoid to browse
+    # every fields that needs more user access or can be linked 
+    # to other module and complexity
+    # Side effect : load object on view and add inherit models with eshop_mixin
     recovery_moments = execute_odoo_command(
         "sale.recovery.moment",
-        "browse_by_search",
+        "search",
         ['&',
             '|',
                 ("limited_partners_ids", "in", partner_id),
@@ -120,7 +124,7 @@ def recovery_moment_place():
         )
         return redirect_url_for("shopping_cart")
     return render_template(
-        "recovery_moment_place.html", recovery_moments=recovery_moments
+        "recovery_moment_place.html", recovery_moments=recovery_moments,
     )
 
 

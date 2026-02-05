@@ -138,6 +138,9 @@ _ODOO_MODELS = {
     "sale.recovery.moment": {
         "proxy": odoo.env["sale.recovery.moment"],
     },
+    "sale.recovery.place": {
+        "proxy": odoo.env["sale.recovery.place"],
+    },
     "account.move": {
         "proxy": odoo.env["account.move"],
     },
