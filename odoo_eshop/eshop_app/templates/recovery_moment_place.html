@@ -2,7 +2,7 @@
 
 {% block breadcrumb %}
 
-{% if sale_order %}
+{% if sale_order and not public %}
     <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{ url_for('shopping_cart')}}">{{ _('Shopping Cart') }}</a></li>
@@ -23,10 +23,10 @@
 <div class="container my-4">
 
 
-    {% if sale_order %}
+    {% if sale_order and not public %}
     <h1 class="mb-4"><i class="bi bi-shop-window"></i> {{ _('Select Place and Moment for Recovery') }}</h1>
     {% else %}
-    <h1 class="mb-4"><i class="bi bi-shop-window"></i> {{ _('Place and Moment for Recovery') }}</h1>
+    <h1 class="mb-4 pt-4"><i class="bi bi-shop-window"></i> {{ _('Place and Moment for Recovery') }}</h1>
     {% endif %}
 
     {% if recovery_moments|length == 0 %}
@@ -66,7 +66,7 @@
                     {% if recovery_moment.is_complete %}
                       <span class="badge bg-secondary">{{ _('Complete') }}</span>
                     {% else %}
-                        {% if sale_order %}
+                        {% if sale_order and not public %}
                             {% if company.eshop_wallet_enabled or company.eshop_mollie_enabled %}
                               <a href="#" class="btn btn-primary btn-sm w-100 mt-3"
                                  onclick="GoToThePage(this)"

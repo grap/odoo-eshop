@@ -90,7 +90,35 @@ def shopping_cart_delete_line(line_id):
 # ############################################################################
 # Recovery Moment Place Route
 # ############################################################################
+@app.route("/recovery_moment_place_public")
+def recovery_moment_place_public():
+    company = get_current_company()
+    partner_id = get_current_partner_id()
+    #  Get Recovery moment with no limitation
+    #       + the ones with limitation where the partner is
+    #
+    # Search method (instead of browse_by_search) avoid to browse
+    # every fields that needs more user access or can be linked 
+    # to other module and complexity
+    # Side effect : load object on view and add inherit models with eshop_mixin
+    recovery_moments = execute_odoo_command(
+        "sale.recovery.moment",
+        "search",
+        ['&',
+            '|',
+                ("limited_partners_ids", "in", partner_id),
+                ("is_limited", "=", False),
+            ("state", "=", "pending_sale"),
+        ],
+        order="min_recovery_date",
+    )
+    return render_template(
+        "recovery_moment_place.html", recovery_moments=recovery_moments, public=True
+    )
+
+
 @app.route("/recovery_moment_place")
+@requires_auth
 def recovery_moment_place():
     company = get_current_company()
     partner_id = get_current_partner_id()
@@ -113,18 +141,19 @@ def recovery_moment_place():
         order="min_recovery_date",
     )
     sale_order = get_current_sale_order()
-    if (
-        company.eshop_minimum_price != 0
-        and company.eshop_minimum_price > sale_order.amount_total
-    ):
-        flash(
-            _("You have not reached the ceiling : ")
-            + currency(company.eshop_minimum_price),
-            "warning",
-        )
-        return redirect_url_for("shopping_cart")
+    if sale_order is not False:
+        minimum = company.eshop_minimum_price or 0
+        if (
+            minimum > sale_order.amount_total
+        ):
+            flash(
+                _("You have not reached the ceiling : ")
+                + currency(company.eshop_minimum_price),
+                "warning",
+            )
+            return redirect_url_for("shopping_cart")
     return render_template(
-        "recovery_moment_place.html", recovery_moments=recovery_moments,
+        "recovery_moment_place.html", recovery_moments=recovery_moments, public=False
     )
 
 
