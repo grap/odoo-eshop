@@ -36,28 +36,29 @@ def payment():
     return render_template("payment.html", partner=partner, sale_order=sale_order, recovery_name=recovery_name)
 
 
-# Confirm SO
-# Create invoice and pay with wallet
-@app.route("/payment_validation/<int:sale_order_id>")
+# CONFIRM PAYMENT WITH WALLET
+@app.route("/payment_validation_wallet/<int:sale_order_id>")
 @requires_auth
-def payment_validation(sale_order_id):
+def payment_validation_wallet(sale_order_id):
     # 0. Get infos before SO to be validated
-    sale_order = get_current_sale_order()
+    sale_order = get_sale_order(sale_order_id, force_reload=True)
     if not sale_order:
         return render_template("404.html")    
     recovery_name = sale_order.recovery_name
 
     # 1. Confirm Sale Order
-    confirm_order = execute_odoo_command(
-        "sale.order",
-        "eshop_confirm_sale_order",
-        get_current_partner_id(),
-    )
-    if not confirm_order:
-        flash(_("Error while confirming your sale order."), "danger")
-        return redirect_url_for("payment")
-    else:
-        # 2. Create a paid invoice and link to sale
+    if sale_order.state != 'sale':    
+        confirm_order = execute_odoo_command(
+            "sale.order",
+            "eshop_confirm_sale_order",
+            get_current_partner_id(),
+        )
+        if not confirm_order:
+            flash(_("Error while confirming your sale order."), "danger")
+            return redirect_url_for("payment")
+
+    # 2. Create a paid invoice and link to sale
+    if sale_order.invoice_status != 'invoiced':
         invoice_with_wallet = execute_odoo_command(
             "sale.order",
             "eshop_invoice_with_wallet",
@@ -66,10 +67,10 @@ def payment_validation(sale_order_id):
         if invoice_with_wallet == "error":
             flash(_("Error while confirming your payment."), "danger")
             return redirect_url_for("payment")
-        else:
-            return redirect_url_for("sale_confirmed", recovery_name=recovery_name, command_paid=True)
+    
+    return render_template("sale_confirmed.html", recovery_name=recovery_name, command_paid=True)
 
-# Launch payment with Mollie
+# CONFIRM PAYMENT WITH MOLLIE
 @app.route("/payment_validation_online/<int:sale_order_id>")
 @requires_auth
 def payment_validation_online(sale_order_id):
@@ -101,39 +102,44 @@ def payment_validation_online_status(sale_id, transaction_id):
         Retrieve transaction status [draft, pending, authorized, done, cancel, error]
         1. If it's ok, create invoice, payment and reconcile them
         2. Then give transaction status to template
+        Idempotent function to access validation page each time
     '''
     transaction = get_transaction(transaction_id)
     transaction_status = get_transaction_status(transaction_id)
-    sale_order = get_sale_order(sale_id)
+    sale_order = get_sale_order(sale_id, force_reload=True)
 
-    if not transaction_status:
+    if not transaction_status or not sale_order:
         return render_template("404.html")
 
     # If payment is OK → confirm SO and create Invoice
     elif transaction_status in ['authorized', 'done']:
         
-        confirm_order = execute_odoo_command(
-            "sale.order",
-            "eshop_confirm_sale_order",
-            get_current_partner_id(),
-        )
-        if not confirm_order:
-            flash(_("Error while confirming your sale order."), "danger")
-            return render_template("404.html")
-        else:
+        # Handle confirming SO
+        if sale_order.state != 'sale':
+            confirm_order = execute_odoo_command(
+                "sale.order",
+                "eshop_confirm_sale_order",
+                get_current_partner_id(),
+            )
+            if not confirm_order:
+                flash(_("Error while confirming your sale order."), "danger")
+                return render_template("404.html")
+
+        # Handle creation of Invoice
+        if sale_order.invoice_status != 'invoiced':
             invoice_id = execute_odoo_command(
                 "sale.order",
                 "eshop_invoice_online_payment",
                 sale_order.id,
                 transaction.id,
             )
-            recovery_name = sale_order.recovery_name
-            return render_template("sale_confirmed.html", status=transaction_status, recovery_name=recovery_name, command_paid=True)
+        recovery_name = sale_order.recovery_name
+        return render_template("sale_confirmed.html", status=transaction_status, recovery_name=recovery_name, command_paid=True)
 
     else:
-
         return render_template("sale_confirmed.html", status=transaction_status)
 
+# CONFIRM PAYMENT ON SITE
 @app.route("/payment_on_site_validation")
 @requires_auth
 def payment_on_site_validation():
@@ -154,12 +160,4 @@ def payment_on_site_validation():
         return redirect_url_for("payment")
     else:
         return render_template("sale_confirmed.html", recovery_name=recovery_name, command_paid=False)
-
-@app.route("/sale_confirmed/<string:recovery_name>")
-@requires_auth
-def sale_confirmed(recovery_name):
-    return render_template("sale_confirmed.html", recovery_name=recovery_name, command_paid=False)
-
-
-
 

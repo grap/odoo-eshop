@@ -51,8 +51,8 @@ def get_current_sale_order_recovery_moment(order):
     result = result or []
     return result
 
-def get_sale_order(sale_id):
-    result = get_odoo_object("sale.order", sale_id)
+def get_sale_order(sale_id, force_reload=False):
+    result = get_odoo_object("sale.order", sale_id, force_reload=force_reload)
     result = result or []
     return result
 

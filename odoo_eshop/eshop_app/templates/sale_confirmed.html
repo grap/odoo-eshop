@@ -123,9 +123,9 @@
         <p class="text-muted mb-4">
             {{ _("We have just send you an email with all the details.") }}
         </p>
-        {% if not company.eshop_wallet_enabled or not command_paid %}
+        {% if not command_paid %}
             <div class="alert alert-warning" role="alert">
-                <i class="bi bi-currency-exchange me-2"></i>{{ _("Don't forget your money to pay your order.") }}
+                <i class="bi bi-currency-exchange me-2"></i>{{ _("Don't forget your payment method to pay your order.") }}
             </div>
         {% endif %}
 

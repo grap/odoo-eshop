@@ -58,7 +58,7 @@
         </p>
 
         {% if balance_after_payment >= 0 %}
-        <button onclick="GoToThePage(this);" class="btn btn-success w-50 mt-4" href="#" page_url="{{ url_for('payment_validation', sale_order_id=sale_order.id) }}">
+        <button onclick="GoToThePage(this);" class="btn btn-success w-50 mt-4" href="#" page_url="{{ url_for('payment_validation_wallet', sale_order_id=sale_order.id) }}">
             <i class="bi bi-check-circle"></i> {{ _('Confirm payment') }}
         </button>
         {% else %}

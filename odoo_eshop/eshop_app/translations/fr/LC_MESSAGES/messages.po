@@ -869,7 +869,7 @@ msgstr "Solde après paiement :"
 
 #: templates/payment.html:62
 msgid "Confirm payment"
-msgstr "Confirmer la suppression"
+msgstr "Confirmer le paiement"
 
 #: templates/payment.html:65
 msgid "You don't have enough money in your wallet to validate this order."
