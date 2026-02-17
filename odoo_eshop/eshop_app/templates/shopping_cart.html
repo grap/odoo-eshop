@@ -141,7 +141,7 @@
                     <input type="text"
                            class="form-control input-quantity form-control-sm w-50 {{ line.discount < 0 and 'input-surcharge' or '' }}"
                            name="new_quantity"
-                           id="quantity_mobile_{{ product.id }}"
+                           id="quantity_{{ product.id }}"
                            value="{{ line.product_uom_qty }}">
                     <span class="text-muted small">{{ uom.eshop_description }}</span>
                 </form>

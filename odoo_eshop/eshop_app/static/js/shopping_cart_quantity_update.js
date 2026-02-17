@@ -17,6 +17,11 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ******************************************************************************/
 
+const formatter = new Intl.NumberFormat('fr-FR', {
+  style: 'currency',
+  currency: 'EUR',
+  minimumFractionDigits: 2
+})
 
 $('.input-quantity').change(function(e){
     self = this;
@@ -34,9 +39,9 @@ $('.input-quantity').change(function(e){
             $('#quantity_' + product_id).toggleClass('input-surcharge', (msg.result.discount < '0'));
             $('#price_subtotal_' + product_id).text(msg.result.amount_line);
             // Update Sale Order infos
-            $('#amount_untaxed').text(msg.result.amount_untaxed + " €");
-            $('#amount_tax').text(msg.result.amount_tax + " €");
-            $('#amount_total').text(msg.result.amount_total + " €");
+            $('#amount_untaxed').text(formatter.format(msg.result.amount_untaxed));
+            $('#amount_tax').text(formatter.format(msg.result.amount_tax));
+            $('#amount_total').text(formatter.format(msg.result.amount_total));
         }
         update_header(msg.result.order_id, msg.result.amount_total_header, msg.result.minimum_ok);
         display_message(msg.result.state, msg.result.message, false);
