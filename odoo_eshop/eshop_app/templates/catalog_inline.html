@@ -88,7 +88,7 @@
 
                 <!-- Quantity -->
                 <td>
-                    <form class="d-flex align-items-center gap-2">
+                    <div class="d-flex align-items-center gap-2">
                         <input type="hidden" name="product_id" value="{{ item['id'] }}"/>
                         <input type="text" class="form-control input-quantity {{ item['qty'] and 'input-not-null-qty' or '' }} {{ item['discount'] < 0 and 'input-surcharge' or '' }}"
                             id="quantity_{{ item['id'] }}"
@@ -100,7 +100,7 @@
                              {{ _('Min: ') }}{{ item['eshop_minimum_qty'] | float_to_string }} {{ item['uom_eshop_description'] }}
                         {% endif %}
                         </span>
-                    </form>
+                    </div>
                 </td>
             </tr>
 
@@ -141,7 +141,7 @@
         </div>
 
         <div class="card-body py-3 px-3">
-            <form class="d-flex align-items-center gap-2">
+            <div class="d-flex align-items-center gap-2">
                 {{ _('Quantity to order: ') }}
                 <input type="hidden" name="product_id" value="{{ item['id'] }}"/>
                 <input type="text" class="form-control input-quantity {{ item['qty'] and 'input-not-null-qty' or '' }} {{ item['discount'] < 0 and 'input-surcharge' or '' }}"
@@ -149,7 +149,7 @@
                     name="new_quantity" value="{{ item['qty'] }}"/>
                 <span class="small">{{ item['uom_eshop_description'] }}
                 </span>
-            </form>
+            </div>
         </div>
 
         <div class="card-footer">

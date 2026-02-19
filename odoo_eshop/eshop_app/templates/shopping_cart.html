@@ -16,6 +16,9 @@
     <p>{{ _('Command') }} {{ sale_order.name }}</p>
 </div>
 
+<!-- We don't use native HTML Form for quantity input in order to avoid Enter behavour
+     Everything is handle by JS Ajax  -->
+
 <!-- Shopping Cart Table for large screen -->
 <div class="shopping-cart table-responsive d-none d-md-block">
     <table class="table table-hover align-middle eshop_table_float_thead">
@@ -67,15 +70,14 @@
 
                 <!-- Quantity -->
                 <td>
-                    <form class="d-flex align-items-center gap-2" method="POST" action="{{ url_for('shopping_cart_quantity_update') }}">
-                        <input type="hidden" name="product_id" value="{{ product.id }}" />
+                    <div class="d-flex align-items-center gap-2">
+                        <input type="hidden" value="{{ product.id }}" class="product-id" />
                         <input type="text"
-                               class="form-control input-quantity form-control-sm w-50 {{ line.discount < 0 and 'input-surcharge' or '' }}"
-                               name="new_quantity"
+                               class="form-control input-quantity form-control-sm w-50"
                                id="quantity_{{ product.id }}"
                                value="{{ line.product_uom_qty }}">
                         <span class="text-muted small">{{ uom.eshop_description }}</span>
-                    </form>
+                    </div>
                 </td>
 
                 <!-- Subtotal -->
@@ -102,7 +104,7 @@
 </div>
 
 
-<!-- Shopping Carte Table for small screen (smartphone) using Bootstrap cards -->
+<!-- Shopping Cart Table for small screen (smartphone) using Bootstrap cards -->
 <div class="container d-block d-md-none">
     {% for line in sale_order_lines %}
         {% set product = get_object('product.product', line.product_id) %}
@@ -135,16 +137,15 @@
                     </div>
                 </div>
 
-                <form method="POST" action="{{ url_for('shopping_cart_quantity_update') }}"
-                      class="d-flex align-items-center gap-2">
+                <div class="d-flex align-items-center gap-2">
                     <input type="hidden" name="product_id" value="{{ product.id }}">
                     <input type="text"
-                           class="form-control input-quantity form-control-sm w-50 {{ line.discount < 0 and 'input-surcharge' or '' }}"
+                           class="form-control input-quantity form-control-sm w-50"
                            name="new_quantity"
                            id="quantity_{{ product.id }}"
                            value="{{ line.product_uom_qty }}">
                     <span class="text-muted small">{{ uom.eshop_description }}</span>
-                </form>
+                </div>
 
                 <div class="text-end">
                     <a href="{{ url_for('shopping_cart_delete_line', line_id=line.id) }}"

@@ -68,10 +68,10 @@ def catalog_inline_quantity_update():
     res = set_quantity(
         int(request.form["product_id"]), request.form["new_quantity"], True, "set"
     )
-    if True:  # request.is_xhr:
+    # Handling AJAX call
+    if request.headers.get("X-Requested-With") == "XMLHttpRequest":
         return jsonify(result=res)
-    # TODO, fix me, the website is not working anymore if javascript is
-    # disabled
+    # Fallback if ever
     flash(res["messages"], res["state"])
     return redirect_url_for("catalog_inline")
 

@@ -36,7 +36,6 @@ $('.input-quantity').change(function(e){
         if (msg.result.state == 'success' || msg.result.state == 'warning'){
             // Update Sale Order Line infos
             $('#quantity_' + product_id).val(msg.result.quantity);
-            $('#quantity_' + product_id).toggleClass('input-surcharge', (msg.result.discount < '0'));
             $('#price_subtotal_' + product_id).text(msg.result.amount_line);
             // Update Sale Order infos
             $('#amount_untaxed').text(formatter.format(msg.result.amount_untaxed));

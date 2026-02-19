@@ -45,6 +45,7 @@ def shopping_cart_eshop_note_update():
         return jsonify(result=result)
     flash(result["message"], result["state"])
     return redirect_url_for("shopping_cart")
+    # Handling AJAX call
 
 
 @app.route("/shopping_cart_quantity_update", methods=["POST"])
@@ -52,10 +53,12 @@ def shopping_cart_quantity_update():
     res = set_quantity(
         int(request.form["product_id"]), request.form["new_quantity"], False, "set"
     )
-    if True:  # request.is_xhr:
+    # Handling AJAX call
+    if request.headers.get("X-Requested-With") == "XMLHttpRequest":
         return jsonify(result=res)
+    # Fallback if ever
     flash(res["message"], res["state"])
-    return redirect_url_for("shopping_cart")
+    return redirect(url_for("shopping_cart"))
 
 
 @app.route("/shopping_cart_delete")
