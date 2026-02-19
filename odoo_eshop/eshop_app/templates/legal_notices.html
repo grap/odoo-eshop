@@ -16,8 +16,8 @@
     <div class="card shadow-lg border-0 rounded-4 p-4 bg-light">
         <section class="mb-3">
             <h4 class="legal_notice_title"><i class="bi bi-person-badge"></i> {{ _('About us') }}</h4>
-            <p><strong>{{ company.name }}</strong><br>
-            {{ company.report_legal_description }}<br><br>
+            <p><strong>{{ company.report_legal_description }}</strong><br>
+            <br>
                 {{ _('Registered capital: ') }}{{ company.eshop_registered_capital | to_currency }}<br>
                 {{ _('Registration number: ') }}{{ company.eshop_registration_number }}<br>
                 {{ _('VAT: ') }}{{ company.vat }}
@@ -63,15 +63,15 @@
         <section class="mb-3">
             <h4 class="legal_notice_title"><i class="bi bi-person-fill-gear"></i> {{ _('Mediation') }}</h4>
             <p>
-                In accordance with article L156-1 of the French Consumer Code, the consumer is informed of the possibility of resorting, in the event of a dispute, to a conventional mediation procedure or any other alternative dispute resolution method.
+                {{ _('In accordance with article L156-1 of the French Consumer Code, the consumer is informed of the possibility of resorting, in the event of a dispute, to a conventional mediation procedure or any other alternative dispute resolution method.')}}
                 <br>
-                {{ company.name }} is a member of {{ company.eshop_consumer_mediation }}.
-                <br>Consumers are also informed of the existence of the platform set up online by the European Commission, whose purpose is to collect any complaints arising from an online purchase by European consumers, and then to forward the cases received to the competent national mediators: <a target="_blank" href="http://ec.europa.eu/consumers/odr/">http://ec.europa.eu/consumers/odr/</a>
+                {{ company.name }} {{ _('is a member of ')}}{{ company.eshop_consumer_mediation }}.
+                <br>{{ _('Consumers are also informed of the existence of the platform set up online by the European Commission, whose purpose is to collect any complaints arising from an online purchase by European consumers, and then to forward the cases received to the competent national mediators: <a target="_blank" href="http://ec.europa.eu/consumers/odr/">http://ec.europa.eu/consumers/odr/')}}</a>
             </p>
         </section>
 
         <section>
-            <h4 class="legal_notice_title"><i class="bi bi-stars"></i> {{ _('Credits & thanks') }}</h4>
+            <h4 class="legal_notice_title"><i class="bi bi-arrow-through-heart"></i> {{ _('Credits & thanks') }}</h4>
             <p>
                 {{ _('This website was developed by the IT team of <a target="_blank" href="https://www.grap.coop/">our democratic cooperative Grap</a>')}}<br>
                 {{ _('Thanks to our fabulous colleagues from <a target="_blank" href="https://labellebrulerie.fr/">Label(le) Brûlerie</a> and their delicious coffee ☕💛')}}<br>

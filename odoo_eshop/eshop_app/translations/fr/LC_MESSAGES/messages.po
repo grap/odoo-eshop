@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-02-19 14:38+0100\n"
+"POT-Creation-Date: 2026-02-19 15:32+0100\n"
 "PO-Revision-Date: 2014-10-06 14:07+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -144,7 +144,7 @@ msgstr "La ligne de votre panier a été supprimée avec succès."
 msgid "Your shopping cart has been deleted."
 msgstr "Votre panier a été supprimé avec succès."
 
-#: controllers/controller_sale_order.py:153 templates/base.html:126
+#: controllers/controller_sale_order.py:153 templates/base.html:128
 msgid "You have not reached the ceiling : "
 msgstr "Vous n'avez pas atteint le franco : "
 
@@ -292,7 +292,7 @@ msgstr "Service Indisponible"
 msgid "Try to reload the page later."
 msgstr "Essayer de recharger la page dans quelques temps."
 
-#: templates/account.html:12 templates/base.html:157
+#: templates/account.html:12 templates/base.html:159
 msgid "Personnal Datas"
 msgstr "Données Personnelles"
 
@@ -417,74 +417,74 @@ msgstr "Achat rapide"
 msgid "See moment for recovery"
 msgstr "Moments de récupération"
 
-#: templates/base.html:104 templates/base.html:153
+#: templates/base.html:104 templates/base.html:155
 msgid "Wallet: "
 msgstr "Porte monnaie :"
 
-#: templates/base.html:111
+#: templates/base.html:111 templates/base.html:118
 msgid "Shopping Cart: "
 msgstr "Panier : "
 
-#: templates/base.html:117 templates/catalog_tree.html:65
+#: templates/base.html:113
+msgid "0.00$"
+msgstr "0,00 €"
+
+#: templates/base.html:123 templates/catalog_tree.html:65
 #: templates/product.html:77
 msgid "VAT. Incl."
 msgstr "TTC"
 
-#: templates/base.html:117 templates/catalog_inline.html:66
+#: templates/base.html:123 templates/catalog_inline.html:66
 #: templates/catalog_tree.html:67 templates/product.html:79
 msgid "VAT. Excl."
 msgstr "HT"
 
-#: templates/base.html:119
-msgid "0.00$"
-msgstr "0,00 €"
-
-#: templates/base.html:125
+#: templates/base.html:127
 msgid "Minimum amount reached"
 msgstr "Minimum d'achat atteint"
 
-#: templates/base.html:147
+#: templates/base.html:149
 msgid "Your Account"
 msgstr "Votre Compte"
 
-#: templates/base.html:158
+#: templates/base.html:160
 msgid "Orders History"
 msgstr "Historique des Commandes"
 
-#: templates/base.html:159
+#: templates/base.html:161
 msgid "Invoices History"
 msgstr "Historique des Factures"
 
-#: templates/base.html:161
+#: templates/base.html:163
 msgid "Log Out"
 msgstr "Se déconnecter"
 
-#: templates/base.html:171 templates/base.html:172
+#: templates/base.html:173 templates/base.html:174
 msgid "Register"
 msgstr "S'enregistrer"
 
-#: templates/base.html:177 templates/base.html:178 templates/login.html:24
+#: templates/base.html:179 templates/base.html:180 templates/login.html:24
 #: templates/login.html:40
 msgid "Log In"
 msgstr "Se connecter"
 
-#: templates/base.html:224
+#: templates/base.html:226
 msgid "Visit our Website"
 msgstr "Visiter notre site web"
 
-#: templates/base.html:225
+#: templates/base.html:227
 msgid "Web Site"
 msgstr "Site Web"
 
-#: templates/base.html:231
+#: templates/base.html:233
 msgid "Legal Notices"
 msgstr "Mentions légales"
 
-#: templates/base.html:236
+#: templates/base.html:238
 msgid "Contact"
 msgstr "Contact"
 
-#: templates/base.html:244
+#: templates/base.html:246
 msgid ""
 "We use <a href=\"https://luciole-vision.com/\" target=\"_blank\">Luciole "
 ": a Free font</a> designed to be accessible to the visually impaired."
@@ -629,7 +629,7 @@ msgid ""
 "leek !"
 msgstr ""
 "Même si on les aime avec du chocolat, on n'utilise pas de cookie ici : "
-"vos données sont préservées !"
+"vos données sont personnelles et le restent."
 
 #: templates/legal_notices.html:21
 msgid "Registered capital: "
@@ -641,7 +641,7 @@ msgstr "Numéro d'enregistrement : "
 
 #: templates/legal_notices.html:23
 msgid "VAT: "
-msgstr "TVA"
+msgstr "TVA : "
 
 #: templates/legal_notices.html:28
 msgid "Details"
@@ -704,6 +704,39 @@ msgstr ""
 msgid "Mediation"
 msgstr "Médiation"
 
+#: templates/legal_notices.html:66
+msgid ""
+"In accordance with article L156-1 of the French Consumer Code, the "
+"consumer is informed of the possibility of resorting, in the event of a "
+"dispute, to a conventional mediation procedure or any other alternative "
+"dispute resolution method."
+msgstr ""
+"Conformément à l'article L156-1 du Code de la consommation, læ "
+"consommateur·rice est informé·e de la possibilité de recourir, en cas de "
+"litige, à une procédure de médiation conventionnelle ou à tout autre "
+"mode alternatif de résolution des litiges."
+
+#: templates/legal_notices.html:68
+msgid "is a member of "
+msgstr "est un·e membre de "
+
+#: templates/legal_notices.html:69
+msgid ""
+"Consumers are also informed of the existence of the platform set up "
+"online by the European Commission, whose purpose is to collect any "
+"complaints arising from an online purchase by European consumers, and "
+"then to forward the cases received to the competent national mediators: "
+"<a target=\"_blank\" "
+"href=\"http://ec.europa.eu/consumers/odr/\">http://ec.europa.eu/consumers/odr/"
+msgstr ""
+"Les consommateur·rices sont également informé·es de l'existence de la "
+"plateforme mise en place en ligne par la Commission européenne, dont "
+"l'objectif est de recueillir les plaintes liées à un achat en ligne "
+"effectué par des consommateur·rices européen·nes, puis de transmettre "
+"les cas reçus aux médiateur·rices nationaux compétents : "
+"<a target=\"_blank\" "
+"href=\"http://ec.europa.eu/consumers/odr/\">http://ec.europa.eu/consumers/odr/"
+
 #: templates/legal_notices.html:74
 msgid "Credits & thanks"
 msgstr "Crédits & remerciements"
@@ -732,7 +765,7 @@ msgid ""
 "Jquery and Odoo Community Association of course ✊"
 msgstr ""
 "Merci à toutes les communautées des Logicies Libres Flask, Jinja2, "
-"Bootstrap,Jquery et à l'OCA Odoo Community Association bien sûr ✊"
+"Bootstrap, Jquery et à l'OCA Odoo Community Association bien sûr ✊"
 
 #: templates/login.html:27
 msgid "Set your email..."

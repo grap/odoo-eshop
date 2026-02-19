@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-02-19 14:38+0100\n"
+"POT-Creation-Date: 2026-02-19 15:32+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -128,7 +128,7 @@ msgstr ""
 msgid "Your shopping cart has been deleted."
 msgstr ""
 
-#: controllers/controller_sale_order.py:153 templates/base.html:126
+#: controllers/controller_sale_order.py:153 templates/base.html:128
 msgid "You have not reached the ceiling : "
 msgstr ""
 
@@ -264,7 +264,7 @@ msgstr ""
 msgid "Try to reload the page later."
 msgstr ""
 
-#: templates/account.html:12 templates/base.html:157
+#: templates/account.html:12 templates/base.html:159
 msgid "Personnal Datas"
 msgstr ""
 
@@ -383,74 +383,74 @@ msgstr ""
 msgid "See moment for recovery"
 msgstr ""
 
-#: templates/base.html:104 templates/base.html:153
+#: templates/base.html:104 templates/base.html:155
 msgid "Wallet: "
 msgstr ""
 
-#: templates/base.html:111
+#: templates/base.html:111 templates/base.html:118
 msgid "Shopping Cart: "
 msgstr ""
 
-#: templates/base.html:117 templates/catalog_tree.html:65
+#: templates/base.html:113
+msgid "0.00$"
+msgstr ""
+
+#: templates/base.html:123 templates/catalog_tree.html:65
 #: templates/product.html:77
 msgid "VAT. Incl."
 msgstr ""
 
-#: templates/base.html:117 templates/catalog_inline.html:66
+#: templates/base.html:123 templates/catalog_inline.html:66
 #: templates/catalog_tree.html:67 templates/product.html:79
 msgid "VAT. Excl."
 msgstr ""
 
-#: templates/base.html:119
-msgid "0.00$"
-msgstr ""
-
-#: templates/base.html:125
+#: templates/base.html:127
 msgid "Minimum amount reached"
 msgstr ""
 
-#: templates/base.html:147
+#: templates/base.html:149
 msgid "Your Account"
 msgstr ""
 
-#: templates/base.html:158
+#: templates/base.html:160
 msgid "Orders History"
 msgstr ""
 
-#: templates/base.html:159
+#: templates/base.html:161
 msgid "Invoices History"
 msgstr ""
 
-#: templates/base.html:161
+#: templates/base.html:163
 msgid "Log Out"
 msgstr ""
 
-#: templates/base.html:171 templates/base.html:172
+#: templates/base.html:173 templates/base.html:174
 msgid "Register"
 msgstr ""
 
-#: templates/base.html:177 templates/base.html:178 templates/login.html:24
+#: templates/base.html:179 templates/base.html:180 templates/login.html:24
 #: templates/login.html:40
 msgid "Log In"
 msgstr ""
 
-#: templates/base.html:224
+#: templates/base.html:226
 msgid "Visit our Website"
 msgstr ""
 
-#: templates/base.html:225
+#: templates/base.html:227
 msgid "Web Site"
 msgstr ""
 
-#: templates/base.html:231
+#: templates/base.html:233
 msgid "Legal Notices"
 msgstr ""
 
-#: templates/base.html:236
+#: templates/base.html:238
 msgid "Contact"
 msgstr ""
 
-#: templates/base.html:244
+#: templates/base.html:246
 msgid ""
 "We use <a href=\"https://luciole-vision.com/\" target=\"_blank\">Luciole "
 ": a Free font</a> designed to be accessible to the visually impaired."
@@ -652,6 +652,28 @@ msgstr ""
 
 #: templates/legal_notices.html:64
 msgid "Mediation"
+msgstr ""
+
+#: templates/legal_notices.html:66
+msgid ""
+"In accordance with article L156-1 of the French Consumer Code, the "
+"consumer is informed of the possibility of resorting, in the event of a "
+"dispute, to a conventional mediation procedure or any other alternative "
+"dispute resolution method."
+msgstr ""
+
+#: templates/legal_notices.html:68
+msgid "is a member of "
+msgstr ""
+
+#: templates/legal_notices.html:69
+msgid ""
+"Consumers are also informed of the existence of the platform set up "
+"online by the European Commission, whose purpose is to collect any "
+"complaints arising from an online purchase by European consumers, and "
+"then to forward the cases received to the competent national mediators: "
+"<a target=\"_blank\" "
+"href=\"http://ec.europa.eu/consumers/odr/\">http://ec.europa.eu/consumers/odr/"
 msgstr ""
 
 #: templates/legal_notices.html:74
