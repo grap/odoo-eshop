@@ -106,21 +106,23 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" onclick="GoToThePage(this)" page_url="{{ url_for('shopping_cart') }}">
-                    <i class="bi bi-basket2"></i>
-                    <span class="d-none d-sm-inline">{{ _('Shopping Cart: ') }}</span>
+                    {% if not sale_order %}
+                        <i class="bi bi-basket2"></i>
+                        <span class="d-none d-sm-inline">{{ _('Shopping Cart: ') }}</span>
+                        <span id="nav_amount_total">
+                            {{ _('0.00$') }}
+                        </span>
+                    {% else %}
+                    <a class="nav-link" onclick="GoToThePage(this)" page_url="{{ url_for('shopping_cart') }}">
+                        <i class="bi bi-basket2"></i>
+                        <span class="d-none d-sm-inline">{{ _('Shopping Cart: ') }}</span>
 
-                    <span id="nav_amount_total">
-                      {% if sale_order %}
-                        {% set amount = sale_order.amount_total if is_vat_included else sale_order.amount_untaxed %}
-                        {{ amount|to_currency }}
-                        {{ _('VAT. Incl.') if is_vat_included else _('VAT. Excl.') }}
-                      {% else %}
-                        {{ _('0.00$') }}
-                      {% endif %}
-                    </span>
+                        <span id="nav_amount_total">
+                            {% set amount = sale_order.amount_total if is_vat_included else sale_order.amount_untaxed %}
+                            {{ amount|to_currency }}
+                            {{ _('VAT. Incl.') if is_vat_included else _('VAT. Excl.') }}
+                        </span>
 
-                    {% if sale_order %}
                         {% set min_reached = amount >= company.eshop_minimum_price %}
                         {% set tooltip_ok = _('Minimum amount reached') %}
                         {% set tooltip_ko = _('You have not reached the ceiling : ') ~ company.eshop_minimum_price|to_currency %}
@@ -136,9 +138,9 @@
                            {% if min_reached %}style="display:none"{% endif %}
                            data-bs-toggle="tooltip"
                            title="{{ tooltip_ko }}"></i>
-                    {% endif %}
 
-                  </a>
+                    </a>
+                    {% endif %}
                 </li>
                 {% endif %}
                 {% if partner %}

@@ -5,7 +5,7 @@
     $('#nav_account').addClass('active');
 </script>
 
-<div class="container py-4">
+<div class="container my-5">
     <div class="text-center mb-4">
         <h1 class="display-5">
             <i class="bi bi-basket2 me-2"></i>{{ _('Your Orders') }}
@@ -125,7 +125,7 @@
     {% endif %}
 
     {% else %}
-    <div class="alert alert-info" role="alert">
+    <div class="alert alert-info text-center" role="alert">
         {{ _('No Orders for the time being.') }}
     </div>
     {% endif %}

@@ -141,22 +141,20 @@ def orders():
 @app.route("/invoices")
 @requires_auth
 def invoices():
-    # browse was buggy with account.move so we used search_read
-    # https://github.com/odoo/odoo/issues/109938
+    partner_id = get_current_partner_id()    
+    # Search method (instead of browse_by_search) avoid to browse
+    # every fields that needs more user access or can be linked 
+    # to other module and complexity
+    # Side effect : load object on view and add inherit models with eshop_mixin
     invoices = execute_odoo_command(
         "account.move",
-        "search_read",
+        "search",
         [
-            partner_domain("partner_id"),
+            ("partner_id", '=', partner_id),
             ("state", "not in", ("draft", "cancel")),
-            (
-                "invoice_user_id",
-                "!=",
-                False,
-            ),
+            ("invoice_user_id", '!=', False),
         ],
     )
-    # invoice_user_id not False to get only eshop invoice
     return render_template("invoices.html", invoices=invoices)
 
 
