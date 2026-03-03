@@ -45,8 +45,8 @@ msgid ""
 "The '%(email)s' field is already associated to an active account. Please "
 "click 'Recover Password', if your forgot your credentials."
 msgstr ""
-"Le mail '%(email)s' est déjà associé à un compte qui n'est pas actif. "
-"Merci de demander à votre vendeur d'activer votre compte."
+"Le mail '%(email)s' est déjà associé à un compte. "
+"Essayer de vous connecter ou cliquer sur 'J'ai oublié mon mot de passe' le cas échéant."
 
 #: controllers/controller_account.py:257
 #, python-format
