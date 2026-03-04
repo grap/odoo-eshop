@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-02-19 15:32+0100\n"
+"POT-Creation-Date: 2026-03-04 14:25+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,33 +17,33 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.17.0\n"
 
-#: controllers/controller_account.py:66
+#: controllers/controller_account.py:68
 msgid "Account Datas updated successfully."
 msgstr ""
 
-#: controllers/controller_account.py:99
+#: controllers/controller_account.py:114
 msgid "Password updated successfully."
 msgstr ""
 
-#: controllers/controller_account.py:180
+#: controllers/controller_account.py:195
 msgid "Login/password incorrects"
 msgstr ""
 
-#: controllers/controller_account.py:235
+#: controllers/controller_account.py:250
 #, python-format
 msgid ""
 "The '%(email)s' field is already used.Please ask your seller to fix the "
 "problem."
 msgstr ""
 
-#: controllers/controller_account.py:247
+#: controllers/controller_account.py:262
 #, python-format
 msgid ""
 "The '%(email)s' field is already associated to an active account. Please "
 "click 'Recover Password', if your forgot your credentials."
 msgstr ""
 
-#: controllers/controller_account.py:257
+#: controllers/controller_account.py:272
 #, python-format
 msgid ""
 "The '%(email)s' field is already associated to an account. Please finish "
@@ -51,64 +51,64 @@ msgid ""
 "by email."
 msgstr ""
 
-#: controllers/controller_account.py:268
+#: controllers/controller_account.py:283
 #, python-format
 msgid ""
 "The '%(email)s' field is already associated to an inactive account. "
 "Please ask your seller to activate your account."
 msgstr ""
 
-#: controllers/controller_account.py:322
+#: controllers/controller_account.py:337
 #, python-format
 msgid ""
 "The registration is complete. Please check your mail box '%(email)s' and "
 "click on the link you received to activate your account."
 msgstr ""
 
-#: controllers/controller_account.py:344
+#: controllers/controller_account.py:359
 msgid "The validation process failed."
 msgstr ""
 
-#: controllers/controller_account.py:348
+#: controllers/controller_account.py:363
 msgid "Your email was not found."
 msgstr ""
 
-#: controllers/controller_account.py:352
+#: controllers/controller_account.py:367
 msgid "Your account is already enabled."
 msgstr ""
 
-#: controllers/controller_account.py:358
+#: controllers/controller_account.py:373
 msgid ""
 "The validation process is over.\n"
 " You can now log in to begin to purchase."
 msgstr ""
 
-#: controllers/controller_account.py:367
+#: controllers/controller_account.py:382
 msgid ""
 "The validation process failed because your account is disabled. Please "
 "ask your seller to fix the problem."
 msgstr ""
 
-#: controllers/controller_account.py:388
+#: controllers/controller_account.py:403
 msgid "'Email' Field is required"
 msgstr ""
 
-#: controllers/controller_account.py:395
+#: controllers/controller_account.py:410
 msgid "There is a problem with your account. Please contact your seller."
 msgstr ""
 
-#: controllers/controller_account.py:401
+#: controllers/controller_account.py:416
 msgid ""
 " we sent an email to this mailbox, if this email was linked to an active "
 "account."
 msgstr ""
 
-#: controllers/controller_payment.py:57 controllers/controller_payment.py:125
-#: controllers/controller_payment.py:159
+#: controllers/controller_payment.py:59 controllers/controller_payment.py:127
+#: controllers/controller_payment.py:161
 msgid "Error while confirming your sale order."
 msgstr ""
 
-#: controllers/controller_payment.py:68
+#: controllers/controller_payment.py:70
 msgid "Error while confirming your payment."
 msgstr ""
 
@@ -186,33 +186,33 @@ msgstr ""
 msgid "Sunday"
 msgstr ""
 
-#: models/res_partner.py:33
+#: models/res_partner.py:42
 msgid ""
 "The password should have 6 characters or more, and should contain at "
 "least one digits."
 msgstr ""
 
-#: models/res_partner.py:43
+#: models/res_partner.py:52
 #, python-format
 msgid "'%s' is not a valid First Name."
 msgstr ""
 
-#: models/res_partner.py:51
+#: models/res_partner.py:60
 #, python-format
 msgid "'%s' is not a valid Last Name."
 msgstr ""
 
-#: models/res_partner.py:59
+#: models/res_partner.py:68
 #, python-format
 msgid "'%s' is not a valid email."
 msgstr ""
 
-#: models/res_partner.py:68
+#: models/res_partner.py:77
 #, python-format
 msgid "'%(phone)s' is not a valid phone number.It contains caracters."
 msgstr ""
 
-#: models/res_partner.py:79
+#: models/res_partner.py:88
 #, python-format
 msgid "'%(phone)s' is not a valid phone number."
 msgstr ""
@@ -272,52 +272,56 @@ msgstr ""
 msgid "Name"
 msgstr ""
 
-#: templates/account.html:21 templates/login.html:28
+#: templates/account.html:21 templates/login.html:21
 #: templates/password_lost.html:18 templates/password_lost.html:22
-#: templates/register.html:81
+#: templates/register.html:77
 msgid "Email"
 msgstr ""
 
-#: templates/account.html:25 templates/register.html:98
+#: templates/account.html:25 templates/register.html:94
 msgid "Street"
 msgstr ""
 
-#: templates/account.html:29 templates/register.html:103
+#: templates/account.html:29 templates/register.html:99
 msgid "Street (Extra Info)"
 msgstr ""
 
-#: templates/account.html:33 templates/register.html:108
+#: templates/account.html:33 templates/register.html:104
 msgid "ZIP Code"
 msgstr ""
 
-#: templates/account.html:37 templates/register.html:113
+#: templates/account.html:37 templates/register.html:109
 msgid "City"
 msgstr ""
 
-#: templates/account.html:41 templates/register.html:135
-#: templates/register.html:138
+#: templates/account.html:41 templates/register.html:131
+#: templates/register.html:134
 msgid "Cell Phone"
 msgstr ""
 
-#: templates/account.html:45 templates/register.html:144
+#: templates/account.html:45 templates/register.html:140
 msgid "Other Phone"
 msgstr ""
 
 #: templates/account.html:58 templates/product.html:131
-#: templates/register.html:127
+#: templates/register.html:123
 msgid "Country"
 msgstr ""
 
-#: templates/account.html:63
+#: templates/account.html:65
+msgid "Update and return to payment"
+msgstr ""
+
+#: templates/account.html:67
 msgid "Update datas"
 msgstr ""
 
-#: templates/account.html:70 templates/account.html:75 templates/login.html:33
-#: templates/register.html:87
+#: templates/account.html:77 templates/account.html:82 templates/login.html:26
+#: templates/register.html:83
 msgid "Password"
 msgstr ""
 
-#: templates/account.html:84
+#: templates/account.html:91
 msgid "Update password"
 msgstr ""
 
@@ -325,46 +329,46 @@ msgstr ""
 msgid "My Wallet"
 msgstr ""
 
-#: templates/account_wallet.html:24
-msgid "Current Balance"
+#: templates/account_wallet.html:35
+msgid "In-Store Payment"
 msgstr ""
 
-#: templates/account_wallet.html:34
-msgid "Recharge Instructions"
-msgstr ""
-
-#: templates/account_wallet.html:40
-msgid "By Bank Transfer"
-msgstr ""
-
-#: templates/account_wallet.html:41
-msgid "You can recharge your wallet by bank transfer using the following RIB:"
+#: templates/account_wallet.html:39
+msgid ""
+"You can recharge your wallet directly in our store by paying with your "
+"credit card or cash at the counter."
 msgstr ""
 
 #: templates/account_wallet.html:48
+msgid "Online recharge"
+msgstr ""
+
+#: templates/account_wallet.html:52
+msgid "Recharge your wallet with online payment."
+msgstr ""
+
+#: templates/account_wallet.html:62
+msgid "By Bank Transfer"
+msgstr ""
+
+#: templates/account_wallet.html:65
+msgid "You can recharge your wallet by bank transfer using the following RIB:"
+msgstr ""
+
+#: templates/account_wallet.html:72
 msgid "Beneficiary"
 msgstr ""
 
-#: templates/account_wallet.html:57
+#: templates/account_wallet.html:81
 msgid ""
 "Don’t forget to include your full name or customer number in the transfer"
 " label."
 msgstr ""
 
-#: templates/account_wallet.html:60
+#: templates/account_wallet.html:84
 msgid ""
 "Your wallet account will be updated after a <b>manual verification</b> "
 "that the transfer has been received."
-msgstr ""
-
-#: templates/account_wallet.html:68
-msgid "In-Store Payment"
-msgstr ""
-
-#: templates/account_wallet.html:70
-msgid ""
-"You can recharge your wallet directly in our store by paying with your "
-"credit card or cash at the counter."
 msgstr ""
 
 #: templates/base.html:39
@@ -429,8 +433,8 @@ msgstr ""
 msgid "Register"
 msgstr ""
 
-#: templates/base.html:179 templates/base.html:180 templates/login.html:24
-#: templates/login.html:40
+#: templates/base.html:179 templates/base.html:180 templates/login.html:17
+#: templates/login.html:33
 msgid "Log In"
 msgstr ""
 
@@ -699,19 +703,19 @@ msgid ""
 "Jquery and Odoo Community Association of course ✊"
 msgstr ""
 
-#: templates/login.html:27
+#: templates/login.html:20
 msgid "Set your email..."
 msgstr ""
 
-#: templates/login.html:32
+#: templates/login.html:25
 msgid "Set your password..."
 msgstr ""
 
-#: templates/login.html:45
+#: templates/login.html:38
 msgid "I don't have an account yet, register"
 msgstr ""
 
-#: templates/login.html:48
+#: templates/login.html:41
 msgid "I forgot my password"
 msgstr ""
 
@@ -820,36 +824,46 @@ msgstr ""
 msgid "Choose one of this payment methods:"
 msgstr ""
 
-#: templates/payment.html:28 templates/payment.html:33
+#: templates/payment.html:26 templates/payment.html:31
 msgid "Pay on site"
 msgstr ""
 
-#: templates/payment.html:47
+#: templates/payment.html:41
 msgid "Pay with wallet"
 msgstr ""
 
-#: templates/payment.html:49
+#: templates/payment.html:45
 msgid "Money in your wallet"
 msgstr ""
 
-#: templates/payment.html:52
+#: templates/payment.html:49
 msgid "Balance after payment :"
 msgstr ""
 
-#: templates/payment.html:62
+#: templates/payment.html:59
 msgid "Confirm payment"
 msgstr ""
 
-#: templates/payment.html:65
+#: templates/payment.html:62
 msgid "You don't have enough money in your wallet to validate this order."
 msgstr ""
 
-#: templates/payment.html:79
+#: templates/payment.html:71
 msgid "Pay online"
 msgstr ""
 
-#: templates/payment.html:82
+#: templates/payment.html:76
 msgid "Go to online payment"
+msgstr ""
+
+#: templates/payment.html:82
+msgid ""
+"Our online payment provider (Mollie) requires customers to provide their "
+"full address : street, zip, city and country."
+msgstr ""
+
+#: templates/payment.html:85
+msgid "Complete here"
 msgstr ""
 
 #: templates/payment_online.html:11 templates/sale_confirmed.html:11
@@ -968,35 +982,35 @@ msgid ""
 "seconds."
 msgstr ""
 
-#: templates/register.html:64
+#: templates/register.html:60
 msgid "Create a new account"
 msgstr ""
 
-#: templates/register.html:71
+#: templates/register.html:67
 msgid "First Name"
 msgstr ""
 
-#: templates/register.html:76
+#: templates/register.html:72
 msgid "Last Name"
 msgstr ""
 
-#: templates/register.html:94
+#: templates/register.html:90
 msgid "Your adress"
 msgstr ""
 
-#: templates/register.html:119
+#: templates/register.html:115
 msgid "France"
 msgstr ""
 
-#: templates/register.html:148
+#: templates/register.html:144
 msgid "Is human"
 msgstr ""
 
-#: templates/register.html:157
+#: templates/register.html:153
 msgid "Create"
 msgstr ""
 
-#: templates/register.html:162
+#: templates/register.html:158
 msgid "I have already an account, sign in"
 msgstr ""
 

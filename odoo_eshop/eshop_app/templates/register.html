@@ -53,10 +53,6 @@ document.addEventListener("DOMContentLoaded", function () {
       width: 0;
       z-index:-1;
   }
-  label.required::after {
-      content: " *";
-      color: red;
-  }
 </style>
 
 <!-- Account Data -->
@@ -67,23 +63,23 @@ document.addEventListener("DOMContentLoaded", function () {
         <div class="row g-3">
 
             <div class="col-md-6 form-floating">
-                <input type="text" class="form-control input-required account_data" id="first_name" name="first_name" value="{{ request.form['first_name']}}" required>
+                <input type="text" class="form-control account_data" id="first_name" name="first_name" value="{{ request.form['first_name']}}" required>
                 <label for="first_name" class="required">{{ _('First Name') }}</label>
             </div>
 
             <div class="col-md-6 form-floating">
-                <input type="text" class="form-control input-required account_data" id="last_name" name="last_name" value="{{ request.form['last_name']}}" required>
+                <input type="text" class="form-control account_data" id="last_name" name="last_name" value="{{ request.form['last_name']}}" required>
                 <label for="last_name" class="required">{{ _('Last Name') }}</label>
             </div>
 
             <div class="col-md-6 form-floating">
-                <input type="email" class="form-control input-required account_data" id="email" name="email" value="{{ request.form['email']}}" required>
+                <input type="email" class="form-control account_data" id="email" name="email" value="{{ request.form['email']}}" required>
                 <label for="email" class="required">{{ _('Email') }}</label>
             </div>
 
             <div class="col-md-6">
                 <div class="form-floating position-relative">
-                    <input type="password" class="form-control input-required account_data" id="password_1" name="password_1" value="{{ request.form['password_1']}}" required>
+                    <input type="password" class="form-control account_data" id="password_1" name="password_1" value="{{ request.form['password_1']}}" required>
                     <label for="password_1" class="required">{{ _('Password') }}</label>
                     <span class="position-absolute top-50 end-0 translate-middle-y pe-3" onclick="togglePassword()" style="cursor:pointer;">
                         <i class="bi bi-eye" id="toggleIcon"></i>
@@ -114,7 +110,7 @@ document.addEventListener("DOMContentLoaded", function () {
             </div>
 
             <div class="col-md-6 form-floating">
-                <select name="country_id" id="country" class="form-control input-required account_data" required>
+                <select name="country_id" id="country" class="form-control account_data" required>
                     <!-- TODO : Default value could be based on res.company ? -->                    
                     <option value="75">{{ _('France') }}</option>
 

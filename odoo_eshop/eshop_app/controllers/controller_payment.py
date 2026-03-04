@@ -7,6 +7,7 @@ from ..models.res_company import get_current_company
 from ..models.res_partner import (
     get_current_partner,
     get_current_partner_id,
+    get_current_partner_address_check,
 )
 from ..models.sale_order import (
     get_current_sale_order,
@@ -32,8 +33,9 @@ def payment():
     if not sale_order:
         return render_template("404.html")    
     partner = get_current_partner()
+    partner_address_check = get_current_partner_address_check()
     recovery_name = sale_order.recovery_name
-    return render_template("payment.html", partner=partner, sale_order=sale_order, recovery_name=recovery_name)
+    return render_template("payment.html", partner=partner, sale_order=sale_order, recovery_name=recovery_name, partner_address_check=partner_address_check)
 
 
 # CONFIRM PAYMENT WITH WALLET

@@ -32,7 +32,9 @@ def account():
         "browse_by_search", [],
     )
     country_id = get_current_partner(force_reload=True).country_id
-    if not len(request.form) == 0:
+
+    # POST : Submit form
+    if request.method == 'POST':
 
         # Check Phone
         phone, error_message = check_phone(request.form["phone"])
@@ -40,7 +42,7 @@ def account():
             incorrect_data = True
             flash(error_message, "danger")
 
-        # Check Phone
+        # Check Mobile
         mobile, error_message = check_phone(request.form["mobile"])
         if error_message and mobile:
             incorrect_data = True
@@ -66,6 +68,10 @@ def account():
                 _("Account Datas updated successfully."),
                 "success",
             )
+            if request.form['submit_button'] == 'update':
+                pass # do nothing
+            elif request.form['submit_button'] == 'update_then_payment':
+                return redirect_url_for("payment")
 
     # Handle country in select list of account page
     actual_country = execute_odoo_command(
@@ -74,7 +80,16 @@ def account():
     )
 
     partner = get_current_partner(force_reload=True)
-    return render_template("account.html", partner=partner, countries_list=countries_list, actual_country=actual_country)
+    # Handle case : customer needs to complete address to pay online
+    address_required = request.args.getlist("address_required")
+    
+    return render_template(
+        "account.html", 
+        partner=partner, 
+        countries_list=countries_list, 
+        actual_country=actual_country,
+        address_required=address_required
+    )
 
 
 @app.route("/account_password", methods=["GET", "POST"])

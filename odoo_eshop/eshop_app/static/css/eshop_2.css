@@ -360,11 +360,16 @@ body {
 }
 
 
-/* ======== FORM BUTTONS ======== */
+/* ======== FORM ================ */
 .form-label {
     font-weight: bold;
     font-size: 1rem;
     white-space: nowrap;
+}
+
+label.required::after {
+  content: " *";
+  color: red;
 }
 
 .quantity-selector {
@@ -424,7 +429,6 @@ body {
     color: var(--main-color);
     opacity: 0.5; /* Firefox */
 }
-
 
 /* ======== SHOPPING CART ======== */
 .cart-unit-price {
