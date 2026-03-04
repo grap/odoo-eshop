@@ -58,9 +58,38 @@ function set_table_float_thead(){
     });
 }
 
-function adjustQty(delta) {
+/*function adjustQty(delta) {
     const input = document.getElementById('quantityInput');
     let val = parseFloat(input.value) || 0;
     val = Math.max(val + delta, 0);
     input.value = val;
+}*/
+
+
+function adjustQty(delta, product_id) {
+    const input = document.getElementById(`quantityInput`);
+    let new_quantity = parseFloat(input.value) || 0;
+    new_quantity = Math.max(new_quantity + delta, 0);
+    
+    currentAjaxCall = $.ajax({
+        url: FLASK_URL_FOR['product_adjust_qty'],
+        type: "POST",
+        data: {new_quantity: new_quantity, product_id: product_id},
+        timeout: AJAX_TIMEOUT
+    }).done(function(msg){
+        currentAjaxCall = false;
+
+        if (msg.result.state == 'success' || msg.result.state == 'warning'){
+            /*Maj quantity input*/
+            $('#quantityInput').val(msg.result.quantity);
+            /*Maj header total */
+            update_header(msg.result.order_id, msg.result.amount_total_header, msg.result.minimum_ok);
+            display_message('success', msg.message, false);
+        } else {
+            alert(msg.message);
+        }
+    }).fail(function(xhr, textstatus){
+        currentAjaxCall = false;
+        display_fail_message();
+    });
 }

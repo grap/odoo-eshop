@@ -89,3 +89,14 @@ def set_quantity(product_id, quantity, allow_null, method):
         res["amount_total_header"] = currency(res["amount_untaxed"])
         res["minimum_ok"] = res["amount_untaxed"] >= company.eshop_minimum_price
     return res
+
+def get_current_product_qty(product_id):
+    so = get_current_sale_order()
+    # breakpoint()
+    if so:
+        so_lines = get_current_sale_order_lines(so)
+        for line in so_lines:
+            # breakpoint()
+            if line.product_id == product_id:
+                return line.product_uom_qty
+    return 0
