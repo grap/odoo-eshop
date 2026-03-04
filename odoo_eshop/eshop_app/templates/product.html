@@ -51,10 +51,8 @@
 <div class="row gy-3 product-detail-wrapper">
     <div class="col-xs-12 col-sm-4">
         <div class="product-image shadow rounded p-3 bg-white position-relative">
-            <a href="#" data-featherlight="{{ url_for('product_image_popup', product_id=product['id']) }}">
-                <img src="{{ url_for('static', filename=product.image_1920_local_path) }}"
-                    class="img-fluid rounded" alt="{{ product.name }}" loading="lazy"/>
-            </a>
+            <img src="{{ url_for('static', filename=product.image_1920_local_path) }}"
+                class="img-fluid rounded" alt="{{ product.name }}" loading="lazy"/>
 
             {% if product.label_ids|length %}
             <div class="product-labels position-absolute d-flex flex-wrap">
