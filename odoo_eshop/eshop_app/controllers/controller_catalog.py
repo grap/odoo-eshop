@@ -3,7 +3,7 @@ from flask import flash, jsonify, render_template, request
 from ..application import app
 from ..models.models import execute_odoo_command, get_odoo_object
 from ..models.res_partner import get_current_partner_id
-from ..models.sale_order import set_quantity, get_current_product_qty
+from ..models.sale_order import set_quantity, get_current_sale_order
 from ..tools.auth import requires_auth
 from ..tools.web import redirect_url_for
 
@@ -81,9 +81,19 @@ def catalog_inline_quantity_update():
 # ############################################################################
 @app.route("/product/<int:product_id>", methods=['GET', 'POST']) 
 def product(product_id):
-    # Get Products
+    # Get Product
     product = get_odoo_object("product.product", product_id)
-    product_qty = get_current_product_qty(product_id)
+    # Get Product qty in sale order line
+    sale_order = get_current_sale_order()
+    line = execute_odoo_command(
+        'sale.order.line',
+        'browse_by_search',
+        [
+            ('order_id', '=', sale_order.id),
+            ('product_id', '=', product_id)
+        ],
+    )
+    product_qty = line[0]['product_uom_qty'] if line else 0
 
     # Get Parent Categories
     parent_categories = []
@@ -105,7 +115,6 @@ def product_adjust_qty():
     # Handling AJAX call
     if request.headers.get("X-Requested-With") == "XMLHttpRequest":
         return jsonify(result=res)
-    import pdb; pdb.set_trace()
     # Fallback if ever
     flash(res["messages"], res["state"])
     return redirect_url_for("product", product_id=product_id, product_qty=new_quantity)

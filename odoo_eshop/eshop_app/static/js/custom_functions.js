@@ -58,19 +58,12 @@ function set_table_float_thead(){
     });
 }
 
-/*function adjustQty(delta) {
-    const input = document.getElementById('quantityInput');
-    let val = parseFloat(input.value) || 0;
-    val = Math.max(val + delta, 0);
-    input.value = val;
-}*/
-
-
 function adjustQty(delta, product_id) {
     const input = document.getElementById(`quantityInput`);
     let new_quantity = parseFloat(input.value) || 0;
     new_quantity = Math.max(new_quantity + delta, 0);
     
+    /* Adjust quantity by AJAX Call with python product_adjust_qty function */
     currentAjaxCall = $.ajax({
         url: FLASK_URL_FOR['product_adjust_qty'],
         type: "POST",
