@@ -85,15 +85,18 @@ def product(product_id):
     product = get_odoo_object("product.product", product_id)
     # Get Product qty in sale order line
     sale_order = get_current_sale_order()
-    line = execute_odoo_command(
-        'sale.order.line',
-        'browse_by_search',
-        [
-            ('order_id', '=', sale_order.id),
-            ('product_id', '=', product_id)
-        ],
-    )
-    product_qty = line[0]['product_uom_qty'] if line else 0
+    if sale_order:
+        line = execute_odoo_command(
+            'sale.order.line',
+            'browse_by_search',
+            [
+                ('order_id', '=', sale_order.id),
+                ('product_id', '=', product_id)
+            ],
+        )
+        product_qty = line[0]['product_uom_qty'] if line else 0
+    else:
+        product_qty = product.eshop_minimum_qty or 1
 
     # Get Parent Categories
     parent_categories = []

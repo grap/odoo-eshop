@@ -80,9 +80,31 @@
             </span>
         </div>
 
-        <!-- ADD IN CART BUTTON -->
-        {% if not product_qty %}
+        <!-- ADJUST QTY, QTY IS PRODUCT CART QTY -->
+        {% if sale_order and product_qty %}
+        <div class="container form-add-product">
+            <div class="row row-cols-auto align-items-center">
 
+                <div class="col">
+                    <div class="quantity-selector">
+                        <button type="button" onclick="deleteLine({{ product.id }})"><i class="bi bi-trash"></i></button>
+
+                        <button type="button" onclick="adjustQty(-1, {{ product.id }})">−</button>
+
+                        <input readonly type="text" name="quantity" id="quantityInput" value="{{ product_qty or product.eshop_minimum_qty or 1 }}" />
+                        <span class="product_uom_description">{{ uom.eshop_description }}</span>
+                        
+                        <button type="button" onclick="adjustQty(+1, {{ product.id }})">+</button>
+                        
+                    </div>
+                </div>
+
+                
+            </div>
+        </div>
+
+        <!-- ADD IN CART BUTTON -->
+        {% else %}
         <form method="POST" action="{{ url_for('product_add_new', product_id=product.id) }}">
             {% if partner %}
                 <button type="submit" class="btn btn-primary btn-buy">
@@ -95,31 +117,8 @@
                 </span>
             {% endif %}
         </form>
+
         
-        <!-- ADJUST QTY, QTY IS PRODUCT CART QTY -->
-        {% else %}
-
-        <div class="container form-add-product">
-            <div class="row row-cols-auto align-items-center">
-
-                <div class="col">
-                    <div class="quantity-selector">
-                        <button type="button" onclick="adjustQty(-1, {{ product.id }})">−</button>
-
-                        <!-- <button type="submit" onclick="adjustQty(-1)">−</button> -->
-
-                        <input type="text" name="quantity" id="quantityInput" value="{{ product_qty or product.eshop_minimum_qty or 1 }}" />
-                        <span class="product_uom_description">{{ uom.eshop_description }}</span>
-                        
-                        <button type="button" onclick="adjustQty(+1, {{ product.id }})">+</button>
-                        
-                        <!-- <button type="submit" onclick="adjustQty(1)">+</button> -->
-                    </div>
-                </div>
-
-                
-            </div>
-        </div>
 
         {% endif %}
 
@@ -127,12 +126,12 @@
 
             <div class="row">
                 <div class="col-6 fw-semibold text-muted">{{ _('Minimum Quantity') }}</div>
-                <div class="col-6">{{ product.eshop_minimum_qty }} {{ uom.eshop_description }}</div>
+                <div class="col-6"><span id="product-min-qty">{{ product.eshop_minimum_qty }}</span> {{ uom.eshop_description }}</div>
             </div>
 
             <div class="row">
                 <div class="col-6 fw-semibold text-muted">{{ _('Rounding Quantity') }}</div>
-                <div class="col-6">{{ product.eshop_rounded_qty }} {{ uom.eshop_description }}</div>
+                <div class="col-6"><span id="product-rounded-qty">{{ product.eshop_rounded_qty }}</span> {{ uom.eshop_description }}</div>
             </div>
 
             {% if country or state or department%}

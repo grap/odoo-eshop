@@ -188,19 +188,20 @@
       </div>
     </nav>
 
-
+    <div class="container eshop_flash_container flashes">
     <!-- FLASHED MESSAGES -->
     {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
             {% for category, message in messages %}
                 {% if message|length %}
-    <div class="mt-4 container alert alert-{{ category }} alert-dismissible fade show" role="alert">
-        <i class="bi bi-exclamation-diamond"></i> {{ message }}
-    </div>
+        <div class="mt-4 container alert alert-{{ category }} alert-dismissible fade show" role="alert">
+            <i class="bi bi-exclamation-diamond"></i> {{ message }}
+        </div>
                 {% endif %}
             {% endfor %}
         {% endif %}
     {% endwith %}
+    </div>
 
     <!-- BOTTOM Fixed navbar -->
     <nav class="navbar fixed-bottom bg-body-tertiary">
