@@ -72,13 +72,26 @@
     </form>
 
     {% if not address_required %}
-    <form class="needs-validation" method="POST" action="{{ url_for('account_password') }}">
+    <form class="needs-validation" method="POST" action="{{ url_for('account') }}">
 
         <h1 id="password_change" class="mt-5">{{ _('Password') }}</h1>
 
+        <div class="alert alert-info">
+            {{ _('At least one number and one uppercase and lowercase letter, and at least 6 or more characters') }}
+        </div>
         <div class="col-md-6">
             <div class="form-floating position-relative">
-                <input type="password" class="form-control account_data" id="password_1" name="password_1" value="{{ request.form['password_1']}}" required>
+                <input 
+                    type="password" 
+                    class="form-control account_data" 
+                    id="password_1" 
+                    name="password_1" 
+                    value="{{ request.form['password_1']}}" 
+                    required
+                    autocomplete="new-password" 
+                    minlength="6"
+                    pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}" 
+                    >
                 <label for="password_1" class="required">{{ _('Password') }}</label>
                 <span class="position-absolute top-50 end-0 translate-middle-y pe-3" onclick="togglePassword()" style="cursor:pointer;">
                     <i class="bi bi-eye" id="toggleIcon"></i>
@@ -87,7 +100,7 @@
         </div>
 
         <div class="mt-4">
-            <button type="submit" class="btn btn-primary">
+            <button name="submit_button" type="submit" value="submit_button_password" class="btn btn-primary">
                 {{ _('Update password') }}
             </button>
         </div>

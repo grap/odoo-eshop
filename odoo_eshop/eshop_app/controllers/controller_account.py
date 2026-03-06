@@ -36,42 +36,63 @@ def account():
     # POST : Submit form
     if request.method == 'POST':
 
-        # Check Phone
-        phone, error_message = check_phone(request.form["phone"])
-        if error_message and phone:
-            incorrect_data = True
-            flash(error_message, "danger")
+        # ======= CHANGE PASSWORD
+        if request.form['submit_button'] == 'submit_button_password':
+            # Check Password
+            password, error_message = check_password(request.form["password_1"])
+            if error_message:
+                incorrect_data = True
+                flash(error_message, "danger")
+            else:
+                vals.update({"eshop_password": password})
 
-        # Check Mobile
-        mobile, error_message = check_phone(request.form["mobile"])
-        if error_message and mobile:
-            incorrect_data = True
-            flash(error_message, "danger")
+            if not incorrect_data:
+                execute_odoo_command(
+                    "res.partner", "update_from_eshop", get_current_partner_id(), vals
+                )
+                flash(
+                    _("Password updated successfully."),
+                    "success",
+                )
 
-        if not incorrect_data:
-            vals.update(
-                {
-                    "street": request.form["street"],
-                    "street2": request.form["street2"],
-                    "zip": request.form["zip"],
-                    "city": request.form["city"],
-                    "country_id": request.form["country_id"],
-                    "phone": phone,
-                    "mobile": mobile,
-                }
-            )
-            country_id = request.form["country_id"]
-            execute_odoo_command(
-                "res.partner", "update_from_eshop", get_current_partner_id(), vals
-            )
-            flash(
-                _("Account Datas updated successfully."),
-                "success",
-            )
-            if request.form['submit_button'] == 'update':
-                pass # do nothing
-            elif request.form['submit_button'] == 'update_then_payment':
-                return redirect_url_for("payment")
+        # ======= CHANGE DATAS
+        else:
+            # Check Phone
+            phone, error_message = check_phone(request.form["phone"])
+            if error_message and phone:
+                incorrect_data = True
+                flash(error_message, "danger")
+
+            # Check Mobile
+            mobile, error_message = check_phone(request.form["mobile"])
+            if error_message and mobile:
+                incorrect_data = True
+                flash(error_message, "danger")
+
+            if not incorrect_data:
+                vals.update(
+                    {
+                        "street": request.form["street"],
+                        "street2": request.form["street2"],
+                        "zip": request.form["zip"],
+                        "city": request.form["city"],
+                        "country_id": request.form["country_id"],
+                        "phone": phone,
+                        "mobile": mobile,
+                    }
+                )
+                country_id = request.form["country_id"]
+                execute_odoo_command(
+                    "res.partner", "update_from_eshop", get_current_partner_id(), vals
+                )
+                flash(
+                    _("Account Datas updated successfully."),
+                    "success",
+                )
+                if request.form['submit_button'] == 'update':
+                    pass # do nothing
+                elif request.form['submit_button'] == 'update_then_payment':
+                    return redirect_url_for("payment")
 
     # Handle country in select list of account page
     actual_country = execute_odoo_command(
@@ -90,34 +111,6 @@ def account():
         actual_country=actual_country,
         address_required=address_required
     )
-
-
-@app.route("/account_password", methods=["GET", "POST"])
-@requires_auth
-def account_password():
-    incorrect_data = False
-    vals = {}
-    if not len(request.form) == 0:
-        # Check Password
-        password, error_message = check_password(request.form["password_1"])
-        if error_message:
-            incorrect_data = True
-            flash(error_message, "danger")
-        else:
-            vals.update({"eshop_password": password})
-
-        if not incorrect_data:
-            execute_odoo_command(
-                "res.partner", "update_from_eshop", get_current_partner_id(), vals
-            )
-            flash(
-                _("Password updated successfully."),
-                "success",
-            )
-
-    partner = get_current_partner(force_reload=True)
-    return render_template("account.html", partner=partner)
-
 
 @app.route("/account_wallet")
 @requires_auth
