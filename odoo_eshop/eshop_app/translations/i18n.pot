@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-03-04 14:25+0100\n"
+"POT-Creation-Date: 2026-03-06 15:06+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,33 +17,33 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.17.0\n"
 
-#: controllers/controller_account.py:68
-msgid "Account Datas updated successfully."
-msgstr ""
-
-#: controllers/controller_account.py:114
+#: controllers/controller_account.py:54
 msgid "Password updated successfully."
 msgstr ""
 
-#: controllers/controller_account.py:195
+#: controllers/controller_account.py:89
+msgid "Account Datas updated successfully."
+msgstr ""
+
+#: controllers/controller_account.py:188
 msgid "Login/password incorrects"
 msgstr ""
 
-#: controllers/controller_account.py:250
+#: controllers/controller_account.py:243
 #, python-format
 msgid ""
 "The '%(email)s' field is already used.Please ask your seller to fix the "
 "problem."
 msgstr ""
 
-#: controllers/controller_account.py:262
+#: controllers/controller_account.py:255
 #, python-format
 msgid ""
 "The '%(email)s' field is already associated to an active account. Please "
 "click 'Recover Password', if your forgot your credentials."
 msgstr ""
 
-#: controllers/controller_account.py:272
+#: controllers/controller_account.py:265
 #, python-format
 msgid ""
 "The '%(email)s' field is already associated to an account. Please finish "
@@ -51,53 +51,53 @@ msgid ""
 "by email."
 msgstr ""
 
-#: controllers/controller_account.py:283
+#: controllers/controller_account.py:276
 #, python-format
 msgid ""
 "The '%(email)s' field is already associated to an inactive account. "
 "Please ask your seller to activate your account."
 msgstr ""
 
-#: controllers/controller_account.py:337
+#: controllers/controller_account.py:330
 #, python-format
 msgid ""
 "The registration is complete. Please check your mail box '%(email)s' and "
 "click on the link you received to activate your account."
 msgstr ""
 
-#: controllers/controller_account.py:359
+#: controllers/controller_account.py:352
 msgid "The validation process failed."
 msgstr ""
 
-#: controllers/controller_account.py:363
+#: controllers/controller_account.py:356
 msgid "Your email was not found."
 msgstr ""
 
-#: controllers/controller_account.py:367
+#: controllers/controller_account.py:360
 msgid "Your account is already enabled."
 msgstr ""
 
-#: controllers/controller_account.py:373
+#: controllers/controller_account.py:366
 msgid ""
 "The validation process is over.\n"
 " You can now log in to begin to purchase."
 msgstr ""
 
-#: controllers/controller_account.py:382
+#: controllers/controller_account.py:375
 msgid ""
 "The validation process failed because your account is disabled. Please "
 "ask your seller to fix the problem."
 msgstr ""
 
-#: controllers/controller_account.py:403
+#: controllers/controller_account.py:396
 msgid "'Email' Field is required"
 msgstr ""
 
-#: controllers/controller_account.py:410
+#: controllers/controller_account.py:403
 msgid "There is a problem with your account. Please contact your seller."
 msgstr ""
 
-#: controllers/controller_account.py:416
+#: controllers/controller_account.py:409
 msgid ""
 " we sent an email to this mailbox, if this email was linked to an active "
 "account."
@@ -128,7 +128,7 @@ msgstr ""
 msgid "Your shopping cart has been deleted."
 msgstr ""
 
-#: controllers/controller_sale_order.py:153 templates/base.html:128
+#: controllers/controller_sale_order.py:153 templates/base.html:129
 msgid "You have not reached the ceiling : "
 msgstr ""
 
@@ -264,7 +264,7 @@ msgstr ""
 msgid "Try to reload the page later."
 msgstr ""
 
-#: templates/account.html:12 templates/base.html:159
+#: templates/account.html:12 templates/base.html:160
 msgid "Personnal Datas"
 msgstr ""
 
@@ -303,7 +303,7 @@ msgstr ""
 msgid "Other Phone"
 msgstr ""
 
-#: templates/account.html:58 templates/product.html:131
+#: templates/account.html:58 templates/product.html:143
 #: templates/register.html:123
 msgid "Country"
 msgstr ""
@@ -316,12 +316,18 @@ msgstr ""
 msgid "Update datas"
 msgstr ""
 
-#: templates/account.html:77 templates/account.html:82 templates/login.html:26
+#: templates/account.html:77 templates/account.html:95 templates/login.html:26
 #: templates/register.html:83
 msgid "Password"
 msgstr ""
 
-#: templates/account.html:91
+#: templates/account.html:80
+msgid ""
+"At least one number and one uppercase and lowercase letter, and at least "
+"6 or more characters"
+msgstr ""
+
+#: templates/account.html:104
 msgid "Update password"
 msgstr ""
 
@@ -371,90 +377,90 @@ msgid ""
 "that the transfer has been received."
 msgstr ""
 
-#: templates/base.html:39
+#: templates/base.html:40
 msgid "Something wrong occured, please refresh the page."
 msgstr ""
 
-#: templates/base.html:71 templates/base.html:73
+#: templates/base.html:72 templates/base.html:74
 msgid "Products Catalog"
 msgstr ""
 
-#: templates/base.html:81 templates/base.html:83
+#: templates/base.html:82 templates/base.html:84
 msgid "Quick Purchase"
 msgstr ""
 
-#: templates/base.html:90 templates/base.html:92
+#: templates/base.html:91 templates/base.html:93
 msgid "See moment for recovery"
 msgstr ""
 
-#: templates/base.html:104 templates/base.html:155
+#: templates/base.html:105 templates/base.html:156
 msgid "Wallet: "
 msgstr ""
 
-#: templates/base.html:111 templates/base.html:118
+#: templates/base.html:112 templates/base.html:119
 msgid "Shopping Cart: "
 msgstr ""
 
-#: templates/base.html:113
+#: templates/base.html:114
 msgid "0.00$"
 msgstr ""
 
-#: templates/base.html:123 templates/catalog_tree.html:65
-#: templates/product.html:77
+#: templates/base.html:124 templates/catalog_tree.html:65
+#: templates/product.html:75
 msgid "VAT. Incl."
 msgstr ""
 
-#: templates/base.html:123 templates/catalog_inline.html:66
-#: templates/catalog_tree.html:67 templates/product.html:79
+#: templates/base.html:124 templates/catalog_inline.html:66
+#: templates/catalog_tree.html:67 templates/product.html:77
 msgid "VAT. Excl."
 msgstr ""
 
-#: templates/base.html:127
+#: templates/base.html:128
 msgid "Minimum amount reached"
 msgstr ""
 
-#: templates/base.html:149
+#: templates/base.html:150
 msgid "Your Account"
 msgstr ""
 
-#: templates/base.html:160
+#: templates/base.html:161
 msgid "Orders History"
 msgstr ""
 
-#: templates/base.html:161
+#: templates/base.html:162
 msgid "Invoices History"
 msgstr ""
 
-#: templates/base.html:163
+#: templates/base.html:164
 msgid "Log Out"
 msgstr ""
 
-#: templates/base.html:173 templates/base.html:174
+#: templates/base.html:174 templates/base.html:175
 msgid "Register"
 msgstr ""
 
-#: templates/base.html:179 templates/base.html:180 templates/login.html:17
+#: templates/base.html:180 templates/base.html:181 templates/login.html:17
 #: templates/login.html:33
 msgid "Log In"
 msgstr ""
 
-#: templates/base.html:226
+#: templates/base.html:228
 msgid "Visit our Website"
 msgstr ""
 
-#: templates/base.html:227
+#: templates/base.html:229
 msgid "Web Site"
 msgstr ""
 
-#: templates/base.html:233
+#: templates/base.html:235
 msgid "Legal Notices"
 msgstr ""
 
-#: templates/base.html:238
+#: templates/base.html:240
 msgid "Contact"
 msgstr ""
 
-#: templates/base.html:246
+#: templates/base.html:248
 msgid ""
 "We use <a href=\"https://luciole-vision.com/\" target=\"_blank\">Luciole "
 ": a Free font</a> designed to be accessible to the visually impaired."
@@ -560,7 +566,7 @@ msgid "Total"
 msgstr ""
 
 #: templates/invoices.html:27 templates/orders.html:31
-#: templates/product.html:138
+#: templates/product.html:150
 msgid "State"
 msgstr ""
 
@@ -876,51 +882,47 @@ msgid ""
 "payment."
 msgstr ""
 
-#: templates/product.html:100 templates/product.html:105
+#: templates/product.html:111 templates/product.html:115
 msgid "Add to Shopping Cart"
 msgstr ""
 
-#: templates/product.html:101
-msgid "Add"
-msgstr ""
-
-#: templates/product.html:106
+#: templates/product.html:116
 msgid "Create an account or Log In"
 msgstr ""
 
-#: templates/product.html:116
+#: templates/product.html:128
 msgid "Minimum Quantity"
 msgstr ""
 
-#: templates/product.html:121
+#: templates/product.html:133
 msgid "Rounding Quantity"
 msgstr ""
 
-#: templates/product.html:127
+#: templates/product.html:139
 msgid "Product origin"
 msgstr ""
 
-#: templates/product.html:145
+#: templates/product.html:157
 msgid "Department"
 msgstr ""
 
-#: templates/product.html:156
+#: templates/product.html:168
 msgid "Origin Description"
 msgstr ""
 
-#: templates/product.html:162
+#: templates/product.html:174
 msgid "Maker Description"
 msgstr ""
 
-#: templates/product.html:177
+#: templates/product.html:189
 msgid "Description"
 msgstr ""
 
-#: templates/product.html:201
+#: templates/product.html:213
 msgid "Previous Product"
 msgstr ""
 
-#: templates/product.html:219
+#: templates/product.html:231
 msgid "Next Product"
 msgstr ""
 
