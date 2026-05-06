@@ -11,37 +11,6 @@ Odoo Eshop
 This app is a Flask Website that communicate with Odoo, to provide
 a light eShop.
 
-Installation
-============
-
-Eshop Part
-----------
-
-``
-git clone https://github.com/grap/odoo-eshop -b 12.0
-cd odoo-eshop && ./install.sh
-``
-
-Odoo Installation
------------------
-
-This version is compatible with an Odoo 12.0 with the following module
-installed ``sale_eshop`` available here : https://github.com/grap/grap-odoo-business
-
-
-Configuration
-=============
-
-in the config.ini file of the eshop, set the :
-
-* ``[odoo] url`` : the url (and the port) of your odoo instance
-* ``[odoo] database`` : the database name you want to connect
-* ``[odoo] company_id`` : the odoo company ID want to connect
-
-* ``[auth] user_login`` : the login of the eshop User
-* ``[auth] user_password`` : the password of the eshop User
-
-
 
 Main Features
 -------------
@@ -63,8 +32,36 @@ Technical caracteristics
 - Do not host database, datas are requested on the fly to the odoo instance.
 - Use Jinja as a template language (http://jinja.pocoo.org/docs/2.10/)
 
-Initial eShop Settings
-----------------------
+
+Installation for development
+============================
+
+Eshop Part
+----------
+
+``
+git clone https://github.com/grap/odoo-eshop -b 12.0
+cd odoo-eshop && ./install.sh
+``
+
+Odoo Installation
+-----------------
+
+This version is compatible with an Odoo 12.0 with the following module
+installed ``sale_eshop`` available here : https://github.com/grap/grap-odoo-business
+
+
+Configuration
+-------------
+
+in the config.ini file of the eshop, set the :
+
+* ``[odoo] url`` : the url (and the port) of your odoo instance
+* ``[odoo] database`` : the database name you want to connect
+* ``[odoo] company_id`` : the odoo company ID want to connect
+
+* ``[auth] user_login`` : the login of the eshop User
+* ``[auth] user_password`` : the password of the eshop User
 
 
 Launch eshop
@@ -72,15 +69,59 @@ Launch eshop
 
 ``./env/bin/python -m odoo_eshop``
 
+Installation on server
+======================
+
+TODO
+----
+
+How to install on server : code, pip install, config, nginx, service
+
+
+Create service
+--------------
+
+Create file in `/etc/systemd/system/yourEshopName.service`
+
+```
+[Unit]
+Description=yourEshopName eShop Daemon
+After=network.target
+
+[Service]
+Type=simple
+User=yourEshopUserOnConfig
+Group=yourEshopUserOnConfig
+ExecStart=/path/to/odoo_eshop.systemctl.sh
+
+
+[Install]
+WantedBy=multi-user.target
+```  
+
+Launch
+------
+
+`sudo systemctl status yourEshopName.service`
+
+
+Journal
+-------
+
+`sudo journalctl -fu yourEshopName.service`
+
+
 Credits
 =======
 
 Contributors
 ------------
 
-* Sylvain LE GAL (https://twitter.com/legalsylvain)
+* Sylvain LE GAL
+* Quentin DUPONT
 
 Do not contact contributors directly about support or help with technical issues.
+
 
 Funders
 -------

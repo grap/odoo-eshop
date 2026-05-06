@@ -45,6 +45,7 @@ def shopping_cart_eshop_note_update():
         return jsonify(result=result)
     flash(result["message"], result["state"])
     return redirect_url_for("shopping_cart")
+    # Handling AJAX call
 
 
 @app.route("/shopping_cart_quantity_update", methods=["POST"])
@@ -52,10 +53,12 @@ def shopping_cart_quantity_update():
     res = set_quantity(
         int(request.form["product_id"]), request.form["new_quantity"], False, "set"
     )
-    if True:  # request.is_xhr:
+    # Handling AJAX call
+    if request.headers.get("X-Requested-With") == "XMLHttpRequest":
         return jsonify(result=res)
+    # Fallback if ever
     flash(res["message"], res["state"])
-    return redirect_url_for("shopping_cart")
+    return redirect(url_for("shopping_cart"))
 
 
 @app.route("/shopping_cart_delete")
@@ -90,55 +93,89 @@ def shopping_cart_delete_line(line_id):
 # ############################################################################
 # Recovery Moment Place Route
 # ############################################################################
+@app.route("/recovery_moment_place_public")
+def recovery_moment_place_public():
+    company = get_current_company()
+    partner_id = get_current_partner_id()
+    #  Get Recovery moment with no limitation
+    #       + the ones with limitation where the partner is
+    #
+    # Search method (instead of browse_by_search) avoid to browse
+    # every fields that needs more user access or can be linked 
+    # to other module and complexity
+    # Side effect : load object on view and add inherit models with eshop_mixin
+    recovery_moments = execute_odoo_command(
+        "sale.recovery.moment",
+        "search",
+        ['&',
+            '|',
+                ("limited_partners_ids", "in", partner_id),
+                ("is_limited", "=", False),
+            ("state", "=", "pending_sale"),
+        ],
+        order="min_recovery_date",
+    )
+    return render_template(
+        "recovery_moment_place.html", recovery_moments=recovery_moments, public=True
+    )
+
+
 @app.route("/recovery_moment_place")
 @requires_auth
 def recovery_moment_place():
     company = get_current_company()
+    partner_id = get_current_partner_id()
+    #  Get Recovery moment with no limitation
+    #       + the ones with limitation where the partner is
+    #
+    # Search method (instead of browse_by_search) avoid to browse
+    # every fields that needs more user access or can be linked 
+    # to other module and complexity
+    # Side effect : load object on view and add inherit models with eshop_mixin
     recovery_moments = execute_odoo_command(
         "sale.recovery.moment",
-        "browse_by_search",
-        [("state", "=", "pending_sale")],
+        "search",
+        ['&',
+            '|',
+                ("limited_partners_ids", "in", partner_id),
+                ("is_limited", "=", False),
+            ("state", "=", "pending_sale"),
+        ],
         order="min_recovery_date",
     )
     sale_order = get_current_sale_order()
-    if (
-        company.eshop_minimum_price != 0
-        and company.eshop_minimum_price > sale_order.amount_total
-    ):
-        flash(
-            _("You have not reached the ceiling : ")
-            + currency(company.eshop_minimum_price),
-            "warning",
-        )
-        return redirect_url_for("shopping_cart")
+    if sale_order is not False:
+        minimum = company.eshop_minimum_price or 0
+        if (
+            minimum > sale_order.amount_total
+        ):
+            flash(
+                _("You have not reached the ceiling : ")
+                + currency(company.eshop_minimum_price),
+                "warning",
+            )
+            return redirect_url_for("shopping_cart")
     return render_template(
-        "recovery_moment_place.html", recovery_moments=recovery_moments
+        "recovery_moment_place.html", recovery_moments=recovery_moments, public=False
     )
 
 
 @app.route("/select_recovery_moment/<int:recovery_moment_id>")
 @requires_auth
 def select_recovery_moment(recovery_moment_id):
-    company = get_current_company()
-    result = execute_odoo_command(
+    # Add recovery moment to SO
+    res_recovery_moment = execute_odoo_command(
         "sale.order",
         "eshop_select_recovery_moment",
         get_current_partner_id(),
         recovery_moment_id,
     )
-    if result == "recovery_moment_complete":
+    recovery_name = get_current_sale_order().recovery_name
+
+    # Full recovery moment
+    if res_recovery_moment == "recovery_moment_complete":
         flash(_("The recovery moment is complete." " Please try again."), "danger")
         return redirect_url_for("recovery_moment_place")
     else:
-        if company.eshop_wallet_enabled:
-            # Sale order will be confirmed at payment
-            return redirect_url_for("payment")
-        else:
-            # Sale order is confirmed now
-            result = execute_odoo_command(
-                "sale.order",
-                "eshop_confirm_sale_order",
-                get_current_partner_id(),
-            )
-            flash(_("Your Sale Order is now confirmed."), "success")
-            return redirect_url_for("home")
+        # Get to payment choice
+        return redirect_url_for("payment")

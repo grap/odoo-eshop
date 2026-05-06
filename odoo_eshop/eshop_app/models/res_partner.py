@@ -22,6 +22,14 @@ def get_current_partner(force_reload=False):
         force_reload=force_reload,
     )
 
+def get_current_partner_address_check():
+    partner = get_current_partner(force_reload=True)
+    if partner.street and partner.zip and partner.city and partner.country_id:
+        res = True
+    else:
+        res = False
+    return res
+
 
 def partner_domain(partner_field):
     return (partner_field, "=", session.get("partner_id", -1))

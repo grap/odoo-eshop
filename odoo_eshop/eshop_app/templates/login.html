@@ -12,24 +12,17 @@ function togglePassword() {
 }
 </script>
 
-<style>
-  label.required::after {
-    content: " *";
-    color: red;
-  }
-</style>
-
 <form class="needs-validation" novalidate method="POST" action="/login.html/">
     <div class="container col-md-5">
         <h1 class="mt-4">{{ _('Log In') }}</h1>
 
         <div class="form-floating mb-3">
-            <input type="email" name="login" id="login" class="form-control input-required" placeholder="{{ _('Set your email...') }}" value="{{ request.form.get('login', '') }}" required>
+            <input type="email" name="login" id="login" class="form-control" placeholder="{{ _('Set your email...') }}" value="{{ request.form.get('login', '') }}" required>
             <label for="login" class="required">{{ _('Email') }}</label>
         </div>
 
         <div class="form-floating mb-3 position-relative">
-            <input type="password" name="password" id="password" class="form-control input-required" placeholder="{{ _('Set your password...') }}" required>
+            <input type="password" name="password" id="password" class="form-control" placeholder="{{ _('Set your password...') }}" required>
             <label for="password" class="required">{{ _('Password') }}</label>
             <span class="position-absolute top-50 end-0 translate-middle-y pe-3" onclick="togglePassword()" style="cursor:pointer;">
                 <i class="bi bi-eye" id="toggleIcon"></i>

@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block breadcrumb %}
+
+{% if payment_url or status in ['draft', 'pending', 'cancel', 'error'] %}
+<nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{ url_for('shopping_cart')}}">{{ _('Shopping Cart') }}</a></li>
+        <li class="breadcrumb-item"><a href="{{ url_for('recovery_moment_place')}}">{{ _('Recovery Moment Place') }}</a></li>
+        <li class="breadcrumb-item" aria-current="page"><a href="{{ url_for('payment')}}">{{ _('Choose payment') }}</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{{ _('Online payment') }}</li>
+    </ol>
+</nav>
+{% endif %}
+
+{% endblock %}
+
+{% block container %}
+
+<!-- PAY ONLINE WITH MOLLIE -->
+{% if company.eshop_mollie_enabled %}
+
+<div id="mollie_container_payment_online" class="container">
+
+    <div class="mt-4 container alert alert-info alert-dismissible fade show" role="alert">
+        <i class="bi bi-exclamation-diamond"></i> {{ _('Clicking on Pay will redirect you on Mollie.com page to validate your payment.') }}
+    </div>
+
+    <iframe
+      id="mollie_payment_online"
+      allowpaymentrequest="true"
+      allow="payment"
+      title="Mollie Online Payment"
+      src="{{payment_url}}"
+      frameborder="0"
+      scrolling="no"/>
+
+</div>
+
+{% endif %}
+
+{% endblock %}

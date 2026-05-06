@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block container %}
+
+<!-- JQuery -->
+<script>
+    $('#contact').addClass('active');
+</script>
+
+<div class="container my-3 py-4">
+    <div class="text-center mb-3">
+        <h1 class="display-5 fw-bold"><i class="bi bi-envelope-at"></i> {{ _('Contact us') }}</h1>
+    </div>
+
+    <div class="card shadow-lg border-0 rounded-4 p-4 bg-light">
+        
+        <section class="mb-3">
+            <h4 class="legal_notice_title"><i class="bi bi-person-badge"></i> {{ _('About us') }}</h4>
+            <p><strong>{{ company.name }}</strong><br>
+            {% if company.report_legal_description %}
+            {{ company.report_legal_description }}<br>
+            {% endif %}
+            </p>
+        </section>
+
+        <section class="mb-3">
+            <h4 class="legal_notice_title"><i class="bi bi-pin-map"></i> {{ _('Address') }}</h4>
+            <p>
+               {{ company.street }} - {{ company.zip }} {{ company.city }}<br>
+            </p>
+        </section>
+
+        <section class="mb-3">
+            <h4 class="legal_notice_title"><i class="bi bi-person-lines-fill"></i> {{ _('Contact us') }}</h4>
+            {% if company.email %}
+            <i class="bi bi-envelope-at"></i> {{ company.email | safe_email }}<br>
+            {% endif %}
+            {% if company.phone %}
+            <i class="bi bi-telephone"></i> {{ company.phone }}<br>
+            {% endif %}
+            {% if company.mobile %}
+            <i class="bi bi-phone"></i> {{ company.mobile }}<br>
+            {% endif %}
+        </section>
+
+    </div>
+</div>
+{% endblock %}
