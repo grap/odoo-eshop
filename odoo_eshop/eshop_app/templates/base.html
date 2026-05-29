@@ -34,6 +34,7 @@
                 'catalog_inline_quantity_update': "{{ url_for('catalog_inline_quantity_update') }}",
                 'shopping_cart_quantity_update': "{{ url_for('shopping_cart_quantity_update') }}",
                 'shopping_cart_eshop_note_update': "{{ url_for('shopping_cart_eshop_note_update') }}",
+                'product_adjust_qty': "{{ url_for('product_adjust_qty') }}",
             };
             AJAX_TIMEOUT = 3000;
             AJAX_MESSAGE_ERROR = "{{ _('Something wrong occured, please refresh the page.')}}";
@@ -84,6 +85,14 @@
                   </a>
                 </li>
                 {% endif %}
+
+                <!-- Always displayed -->
+                <li class="nav-item">
+                  <a class="nav-link" title="{{ _('See moment for recovery') }}" onclick="GoToThePage(this)" page_url="{{url_for('recovery_moment_place_public')}}">
+                    <i class="bi bi-shop-window"></i>
+                    <span class="d-none d-sm-inline">{{ _('See moment for recovery') }}</span>
+                  </a>
+                </li>
             </ul>
 
             <!-- RIGHT BLOCK -->
@@ -98,21 +107,23 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" onclick="GoToThePage(this)" page_url="{{ url_for('shopping_cart') }}">
-                    <i class="bi bi-basket2"></i>
-                    <span class="d-none d-sm-inline">{{ _('Shopping Cart: ') }}</span>
+                    {% if not sale_order %}
+                        <i class="bi bi-basket2"></i>
+                        <span class="d-none d-sm-inline">{{ _('Shopping Cart: ') }}</span>
+                        <span id="nav_amount_total">
+                            {{ _('0.00$') }}
+                        </span>
+                    {% else %}
+                    <a class="nav-link" onclick="GoToThePage(this)" page_url="{{ url_for('shopping_cart') }}">
+                        <i class="bi bi-basket2"></i>
+                        <span class="d-none d-sm-inline">{{ _('Shopping Cart: ') }}</span>
 
-                    <span id="nav_amount_total">
-                      {% if sale_order %}
-                        {% set amount = sale_order.amount_total if is_vat_included else sale_order.amount_untaxed %}
-                        {{ amount|to_currency }}
-                        {{ _('VAT. Incl.') if is_vat_included else _('VAT. Excl.') }}
-                      {% else %}
-                        {{ _('0.00$') }}
-                      {% endif %}
-                    </span>
+                        <span id="nav_amount_total">
+                            {% set amount = sale_order.amount_total if is_vat_included else sale_order.amount_untaxed %}
+                            {{ amount|to_currency }}
+                            {{ _('VAT. Incl.') if is_vat_included else _('VAT. Excl.') }}
+                        </span>
 
-                    {% if sale_order %}
                         {% set min_reached = amount >= company.eshop_minimum_price %}
                         {% set tooltip_ok = _('Minimum amount reached') %}
                         {% set tooltip_ko = _('You have not reached the ceiling : ') ~ company.eshop_minimum_price|to_currency %}
@@ -128,9 +139,9 @@
                            {% if min_reached %}style="display:none"{% endif %}
                            data-bs-toggle="tooltip"
                            title="{{ tooltip_ko }}"></i>
-                    {% endif %}
 
-                  </a>
+                    </a>
+                    {% endif %}
                 </li>
                 {% endif %}
                 {% if partner %}
@@ -138,7 +149,7 @@
                 <li class="nav-item dropdown position-relative">
                   <button class="nav-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" title="{{ _('Your Account') }}">
                     <i class="bi bi-person-circle"></i>
-                    <span class="d-none d-sm-inline">{{ _('Your Account') }}</span>
+                    <span class="d-none d-sm-inline">{{ partner.name }}</span>
                   </button>
                   <ul class="dropdown-menu dropdown-menu-end">
                     <span class="d-sm-none">
@@ -177,19 +188,20 @@
       </div>
     </nav>
 
-
+    <div class="container eshop_flash_container flashes">
     <!-- FLASHED MESSAGES -->
     {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
             {% for category, message in messages %}
                 {% if message|length %}
-    <div class="mt-4 container alert alert-{{ category }} alert-dismissible fade show" role="alert">
-        <i class="bi bi-exclamation-diamond"></i> {{ message }}
-    </div>
+        <div class="mt-4 container alert alert-{{ category }} alert-dismissible fade show" role="alert">
+            <i class="bi bi-exclamation-diamond"></i> {{ message }}
+        </div>
                 {% endif %}
             {% endfor %}
         {% endif %}
     {% endwith %}
+    </div>
 
     <!-- BOTTOM Fixed navbar -->
     <nav class="navbar fixed-bottom bg-body-tertiary">
@@ -221,6 +233,11 @@
             <li class="nav-item">
                 <a class="nav-link" id="nav_legal_notices" onclick="GoToThePage(this)" page_url="{{url_for('legal_notices')}}">
                 {{_('Legal Notices')}}
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="contact" onclick="GoToThePage(this)" page_url="{{url_for('contact')}}">
+                {{_('Contact')}}
                 </a>
             </li>
 

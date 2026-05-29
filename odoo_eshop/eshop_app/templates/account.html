@@ -5,9 +5,9 @@
     $('#nav_account').addClass('active');
 </script>
 
-<div class="container account">
+<div class="container account mt-5">
 
-    <form class="needs-validation" method="POST" action="{{ url_for('account') }}">
+    <form id="accountForm" class="needs-validation" method="POST" action="{{ url_for('account') }}">
 
         <h1>{{ _('Personnal Datas') }}</h1>
 
@@ -20,6 +20,22 @@
                 <input type="email" class="form-control" id="account_email" name="email" value="{{ partner.email|empty_if_null }}" readonly>
                 <label for="account_email">{{ _('Email') }}</label>
             </div>
+            <div class="col-12 form-floating">
+                <input type="text" class="form-control" id="account_street" name="street" value="{{ partner.street|empty_if_null }}" {% if address_required %}required{% endif %}>
+                <label for="account_street" class="{% if address_required %}required{% endif %}">{{ _('Street') }}</label>
+            </div>
+            <div class="col-12 form-floating">
+                <input type="text" class="form-control" id="account_street2" name="street2" value="{{ partner.street2|empty_if_null }}">
+                <label for="account_street2">{{ _('Street (Extra Info)') }}</label>
+            </div>
+            <div class="col-md-6 form-floating">
+                <input type="text" class="form-control"id="account_zip" name="zip" value="{{ partner.zip|empty_if_null }}" {% if address_required %}required{% endif %}>
+                <label for="account_zip" class="{% if address_required %}required{% endif %}">{{ _('ZIP Code') }}</label>
+            </div>
+            <div class="col-md-6 form-floating">
+                <input type="text" class="form-control" id="account_city" name="city" value="{{ partner.city|empty_if_null }}" {% if address_required %}required{% endif %}>
+                <label for="account_city" class="{% if address_required %}required{% endif %}">{{ _('City') }}</label>
+            </div>
             <div class="col-md-6 form-floating">
                 <input type="tel" class="form-control" id="account_mobile" name="mobile" value="{{ partner.mobile|empty_if_null }}">
                 <label for="account_mobile">{{ _('Cell Phone') }}</label>
@@ -27,38 +43,55 @@
             <div class="col-md-6 form-floating">
                 <input type="tel" class="form-control" id="account_phone" name="phone" value="{{ partner.phone|empty_if_null }}">
                 <label for="account_phone">{{ _('Other Phone') }}</label>
-            </div>
-            <div class="col-12 form-floating">
-                <input type="text" class="form-control" id="account_street" name="street" value="{{ partner.street|empty_if_null }}">
-                <label for="account_street">{{ _('Street') }}</label>
-            </div>
-            <div class="col-12 form-floating">
-                <input type="text" class="form-control" id="account_street2" name="street2" value="{{ partner.street2|empty_if_null }}">
-                <label for="account_street2">{{ _('Street (Extra Info)') }}</label>
-            </div>
+            </div>      
             <div class="col-md-6 form-floating">
-                <input type="text" class="form-control" id="account_zip" name="zip" value="{{ partner.zip|empty_if_null }}">
-                <label for="account_zip">{{ _('ZIP Code') }}</label>
-            </div>
-            <div class="col-md-6 form-floating">
-                <input type="text" class="form-control" id="account_city" name="city" value="{{ partner.city|empty_if_null }}">
-                <label for="account_city">{{ _('City') }}</label>
+                <select name="country_id" id="country" class="form-control account_data" required>
+                    <!-- Default value -->
+                    <option value="{{ actual_country.id }}">{{ actual_country.name }}</option>
+
+                    {% for country in countries_list %}
+                        <option value="{{ country.id }}">
+                            {{ country.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+                <label for="country" class="required">{{ _('Country') }}</label>
             </div>
         </div>
         <div class="mt-4">
-            <button type="submit" class="btn btn-primary">
-                {{ _('Update datas') }}
+
+            <button name="submit_button" type="submit" class="btn btn-primary" value="{% if address_required %}update_then_payment{% else %}update{% endif %}">
+                {% if address_required %}
+                    {{ _('Update and return to payment') }}
+                {% else %}
+                    {{ _('Update datas') }}
+                {% endif %}
             </button>
+
         </div>
     </form>
 
-    <form class="needs-validation" method="POST" action="{{ url_for('account_password') }}">
+    {% if not address_required %}
+    <form class="needs-validation" method="POST" action="{{ url_for('account') }}">
 
         <h1 id="password_change" class="mt-5">{{ _('Password') }}</h1>
 
+        <div class="alert alert-info">
+            {{ _('At least one number and one uppercase and lowercase letter, and at least 6 or more characters') }}
+        </div>
         <div class="col-md-6">
             <div class="form-floating position-relative">
-                <input type="password" class="form-control input-required account_data" id="password_1" name="password_1" value="{{ request.form['password_1']}}" required>
+                <input 
+                    type="password" 
+                    class="form-control account_data" 
+                    id="password_1" 
+                    name="password_1" 
+                    value="{{ request.form['password_1']}}" 
+                    required
+                    autocomplete="new-password" 
+                    minlength="6"
+                    pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}" 
+                    >
                 <label for="password_1" class="required">{{ _('Password') }}</label>
                 <span class="position-absolute top-50 end-0 translate-middle-y pe-3" onclick="togglePassword()" style="cursor:pointer;">
                     <i class="bi bi-eye" id="toggleIcon"></i>
@@ -67,11 +100,12 @@
         </div>
 
         <div class="mt-4">
-            <button type="submit" class="btn btn-primary">
+            <button name="submit_button" type="submit" value="submit_button_password" class="btn btn-primary">
                 {{ _('Update password') }}
             </button>
         </div>
     </form>
+    {% endif %}
 
 </div>
 

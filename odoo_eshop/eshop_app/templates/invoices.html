@@ -14,6 +14,7 @@
     </div>
 
     {% if invoices %}
+    
     <!-- TABLE VIEW (desktop) -->
     <div class="table-responsive d-none d-md-block">
         <table class="table table-striped align-middle shadow-sm eshop_table_float_thead" id="invoiceTable">
@@ -27,7 +28,9 @@
                 </tr>
             </thead>
             <tbody>
-                {% for invoice in invoices %}
+                {% for invoice_id in invoices %}
+                {% set invoice = get_object('account.move', invoice_id, True) %}
+
                 <tr class="invoice-row {% if loop.index > 5 %}d-none{% endif %}">
                     <td>{{ invoice.display_name }}</td>
                     <td>{{ invoice.invoice_date }}</td>
@@ -85,8 +88,6 @@
     </div>
     {% endif %}
 </div>
-
-<script src="{{ url_for('static', filename='js/set_table_float_thead.js') }}"></script>
 
 <!-- Handle button "Show All invoices" -->
 <script>

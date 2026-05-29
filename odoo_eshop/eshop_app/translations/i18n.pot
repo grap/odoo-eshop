@@ -1,49 +1,49 @@
 # Translations template for PROJECT.
-# Copyright (C) 2025 ORGANIZATION
+# Copyright (C) 2026 ORGANIZATION
 # This file is distributed under the same license as the PROJECT project.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
 #
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-06-03 15:47+0200\n"
+"POT-Creation-Date: 2026-03-06 15:06+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.14.0\n"
+"Generated-By: Babel 2.17.0\n"
 
-#: controllers/controller_account.py:58
-msgid "Account Datas updated successfully."
-msgstr ""
-
-#: controllers/controller_account.py:86
+#: controllers/controller_account.py:54
 msgid "Password updated successfully."
 msgstr ""
 
-#: controllers/controller_account.py:156
+#: controllers/controller_account.py:89
+msgid "Account Datas updated successfully."
+msgstr ""
+
+#: controllers/controller_account.py:188
 msgid "Login/password incorrects"
 msgstr ""
 
-#: controllers/controller_account.py:203
+#: controllers/controller_account.py:243
 #, python-format
 msgid ""
 "The '%(email)s' field is already used.Please ask your seller to fix the "
 "problem."
 msgstr ""
 
-#: controllers/controller_account.py:215
+#: controllers/controller_account.py:255
 #, python-format
 msgid ""
 "The '%(email)s' field is already associated to an active account. Please "
 "click 'Recover Password', if your forgot your credentials."
 msgstr ""
 
-#: controllers/controller_account.py:225
+#: controllers/controller_account.py:265
 #, python-format
 msgid ""
 "The '%(email)s' field is already associated to an account. Please finish "
@@ -51,63 +51,64 @@ msgid ""
 "by email."
 msgstr ""
 
-#: controllers/controller_account.py:236
+#: controllers/controller_account.py:276
 #, python-format
 msgid ""
 "The '%(email)s' field is already associated to an inactive account. "
 "Please ask your seller to activate your account."
 msgstr ""
 
-#: controllers/controller_account.py:291
+#: controllers/controller_account.py:330
 #, python-format
 msgid ""
 "The registration is complete. Please check your mail box '%(email)s' and "
 "click on the link you received to activate your account."
 msgstr ""
 
-#: controllers/controller_account.py:314
+#: controllers/controller_account.py:352
 msgid "The validation process failed."
 msgstr ""
 
-#: controllers/controller_account.py:318
+#: controllers/controller_account.py:356
 msgid "Your email was not found."
 msgstr ""
 
-#: controllers/controller_account.py:322
+#: controllers/controller_account.py:360
 msgid "Your account is already enabled."
 msgstr ""
 
-#: controllers/controller_account.py:327
+#: controllers/controller_account.py:366
 msgid ""
 "The validation process is over.\n"
 " You can now log in to begin to purchase."
 msgstr ""
 
-#: controllers/controller_account.py:336
+#: controllers/controller_account.py:375
 msgid ""
 "The validation process failed because your account is disabled. Please "
 "ask your seller to fix the problem."
 msgstr ""
 
-#: controllers/controller_account.py:358
+#: controllers/controller_account.py:396
 msgid "'Email' Field is required"
 msgstr ""
 
-#: controllers/controller_account.py:365
+#: controllers/controller_account.py:403
 msgid "There is a problem with your account. Please contact your seller."
 msgstr ""
 
-#: controllers/controller_account.py:370
+#: controllers/controller_account.py:409
 msgid ""
 " we sent an email to this mailbox, if this email was linked to an active "
 "account."
 msgstr ""
 
-#: controllers/controller_payment.py:42
+#: controllers/controller_payment.py:59 controllers/controller_payment.py:127
+#: controllers/controller_payment.py:161
 msgid "Error while confirming your sale order."
 msgstr ""
 
-#: controllers/controller_payment.py:53
+#: controllers/controller_payment.py:70
 msgid "Error while confirming your payment."
 msgstr ""
 
@@ -115,44 +116,40 @@ msgstr ""
 msgid "Your comment has been successfully updated."
 msgstr ""
 
-#: controllers/controller_sale_order.py:69
+#: controllers/controller_sale_order.py:72
 msgid "Your shopping cart has been successfully deleted."
 msgstr ""
 
-#: controllers/controller_sale_order.py:83
+#: controllers/controller_sale_order.py:86
 msgid "The Line has been successfully deleted."
 msgstr ""
 
-#: controllers/controller_sale_order.py:86
+#: controllers/controller_sale_order.py:89
 msgid "Your shopping cart has been deleted."
 msgstr ""
 
-#: controllers/controller_sale_order.py:109 templates/base.html:128
+#: controllers/controller_sale_order.py:153 templates/base.html:129
 msgid "You have not reached the ceiling : "
 msgstr ""
 
-#: controllers/controller_sale_order.py:130
+#: controllers/controller_sale_order.py:177
 msgid "The recovery moment is complete. Please try again."
 msgstr ""
 
-#: controllers/controller_sale_order.py:143
-msgid "Your Sale Order is now confirmed."
-msgstr ""
-
-#: controllers/controller_technical.py:65
+#: controllers/controller_technical.py:61
 #, python-format
 msgid ""
 "It is not possible to buy for the time being, You can buy starting at "
 "%(day)s %(date)s %(time)s."
 msgstr ""
 
-#: controllers/controller_technical.py:71
+#: controllers/controller_technical.py:72
 msgid ""
 "It is not possible to buy for the time being, but you can see the catalog"
 " in the meantime."
 msgstr ""
 
-#: controllers/controller_technical.py:84
+#: controllers/controller_technical.py:81
 #, python-format
 msgid "You can buy until %(day)s %(date)s %(time)s."
 msgstr ""
@@ -161,61 +158,61 @@ msgstr ""
 msgid "Recovery Moment Unset"
 msgstr ""
 
-#: controllers/controller_technical.py:213
+#: controllers/controller_technical.py:226
 msgid "Monday"
 msgstr ""
 
-#: controllers/controller_technical.py:214
+#: controllers/controller_technical.py:227
 msgid "Tuesday"
 msgstr ""
 
-#: controllers/controller_technical.py:215
+#: controllers/controller_technical.py:228
 msgid "Wednesdsay"
 msgstr ""
 
-#: controllers/controller_technical.py:216
+#: controllers/controller_technical.py:229
 msgid "Thursday"
 msgstr ""
 
-#: controllers/controller_technical.py:217
+#: controllers/controller_technical.py:230
 msgid "Friday"
 msgstr ""
 
-#: controllers/controller_technical.py:218
+#: controllers/controller_technical.py:231
 msgid "Saturday"
 msgstr ""
 
-#: controllers/controller_technical.py:219
+#: controllers/controller_technical.py:232
 msgid "Sunday"
 msgstr ""
 
-#: models/res_partner.py:33
+#: models/res_partner.py:42
 msgid ""
 "The password should have 6 characters or more, and should contain at "
 "least one digits."
 msgstr ""
 
-#: models/res_partner.py:44
+#: models/res_partner.py:52
 #, python-format
 msgid "'%s' is not a valid First Name."
 msgstr ""
 
-#: models/res_partner.py:52
+#: models/res_partner.py:60
 #, python-format
 msgid "'%s' is not a valid Last Name."
 msgstr ""
 
-#: models/res_partner.py:60
+#: models/res_partner.py:68
 #, python-format
 msgid "'%s' is not a valid email."
 msgstr ""
 
-#: models/res_partner.py:68
+#: models/res_partner.py:77
 #, python-format
 msgid "'%(phone)s' is not a valid phone number.It contains caracters."
 msgstr ""
 
-#: models/res_partner.py:80
+#: models/res_partner.py:88
 #, python-format
 msgid "'%(phone)s' is not a valid phone number."
 msgstr ""
@@ -267,7 +264,7 @@ msgstr ""
 msgid "Try to reload the page later."
 msgstr ""
 
-#: templates/account.html:12 templates/base.html:159
+#: templates/account.html:12 templates/base.html:160
 msgid "Personnal Datas"
 msgstr ""
 
@@ -275,47 +272,62 @@ msgstr ""
 msgid "Name"
 msgstr ""
 
-#: templates/account.html:21 templates/login.html:28
+#: templates/account.html:21 templates/login.html:21
 #: templates/password_lost.html:18 templates/password_lost.html:22
-#: templates/register.html:81
+#: templates/register.html:77
 msgid "Email"
 msgstr ""
 
-#: templates/account.html:25 templates/register.html:119
-#: templates/register.html:122
-msgid "Cell Phone"
-msgstr ""
-
-#: templates/account.html:29 templates/register.html:128
-msgid "Other Phone"
-msgstr ""
-
-#: templates/account.html:33 templates/register.html:98
+#: templates/account.html:25 templates/register.html:94
 msgid "Street"
 msgstr ""
 
-#: templates/account.html:37 templates/register.html:103
+#: templates/account.html:29 templates/register.html:99
 msgid "Street (Extra Info)"
 msgstr ""
 
-#: templates/account.html:41 templates/register.html:108
+#: templates/account.html:33 templates/register.html:104
 msgid "ZIP Code"
 msgstr ""
 
-#: templates/account.html:45 templates/register.html:113
+#: templates/account.html:37 templates/register.html:109
 msgid "City"
 msgstr ""
 
-#: templates/account.html:50
+#: templates/account.html:41 templates/register.html:131
+#: templates/register.html:134
+msgid "Cell Phone"
+msgstr ""
+
+#: templates/account.html:45 templates/register.html:140
+msgid "Other Phone"
+msgstr ""
+
+#: templates/account.html:58 templates/product.html:143
+#: templates/register.html:123
+msgid "Country"
+msgstr ""
+
+#: templates/account.html:65
+msgid "Update and return to payment"
+msgstr ""
+
+#: templates/account.html:67
 msgid "Update datas"
 msgstr ""
 
-#: templates/account.html:57 templates/account.html:62 templates/login.html:33
-#: templates/register.html:87
+#: templates/account.html:77 templates/account.html:95 templates/login.html:26
+#: templates/register.html:83
 msgid "Password"
 msgstr ""
 
-#: templates/account.html:71
+#: templates/account.html:80
+msgid ""
+"At least one number and one uppercase and lowercase letter, and at least "
+"6 or more characters"
+msgstr ""
+
+#: templates/account.html:104
 msgid "Update password"
 msgstr ""
 
@@ -323,124 +335,132 @@ msgstr ""
 msgid "My Wallet"
 msgstr ""
 
-#: templates/account_wallet.html:24
-msgid "Current Balance"
-msgstr ""
-
-#: templates/account_wallet.html:34
-msgid "Recharge Instructions"
-msgstr ""
-
-#: templates/account_wallet.html:40
-msgid "By Bank Transfer"
-msgstr ""
-
-#: templates/account_wallet.html:41
-msgid "You can recharge your wallet by bank transfer using the following RIB:"
-msgstr ""
-
-#: templates/account_wallet.html:48
-msgid "Beneficiary"
-msgstr ""
-
-#: templates/account_wallet.html:57
-msgid ""
-"Don’t forget to include your full name or customer number in the transfer"
-" label."
-msgstr ""
-
-#: templates/account_wallet.html:60
-msgid ""
-"Your wallet account will be updated after a <b>manual verification</b> "
-"that the transfer has been received."
-msgstr ""
-
-#: templates/account_wallet.html:68
+#: templates/account_wallet.html:35
 msgid "In-Store Payment"
 msgstr ""
 
-#: templates/account_wallet.html:70
+#: templates/account_wallet.html:39
 msgid ""
 "You can recharge your wallet directly in our store by paying with your "
 "credit card or cash at the counter."
 msgstr ""
 
-#: templates/base.html:49
+#: templates/account_wallet.html:48
+msgid "Online recharge"
+msgstr ""
+
+#: templates/account_wallet.html:52
+msgid "Recharge your wallet with online payment."
+msgstr ""
+
+#: templates/account_wallet.html:62
+msgid "By Bank Transfer"
+msgstr ""
+
+#: templates/account_wallet.html:65
+msgid "You can recharge your wallet by bank transfer using the following RIB:"
+msgstr ""
+
+#: templates/account_wallet.html:72
+msgid "Beneficiary"
+msgstr ""
+
+#: templates/account_wallet.html:81
+msgid ""
+"Don’t forget to include your full name or customer number in the transfer"
+" label."
+msgstr ""
+
+#: templates/account_wallet.html:84
+msgid ""
+"Your wallet account will be updated after a <b>manual verification</b> "
+"that the transfer has been received."
+msgstr ""
+
+#: templates/base.html:40
 msgid "Something wrong occured, please refresh the page."
 msgstr ""
 
-#: templates/base.html:81 templates/base.html:83
+#: templates/base.html:72 templates/base.html:74
 msgid "Products Catalog"
 msgstr ""
 
-#: templates/base.html:91 templates/base.html:93
+#: templates/base.html:82 templates/base.html:84
 msgid "Quick Purchase"
 msgstr ""
 
-#: templates/base.html:106 templates/base.html:155
+#: templates/base.html:91 templates/base.html:93
+msgid "See moment for recovery"
+msgstr ""
+
+#: templates/base.html:105 templates/base.html:156
 msgid "Wallet: "
 msgstr ""
 
-#: templates/base.html:113
+#: templates/base.html:112 templates/base.html:119
 msgid "Shopping Cart: "
 msgstr ""
 
-#: templates/base.html:119 templates/catalog_tree.html:65
-#: templates/product.html:77
-msgid "VAT. Incl."
-msgstr ""
-
-#: templates/base.html:119 templates/catalog_inline.html:66
-#: templates/catalog_tree.html:67 templates/product.html:79
-msgid "VAT. Excl."
-msgstr ""
-
-#: templates/base.html:121
+#: templates/base.html:114
 msgid "0.00$"
 msgstr ""
 
-#: templates/base.html:127
+#: templates/base.html:124 templates/catalog_tree.html:65
+#: templates/product.html:75
+msgid "VAT. Incl."
+msgstr ""
+
+#: templates/base.html:124 templates/catalog_inline.html:66
+#: templates/catalog_tree.html:67 templates/product.html:77
+msgid "VAT. Excl."
+msgstr ""
+
+#: templates/base.html:128
 msgid "Minimum amount reached"
 msgstr ""
 
-#: templates/base.html:149 templates/base.html:151
+#: templates/base.html:150
 msgid "Your Account"
 msgstr ""
 
-#: templates/base.html:160
+#: templates/base.html:161
 msgid "Orders History"
 msgstr ""
 
-#: templates/base.html:161
+#: templates/base.html:162
 msgid "Invoices History"
 msgstr ""
 
-#: templates/base.html:163
+#: templates/base.html:164
 msgid "Log Out"
 msgstr ""
 
-#: templates/base.html:173 templates/base.html:174
+#: templates/base.html:174 templates/base.html:175
 msgid "Register"
 msgstr ""
 
-#: templates/base.html:179 templates/base.html:180 templates/login.html:24
-#: templates/login.html:40
+#: templates/base.html:180 templates/base.html:181 templates/login.html:17
+#: templates/login.html:33
 msgid "Log In"
 msgstr ""
 
-#: templates/base.html:226
+#: templates/base.html:228
 msgid "Visit our Website"
 msgstr ""
 
-#: templates/base.html:227
+#: templates/base.html:229
 msgid "Web Site"
 msgstr ""
 
-#: templates/base.html:233
+#: templates/base.html:235
 msgid "Legal Notices"
 msgstr ""
 
-#: templates/base.html:241
+#: templates/base.html:240
+msgid "Contact"
+msgstr ""
+
+#: templates/base.html:248
 msgid ""
 "We use <a href=\"https://luciole-vision.com/\" target=\"_blank\">Luciole "
 ": a Free font</a> designed to be accessible to the visually impaired."
@@ -458,16 +478,16 @@ msgstr ""
 msgid "Labels"
 msgstr ""
 
-#: templates/catalog_inline.html:26 templates/shopping_cart.html:16
+#: templates/catalog_inline.html:26 templates/shopping_cart.html:29
 msgid "VAT"
 msgstr ""
 
-#: templates/catalog_inline.html:28 templates/shopping_cart.html:17
+#: templates/catalog_inline.html:28 templates/shopping_cart.html:30
 msgid "Quantity"
 msgstr ""
 
-#: templates/catalog_inline.html:62 templates/shopping_cart.html:51
-#: templates/shopping_cart.html:119
+#: templates/catalog_inline.html:62 templates/shopping_cart.html:65
+#: templates/shopping_cart.html:132
 msgid "Unit price:"
 msgstr ""
 
@@ -503,6 +523,18 @@ msgstr ""
 msgid "Categories"
 msgstr ""
 
+#: templates/contact.html:12 templates/contact.html:34
+msgid "Contact us"
+msgstr ""
+
+#: templates/contact.html:18 templates/legal_notices.html:18
+msgid "About us"
+msgstr ""
+
+#: templates/contact.html:27
+msgid "Address"
+msgstr ""
+
 #: templates/home.html:16
 msgid "eShop not set."
 msgstr ""
@@ -515,48 +547,48 @@ msgstr ""
 msgid "Here are your most recent invoices."
 msgstr ""
 
-#: templates/invoices.html:22 templates/orders.html:24
+#: templates/invoices.html:23 templates/orders.html:24
 msgid "Number"
 msgstr ""
 
-#: templates/invoices.html:23
+#: templates/invoices.html:24
 msgid "Invoice Date"
 msgstr ""
 
-#: templates/invoices.html:24 templates/shopping_cart.html:169
+#: templates/invoices.html:25 templates/shopping_cart.html:187
 msgid "Untaxed Amount"
 msgstr ""
 
-#: templates/invoices.html:25 templates/invoices.html:69
+#: templates/invoices.html:26 templates/invoices.html:72
 #: templates/orders.html:30 templates/orders.html:113
-#: templates/shopping_cart.html:177
+#: templates/shopping_cart.html:195
 msgid "Total"
 msgstr ""
 
-#: templates/invoices.html:26 templates/orders.html:31
-#: templates/product.html:138
+#: templates/invoices.html:27 templates/orders.html:31
+#: templates/product.html:150
 msgid "State"
 msgstr ""
 
-#: templates/invoices.html:38 templates/invoices.html:58
+#: templates/invoices.html:41 templates/invoices.html:61
 msgid "Paid"
 msgstr ""
 
-#: templates/invoices.html:40 templates/invoices.html:60
+#: templates/invoices.html:43 templates/invoices.html:63
 #: templates/orders.html:54 templates/orders.html:84
 msgid "To pay"
 msgstr ""
 
-#: templates/invoices.html:68 templates/orders.html:29
+#: templates/invoices.html:71 templates/orders.html:29
 #: templates/orders.html:112
 msgid "Untaxed"
 msgstr ""
 
-#: templates/invoices.html:78
+#: templates/invoices.html:81
 msgid "Show all invoices"
 msgstr ""
 
-#: templates/invoices.html:84
+#: templates/invoices.html:87
 msgid "No Invoices for the time being."
 msgstr ""
 
@@ -568,10 +600,6 @@ msgstr ""
 msgid ""
 "Even if we like them with chocolate, we don't need cookie here : no data "
 "leek !"
-msgstr ""
-
-#: templates/legal_notices.html:18
-msgid "About us"
 msgstr ""
 
 #: templates/legal_notices.html:21
@@ -636,6 +664,28 @@ msgstr ""
 msgid "Mediation"
 msgstr ""
 
+#: templates/legal_notices.html:66
+msgid ""
+"In accordance with article L156-1 of the French Consumer Code, the "
+"consumer is informed of the possibility of resorting, in the event of a "
+"dispute, to a conventional mediation procedure or any other alternative "
+"dispute resolution method."
+msgstr ""
+
+#: templates/legal_notices.html:68
+msgid "is a member of "
+msgstr ""
+
+#: templates/legal_notices.html:69
+msgid ""
+"Consumers are also informed of the existence of the platform set up "
+"online by the European Commission, whose purpose is to collect any "
+"complaints arising from an online purchase by European consumers, and "
+"then to forward the cases received to the competent national mediators: "
+"<a target=\"_blank\" "
+"href=\"http://ec.europa.eu/consumers/odr/\">http://ec.europa.eu/consumers/odr/"
+msgstr ""
+
 #: templates/legal_notices.html:74
 msgid "Credits & thanks"
 msgstr ""
@@ -659,19 +709,19 @@ msgid ""
 "Jquery and Odoo Community Association of course ✊"
 msgstr ""
 
-#: templates/login.html:27
+#: templates/login.html:20
 msgid "Set your email..."
 msgstr ""
 
-#: templates/login.html:32
+#: templates/login.html:25
 msgid "Set your password..."
 msgstr ""
 
-#: templates/login.html:45
+#: templates/login.html:38
 msgid "I don't have an account yet, register"
 msgstr ""
 
-#: templates/login.html:48
+#: templates/login.html:41
 msgid "I forgot my password"
 msgstr ""
 
@@ -755,266 +805,392 @@ msgstr ""
 msgid "Send Reset Link"
 msgstr ""
 
-#: templates/payment.html:6 templates/recovery_moment_place.html:6
+#: templates/payment.html:6 templates/payment_online.html:8
+#: templates/recovery_moment_place.html:8 templates/sale_confirmed.html:8
+#: templates/shopping_cart.html:6
 msgid "Shopping Cart"
 msgstr ""
 
-#: templates/payment.html:7 templates/recovery_moment_place.html:7
+#: templates/payment.html:7 templates/payment_online.html:9
+#: templates/recovery_moment_place.html:9 templates/sale_confirmed.html:9
+#: templates/shopping_cart.html:7
 msgid "Recovery Moment Place"
 msgstr ""
 
-#: templates/payment.html:8
-msgid "Payment"
+#: templates/payment.html:8 templates/payment_online.html:10
+#: templates/sale_confirmed.html:10
+msgid "Choose payment"
 msgstr ""
 
 #: templates/payment.html:16
+msgid "Amount to pay: "
+msgstr ""
+
+#: templates/payment.html:18
+msgid "Choose one of this payment methods:"
+msgstr ""
+
+#: templates/payment.html:26 templates/payment.html:31
+msgid "Pay on site"
+msgstr ""
+
+#: templates/payment.html:41
 msgid "Pay with wallet"
 msgstr ""
 
-#: templates/payment.html:19
-msgid "Amount to pay"
-msgstr ""
-
-#: templates/payment.html:20
+#: templates/payment.html:45
 msgid "Money in your wallet"
 msgstr ""
 
-#: templates/payment.html:23
+#: templates/payment.html:49
 msgid "Balance after payment :"
 msgstr ""
 
-#: templates/payment.html:34
+#: templates/payment.html:59
 msgid "Confirm payment"
 msgstr ""
 
-#: templates/payment.html:37
+#: templates/payment.html:62
 msgid "You don't have enough money in your wallet to validate this order."
 msgstr ""
 
-#: templates/product.html:100 templates/product.html:105
+#: templates/payment.html:71
+msgid "Pay online"
+msgstr ""
+
+#: templates/payment.html:76
+msgid "Go to online payment"
+msgstr ""
+
+#: templates/payment.html:82
+msgid ""
+"Our online payment provider (Mollie) requires customers to provide their "
+"full address : street, zip, city and country."
+msgstr ""
+
+#: templates/payment.html:85
+msgid "Complete here"
+msgstr ""
+
+#: templates/payment_online.html:11 templates/sale_confirmed.html:11
+msgid "Online payment"
+msgstr ""
+
+#: templates/payment_online.html:26
+msgid ""
+"Clicking on Pay will redirect you on Mollie.com page to validate your "
+"payment."
+msgstr ""
+
+#: templates/product.html:111 templates/product.html:115
 msgid "Add to Shopping Cart"
 msgstr ""
 
-#: templates/product.html:101
-msgid "Add"
-msgstr ""
-
-#: templates/product.html:106
+#: templates/product.html:116
 msgid "Create an account or Log In"
 msgstr ""
 
-#: templates/product.html:116
+#: templates/product.html:128
 msgid "Minimum Quantity"
 msgstr ""
 
-#: templates/product.html:121
+#: templates/product.html:133
 msgid "Rounding Quantity"
 msgstr ""
 
-#: templates/product.html:127
+#: templates/product.html:139
 msgid "Product origin"
 msgstr ""
 
-#: templates/product.html:131
-msgid "Country"
-msgstr ""
-
-#: templates/product.html:145
+#: templates/product.html:157
 msgid "Department"
 msgstr ""
 
-#: templates/product.html:156
+#: templates/product.html:168
 msgid "Origin Description"
 msgstr ""
 
-#: templates/product.html:162
+#: templates/product.html:174
 msgid "Maker Description"
 msgstr ""
 
-#: templates/product.html:177
+#: templates/product.html:189
 msgid "Description"
 msgstr ""
 
-#: templates/product.html:201
+#: templates/product.html:213
 msgid "Previous Product"
 msgstr ""
 
-#: templates/product.html:219
+#: templates/product.html:231
 msgid "Next Product"
 msgstr ""
 
-#: templates/recovery_moment_place.html:21
+#: templates/recovery_moment_place.html:27
 msgid "Select Place and Moment for Recovery"
 msgstr ""
 
-#: templates/recovery_moment_place.html:25
+#: templates/recovery_moment_place.html:29
+msgid "Place and Moment for Recovery"
+msgstr ""
+
+#: templates/recovery_moment_place.html:34
 msgid ""
 "Sorry. For the time being, there is no possibility to select a date to "
 "recover your Shopping Cart."
 msgstr ""
 
-#: templates/recovery_moment_place.html:55
+#: templates/recovery_moment_place.html:67
 msgid "Complete"
 msgstr ""
 
-#: templates/recovery_moment_place.html:61
+#: templates/recovery_moment_place.html:74
 msgid "Select and go to payment"
 msgstr ""
 
-#: templates/recovery_moment_place.html:67
+#: templates/recovery_moment_place.html:80
 msgid "Select"
 msgstr ""
 
-#: templates/recovery_moment_place.html:74
+#: templates/recovery_moment_place.html:89
 msgid "Extra Cost"
 msgstr ""
 
-#: templates/recovery_moment_place.html:93
+#: templates/recovery_moment_place.html:108
 msgid "Confirm Order"
 msgstr ""
 
-#: templates/recovery_moment_place.html:97
+#: templates/recovery_moment_place.html:112
 msgid ""
 "You are about to validate your Shopping Cart, this procedure is "
 "irreversible."
 msgstr ""
 
-#: templates/recovery_moment_place.html:98 templates/shopping_cart.html:219
+#: templates/recovery_moment_place.html:113 templates/shopping_cart.html:237
 msgid "Do you want to proceed?"
 msgstr ""
 
-#: templates/recovery_moment_place.html:101 templates/shopping_cart.html:222
+#: templates/recovery_moment_place.html:116 templates/shopping_cart.html:240
 msgid "Cancel"
 msgstr ""
 
-#: templates/recovery_moment_place.html:102
+#: templates/recovery_moment_place.html:117
 msgid "Confirm"
 msgstr ""
 
-#: templates/recovery_moment_place.html:106
+#: templates/recovery_moment_place.html:121
 msgid ""
 "Please wait while your sale is being processed. This can take a few "
 "seconds."
 msgstr ""
 
-#: templates/register.html:64
+#: templates/register.html:60
 msgid "Create a new account"
 msgstr ""
 
-#: templates/register.html:71
+#: templates/register.html:67
 msgid "First Name"
 msgstr ""
 
-#: templates/register.html:76
+#: templates/register.html:72
 msgid "Last Name"
 msgstr ""
 
-#: templates/register.html:94
+#: templates/register.html:90
 msgid "Your adress"
 msgstr ""
 
-#: templates/register.html:132
+#: templates/register.html:115
+msgid "France"
+msgstr ""
+
+#: templates/register.html:144
 msgid "Is human"
 msgstr ""
 
-#: templates/register.html:141
+#: templates/register.html:153
 msgid "Create"
 msgstr ""
 
-#: templates/register.html:146
+#: templates/register.html:158
 msgid "I have already an account, sign in"
 msgstr ""
 
-#: templates/sale_confirmed.html:11
+#: templates/sale_confirmed.html:29
+msgid "Payment not completed"
+msgstr ""
+
+#: templates/sale_confirmed.html:31
+msgid "Your payment was not completed."
+msgstr ""
+
+#: templates/sale_confirmed.html:34
+msgid "Back to payment page"
+msgstr ""
+
+#: templates/sale_confirmed.html:37
+msgid "Back to cart"
+msgstr ""
+
+#: templates/sale_confirmed.html:46
+msgid "Payment pending"
+msgstr ""
+
+#: templates/sale_confirmed.html:48
+msgid "Your payment is being processed. This may take a few moments."
+msgstr ""
+
+#: templates/sale_confirmed.html:51
+msgid "View my orders"
+msgstr ""
+
+#: templates/sale_confirmed.html:60
+msgid "Payment authorized"
+msgstr ""
+
+#: templates/sale_confirmed.html:62
+msgid ""
+"Your payment method has been authorized. The transaction will be "
+"completed shortly."
+msgstr ""
+
+#: templates/sale_confirmed.html:65
+msgid "Track my order"
+msgstr ""
+
+#: templates/sale_confirmed.html:74
+msgid "Payment cancelled"
+msgstr ""
+
+#: templates/sale_confirmed.html:76
+msgid "The payment was cancelled. No amount has been charged."
+msgstr ""
+
+#: templates/sale_confirmed.html:79
+msgid "Back to payment method selection"
+msgstr ""
+
+#: templates/sale_confirmed.html:89
+msgid "Payment error"
+msgstr ""
+
+#: templates/sale_confirmed.html:91
+msgid ""
+"An error occurred while processing your payment. Please try again or use "
+"another payment method."
+msgstr ""
+
+#: templates/sale_confirmed.html:95
+msgid "Try again"
+msgstr ""
+
+#: templates/sale_confirmed.html:98
+msgid "Contact support"
+msgstr ""
+
+#: templates/sale_confirmed.html:112
 msgid "Order and payment validated"
 msgstr ""
 
-#: templates/sale_confirmed.html:13
+#: templates/sale_confirmed.html:114
+msgid "Order validated"
+msgstr ""
+
+#: templates/sale_confirmed.html:117
 msgid "Thank you for your order!"
 msgstr ""
 
-#: templates/sale_confirmed.html:16
+#: templates/sale_confirmed.html:120
 msgid ""
 "All that's left to do is pick up your order at your chosen collection "
 "point :"
 msgstr ""
 
-#: templates/sale_confirmed.html:20
-msgid "You should have receive an email with all the details."
+#: templates/sale_confirmed.html:124
+msgid "We have just send you an email with all the details."
 msgstr ""
 
-#: templates/sale_confirmed.html:24
-msgid "Don't forget your money to pay your order."
+#: templates/sale_confirmed.html:128
+msgid "Don't forget your payment method to pay your order."
 msgstr ""
 
-#: templates/sale_confirmed.html:29
+#: templates/sale_confirmed.html:134
 msgid "Return to Home"
 msgstr ""
 
-#: templates/sale_confirmed.html:32
+#: templates/sale_confirmed.html:137
 msgid "View My Orders"
 msgstr ""
 
-#: templates/shopping_cart.html:6
+#: templates/shopping_cart.html:15
 msgid "Validate your cart and choose a moment to recover it"
 msgstr ""
 
-#: templates/shopping_cart.html:15
+#: templates/shopping_cart.html:16
+msgid "Command"
+msgstr ""
+
+#: templates/shopping_cart.html:28
 msgid "Product"
 msgstr ""
 
-#: templates/shopping_cart.html:19
+#: templates/shopping_cart.html:32
 msgid "Subtotal VAT Incl."
 msgstr ""
 
-#: templates/shopping_cart.html:21
+#: templates/shopping_cart.html:34
 msgid "Subtotal VAT Excl."
 msgstr ""
 
-#: templates/shopping_cart.html:83 templates/shopping_cart.html:141
+#: templates/shopping_cart.html:96 templates/shopping_cart.html:153
 msgid "Remove"
 msgstr ""
 
-#: templates/shopping_cart.html:115
+#: templates/shopping_cart.html:128
 msgid "VAT:"
 msgstr ""
 
-#: templates/shopping_cart.html:122
+#: templates/shopping_cart.html:135
 msgid "Subtotal:"
 msgstr ""
 
-#: templates/shopping_cart.html:155
+#: templates/shopping_cart.html:167
 msgid "You can leave a comment here"
 msgstr ""
 
-#: templates/shopping_cart.html:159
+#: templates/shopping_cart.html:171
 msgid "Write a comment..."
 msgstr ""
 
-#: templates/shopping_cart.html:173
+#: templates/shopping_cart.html:182
+msgid "+ Shipping cost"
+msgstr ""
+
+#: templates/shopping_cart.html:191
 msgid "Taxes"
 msgstr ""
 
-#: templates/shopping_cart.html:201
+#: templates/shopping_cart.html:219
 msgid "Confirm and go pick your recovery place"
 msgstr ""
 
-#: templates/shopping_cart.html:214
+#: templates/shopping_cart.html:232
 msgid "Confirm Delete"
 msgstr ""
 
-#: templates/shopping_cart.html:218
+#: templates/shopping_cart.html:236
 msgid ""
 "You are about to delete your Shopping Cart, this procedure is "
 "irreversible."
 msgstr ""
 
-#: templates/shopping_cart.html:223
+#: templates/shopping_cart.html:241
 msgid "Delete"
 msgstr ""
 
-#: tools/auth.py:22 tools/auth.py:45
+#: tools/auth.py:23 tools/auth.py:46
 msgid ""
 "Distant Service Unavailable. If you had a pending purchase, you have not "
 "lost your Shopping Cart. Thank you connect again in a while."
 msgstr ""
+

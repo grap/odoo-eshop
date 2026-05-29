@@ -51,10 +51,8 @@
 <div class="row gy-3 product-detail-wrapper">
     <div class="col-xs-12 col-sm-4">
         <div class="product-image shadow rounded p-3 bg-white position-relative">
-            <a href="#" data-featherlight="{{ url_for('product_image_popup', product_id=product['id']) }}">
-                <img src="{{ url_for('static', filename=product.image_1920_local_path) }}"
-                    class="img-fluid rounded" alt="{{ product.name }}" loading="lazy"/>
-            </a>
+            <img src="{{ url_for('static', filename=product.image_1920_local_path) }}"
+                class="img-fluid rounded" alt="{{ product.name }}" loading="lazy"/>
 
             {% if product.label_ids|length %}
             <div class="product-labels position-absolute d-flex flex-wrap">
@@ -82,44 +80,58 @@
             </span>
         </div>
 
-        <form method="POST" action="{{ url_for('product_add_qty', product_id=product.id) }}">
-            <div class="container form-add-product">
-                <div class="row row-cols-auto align-items-center">
+        <!-- ADJUST QTY, QTY IS PRODUCT CART QTY -->
+        {% if sale_order and product_qty %}
+        <div class="container form-add-product">
+            <div class="row row-cols-auto align-items-center">
 
-                    <div class="col">
-                        <div class="quantity-selector">
-                            <button type="button" onclick="adjustQty(-1)">−</button>
-                            <input type="text" name="quantity" id="quantityInput" value="{{ product.eshop_minimum_qty or 1 }}" />
-                            <span class="product_uom_description">{{ uom.eshop_description }}</span>
-                            <button type="button" onclick="adjustQty(1)">+</button>
-                        </div>
+                <div class="col">
+                    <div class="quantity-selector">
+                        <button type="button" onclick="deleteLine({{ product.id }})"><i class="bi bi-trash"></i></button>
+
+                        <button type="button" onclick="adjustQty(-1, {{ product.id }})">−</button>
+
+                        <input readonly type="text" name="quantity" id="quantityInput" value="{{ product_qty or product.eshop_minimum_qty or 1 }}" />
+                        <span class="product_uom_description">{{ uom.eshop_description }}</span>
+                        
+                        <button type="button" onclick="adjustQty(+1, {{ product.id }})">+</button>
+                        
                     </div>
-
-                    {% if partner %}
-                        <button type="submit" class="btn btn-primary btn-buy">
-                            <span class="d-none d-md-block"><i class="bi bi-basket2"></i> {{ _('Add to Shopping Cart') }}</span>
-                            <span class="d-block d-md-none"><i class="bi bi-basket2"></i> {{ _('Add') }}</span>
-                        </button>
-                    {% else %}
-                        <span>
-                            <button type="submit" class="btn btn-secondary disabled">{{ _('Add to Shopping Cart') }}</button>
-                            <i class="bi bi-info-circle"></i> {{ _('Create an account or Log In') }}
-                        </span>
-                    {% endif %}
                 </div>
+
+                
             </div>
+        </div>
+
+        <!-- ADD IN CART BUTTON -->
+        {% else %}
+        <form method="POST" action="{{ url_for('product_add_new', product_id=product.id) }}">
+            {% if partner %}
+                <button type="submit" class="btn btn-primary btn-buy">
+                    <span><i class="bi bi-basket2"></i> {{ _('Add to Shopping Cart') }}</span>
+                </button>
+            {% else %}
+                <span>
+                    <button type="submit" class="btn btn-secondary disabled">{{ _('Add to Shopping Cart') }}</button>
+                    <i class="bi bi-info-circle"></i> {{ _('Create an account or Log In') }}
+                </span>
+            {% endif %}
         </form>
+
+        
+
+        {% endif %}
 
         <div class="product-informations col-md-7 mt-4 mb-5">
 
             <div class="row">
                 <div class="col-6 fw-semibold text-muted">{{ _('Minimum Quantity') }}</div>
-                <div class="col-6">{{ product.eshop_minimum_qty }} {{ uom.eshop_description }}</div>
+                <div class="col-6"><span id="product-min-qty">{{ product.eshop_minimum_qty }}</span> {{ uom.eshop_description }}</div>
             </div>
 
             <div class="row">
                 <div class="col-6 fw-semibold text-muted">{{ _('Rounding Quantity') }}</div>
-                <div class="col-6">{{ product.eshop_rounded_qty }} {{ uom.eshop_description }}</div>
+                <div class="col-6"><span id="product-rounded-qty">{{ product.eshop_rounded_qty }}</span> {{ uom.eshop_description }}</div>
             </div>
 
             {% if country or state or department%}

@@ -3,7 +3,7 @@ from flask import flash, jsonify, render_template, request
 from ..application import app
 from ..models.models import execute_odoo_command, get_odoo_object
 from ..models.res_partner import get_current_partner_id
-from ..models.sale_order import set_quantity
+from ..models.sale_order import set_quantity, get_current_sale_order
 from ..tools.auth import requires_auth
 from ..tools.web import redirect_url_for
 
@@ -17,14 +17,19 @@ def catalog_tree(category_id):
     category_ids = execute_odoo_command(
         "eshop.category",
         "search",
-        [("parent_id", "=", category_id)],
+        [
+            ("parent_id", "=", category_id),
+        ],
     )
 
     # Get Products
     product_ids = execute_odoo_command(
         "product.product",
         "search",
-        [("eshop_state", "=", "available"), ("eshop_category_id", "=", category_id)],
+        [
+            ("eshop_state", "=", "available"), 
+            ("eshop_category_id", "=", category_id),
+        ],
         order="name",
     )
 
@@ -63,10 +68,10 @@ def catalog_inline_quantity_update():
     res = set_quantity(
         int(request.form["product_id"]), request.form["new_quantity"], True, "set"
     )
-    if True:  # request.is_xhr:
+    # Handling AJAX call
+    if request.headers.get("X-Requested-With") == "XMLHttpRequest":
         return jsonify(result=res)
-    # TODO, fix me, the website is not working anymore if javascript is
-    # disabled
+    # Fallback if ever
     flash(res["messages"], res["state"])
     return redirect_url_for("catalog_inline")
 
@@ -74,10 +79,24 @@ def catalog_inline_quantity_update():
 # ############################################################################
 # Product Routes
 # ############################################################################
-@app.route("/product/<int:product_id>")
+@app.route("/product/<int:product_id>", methods=['GET', 'POST']) 
 def product(product_id):
-    # Get Products
+    # Get Product
     product = get_odoo_object("product.product", product_id)
+    # Get Product qty in sale order line
+    sale_order = get_current_sale_order()
+    if sale_order:
+        line = execute_odoo_command(
+            'sale.order.line',
+            'browse_by_search',
+            [
+                ('order_id', '=', sale_order.id),
+                ('product_id', '=', product_id)
+            ],
+        )
+        product_qty = line[0]['product_uom_qty'] if line else 0
+    else:
+        product_qty = product.eshop_minimum_qty or 1
 
     # Get Parent Categories
     parent_categories = []
@@ -87,25 +106,29 @@ def product(product_id):
         parent = get_odoo_object("eshop.category", parent.parent_id)
 
     return render_template(
-        "product.html", product_id=product_id, parent_categories=parent_categories
+        "product.html", product_id=product_id, product_qty=product_qty, parent_categories=parent_categories
     )
 
+# Call by JS AJAX adjustQty
+@app.route("/product_adjust_qty", methods=['POST']) 
+def product_adjust_qty():
+    res = set_quantity(
+        int(request.form["product_id"]), request.form["new_quantity"], True, "set"
+    )
+    # Handling AJAX call
+    if request.headers.get("X-Requested-With") == "XMLHttpRequest":
+        return jsonify(result=res)
+    # Fallback if ever
+    flash(res["messages"], res["state"])
+    return redirect_url_for("product", product_id=product_id, product_qty=new_quantity)
 
-@app.route("/product_popup/<int:product_id>")
-@requires_auth
-def product_popup(product_id):
-    return render_template("product_popup.html", product_id=product_id)
 
-
-@app.route("/product_image_popup/<int:product_id>")
-@requires_auth
-def product_image_popup(product_id):
-    return render_template("product_image_popup.html", product_id=product_id)
-
-
-@app.route("/product_add_qty/<int:product_id>", methods=["POST"])
-@requires_auth
-def product_add_qty(product_id):
-    res = set_quantity(int(product_id), request.form["quantity"], True, "add")
+# Call by HTML Form for new product
+@app.route("/product_add_new/<int:product_id>", methods=["POST"])
+def product_add_new(product_id):
+    product = get_odoo_object("product.product", product_id)
+    qty = str(product.eshop_minimum_qty or 1)
+    # todo : deprecated code that handle qty as string ? 
+    res = set_quantity(int(product_id), qty, True, "add")
     flash(res["message"], res["state"])
     return redirect_url_for("product", product_id=product_id)

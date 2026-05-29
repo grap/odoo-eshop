@@ -73,6 +73,10 @@ _ODOO_MODELS = {
         "proxy": odoo.env["account.tax"],
         "prefetch": True,
     },
+    "account.move": {
+        "proxy": odoo.env["account.move"],
+        "prefetch": True,
+    },
     "eshop.category": {
         "proxy": odoo.env["eshop.category"],
         "prefetch": True,
@@ -80,6 +84,9 @@ _ODOO_MODELS = {
     },
     "eshop.fake.account": {
         "proxy": odoo.env["eshop.fake.account"],
+    },
+    "payment.transaction": {
+        "proxy": odoo.env["payment.transaction"],
     },
     "product.label": {
         "proxy": odoo.env["product.label"],
@@ -130,6 +137,9 @@ _ODOO_MODELS = {
     },
     "sale.recovery.moment": {
         "proxy": odoo.env["sale.recovery.moment"],
+    },
+    "sale.recovery.place": {
+        "proxy": odoo.env["sale.recovery.place"],
     },
     "account.move": {
         "proxy": odoo.env["account.move"],

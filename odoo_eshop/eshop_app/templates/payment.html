@@ -5,38 +5,89 @@
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{{ url_for('shopping_cart')}}">{{ _('Shopping Cart') }}</a></li>
         <li class="breadcrumb-item"><a href="{{ url_for('recovery_moment_place')}}">{{ _('Recovery Moment Place') }}</a></li>
-        <li class="breadcrumb-item active" aria-current="page">{{ _('Payment') }}</li>
+        <li class="breadcrumb-item active" aria-current="page">{{ _('Choose payment') }}</li>
     </ol>
 </nav>
 {% endblock %}
 
 {% block container %}
 
-<div class="container">
-    <h1 class="my-4"><i class="bi bi-wallet2"></i> {{ _('Pay with wallet') }}</h1>
+<div class="container my-2">
+    <h1 class="my-4"><strong>{{ _('Amount to pay: ') }}</strong> {{ sale_order.amount_total|to_currency }}</h1>
+    
+    <p>{{ _('Choose one of this payment methods:') }}</p>
+</div>
 
-    <div class="card p-4 shadow">
-        <p><strong>{{ _('Amount to pay') }}</strong> {{ sale_order.amount_total|to_currency }}</p>
-        <p><strong>{{ _('Money in your wallet') }}</strong> {{ partner.customer_wallet_balance|to_currency }}</p>
+
+<!-- PAY ON SITE -->
+{% if company.eshop_pay_on_site %}
+<div class="mt-3 p-4 shadow">
+    
+    <h3 class="my-1"><i class="bi bi-shop"></i> {{ _('Pay on site') }}</h3>
+
+    <p>{{ company.eshop_pay_on_site_text|html_fix_image_url|safe}}</p>
+
+    <button onclick="GoToThePage(this);" class="btn btn-outline-success mt-4" href="#" page_url="{{ url_for('payment_on_site_validation') }}">
+        <i class="bi bi-check-circle"></i> {{ _('Pay on site') }}
+    </button>
+
+
+</div>
+{% endif %}
+
+<!-- PAY WITH WALLET -->
+{% if company.eshop_wallet_enabled %}
+<div class="mt-3 p-4 shadow">
+    <h3 class="my-1"><i class="bi bi-wallet2"></i> {{ _('Pay with wallet') }}</h3>
+   
+    <p>
+        <br/>
+        <strong>{{ _('Money in your wallet') }}</strong> {{ partner.customer_wallet_balance|to_currency }}
+        <br/>
 
         {% set balance_after_payment = partner.customer_wallet_balance - sale_order.amount_total %}
-        <p><strong>{{ _('Balance after payment :') }}</strong>
+        <strong>⤷{{ _('Balance after payment :') }}</strong>
             {% if balance_after_payment >= 0 %}
                 {{ balance_after_payment|to_currency }}
             {% else %}
                 <span class="text-danger">{{ balance_after_payment|to_currency }}</span>
             {% endif %}
-        </p>
+    </p>
 
-        {% if balance_after_payment >= 0 %}
-        <button onclick="GoToThePage(this);" class="btn btn-success w-100 mt-4" href="#" page_url="{{ url_for('payment_validation', sale_order_id=sale_order.id) }}">
-<!--         <button onclick="update_header_wallet({{ balance_after_payment }});GoToThePage(this);" class="btn btn-success w-100 mt-4" href="#" page_url="{{ url_for('payment_validation', sale_order_id=sale_order.id) }}">
- -->            <i class="bi bi-check-circle"></i> {{ _('Confirm payment') }}
-        </button>
-        {% else %}
-        <div class="alert alert-danger mt-4"> {{ _("You don't have enough money in your wallet to validate this order.") }}</div>
-        {% endif %}
-    </div>
+    {% if balance_after_payment >= 0 %}
+    <button onclick="GoToThePage(this);" class="btn btn-outline-success mt-4" href="#" page_url="{{ url_for('payment_validation_wallet', sale_order_id=sale_order.id) }}">
+        <i class="bi bi-check-circle"></i> {{ _('Confirm payment') }}
+    </button>
+    {% else %}
+    <div class="alert alert-danger mt-4 w-75"> {{ _("You don't have enough money in your wallet to validate this order.") }}</div>
+    {% endif %}
 </div>
+{% endif %}
+
+<!-- PAY ONLINE WITH MOLLIE -->
+{% if company.eshop_mollie_enabled %}
+<div class="mt-3 p-4 shadow">
+
+    <h3 class="my-1"><i class="bi bi-credit-card-fill"></i> {{ _('Pay online') }}</h3>
+
+    {% if partner_address_check %}
+
+    <button onclick="GoToThePage(this);" class="btn btn-outline-success mt-4" href="#" page_url="{{ url_for('payment_validation_online', sale_order_id=sale_order.id) }}">
+        <i class="bi bi-check-circle"></i> {{ _('Go to online payment') }}
+    </button>
+
+    {% else %}
+
+    <div class="alert alert-info mt-4">
+        {{ _('Our online payment provider (Mollie) requires customers to provide their full address : street, zip, city and country.') }}
+        <br/>
+        <button onclick="GoToThePage(this);" class="btn btn-info mt-2" href="#" page_url="{{ url_for('account', address_required=True) }}">
+            <i class="bi bi-person-circle"></i> {{ _('Complete here') }}
+        </button>            
+    </div>
+
+    {% endif %}
+</div>
+{% endif %}
 
 {% endblock %}

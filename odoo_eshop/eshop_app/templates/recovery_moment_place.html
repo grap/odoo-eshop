@@ -1,12 +1,16 @@
 {% extends 'base.html' %}
 
 {% block breadcrumb %}
-<nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
-    <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="{{ url_for('shopping_cart')}}">{{ _('Shopping Cart') }}</a></li>
-        <li class="breadcrumb-item active" aria-current="page">{{ _('Recovery Moment Place') }}</li>
-    </ol>
-</nav>
+
+{% if sale_order and not public %}
+    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ url_for('shopping_cart')}}">{{ _('Shopping Cart') }}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ _('Recovery Moment Place') }}</li>
+        </ol>
+    </nav>
+{% endif %}
+
 {% endblock %}
 
 {% block container %}
@@ -18,7 +22,12 @@
 
 <div class="container my-4">
 
+
+    {% if sale_order and not public %}
     <h1 class="mb-4"><i class="bi bi-shop-window"></i> {{ _('Select Place and Moment for Recovery') }}</h1>
+    {% else %}
+    <h1 class="mb-4 pt-4"><i class="bi bi-shop-window"></i> {{ _('Place and Moment for Recovery') }}</h1>
+    {% endif %}
 
     {% if recovery_moments|length == 0 %}
     <div class="alert alert-warning text-center">
@@ -28,56 +37,62 @@
 
 
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-5">
-      {% for recovery_moment in recovery_moments %}
-      <div class="col">
-        <div class="card w-100 border border-secondary">
+        {% for recovery_moment_id in recovery_moments %}
+            {% set recovery_moment = get_object('sale.recovery.moment', recovery_moment_id, True) %}
+            {% set place = get_object('sale.recovery.place', recovery_moment.place_id, True) %}
 
-            <div class="card-header rounded-3">
-                <div class="card-header-date">
-                    <strong><i class="bi bi-calendar-date"></i>  {{ recovery_moment.min_recovery_date|to_day }}</strong>
-                    {{ recovery_moment.min_recovery_date|to_date }}
+        <div class="col">
+            <div class="card w-100 border border-secondary">
+
+                <div class="card-header rounded-3">
+                    <div class="card-header-date">
+                        <strong><i class="bi bi-calendar-date"></i>  {{ recovery_moment.min_recovery_date|str_to_datetime|to_day }}</strong>
+                    {{ recovery_moment.min_recovery_date|str_to_datetime|to_date }}
+                    </div>
+                    <hr class="my-2">
+                    <div class="card-header-time">
+                        <i class="bi bi-clock"></i>
+                        {{ recovery_moment.min_recovery_date|str_to_datetime|to_time }} - {{ recovery_moment.max_recovery_date|str_to_datetime|to_time }}
+                    </div>
                 </div>
-                <hr class="my-2">
-                <div class="card-header-time">
-                    <i class="bi bi-clock"></i>
-                    {{ recovery_moment.min_recovery_date|to_time }} - {{ recovery_moment.max_recovery_date|to_time }}
-                </div>
-            </div>
 
-            <div class="card-body py-3 px-3">
-                <span><i class="bi bi-shop-window"></i> {{ recovery_moment.place_id.complete_name }}</span>
+                <div class="card-body py-3 px-3">
+                    <span><i class="bi bi-shop-window"></i> {{ place.name }}</span>
 
-                {% if recovery_moment.description %}
-                <p class="text-muted small">{{ recovery_moment.description }}</p>
-                {% endif %}
-
-                {% if recovery_moment.is_complete|function_to_eval %}
-                  <span class="badge bg-secondary">{{ _('Complete') }}</span>
-                {% else %}
-                    {% if company.eshop_wallet_enabled %}
-                      <a href="#" class="btn btn-primary btn-sm w-100 mt-3"
-                         onclick="GoToThePage(this)"
-                         page_url="{{ url_for('select_recovery_moment', recovery_moment_id=recovery_moment.id) }}">
-                        <i class="bi bi-check-circle me-1"></i>{{ _('Select and go to payment') }}
-                      </a>
-                    {% else %}
-                      <a href="#" class="btn btn-primary btn-sm w-100 mt-3"
-                         data-href="{{ url_for('select_recovery_moment', recovery_moment_id=recovery_moment.id) }}"
-                         data-bs-toggle="modal" data-bs-target="#confirm-valid">
-                        <i class="bi bi-check-circle me-1"></i>{{ _('Select') }}
-                      </a>
+                    {% if recovery_moment.description %}
+                    <p class="text-muted small">{{ recovery_moment.description }}</p>
                     {% endif %}
-                {% endif %}
-            </div>
-            {% if recovery_moment.place_id.shipping_product_id %}
-            <div class="card-footer text-center">
-                {{ _('Extra Cost') }}: {{ recovery_moment.place_id.shipping_product_id.list_price|to_currency }}
-            </div>
+
+                    {% if recovery_moment.is_complete %}
+                      <span class="badge bg-secondary">{{ _('Complete') }}</span>
+                    {% else %}
+                        {% if sale_order and not public %}
+                            {% if company.eshop_wallet_enabled or company.eshop_mollie_enabled %}
+                              <a href="#" class="btn btn-primary btn-sm w-100 mt-3"
+                                 onclick="GoToThePage(this)"
+                                 page_url="{{ url_for('select_recovery_moment', recovery_moment_id=recovery_moment.id) }}">
+                                <i class="bi bi-check-circle me-1"></i>{{ _('Select and go to payment') }}
+                              </a>
+                            {% else %}
+                              <a href="#" class="btn btn-primary btn-sm w-100 mt-3"
+                                 data-href="{{ url_for('select_recovery_moment', recovery_moment_id=recovery_moment.id) }}"
+                                 data-bs-toggle="modal" data-bs-target="#confirm-valid">
+                                <i class="bi bi-check-circle me-1"></i>{{ _('Select') }}
+                              </a>
+                            {% endif %}
+                        {% endif %}
+                    {% endif %}
+                </div>
+                {% if place.shipping_product_id %}
+                {% set shipping_product = get_object('product.product', place.shipping_product_id) %}
+                <div class="card-footer text-center">
+                    {{ _('Extra Cost') }}: {{ shipping_product.list_price|to_currency }}
+                </div>
 
             {% endif %}
 
+            </div>
         </div>
-      </div>
       {% endfor %}
     </div>
 

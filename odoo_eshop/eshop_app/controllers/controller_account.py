@@ -26,68 +26,91 @@ from ..tools.web import redirect_url_for
 def account():
     incorrect_data = False
     vals = {}
-    if not len(request.form) == 0:
-        # Check Phone
-        phone, error_message = check_phone(request.form["phone"])
-        if error_message and phone:
-            incorrect_data = True
-            flash(error_message, "danger")
+    # Load all countries
+    countries_list = execute_odoo_command(
+        "res.country",
+        "browse_by_search", [],
+    )
+    country_id = get_current_partner(force_reload=True).country_id
 
-        # Check Phone
-        mobile, error_message = check_phone(request.form["mobile"])
-        if error_message and mobile:
-            incorrect_data = True
-            flash(error_message, "danger")
+    # POST : Submit form
+    if request.method == 'POST':
 
-        if not incorrect_data:
-            vals.update(
-                {
-                    "street": request.form["street"],
-                    "street2": request.form["street2"],
-                    "zip": request.form["zip"],
-                    "city": request.form["city"],
-                    "phone": phone,
-                    "mobile": mobile,
-                }
-            )
-            execute_odoo_command(
-                "res.partner", "update_from_eshop", get_current_partner_id(), vals
-            )
-            flash(
-                _("Account Datas updated successfully."),
-                "success",
-            )
+        # ======= CHANGE PASSWORD
+        if request.form['submit_button'] == 'submit_button_password':
+            # Check Password
+            password, error_message = check_password(request.form["password_1"])
+            if error_message:
+                incorrect_data = True
+                flash(error_message, "danger")
+            else:
+                vals.update({"eshop_password": password})
 
-    partner = get_current_partner(force_reload=True)
-    return render_template("account.html", partner=partner)
+            if not incorrect_data:
+                execute_odoo_command(
+                    "res.partner", "update_from_eshop", get_current_partner_id(), vals
+                )
+                flash(
+                    _("Password updated successfully."),
+                    "success",
+                )
 
-
-@app.route("/account_password", methods=["GET", "POST"])
-@requires_auth
-def account_password():
-    incorrect_data = False
-    vals = {}
-    if not len(request.form) == 0:
-        # Check Password
-        password, error_message = check_password(request.form["password_1"])
-        if error_message:
-            incorrect_data = True
-            flash(error_message, "danger")
+        # ======= CHANGE DATAS
         else:
-            vals.update({"eshop_password": password})
+            # Check Phone
+            phone, error_message = check_phone(request.form["phone"])
+            if error_message and phone:
+                incorrect_data = True
+                flash(error_message, "danger")
 
-        if not incorrect_data:
-            execute_odoo_command(
-                "res.partner", "update_from_eshop", get_current_partner_id(), vals
-            )
-            flash(
-                _("Password updated successfully."),
-                "success",
-            )
+            # Check Mobile
+            mobile, error_message = check_phone(request.form["mobile"])
+            if error_message and mobile:
+                incorrect_data = True
+                flash(error_message, "danger")
+
+            if not incorrect_data:
+                vals.update(
+                    {
+                        "street": request.form["street"],
+                        "street2": request.form["street2"],
+                        "zip": request.form["zip"],
+                        "city": request.form["city"],
+                        "country_id": request.form["country_id"],
+                        "phone": phone,
+                        "mobile": mobile,
+                    }
+                )
+                country_id = request.form["country_id"]
+                execute_odoo_command(
+                    "res.partner", "update_from_eshop", get_current_partner_id(), vals
+                )
+                flash(
+                    _("Account Datas updated successfully."),
+                    "success",
+                )
+                if request.form['submit_button'] == 'update':
+                    pass # do nothing
+                elif request.form['submit_button'] == 'update_then_payment':
+                    return redirect_url_for("payment")
+
+    # Handle country in select list of account page
+    actual_country = execute_odoo_command(
+        "res.country",
+        "browse_by_search", [('id', '=', country_id)],
+    )
 
     partner = get_current_partner(force_reload=True)
-    return render_template("account.html", partner=partner)
-
+    # Handle case : customer needs to complete address to pay online
+    address_required = request.args.getlist("address_required")
+    
+    return render_template(
+        "account.html", 
+        partner=partner, 
+        countries_list=countries_list, 
+        actual_country=actual_country,
+        address_required=address_required
+    )
 
 @app.route("/account_wallet")
 @requires_auth
@@ -126,22 +149,20 @@ def orders():
 @app.route("/invoices")
 @requires_auth
 def invoices():
-    # browse was buggy with account.move so we used search_read
-    # https://github.com/odoo/odoo/issues/109938
+    partner_id = get_current_partner_id()    
+    # Search method (instead of browse_by_search) avoid to browse
+    # every fields that needs more user access or can be linked 
+    # to other module and complexity
+    # Side effect : load object on view and add inherit models with eshop_mixin
     invoices = execute_odoo_command(
         "account.move",
-        "search_read",
+        "search",
         [
-            partner_domain("partner_id"),
+            ("partner_id", '=', partner_id),
             ("state", "not in", ("draft", "cancel")),
-            (
-                "invoice_user_id",
-                "!=",
-                False,
-            ),
+            ("invoice_user_id", '!=', False),
         ],
     )
-    # invoice_user_id not False to get only eshop invoice
     return render_template("invoices.html", invoices=invoices)
 
 
@@ -180,11 +201,18 @@ def logout_view():
 def register():  # noqa: C901
     # Check if the operation is possible
     company = get_current_company()
+
+    # Load all countries
+    countries_list = execute_odoo_command(
+        "res.country",
+        "browse_by_search", [],
+    )
+
     if not company.eshop_register_allowed or get_current_partner():
         return redirect_url_for("home")
 
     if len(request.form) == 0:
-        return render_template("register.html")
+        return render_template("register.html", countries_list=countries_list)
 
     incorrect_data = False
     # Check First Name
@@ -291,6 +319,7 @@ def register():  # noqa: C901
                 "street2": request.form["street2"],
                 "zip": request.form["zip"],
                 "city": request.form["city"],
+                "country_id": request.form["country_id"],
                 "phone": phone,
                 "mobile": mobile,
                 "eshop_password": password,

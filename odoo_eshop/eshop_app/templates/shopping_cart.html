@@ -1,10 +1,23 @@
 {% extends 'base.html' %}
 
+{% block breadcrumb %}
+<nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item active" aria-current="page">{{ _('Shopping Cart') }}</li>
+        <li class="breadcrumb-item "><a href="{{ url_for('recovery_moment_place')}}">{{ _('Recovery Moment Place') }}</a></li>
+    </ol>
+</nav>
+{% endblock %}
+
 {% block container %}
 
 <div class="container my-5">
     <h4><i class="bi bi-basket2"></i> {{ _('Validate your cart and choose a moment to recover it') }}</h4>
+    <p>{{ _('Command') }} {{ sale_order.name }}</p>
 </div>
+
+<!-- We don't use native HTML Form for quantity input in order to avoid Enter behavour
+     Everything is handle by JS Ajax  -->
 
 <!-- Shopping Cart Table for large screen -->
 <div class="shopping-cart table-responsive d-none d-md-block">
@@ -31,7 +44,8 @@
             </tr>
         </thead>
         <tbody class="table-group-divider">
-        {% for line in sale_order_lines %}
+        {% for line in sale_order_lines if not line.is_shipping %}
+
             {% set product = get_object('product.product', line.product_id) %}
             {% set uom = get_object('uom.uom', line.product_uom_id) %}
             <tr>
@@ -56,15 +70,14 @@
 
                 <!-- Quantity -->
                 <td>
-                    <form class="d-flex align-items-center gap-2" method="POST" action="{{ url_for('shopping_cart_quantity_update') }}">
-                        <input type="hidden" name="product_id" value="{{ product.id }}" />
+                    <div class="d-flex align-items-center gap-2">
+                        <input type="hidden" value="{{ product.id }}" class="product-id" />
                         <input type="text"
-                               class="form-control input-quantity form-control-sm w-50 {{ line.discount < 0 and 'input-surcharge' or '' }}"
-                               name="new_quantity"
+                               class="form-control input-quantity form-control-sm w-50"
                                id="quantity_{{ product.id }}"
                                value="{{ line.product_uom_qty }}">
                         <span class="text-muted small">{{ uom.eshop_description }}</span>
-                    </form>
+                    </div>
                 </td>
 
                 <!-- Subtotal -->
@@ -91,7 +104,7 @@
 </div>
 
 
-<!-- Shopping Carte Table for small screen (smartphone) using Bootstrap cards -->
+<!-- Shopping Cart Table for small screen (smartphone) using Bootstrap cards -->
 <div class="container d-block d-md-none">
     {% for line in sale_order_lines %}
         {% set product = get_object('product.product', line.product_id) %}
@@ -124,16 +137,15 @@
                     </div>
                 </div>
 
-                <form method="POST" action="{{ url_for('shopping_cart_quantity_update') }}"
-                      class="d-flex align-items-center gap-2">
+                <div class="d-flex align-items-center gap-2">
                     <input type="hidden" name="product_id" value="{{ product.id }}">
                     <input type="text"
-                           class="form-control input-quantity form-control-sm w-50 {{ line.discount < 0 and 'input-surcharge' or '' }}"
+                           class="form-control input-quantity form-control-sm w-50"
                            name="new_quantity"
-                           id="quantity_mobile_{{ product.id }}"
+                           id="quantity_{{ product.id }}"
                            value="{{ line.product_uom_qty }}">
                     <span class="text-muted small">{{ uom.eshop_description }}</span>
-                </form>
+                </div>
 
                 <div class="text-end">
                     <a href="{{ url_for('shopping_cart_delete_line', line_id=line.id) }}"
@@ -165,6 +177,12 @@
         <div class="col-sm-12 col-lg-3 justify-content-center ">
             <div class="card w-75 w-md-100 shadow-sm rounded-3 border-success" id="card-cart-total">
                 <div class="card-body">
+                    {% for line in sale_order_lines if line.is_shipping %}
+                    <div class="d-flex justify-content-between border-bottom pb-2 mb-2">
+                        <span class="fw-semibold text-muted">{{ _('+ Shipping cost') }}</span>
+                        <span id="amount_untaxed">{{ line.price_unit|to_currency }}</span>
+                    </div>
+                    {% endfor %}
                     <div class="d-flex justify-content-between">
                         <span class="fw-semibold text-muted">{{ _('Untaxed Amount') }}</span>
                         <span id="amount_untaxed">{{ sale_order.amount_untaxed|to_currency }}</span>
@@ -236,5 +254,4 @@
 <!-- Add JS script -->
 <script src="{{ url_for('static', filename='js/shopping_cart_quantity_update.js') }}"></script>
 <script src="{{ url_for('static', filename='js/shopping_cart_eshop_note_update.js') }}"></script>
-<script src="{{ url_for('static', filename='js/set_table_float_thead.js') }}"></script>
 {% endblock %}
