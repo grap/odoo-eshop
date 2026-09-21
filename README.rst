@@ -15,16 +15,20 @@ a light eShop.
 Main Features
 -------------
 
-Customer can:
+- 100% responsive for mobile usage
+- Compatible with differents payments method :
+  - Pay on site
+  - Using Customer Wallet : https://github.com/coopiteasy/addons/tree/16.0/customer_wallet
+  - Paying online with Mollie : https://github.com/mollie/mollie-odoo/tree/16.0/payment_mollie_official
 
-- log in / log out
-- see products in a kanban view, group by "eshop categories"
-- see products in a list view
-- create a sale order
-- confirm sale order, selecting a date / a place
-- see old orders
-- see old invoices
-- see / change his data.
+- Handle account (not a res user in Odoo database) 
+- Two views to order :
+    - kanban view, group by "eshop categories", that can be public without account
+    - quick list view, that is searchable
+- Handle order on a cart (cart = sale order on Odoo)
+- Selecting a date and place to retrieve its orders
+- See old orders and invoices
+- See / change customer data.
 
 Technical caracteristics
 ------------------------
@@ -39,15 +43,15 @@ Installation for development
 Eshop Part
 ----------
 
-``
-git clone https://github.com/grap/odoo-eshop -b 12.0
+```
+git clone https://github.com/grap/odoo-eshop -b 16.0
 cd odoo-eshop && ./install.sh
-``
+```
 
 Odoo Installation
 -----------------
-
-This version is compatible with an Odoo 12.0 with the following module
+    
+This version is compatible with an Odoo 16.0 with the following module
 installed ``sale_eshop`` available here : https://github.com/grap/grap-odoo-business
 
 
@@ -81,7 +85,7 @@ How to install on server : code, pip install, config, nginx, service
 Create service
 --------------
 
-Create file in `/etc/systemd/system/yourEshopName.service`
+Create file in ``/etc/systemd/system/yourEshopName.service``
 
 ```
 [Unit]
@@ -102,13 +106,13 @@ WantedBy=multi-user.target
 Launch
 ------
 
-`sudo systemctl status yourEshopName.service`
+``sudo systemctl status yourEshopName.service``
 
 
 Journal
 -------
 
-`sudo journalctl -fu yourEshopName.service`
+``sudo journalctl -fu yourEshopName.service``
 
 
 Credits
@@ -128,5 +132,5 @@ Funders
 
 The development of this module has been financially supported by:
 
-* GRAP, Groupement Régional Alimentaire de Proximité (http://www.grap.coop)
+* GRAP, Groupement Régional Alimentaire de Proximité (https://www.grap.coop)
 * Hashbang (https://hashbang.fr)

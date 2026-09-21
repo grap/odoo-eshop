@@ -7,7 +7,7 @@ secret_key = replace_me
 
 [odoo]
 host = localhost
-port = 8012
+port = 8016
 database = odoo_test_eshop
 company_id = 1
 
