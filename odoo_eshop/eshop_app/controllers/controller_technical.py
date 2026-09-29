@@ -261,9 +261,12 @@ def tax_description_per_line(line):
 
 @app.template_filter("html_fix_image_url")
 def html_fix_image_url(html):
-    odoo_base_url = str(
-        "http://" + conf.get("odoo", "host") + ":" + conf.get("odoo", "port")
-    )
+    if '127.0.0.1' or 'localhost' in conf.get("odoo", "host"):
+        odoo_base_url = str(
+            "http://" + conf.get("odoo", "host") + ":" + conf.get("odoo", "port")
+        )
+    else:
+        odoo_base_url = str(conf.get("flask", "url"))    
     return html.replace('src="/web/image/', f'src="{odoo_base_url}/web/image/')
 
 
