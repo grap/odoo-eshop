@@ -14,16 +14,13 @@ app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(
     minutes=int(conf.get("auth", "session_minute"))
 )
 
-babel = Babel(app)
+# Handle Redis 
+app.config["CACHE_TYPE"] = conf.get("cache", "cache_type")
+app.config["CACHE_DEFAULT_TIMEOUT"] = int(conf.get("cache", "cache_default_timeout"))
+app.config["CACHE_KEY_PREFIX"] = conf.get("cache", "cache_key_prefix")
 
-cache = Cache(
-    app,
-    config={
-        "CACHE_TYPE": conf.get("cache", "cache_type"),
-        "CACHE_DEFAULT_TIMEOUT": int(conf.get("cache", "cache_default_timeout")),
-        "CACHE_KEY_PREFIX": conf.get("cache", "cache_key_prefix"),
-    },
-)
+babel = Babel(app)
+cache = Cache(app)
 
 # Clear Cache and reprefetch data (For test purpose)
 # cache.clear()

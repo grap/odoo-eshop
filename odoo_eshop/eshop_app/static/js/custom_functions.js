@@ -39,15 +39,15 @@ function update_header(order_id, amount_total_header, minimum_ok){
 
 function display_message(state, message, always){
     if (state != 'success' || always) {
-        $('.flashes').replaceWith("<div class='flashes'><p class='text-center bg-" + state + "'>" + message  + "</p></div>");
+        $('.flashes').replaceWith("<div class='container eshop_flash_container'><div class='mt-4 container alert alert-" + state + "'>" + message  + "</div></div>");
     }
     else {
-        $('.flashes').replaceWith("<div class='flashes' />");
+        $('.flashes').replaceWith("<div class='container eshop_flash_container' />");
     }
 }
 
 function display_fail_message(){
-    $('.flashes').replaceWith("<div class='flashes'><p class='text-center bg-danger'>" + AJAX_MESSAGE_ERROR + "</p></div>");
+    $('.flashes').replaceWith("<div class='container eshop_flash_container'><div class='mt-4 container alert alert-danger'>" + AJAX_MESSAGE_ERROR + "</div></div>");
 }
 
 /* Variables globales */
