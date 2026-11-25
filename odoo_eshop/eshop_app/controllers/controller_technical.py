@@ -6,7 +6,7 @@ from flask import flash, render_template
 from flask_babel import gettext as _
 
 from ..application import app
-from ..models.models import execute_odoo_command, get_odoo_object
+from ..models.models import execute_odoo_command, get_odoo_object, _Memoize
 from ..models.res_company import get_current_company
 from ..models.res_partner import get_current_partner, get_current_partner_id
 from ..models.sale_order import get_current_sale_order
@@ -115,8 +115,9 @@ def unavailable_service():
 @requires_connection
 def invalidation_cache(key, model, id):
     if key == conf.get("cache", "invalidation_key"):
-        # Invalidate Object cache
-        get_odoo_object(str(model), int(id), force_reload=True)
+        # Invalidate Object cache WITHOUT reloading
+        _Memoize._set_cache(str(model), int(id), False)
+
         return render_template("200.html"), 200
     else:
         return render_template("404.html"), 404
